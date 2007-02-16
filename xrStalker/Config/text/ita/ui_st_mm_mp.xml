@@ -28,10 +28,10 @@
 		<text>Durata reperto (min.)</text>
 	</string>
 	<string id="mm_mp_autoteambalance">
-		<text>Bilanciamento automatico squadre</text>
+		<text>Bilanc. autom. squadre</text>
 	</string>
 	<string id="mm_mp_autoteamswap">
-		<text>Cambio squadra automatico</text>
+		<text>Cambio squadra autom.</text>
 	</string>
 	<string id="mm_mp_avail_maps">
 		<text>MAPPE DISPONIBILI</text>
@@ -106,7 +106,7 @@
 		<text>LAN</text>
 	</string>
 	<string id="mm_mp_listenservers">
-		<text>Vuoti</text>
+		<text>Ascolto</text>
 	</string>
 	<string id="mm_mp_mapratation">
 		<text>Elenco mappe</text>
@@ -130,16 +130,16 @@
 		<text>Nome giocatore:</text>
 	</string>
 	<string id="mm_mp_players">
-		<text>Giocatori</text>
+		<text>Gioc.</text>
 	</string>
 	<string id="mm_mp_publicserver">
 		<text>Server pubblico</text>
 	</string>
 	<string id="mm_mp_quickrefresh">
-		<text>Aggiornamento rapido</text>
+		<text>Aggiorn. rapido</text>
 	</string>
 	<string id="mm_mp_rateofchange">
-		<text>Coefficiente di variazione</text>
+		<text>Variazione</text>
 	</string>
 	<string id="mm_mp_refresh">
 		<text>Aggiorna tutto</text>
@@ -163,7 +163,7 @@
 		<text>Proprietà server</text>
 	</string>
 	<string id="mm_mp_serverinfo">
-		<text>Informazioni server</text>
+		<text>Inform. server</text>
 	</string>
 	<string id="mm_mp_serverlist">
 		<text>Server</text>
@@ -196,7 +196,7 @@
 		<text>Solo squadra</text>
 	</string>
 	<string id="mm_mp_startweather">
-		<text>Condizioni atmosferiche iniziali</text>
+		<text>Condiz. atmosferiche</text>
 	</string>
 	<string id="mm_mp_timelimit">
 		<text>Limite di tempo (min.)</text>
@@ -226,9 +226,15 @@
 		<text>PING</text>
 	</string>
 	<string id="players">
-		<text>GIOCATORI</text>
+		<text>GIOC.</text>
 	</string>
 	<string id="server name">
-		<text>NOMER SERVER</text>
+		<text>NOME SERVER</text>
+	</string>
+	<string id="version">
+		<text>Versione</text>
+	</string>
+	<string id="st_mp_gsfilter">
+		<text>Flitro:</text>
 	</string>
 </string_table>

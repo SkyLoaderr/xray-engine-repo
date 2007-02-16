@@ -1,5 +1,5 @@
 	<string id="aes_Monolit_master_bio">
-		<text>Centinela de Monolith. Es mejor mantenerse alejado de  l. No hay detalles disponibles. </text>
+		<text>Centinela de Monolith. Es mejor mantenerse alejado de él. No hay detalles disponibles. </text>
 	</string>
 	<string id="aes_Monolit_rpg_bio">
 		<text>Stalker de Monolith. No hay detalles disponibles. </text>
@@ -14,7 +14,7 @@
 		<text>Militante de Monolith. Bien equipado. No hay detalles disponibles. </text>
 	</string>
 	<string id="aes_Soldier_commander_bio">
-		<text>Comandante de la incursi n militar. </text>
+		<text>Comandante de la incursión militar. </text>
 	</string>
 	<string id="aes_Soldier_military_bio">
 		<text>Stalker militar. Bien armado y muy peligroso. No hay detalles disponibles.</text>
@@ -23,16 +23,16 @@
 		<text>No hay detalles disponibles. </text>
 	</string>
 	<string id="aes_Soldier_specnaz_aes_bio">
-		<text>Spetsnaz del ej rcito. Bien equipado. No hay detalles disponibles.</text>
+		<text>Spetsnaz del ejército. Bien equipado. No hay detalles disponibles.</text>
 	</string>
 	<string id="aes_Soldier_specnaz_aes_name">
 		<text>Vasil el Gafe</text>
 	</string>
 	<string id="aes_Soldier_specnaz_bio">
-		<text>Spetsnaz del ej rcito. Bien equipado. No hay detalles disponibles.</text>
+		<text>Spetsnaz del ejército. Bien equipado. No hay detalles disponibles.</text>
 	</string>
 	<string id="agr_krot_bio">
-		<text>Antiguo excavador que efect a incursiones junto a sus c mplices en todos los laboratorios desolados y b nkeres que encuentra. </text>
+		<text>Antiguo excavador que efectúa incursiones junto a sus cómplices en todos los laboratorios desolados y búnkeres que encuentra. </text>
 	</string>
 	<string id="agr_krot_name">
 		<text>Mole</text>
@@ -47,7 +47,7 @@
 		<text>Arnie </text>
 	</string>
 	<string id="bar_bar_guard_bio">
-		<text>Gorila del bar. O el guardaespaldas del tabernero, si prefieres llamarlo as . Se desconocen tanto su presente como su pasado.</text>
+		<text>Gorila del bar. O el guardaespaldas del tabernero, si prefieres llamarlo así. Se desconocen tanto su presente como su pasado.</text>
 	</string>
 	<string id="bar_bar_guard_name">
 		<text>Garik</text>
@@ -59,7 +59,7 @@
 		<text>Zhorik</text>
 	</string>
 	<string id="bar_barmen_bio">
-		<text>No es un santo, pero tampoco un sinverg enza. El tabernero conoce su val a y es respetado por todos los stalkers. Se dice que se esconde en la Zona para huir de algunos sucesos oscuros de su pasado. Tras un encuentro con una anomal a, empez  a cojear un poco y decidi  cambiar de trabajo. Abri  un bar cerca de los de Deber y el local poco a poco se fue convirtiendo en el lugar de encuentro de todos los veteranos de la Zona. El tabernero tiene muchos contactos, tanto en la Zona como en el exterior. </text>
+		<text>No es un santo, pero tampoco un sinvergüenza. El tabernero conoce su valía y es respetado por todos los stalkers. Se dice que se esconde en la Zona para huir de algunos sucesos oscuros de su pasado. Tras un encuentro con una anomalía, empezó a cojear un poco y decidió cambiar de trabajo. Abrió un bar cerca de los de Deber y el local poco a poco se fue convirtiendo en el lugar de encuentro de todos los veteranos de la Zona. El tabernero tiene muchos contactos, tanto en la Zona como en el exterior. </text>
 	</string>
 	<string id="bar_barmen_name">
 		<text>Tabernero</text>
@@ -68,19 +68,19 @@
 		<text>Bestia</text>
 	</string>
 	<string id="bar_drunk_bio">
-		<text>Miembro de la facci n Deber, y aficionado a la botella. Deber le dio la  ltima oportunidad de redimirse llevando a cabo una misi n, pero siempre est  demasiado borracho y es incapaz de calmarse para poder realizarla.</text>
+		<text>Miembro de la facción Deber, y aficionado a la botella. Deber le dio la última oportunidad de redimirse llevando a cabo una misión, pero siempre está demasiado borracho y es incapaz de calmarse para poder realizarla.</text>
 	</string>
 	<string id="bar_drunk_name">
 		<text>Brome</text>
 	</string>
 	<string id="bar_hunter_bio">
-		<text>De temperamento afable y optimista, su  nico problema es que no puede disparar con otra cosa que no sea un rifle de caza. Ni siquiera ha intentado disparar con otras armas. Hace poco se meti  en un aprieto en el Territorio salvaje y perdi  el rifle de su familia. Ahora, se lamenta en el bar esperando que alguien se lo devuelva. </text>
+		<text>De temperamento afable y optimista, su único problema es que no puede disparar con otra cosa que no sea un rifle de caza. Ni siquiera ha intentado disparar con otras armas. Hace poco se metió en un aprieto en el Territorio salvaje y perdió el rifle de su familia. Ahora, se lamenta en el bar esperando que alguien se lo devuelva. </text>
 	</string>
 	<string id="bar_hunter_name">
 		<text>Cazador</text>
 	</string>
 	<string id="bar_informer_bio">
-		<text>Un stalker misterioso y sabelotodo. Intercambia informaci n en el bar. </text>
+		<text>Un stalker misterioso y sabelotodo. Intercambia información en el bar. </text>
 	</string>
 	<string id="bar_informer_name">
 		<text>Ratero</text>
@@ -89,7 +89,7 @@
 		<text>Es el comandante de todas las incursiones y expediciones punitivas efectuadas contra las hordas de mutantes. </text>
 	</string>
 	<string id="bar_ivancov_name">
-		<text>Capit n Ivantsov</text>
+		<text>Capitán Ivantsov</text>
 	</string>
 	<string id="bar_kicenko_name">
 		<text>Sargento Kitsenko</text>
@@ -104,7 +104,7 @@
 		<text>Baldy</text>
 	</string>
 	<string id="bar_petrenko_bio">
-		<text>Uno de los fundadores de Deber y, al mismo tiempo, uno de sus principales ide logos. Responsable del c digo sagrado de la facci n; reclut  a todos los miembros m s importantes de Deber. </text>
+		<text>Uno de los fundadores de Deber y, al mismo tiempo, uno de sus principales ideólogos. Responsable del código sagrado de la facción; reclutó a todos los miembros más importantes de Deber. </text>
 	</string>
 	<string id="bar_petrenko_name">
 		<text>Coronel Petrenko</text>
@@ -116,13 +116,13 @@
 		<text>Sargento Plichko</text>
 	</string>
 	<string id="bar_ryaboy_bio">
-		<text>Extra o afectado por el Cauterizador cerebral. </text>
+		<text>Extraño afectado por el Cauterizador cerebral. </text>
 	</string>
 	<string id="bar_ryaboy_name">
 		<text>Granos</text>
 	</string>
 	<string id="bar_voronin_bio">
-		<text>Fundador de la facci n de Deber. Ha liderado el grupo durante cinco a os. </text>
+		<text>Fundador de la facción de Deber. Ha liderado el grupo durante cinco años. </text>
 	</string>
 	<string id="bar_voronin_name">
 		<text>General Voronin</text>
@@ -131,13 +131,13 @@
 		<text>Alkie.</text>
 	</string>
 	<string id="cit_bandit_general_bio">
-		<text>Stalker desconocido. Mala reputaci n. No hay detalles disponibles. </text>
+		<text>Stalker desconocido. Mala reputación. No hay detalles disponibles. </text>
 	</string>
 	<string id="cit_bandit_veteran_bio">
-		<text>Stalker desconocido. Mala reputaci n. No hay detalles disponibles. </text>
+		<text>Stalker desconocido. Mala reputación. No hay detalles disponibles. </text>
 	</string>
 	<string id="cit_bandits_leader_bio">
-		<text>Uno de los l deres de los bandidos. Bien armado y muy peligroso. No hay detalles disponibles. </text>
+		<text>Uno de los líderes de los bandidos. Bien armado y muy peligroso. No hay detalles disponibles. </text>
 	</string>
 	<string id="cit_bandits_leader_name">
 		<text>Borziy</text>
@@ -155,7 +155,7 @@
 		<text>Mercenario desconocido. Posiblemente, bien armado. No hay detalles disponibles. </text>
 	</string>
 	<string id="cit_killers_leader_bio">
-		<text>L der de la banda de mercenarios. Bien armado y muy peligroso. No hay detalles disponibles. </text>
+		<text>Líder de la banda de mercenarios. Bien armado y muy peligroso. No hay detalles disponibles. </text>
 	</string>
 	<string id="cit_killers_leader_name">
 		<text>Dushman</text>
@@ -179,22 +179,22 @@
 		<text>Kalugin P.I.</text>
 	</string>
 	<string id="ds_sergant_regular_bio">
-		<text>Sargento del ej rcito ucraniano. No hay detalles disponibles. </text>
+		<text>Sargento del ejército ucraniano. No hay detalles disponibles. </text>
 	</string>
 	<string id="ds_soldier_regular_bio">
-		<text>Soldado del ej rcito ucraniano. No hay detalles disponibles. </text>
+		<text>Soldado del ejército ucraniano. No hay detalles disponibles. </text>
 	</string>
 	<string id="esc_bandit_novice_bio">
-		<text>Stalker desconocido. Mala reputaci n. No hay detalles disponibles. </text>
+		<text>Stalker desconocido. Mala reputación. No hay detalles disponibles. </text>
 	</string>
 	<string id="esc_captain_bio">
-		<text>Capit n del ej rcito ucraniano con muchos a os de servicio. No hay detalles disponibles. </text>
+		<text>Capitán del ejército ucraniano con muchos años de servicio. No hay detalles disponibles. </text>
 	</string>
 	<string id="esc_fanat_bio">
-		<text>Sucedi  a Wolf como jefe del campamento de novatos. Firme y agresivo, ha sabido imponer su autoridad sobre los reci n llegados.</text>
+		<text>Sucedió a Wolf como jefe del campamento de novatos. Firme y agresivo, ha sabido imponer su autoridad sobre los recién llegados.</text>
 	</string>
 	<string id="esc_fanat_name">
-		<text>Fan tico</text>
+		<text>Fanático</text>
 	</string>
 	<string id="esc_fox_bio">
 		<text>Viejo solitario endurecido por la Zona.</text>
@@ -212,16 +212,16 @@
 		<text>Petruha</text>
 	</string>
 	<string id="esc_provodnik_bio">
-		<text>Se puede decir que es una leyenda viva. Dicen que puede llevarte a cualquier lugar de la Zona. Sus servicios son caros y no est n disponibles para cualquiera. Si no le gustas, no te llevar  ni por todo el dinero del mundo. Un veterano que se ha recorrido la Zona de cabo a rabo. </text>
+		<text>Se puede decir que es una leyenda viva. Dicen que puede llevarte a cualquier lugar de la Zona. Sus servicios son caros y no están disponibles para cualquiera. Si no le gustas, no te llevará ni por todo el dinero del mundo. Un veterano que se ha recorrido la Zona de cabo a rabo. </text>
 	</string>
 	<string id="esc_provodnik_name">
-		<text>Gu a</text>
+		<text>Guía</text>
 	</string>
 	<string id="esc_sergant_regular_bio">
-		<text>Sargento del ej rcito ucraniano. No hay detalles disponibles. </text>
+		<text>Sargento del ejército ucraniano. No hay detalles disponibles. </text>
 	</string>
 	<string id="esc_shustryi_bio">
-		<text>Stalker con fama de ser casi invisible a la par que indispensable. El comerciante lo env a en misiones delicadas, como espiar a alguien, fisgonear o escuchar a hurtadillas. </text>
+		<text>Stalker con fama de ser casi invisible a la par que indispensable. El comerciante lo envía en misiones delicadas, como espiar a alguien, fisgonear o escuchar a hurtadillas. </text>
 	</string>
 	<string id="esc_shustryi_name">
 		<text>Nimble </text>
@@ -233,7 +233,7 @@
 		<text>Mayor Kuznetsov</text>
 	</string>
 	<string id="esc_soldier_regular_bio">
-		<text>Soldado del ej rcito ucraniano. No hay detalles disponibles. </text>
+		<text>Soldado del ejército ucraniano. No hay detalles disponibles. </text>
 	</string>
 	<string id="esc_specnaz_bio">
 		<text>Spetsnaz. Bien equipado. No hay detalles disponibles.</text>
@@ -257,7 +257,7 @@
 		<text>Wolf</text>
 	</string>
 	<string id="escape_trader_bio">
-		<text>Desde que era ni o se ha dedicado a comerciar para ganarse la vida. En preescolar sol a vender l pices de colores. En el colegio ya vend a chicles. Y en el instituto, vend a drogas blandas. Tan pronto como surgi  la Zona, se dio cuenta del potencial econ mico que ten a. Famoso por establecer relaciones comerciales con clientes de todo tipo. </text>
+		<text>Desde que era niño se ha dedicado a comerciar para ganarse la vida. En preescolar solía vender lápices de colores. En el colegio ya vendía chicles. Y en el instituto, vendía drogas blandas. Tan pronto como surgió la Zona, se dio cuenta del potencial económico que tenía. Famoso por establecer relaciones comerciales con clientes de todo tipo. </text>
 	</string>
 	<string id="escape_trader_name">
 		<text>Sidorovich</text>
@@ -266,7 +266,7 @@
 		<text>Tiene cierta autoridad sobre los bandidos de la Zona. Compinche de Borov</text>
 	</string>
 	<string id="gar_bandit_leader_name">
-		<text>Jabal  Vasya</text>
+		<text>Jabalí Vasya</text>
 	</string>
 	<string id="gar_dolg_blokpost_bio">
 		<text>Un stalker de Deber. No hay detalles disponibles. </text>
@@ -329,7 +329,7 @@
 		<text>Mercenario desconocido. Posiblemente, bien armado. No hay detalles disponibles. </text>
 	</string>
 	<string id="mil_Monolit_master_bio">
-		<text>Centinela de Monolith. Es mejor mantenerse alejado de  l. No hay detalles disponibles. </text>
+		<text>Centinela de Monolith. Es mejor mantenerse alejado de él. No hay detalles disponibles. </text>
 	</string>
 	<string id="mil_Monolit_regular_bio">
 		<text>Stalker de Monolith. No hay detalles disponibles. </text>
@@ -341,28 +341,28 @@
 		<text>Stalker veterano. Posiblemente bien equipado. No hay detalles disponibles. </text>
 	</string>
 	<string id="mil_Svoboda_blockpost_leader_bio">
-		<text>Stalker de Libertad. Comandante de la Barrera. Logr  reunir un grupo de gente dispuesta a sacrificar sus vidas por una causa com n. </text>
+		<text>Stalker de Libertad. Comandante de la Barrera. Logró reunir un grupo de gente dispuesta a sacrificar sus vidas por una causa común. </text>
 	</string>
 	<string id="mil_Svoboda_blockpost_leader_name">
 		<text>Capi</text>
 	</string>
 	<string id="mil_Svoboda_bodyguard_bio">
-		<text>Guardaespaldas que trabaja para Lukash, el l der de Libertad.</text>
+		<text>Guardaespaldas que trabaja para Lukash, el líder de Libertad.</text>
 	</string>
 	<string id="mil_Svoboda_cook_bio">
-		<text>Cocinero de la facci n de Libertad. Un borracho bravuc n, pero que cocina de maravilla. </text>
+		<text>Cocinero de la facción de Libertad. Un borracho bravucón, pero que cocina de maravilla. </text>
 	</string>
 	<string id="mil_Svoboda_cook_name">
 		<text>Cocinero</text>
 	</string>
 	<string id="mil_Svoboda_engineer_bio">
-		<text>Un mec nico famoso en toda la Zona. Puede convertir un tractor en un tanque, o al menos eso se dice. </text>
+		<text>Un mecánico famoso en toda la Zona. Puede convertir un tractor en un tanque, o al menos eso se dice. </text>
 	</string>
 	<string id="mil_Svoboda_engineer_name">
 		<text>Tornillo</text>
 	</string>
 	<string id="mil_Svoboda_leader_bio">
-		<text>L der de Libertad.</text>
+		<text>Líder de Libertad.</text>
 	</string>
 	<string id="mil_Svoboda_leader_name">
 		<text>Lukash</text>
@@ -371,7 +371,7 @@
 		<text>Comandante de Libertad. No hay detalles disponibles.</text>
 	</string>
 	<string id="mil_Svoboda_master_Max_bio">
-		<text>Guardia de Libertad. Un fan tico. Muy bien equipado y muy peligroso. No hay detalles disponibles. </text>
+		<text>Guardia de Libertad. Un fanático. Muy bien equipado y muy peligroso. No hay detalles disponibles. </text>
 	</string>
 	<string id="mil_Svoboda_master_Max_name">
 		<text>Max</text>
@@ -380,7 +380,7 @@
 		<text>Guardia de Libertad. Muy bien equipado y muy peligroso. No hay detalles disponibles.</text>
 	</string>
 	<string id="mil_Svoboda_master_Ugrumiy_name">
-		<text>Sombr o</text>
+		<text>Sombrío</text>
 	</string>
 	<string id="mil_Svoboda_regular_bio">
 		<text>Stalker de Libertad. No hay detalles disponibles. </text>
@@ -398,10 +398,10 @@
 		<text>Pavlik</text>
 	</string>
 	<string id="mil_Svoboda_trader_bio">
-		<text>Conocido por su avaricia y mal genio, aunque tambi n por ser capaz de conseguirte cualquier cosa. </text>
+		<text>Conocido por su avaricia y mal genio, aunque también por ser capaz de conseguirte cualquier cosa. </text>
 	</string>
 	<string id="mil_Svoboda_trader_name">
-		<text>Ro oso</text>
+		<text>Roñoso</text>
 	</string>
 	<string id="mil_Svoboda_zombi_stalker_bio">
 		<text>Stalker de Libertad. No hay detalles disponibles. </text>
@@ -422,10 +422,10 @@
 		<text>Stalker de Monolith. No hay detalles disponibles. </text>
 	</string>
 	<string id="pri_monolith_exo_bio">
-		<text>Stalker de  lite de Monolith. No hay detalles disponibles. </text>
+		<text>Stalker de élite de Monolith. No hay detalles disponibles. </text>
 	</string>
 	<string id="pri_monolith_leader_bio">
-		<text>L der de Monolith. No hay detalles disponibles. </text>
+		<text>Líder de Monolith. No hay detalles disponibles. </text>
 	</string>
 	<string id="pri_monolith_leader_name">
 		<text>Charon</text>
@@ -452,10 +452,10 @@
 		<text>Comandante de Deber. Muy bien equipado. No hay detalles disponibles. </text>
 	</string>
 	<string id="rad_ecolog_bio">
-		<text>Cient fico. No hay detalles disponibles. </text>
+		<text>Científico. No hay detalles disponibles. </text>
 	</string>
 	<string id="rad_ecolog_guard_bio">
-		<text>Guardia de seguridad de los cient ficos. No hay detalles disponibles. </text>
+		<text>Guardia de seguridad de los científicos. No hay detalles disponibles. </text>
 	</string>
 	<string id="rad_ecolog_guard_name">
 		<text>Ayudante de invest.</text>
@@ -485,34 +485,34 @@
 		<text>Un stalker que tuvo mala suerte.</text>
 	</string>
 	<string id="ros_ecolog_guard_bio">
-		<text>Investigador del laboratorio m vil. No hay detalles disponibles. </text>
+		<text>Investigador del laboratorio móvil. No hay detalles disponibles. </text>
 	</string>
 	<string id="ros_freeman_bio">
-		<text>Cient fico experto en fen menos an malos. Trabaj  en Norteam rica en proyectos confidenciales. Dado por desaparecido. </text>
+		<text>Científico experto en fenómenos anómalos. Trabajó en Norteamérica en proyectos confidenciales. Dado por desaparecido. </text>
 	</string>
 	<string id="ros_freeman_name">
 		<text>Freeman</text>
 	</string>
 	<string id="ros_happy_bio">
-		<text>Saqueador y asesino. Hay una recompensa por su cabeza. Al principio ten a buenas relaciones con Deber y les ayud  a ganar terreno. Ahora vive en el Territorio salvaje, donde se dedica a asaltar con su banda a los stalkers solitarios.</text>
+		<text>Saqueador y asesino. Hay una recompensa por su cabeza. Al principio tenía buenas relaciones con Deber y les ayudó a ganar terreno. Ahora vive en el Territorio salvaje, donde se dedica a asaltar con su banda a los stalkers solitarios.</text>
 	</string>
 	<string id="ros_happy_name">
 		<text>Afortunado</text>
 	</string>
 	<string id="ros_kruglov_bio">
-		<text>Doctor en Biolog a. Fuera de la Zona estudiaba mutaciones pat genas en animales. Vino a la Zona para estudiar mutaciones en perros ciegos.</text>
+		<text>Doctor en Biología. Fuera de la Zona estudiaba mutaciones patógenas en animales. Vino a la Zona para estudiar mutaciones en perros ciegos.</text>
 	</string>
 	<string id="ros_kruglov_name">
 		<text>Profesor Kruglov</text>
 	</string>
 	<string id="ros_tiran_bio">
-		<text>Uno de los "h roes" de los mercenarios. Un veterano con cicatrices de balas de todos los calibres en su cuerpo. Un extra o y s dico psic pata.</text>
+		<text>Uno de los "héroes" de los mercenarios. Un veterano con cicatrices de balas de todos los calibres en su cuerpo. Un extraño y sádico psicópata.</text>
 	</string>
 	<string id="ros_tiran_name">
 		<text>Tirano</text>
 	</string>
 	<string id="ros_volkodav_bio">
-		<text>Uno de los primeros comandantes de campo de los mercenarios. El l der de la banda autodenominada "Perros callejeros". Un anarquista que no respeta ley alguna, excepto la de la selva.</text>
+		<text>Uno de los primeros comandantes de campo de los mercenarios. El líder de la banda autodenominada "Perros callejeros". Un anarquista que no respeta ley alguna, excepto la de la selva.</text>
 	</string>
 	<string id="ros_volkodav_name">
 		<text>Wolfhound</text>
@@ -530,7 +530,7 @@
 		<text>Bestia</text>
 	</string>
 	<string id="sar2_bandit_leader_name">
-		<text>Jabal  Vasya</text>
+		<text>Jabalí Vasya</text>
 	</string>
 	<string id="sar2_bio">
 		<text>Una forma psicomaterial creada por el monolito.</text>
@@ -560,7 +560,7 @@
 		<text>Zheka "Casaca"</text>
 	</string>
 	<string id="sar2_fanat_name">
-		<text>"Fan tico"</text>
+		<text>"Fanático"</text>
 	</string>
 	<string id="sar2_fox_name">
 		<text>"Fox"</text>
@@ -578,7 +578,7 @@
 		<text>Ara</text>
 	</string>
 	<string id="sar2_ivancov_name">
-		<text>Capit n Ivantsov</text>
+		<text>Capitán Ivantsov</text>
 	</string>
 	<string id="sar2_krot_name">
 		<text>Stalker Mole</text>
@@ -599,7 +599,7 @@
 		<text>Zhorik</text>
 	</string>
 	<string id="sar2_professor_name">
-		<text>Profesor Sajarov</text>
+		<text>Profesor Sakharov</text>
 	</string>
 	<string id="sar2_ryaboy_name">
 		<text>Granos</text>
@@ -629,10 +629,10 @@
 		<text>Pavlik</text>
 	</string>
 	<string id="sar2_svoboda_trader_name">
-		<text>"Ro oso"</text>
+		<text>"Roñoso"</text>
 	</string>
 	<string id="sar2_svoboda_ugrumyi_name">
-		<text>"Sombr o"</text>
+		<text>"Sombrío"</text>
 	</string>
 	<string id="sar2_tiran_name">
 		<text>Tirano</text>
@@ -650,25 +650,25 @@
 		<text>"Wolf"</text>
 	</string>
 	<string id="sim_bandit_general_bio">
-		<text>Stalker desconocido. Mala reputaci n. No hay detalles disponibles. </text>
+		<text>Stalker desconocido. Mala reputación. No hay detalles disponibles. </text>
 	</string>
 	<string id="sim_bandit_master_bio">
-		<text>Stalker desconocido. Mala reputaci n. No hay detalles disponibles. </text>
+		<text>Stalker desconocido. Mala reputación. No hay detalles disponibles. </text>
 	</string>
 	<string id="sim_bandit_master_fraer_bio">
-		<text>Vino a la Zona en busca de aventuras. Imita a personajes de tebeos de los 60. Usa diversos nombres: Batman, Macho, Capa Negra, Banderas. Aunque ha sobrevivido en la Zona durante dos a os, nadie le toma en serio, lo cual le enfurece. </text>
+		<text>Vino a la Zona en busca de aventuras. Imita a personajes de tebeos de los 60. Usa diversos nombres: Batman, Macho, Capa Negra, Banderas. Aunque ha sobrevivido en la Zona durante dos años, nadie le toma en serio, lo cual le enfurece. </text>
 	</string>
 	<string id="sim_bandit_master_kocherga_bio">
-		<text>Agresivo, irracional, grosero, engre do, cruel, insensible y fr o. Nadie sabe cu ndo o c mo lleg  a la Zona. Todos le temen y no tiene amigos. Se limita a vivir en la Zona, sin futuro ni pasado. Tras una de sus m ltiples incursiones en la Zona, perdi  la memoria y lo olvid  casi todo. No recuerda de d nde vino ni su aut ntico nombre y sufre de frecuentes lapsos de amnesia. Puede olvidar alguien a quien acaba de conocer, tomarlo por un enemigo y matarlo.</text>
+		<text>Agresivo, irracional, grosero, engreído, cruel, insensible y frío. Nadie sabe cuándo o cómo llegó a la Zona. Todos le temen y no tiene amigos. Se limita a vivir en la Zona, sin futuro ni pasado. Tras una de sus múltiples incursiones en la Zona, perdió la memoria y lo olvidó casi todo. No recuerda de dónde vino ni su auténtico nombre y sufre de frecuentes lapsos de amnesia. Puede olvidar alguien a quien acaba de conocer, tomarlo por un enemigo y matarlo.</text>
 	</string>
 	<string id="sim_bandit_novice_bio">
-		<text>Stalker desconocido. Mala reputaci n. No hay detalles disponibles. </text>
+		<text>Stalker desconocido. Mala reputación. No hay detalles disponibles. </text>
 	</string>
 	<string id="sim_bandit_veteran_bio">
-		<text>Stalker desconocido. Mala reputaci n. No hay detalles disponibles. </text>
+		<text>Stalker desconocido. Mala reputación. No hay detalles disponibles. </text>
 	</string>
 	<string id="sim_dolg_master_bio">
-		<text>Guardia de Deber. Si no eres amigo suyo, al jate de  l. No hay detalles disponibles. </text>
+		<text>Guardia de Deber. Si no eres amigo suyo, aléjate de él. No hay detalles disponibles. </text>
 	</string>
 	<string id="sim_dolg_regular_bio">
 		<text>Stalker de Deber. No hay detalles disponibles. </text>
@@ -677,16 +677,16 @@
 		<text>Militante de Deber. Normalmente bien equipado. No hay detalles disponibles. </text>
 	</string>
 	<string id="sim_dolg_veteran_barin_bio">
-		<text>Un canalla pelota, hip crita y cobarde. El lema de Barin bien podr a ser "despu s de m , el diluvio". Se aprovecha de cualquier situaci n. Ambicioso y susceptible en extremo. Vino a la Zona por dinero, obviamente. Lleva dos a os acumulando bienes por todos los medios posibles. </text>
+		<text>Un canalla pelota, hipócrita y cobarde. El lema de Barin bien podría ser "después de mí, el diluvio". Se aprovecha de cualquier situación. Ambicioso y susceptible en extremo. Vino a la Zona por dinero, obviamente. Lleva dos años acumulando bienes por todos los medios posibles. </text>
 	</string>
 	<string id="sim_dolg_veteran_bio">
 		<text>Militante de Deber. Normalmente bien equipado. No hay detalles disponibles. </text>
 	</string>
 	<string id="sim_dolg_veteran_prapor_bio">
-		<text>Oficial de reclutamiento del Servicio de Seguridad Ucraniano. Un cliente habitual del bar. Todo el mundo sabe qui n es, y que es la persona que necesitas cuando te encuentras en apuros. Aunque una vez que cruzas esa l nea, no hay vuelta atr s al camino de los stalkers honrados.</text>
+		<text>Oficial de reclutamiento del Servicio de Seguridad Ucraniano. Un cliente habitual del bar. Todo el mundo sabe quién es, y que es la persona que necesitas cuando te encuentras en apuros. Aunque una vez que cruzas esa línea, no hay vuelta atrás al camino de los stalkers honrados.</text>
 	</string>
 	<string id="sim_ecolog_zob_bio">
-		<text>Normalmente se trata de un individuo fr o y flem tico que controla sus emociones. Pero bajo presi n se vuelve agresivo e irascible. Muy astuto. Un materialista que lamenta haber acabado en la Zona. Tras graduarse en la facultad de medicina, fue enviado a la Zona, donde los cient ficos necesitaban un neurocirujano adjunto. Disecciona cerebros mutantes para estudiar sus habilidades psicocin ticas. Est  deseando retirarse para poder volver a la capital, lo m s lejos posible de este maldito lugar. </text>
+		<text>Normalmente se trata de un individuo frío y flemático que controla sus emociones. Pero bajo presión se vuelve agresivo e irascible. Muy astuto. Un materialista que lamenta haber acabado en la Zona. Tras graduarse en la facultad de medicina, fue enviado a la Zona, donde los científicos necesitaban un neurocirujano adjunto. Disecciona cerebros mutantes para estudiar sus habilidades psicocinéticas. Está deseando retirarse para poder volver a la capital, lo más lejos posible de este maldito lugar. </text>
 	</string>
 	<string id="sim_fresh_Zombied_bio">
 		<text>Un stalker que tuvo mala suerte.</text>
@@ -734,28 +734,28 @@
 		<text>Stalker experimentado. No hay detalles disponibles.</text>
 	</string>
 	<string id="sim_stalker_general_upir_bio">
-		<text>Un Stalker al que la suerte le sonr e. Cada vez que el equipo al con el que iba se ve a en apuros,  l era el  nico superviviente. Muchos stalkers se mantienen alejados de  l porque parece traer mala suerte. Lleva ya un tiempo rondando por la Zona a su aire. </text>
+		<text>Un Stalker al que la suerte le sonríe. Cada vez que el equipo al con el que iba se veía en apuros, él era el único superviviente. Muchos stalkers se mantienen alejados de él porque parece traer mala suerte. Lleva ya un tiempo rondando por la Zona a su aire. </text>
 	</string>
 	<string id="sim_stalker_master_bio">
 		<text>Uno de los veteranos. Conoce la Zona como la palma de su mano. Normalmente bien equipado y muy peligroso. No hay detalles disponibles. </text>
 	</string>
 	<string id="sim_stalker_master_chuchelo_bio">
-		<text>Contrabandista experimentado. Durante mucho tiempo estuvo realizando negocios en  frica y Am rica del Sur. Las noticias del desastre de Chern bil le trajeron a Ucrania. En poco tiempo, se las apa   para sacar cientos de mutantes disecados fuera del  rea restringida y se gan  el apodo de "Taxidermista". Cuando no "trabaja" en la Zona, se dedica a sus productivos negocios. Le gustan los trajes de Armani y el armamento sovi tico. </text>
+		<text>Contrabandista experimentado. Durante mucho tiempo estuvo realizando negocios en África y América del Sur. Las noticias del desastre de Chernóbil le trajeron a Ucrania. En poco tiempo, se las apañó para sacar cientos de mutantes disecados fuera del área restringida y ganarse el apodo de "Taxidermista". Cuando no está "trabajando" en la Zona, es un gran comerciante. Le encantan los trajes elegantes y las corbatas, pero prefiere las armas soviéticas.</text>
 	</string>
 	<string id="sim_stalker_master_diador_bio">
-		<text>Particip  en la guerra de Afganist n. Aunque era ateo, se volvi  un hombre religioso tras sobrevivir a una emboscada de los muyahidines. Tras la guerra de Afganist n emigr  a Polonia, donde ingres  en el seminario. Tras el seminario, fue sacerdote en la iglesia cat lica de Lvov. Tras la explosi n de la central nuclear de Chern bil, se fue all  como voluntario para ayudar a las v ctimas. En los  ltimos a os ha estado predicando en la Zona.</text>
+		<text>Participó en la guerra de Afganistán. Aunque era ateo, se volvió un hombre religioso tras sobrevivir a una emboscada de los muyahidines. Tras la guerra de Afganistán emigró a Polonia, donde ingresó en el seminario. Tras el seminario, fue sacerdote en la iglesia católica de Lvov. Tras la explosión de la central nuclear de Chernóbil, se fue allí como voluntario para ayudar a las víctimas. En los últimos años ha estado predicando en la Zona.</text>
 	</string>
 	<string id="sim_stalker_master_master_bio">
-		<text>Antiguo mec nico de la planta "KholodMach". Despu s de que su esposa le abandonara decidi  quitarse la vida. Pero debido a su conciencia religiosa, eligi  mudarse a la Zona como forma poco convencional de suicidio. Al contrario de lo que supon a, sobrevivi , y gan  mucha experiencia y el respeto de los stalkers gracias a sus habilidad. Posiblemente sea el mejor mec nico de la Zona. Lo que mejor se le da es la reparaci n de veh culos o equipo y la instalaci n de sistemas de seguridad en los b nkeres de las bandas. Donde quiera que va, es bienvenido. Un hombre duro y sencillo, a veces algo rudo.</text>
+		<text>Antiguo mecánico de la planta "KholodMach". Después de que su esposa le abandonara decidió quitarse la vida. Pero debido a su conciencia religiosa, eligió mudarse a la Zona como forma poco convencional de suicidio. Al contrario de lo que suponía, sobrevivió, y ganó mucha experiencia y el respeto de los stalkers gracias a sus habilidad. Posiblemente sea el mejor mecánico de la Zona. Lo que mejor se le da es la reparación de vehículos o equipo y la instalación de sistemas de seguridad en los búnkeres de las bandas. Donde quiera que va, es bienvenido. Un hombre duro y sencillo, a veces algo rudo.</text>
 	</string>
 	<string id="sim_stalker_master_polkan_bio">
-		<text>Antiguo stalker militar y Teniente Coronel de las tropas del Ministerio del Interior. El  nico soldado que regres  de una desastrosa operaci n en la Zona, que a la larga resultar a ser in til. Entonces decidi  no regresar, fingi  su propia muerte y se uni  a los stalkers. Tranquilo, c nico y con una gran fuerza de voluntad. </text>
+		<text>Antiguo stalker militar y Teniente Coronel de las tropas del Ministerio del Interior. El único soldado que regresó de una desastrosa operación en la Zona, que a la larga resultaría ser inútil. Entonces decidió no regresar, fingió su propia muerte y se unió a los stalkers. Tranquilo, cínico y con una gran fuerza de voluntad. </text>
 	</string>
 	<string id="sim_stalker_novice_bio">
 		<text>Novato. Nuevo en la Zona. No hay detalles disponibles. </text>
 	</string>
 	<string id="sim_stalker_novice_neumeha_bio">
-		<text>Klutz tiene 20 a os. Perdi  todo y a todos en el exterior antes de decidirse a venir aqu . Sobrevive a duras penas en la Zona, pero no tiene otro lugar al que ir. Debe dinero a muchos stalkers. Frecuenta la Zona pero nunca va solo, siempre intenta unirse a alg n grupo de stalkers veteranos. No es un compa ero muy popular, pues la mayor a de las veces no es de ninguna utilidad. Apenas consigue algo de dinero. Vive de pr stamos de los otros stalkers y est  muy endeudado.</text>
+		<text>Klutz tiene 20 años. Perdió todo y a todos en el exterior antes de decidirse a venir aquí. Sobrevive a duras penas en la Zona, pero no tiene otro lugar al que ir. Debe dinero a muchos stalkers. Frecuenta la Zona pero nunca va solo, siempre intenta unirse a algún grupo de stalkers veteranos. No es un compañero muy popular, pues la mayoría de las veces no es de ninguna utilidad. Apenas consigue algo de dinero. Vive de préstamos de los otros stalkers y está muy endeudado.</text>
 	</string>
 	<string id="sim_stalker_sniper_bio">
 		<text>Stalker veterano. Posiblemente bien equipado. No hay detalles disponibles. </text>
@@ -764,13 +764,13 @@
 		<text>Stalker veterano. Posiblemente bien equipado. No hay detalles disponibles. </text>
 	</string>
 	<string id="sim_stalker_veteran_gusarov_bio">
-		<text>Oleg "Demonio" Gusarov. Antiguo "boina negra", sirvi  en la brigada Belotserkovskaya de los Spetsnaz. Tras varios reenganches se convirti  en Sargento Mayor. Francotirador y experto en explosivos. De naturaleza solitaria, no se aventura en grupo en el coraz n de la Zona, prefiere actuar en solitario. Por este motivo ha rehusado muchas veces unirse a alguno de los bandos. </text>
+		<text>Oleg "Demonio" Gusarov. Antiguo "boina negra", sirvió en la brigada Belotserkovskaya de los Spetsnaz. Tras varios reenganches se convirtió en Sargento Mayor. Francotirador y experto en explosivos. De naturaleza solitaria, no se aventura en grupo en el corazón de la Zona, prefiere actuar en solitario. Por este motivo ha rehusado muchas veces unirse a alguno de los bandos. </text>
 	</string>
 	<string id="sim_stalker_veteran_umnik_bio">
-		<text>Estudiante de F sica que abandon  en el  ltimo a o y vino a la Zona en busca de dinero f cil. Le gusta alardear de su talento "cient fico" y discutir sobre asuntos abstractos de filosof a. Raz n suficiente para que no guste a los otros stalkers. En general, un tipo bastante decente. Una especie de idealista.</text>
+		<text>Estudiante de Física que abandonó en el último año y vino a la Zona en busca de dinero fácil. Le gusta alardear de su talento "científico" y discutir sobre asuntos abstractos de filosofía. Razón suficiente para que no guste a los otros stalkers. En general, un tipo bastante decente. Una especie de idealista.</text>
 	</string>
 	<string id="sim_stalker_veteran_vorobey_bio">
-		<text>Gorri n tiene 27 a os y es muy agudo y perspicaz, aunque tambi n es capaz de las mayores meteduras de pata. Tambi n puede ser mala persona. Alguien poco fiable en general. Del tipo flaco y p lido. Vino a la Zona por curiosidad, prometi ndose a s  mismo que regresar a a casa en dos meses. Nunca lo hizo. En su primera incursi n en la Zona, Gorri n se meti  en un campo repleto de anomal as, sin una sola arma y sin saber el peligro que corr a. Tan pronto descubri  lo que hab a hecho, se desmay . Desde entonces celebra esa fecha (el 9 de octubre) como su segundo cumplea os. </text>
+		<text>Gorrión tiene 27 años y es muy agudo y perspicaz, aunque también es capaz de las mayores meteduras de pata. También puede ser mala persona. Alguien poco fiable en general. Del tipo flaco y pálido. Vino a la Zona por curiosidad, prometiéndose a sí mismo que regresaría a casa en dos meses. Nunca lo hizo. En su primera incursión en la Zona, Gorrión se metió en un campo repleto de anomalías, sin una sola arma y sin saber el peligro que corría. Tan pronto descubrió lo que había hecho, se desmayó. Desde entonces celebra esa fecha (el 9 de octubre) como su segundo cumpleaños. </text>
 	</string>
 	<string id="sim_Svoboda_master_bio">
 		<text>Jefe de Libertad. No hay detalles disponibles.</text>
@@ -785,10 +785,10 @@
 		<text>Militante de Libertad. Normalmente bien equipado. No hay detalles disponibles. </text>
 	</string>
 	<string id="sim_Svoboda_specnaz_leshii_bio">
-		<text>Leshiy, como le llama su hermano, era un joven idealista cuando lleg  a la Zona, pero tras a os de vivir a un paso de la muerte se ha convertido en un c nico realista. Considera la Zona como su hogar, y que aquellos que fracasan no merecen vivir.</text>
+		<text>Leshiy, como le llama su hermano, era un joven idealista cuando llegó a la Zona, pero tras años de vivir a un paso de la muerte se ha convertido en un cínico realista. Considera la Zona como su hogar, y que aquellos que fracasan no merecen vivir.</text>
 	</string>
 	<string id="sim_svoboda_specnaz_prut_bio">
-		<text>Escribe historias y art culos sobre la Zona bajo el pseud nimo de Arkady. Antiguo periodista. Meticuloso y duro, pero justo. Muy respetado por los stalkers. </text>
+		<text>Escribe historias y artículos sobre la Zona bajo el pseudónimo de Arkady. Antiguo periodista. Meticuloso y duro, pero justo. Muy respetado por los stalkers. </text>
 	</string>
 	<string id="sim_zombied_master_bio">
 		<text>Un stalker que tuvo mala suerte.</text>
@@ -800,19 +800,19 @@
 		<text>Un stalker que tuvo mala suerte.</text>
 	</string>
 	<string id="val_bandit_bodyguard_bio">
-		<text>Guardia de los bandidos. Mala reputaci n. No hay detalles disponibles. </text>
+		<text>Guardia de los bandidos. Mala reputación. No hay detalles disponibles. </text>
 	</string>
 	<string id="val_bandit_general_bio">
-		<text>Bandido normal. Mala reputaci n. No hay detalles disponibles. </text>
+		<text>Bandido normal. Mala reputación. No hay detalles disponibles. </text>
 	</string>
 	<string id="val_bandit_novice_bio">
-		<text>Bandido novato. Mala reputaci n. No hay detalles disponibles. </text>
+		<text>Bandido novato. Mala reputación. No hay detalles disponibles. </text>
 	</string>
 	<string id="val_bandit_veteran_bio">
-		<text>Bandido veterano. Mala reputaci n. No hay detalles disponibles. </text>
+		<text>Bandido veterano. Mala reputación. No hay detalles disponibles. </text>
 	</string>
 	<string id="val_borov_bio">
-		<text>L der de los bandidos. </text>
+		<text>Líder de los bandidos. </text>
 	</string>
 	<string id="val_borov_name">
 		<text>Borov</text>
@@ -851,13 +851,13 @@
 		<text>Ghost</text>
 	</string>
 	<string id="yan_saharov_bio">
-		<text>Investigador veterano de la Zona. Particip  en las primeras expediciones de 2007.</text>
+		<text>Investigador veterano de la Zona. Participó en las primeras expediciones de 2007.</text>
 	</string>
 	<string id="yan_saharov_name">
-		<text>Profesor Sajarov</text>
+		<text>Profesor Sakharov</text>
 	</string>
 	<string id="yan_semenov_bio">
-		<text>Ayudante de investigaci n en el laboratorio m vil. No hay detalles disponibles. </text>
+		<text>Ayudante de investigación en el laboratorio móvil. No hay detalles disponibles. </text>
 	</string>
 	<string id="yan_semenov_name">
 		<text>Ayudante Semenov</text>
@@ -890,7 +890,7 @@
 		<text>Vampiro</text>
 	</string>
 	<string id="sim_stalker_master_chuchelo_name">
-		<text>Espantap jaros</text>
+		<text>Espantapájaros</text>
 	</string>
 	<string id="sim_stalker_master_diador_name">
 		<text>Padre Diodor</text>
@@ -911,7 +911,7 @@
 		<text>Listillo</text>
 	</string>
 	<string id="sim_stalker_veteran_vorobey_name">
-		<text>Gorri n</text>
+		<text>Gorrión</text>
 	</string>
 	<string id="sim_Svoboda_specnaz_leshii_name">
 		<text>Leshiy</text>

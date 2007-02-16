@@ -1,36 +1,36 @@
 	<string id="mil_actor_blockpost">
-		<text>Tu arrives   la Barri re. Je ne veux pas de grabuge. Ceci dit, ton aide serait la bienvenue. </text>
+		<text>Tu arrives à la Barrière. Je ne veux pas de grabuge. Ceci dit, ton aide serait la bienvenue. </text>
 	</string>
 	<string id="mil_after_sniper_dead">
-		<text>Le Tatou , viens ici, je vais te donner ta part et tes nouvelles instructions</text>
+		<text>Le Tatoué, viens ici, je vais te donner ta part et tes nouvelles instructions</text>
 	</string>
 	<string id="mil_fblockpost_warning">
-		<text>Le Tatou , retourne   ta position.</text>
+		<text>Le Tatoué, retourne à ta position.</text>
 	</string>
 	<string id="mil_info_freedom_radio">
-		<text>Si tu passes toute la nuit   la tour du village, il se passera FORC MENT quelque chose... </text>
+		<text>Si tu passes toute la nuit à la tour du village, il se passera FORCÉMENT quelque chose... </text>
 	</string>
 	<string id="mil_info_max_mines">
-		<text>N'oublie pas les mines !   la moindre erreur, tu es cuit…</text>
+		<text>N'oublie pas les mines ! À la moindre erreur, tu es cuit...</text>
 	</string>
 	<string id="mil_info_max_village">
-		<text>Attention   toi, le Tatou . Apparemment, il y a une nouvelle anomalie au village. Cette saloperie est rapide et invisible !</text>
+		<text>Attention à toi, le Tatoué. Apparemment, il y a une nouvelle anomalie au village. Cette saloperie est rapide et invisible !</text>
 	</string>
 	<string id="mil_info_to_all">
-		<text>M fie-toi de tous ceux qui veulent te liqu fier la cervelle : la route de la For t rouge est prot g e par un Monolithe et, comme tu le sais sans doute, ces enfoir s tirent sans pr venir. Bonne chance.</text>
+		<text>Méfie-toi de tous ceux qui veulent te liquéfier la cervelle : la route de la Forêt rouge est protégée par un Monolithe et, comme tu le sais sans doute, ces enfoirés tirent sans prévenir. Bonne chance.</text>
 	</string>
 	<string id="mil_max_attack_signal">
-		<text>  l'attaque ! Butons ces enfoir s !</text>
+		<text>À l'attaque ! Butons ces enfoirés !</text>
 	</string>
 	<string id="mil_mission_complete">
-		<text>Notre boulot est termin . Rentrons   la ferme. On se partagera le fric l -bas.</text>
+		<text>Notre boulot est terminé. Rentrons à la ferme. On se partagera le fric là-bas.</text>
 	</string>
 	<string id="mil_scull_attack_signal">
 		<text>On y va, les gars ! La voie est libre !</text>
 	</string>
 	<string id="mil_scull_info">
-		<text>Le Tatou , descends ces snipers !</text>
+		<text>Le Tatoué, descends ces snipers !</text>
 	</string>
 	<string id="mil_sniper_to_player_warning">
-		<text>Attention, le Tatou , tu vas te faire buter…</text>
+		<text>Attention, le Tatoué, tu vas te faire buter...</text>
 	</string>

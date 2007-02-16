@@ -1,11 +1,11 @@
 	<string id="esc_bandits_on_factory">
-		<text>Mata a los bandidos de la f brica</text>
+		<text>Mata a los bandidos de la fábrica</text>
 	</string>
 	<string id="esc_bandits_on_factory_0">
-		<text>Mata a los bandidos escondidos en la f brica.</text>
+		<text>Mata a los bandidos escondidos en la fábrica.</text>
 	</string>
 	<string id="esc_bandits_on_factory_1">
-		<text>Mata a todos los bandidos de la f brica</text>
+		<text>Mata a todos los bandidos de la fábrica</text>
 	</string>
 	<string id="esc_bandits_on_factory_2">
 		<text>Habla con el comerciante</text>
@@ -44,7 +44,7 @@
 		<text>Mata a los bandidos del aparcamiento e informa a Wolf.</text>
 	</string>
 	<string id="esc_dinamit_to_volk_1">
-		<text>Re nete con la gente de Wolf</text>
+		<text>Reúnete con la gente de Wolf</text>
 	</string>
 	<string id="esc_dinamit_to_volk_2">
 		<text>Mata a todos los bandidos</text>
@@ -53,7 +53,7 @@
 		<text>Habla con Wolf</text>
 	</string>
 	<string id="esc_help_wounded_from_raid">
-		<text>Fox te dir  algo sobre Strelok</text>
+		<text>Fox te dirá algo sobre Strelok</text>
 	</string>
 	<string id="esc_help_wounded_from_raid_0">
 		<text>Ayuda al stalker herido</text>
@@ -62,28 +62,28 @@
 		<text>Ayuda a Fox</text>
 	</string>
 	<string id="esc_help_wounded_from_raid_2">
-		<text>Obt n informaci n sobre Strelok</text>
+		<text>Obtén información sobre Strelok</text>
 	</string>
 	<string id="esc_wounded_to_trader_gift">
 		<text>Entrega el paquete al comerciante.</text>
 	</string>
 	<string id="esc_wounded_to_trader_gift_0">
-		<text>Entrega el paquete al comerciante.  l podr  ayudarte.</text>
+		<text>Entrega el paquete al comerciante. Él podrá ayudarte.</text>
 	</string>
 	<string id="garbage_meet_stalker">
-		<text>Re nete con Gris.</text>
+		<text>Reúnete con Gris.</text>
 	</string>
 	<string id="garbage_meet_stalker_0">
-		<text>Re nete con Gris en el vertedero.</text>
+		<text>Reúnete con Gris en el vertedero.</text>
 	</string>
 	<string id="meet_with_doctor">
-		<text>Re nete con Doc.</text>
+		<text>Reúnete con Doc.</text>
 	</string>
 	<string id="meet_with_doctor_1">
-		<text>Re nete con Doc.</text>
+		<text>Reúnete con Doc.</text>
 	</string>
 	<string id="meet_with_doctor_2">
-		<text>Re nete con Doc en el escondite de Strelok</text>
+		<text>Reúnete con Doc en el escondite de Strelok</text>
 	</string>
 	<string id="storyline_escape_eliminate_gunslinger">
 		<text>Mata a Strelok.</text>
@@ -104,19 +104,19 @@
 		<text>Lleva el artefacto al comerciante.</text>
 	</string>
 	<string id="tutorial_help_wounded">
-		<text>Obt n informaci n del explorador</text>
+		<text>Obtén información del explorador</text>
 	</string>
 	<string id="tutorial_help_wounded_0">
-		<text>Lleva la informaci n al comerciante</text>
+		<text>Lleva la información al comerciante</text>
 	</string>
 	<string id="tutorial_help_wounded_1">
 		<text>Habla con Wolf</text>
 	</string>
 	<string id="tutorial_help_wounded_2">
-		<text>Consigue de Nimble la unidad de informaci n.</text>
+		<text>Consigue de Nimble la unidad de información.</text>
 	</string>
 	<string id="tutorial_help_wounded_3">
-		<text>Lleva la unidad de informaci n al comerciante.</text>
+		<text>Lleva la unidad de información al comerciante.</text>
 	</string>
 	<string id="esc_trader_job">
 		<text>Trabaja para el comerciante</text>
@@ -131,20 +131,20 @@
 		<text>Pide un trabajo al tabernero</text>
 	</string>
 	<string id="yan_scientist_job">
-		<text>Ayuda a los cient ficos</text>
+		<text>Ayuda a los científicos</text>
 	</string>
 	<string id="yan_scientist_job_text">
-		<text>Ofrece ayuda a los cient ficos</text>
+		<text>Ofrece ayuda a los científicos</text>
 	</string>
 	<string id="find_railroad_passage">
-		<text>Ve al terrapl n del ferrocarril</text>
+		<text>Ve al terraplén del ferrocarril</text>
 	</string>
 	<string id="find_railroad_passage_1">
-		<text>Re nete con el viajante</text>
+		<text>Reúnete con el viajante</text>
 	</string>
 	<string id="find_railroad_passage_2">
-		<text>Atraviesa el terrapl n del ferrocarril</text>
+		<text>Atraviesa el terraplén del ferrocarril</text>
 	</string>
 	<string id="find_railroad_passage_text">
-		<text>Antes de adentrarte m s en la Zona, es necesario atravesar el antiguo terrapl n del ferrocarril. El  nico pasaje seguro est  protegido por los militares. Sin embargo, hay un peque o t nel a la izquierda por el que pasan normalmente los novatos. All  te esperar  uno de mis hombres.</text>
+		<text>Antes de adentrarte más en la Zona, es necesario atravesar el antiguo terraplén del ferrocarril. El único pasaje seguro está protegido por los militares. Sin embargo, hay un pequeño túnel a la izquierda por el que pasan normalmente los novatos. Allí te esperará uno de mis hombres.</text>
 	</string>

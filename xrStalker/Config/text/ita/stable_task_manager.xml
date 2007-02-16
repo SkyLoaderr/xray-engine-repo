@@ -460,7 +460,7 @@
 		<text>Ottenere un pezzetto di snork da queste parti è una sciocchezza.</text>
 	</string>
 	<string id="ecolog_monster_part_1_text">
-		<text>Oh, giovanotto! Sai, ci serve una parte del corpo di una creatura in particolare. I tuoi colleghi la chiamano zombie, e devo dire che non è un nome molto azzeccato per un corpo che si è trasformato in modo da... Comunque sia, ci serve il suo braccio. Te lo devo proprio dire: la nostra squadra sta lavorando sulla possibilità di trapiantare gli arti di... ehm... zombie a chi ha perso un braccio o una gamba. Inoltre, in prospettiva, intendiamo utilizzare anche gli organi vitali; in ogni caso, per il momento, è solo un'ipotesi. Allora, il braccio! Ti interessa, giovanotto?</text>
+		<text>Ho conosciuto Semenov negli anni dell'università, quando davo lezioni di genetica e lui era un mio studente. È così che sono diventato il suo capo-scienziato. Ai tempi, stavamo rivelando i primi misteri della manipolazione genetica. Dunque, cosa dicevo? Ah, ecco, per i nostri esperimenti genetici abbiamo bisogno di alcuni campioni di cellule vive del tessuto muscolare di uno snork. Dovrai cercare nelle paludi per trovare questo materiale.  C'è un'ipotesi che gli snork siano il nuovo stadio dell'evoluzione umana. Per sapere questo dobbiamo fare esperimenti sul DNA!</text>
 	</string>
 	<string id="ecolog_monster_part_2">
 		<text>Porta l'occhio di un mostro carnivoro</text>
@@ -490,13 +490,13 @@
 		<text>Benvenuto, ehm... viandante! Sono così contento di vederti: abbiamo bisogno di un uomo che prenda parte a un esperimento della massima importanza. Il mio collega Brenter vuole provare a cucinare un piatto a base di fauna locale: sarà un esperimento pratico volto a studiare l'influenza delle proteine mutate sull'organismo umano. Tanto per cominciare, abbiamo deciso di provare coi cinghiali. Ci serve del prosciutto. Una zampa di cinghiale, hai capito? E se accetti, ti prego di scegliere l'esemplare più sano.</text>
 	</string>
 	<string id="ecolog_monster_part_5">
-		<text>Porta un piede di snork</text>
+		<text>Porta la mandibola di un succhiasangue.</text>
 	</string>
 	<string id="ecolog_monster_part_5_descr">
-		<text>Curare gli snork... Sono pazzi questi scienziati! Bene, almeno quei mostri la smetteranno di saltare di qua e di là.</text>
+		<text>Quello che vogliono fare con la mandibola di un succhiasangue non mi interessa. M'importa soltanto di quanto mi daranno per questa rarità.</text>
 	</string>
 	<string id="ecolog_monster_part_5_text">
-		<text>Buone notizie, caro stalker! Ci siamo spaccati la testa alla ricerca di una risposta a questa domanda: come fanno gli snork a muoversi senza quasi toccare terra, arrampicarsi sui muri, saltare a distanze incredibili... E la soluzione si è rivelata molto semplice, giovanotto! Gli snork hanno il terrore del suolo! Soffrono di geofobia! i recettori che hanno sviluppato sulla punta delle loro estremità inviano un segnale di fortissimo disagio se entrano in contatto col suolo o con qualsiasi altra superficie più o meno orizzontale. Ci serve un esemplare di zampa di snork: cercheremo di iniettare a queste povere creature un vaccino in grado di eliminare questo loro insolito disturbo.</text>
+		<text>Oh, stalker, sono felice di vederti! Senti… Hai già incontrato i succhiasangue nelle tue avventure, giusto? Se no, vogliamo che ciò succeda. Portaci la mandibola inferiore di un rappresentante di questa specie, con tutti gli annessi e connessi. Sfortunatamente non posso informarti sui particolari dell'esperimento, poiché potrebbero avere un impatto negativo sulla stabilità della tua psiche. Aspetteremo il tuo ritorno.</text>
 	</string>
 	<string id="eliminate_lager">
 		<text>Eliminazione del campo.</text>

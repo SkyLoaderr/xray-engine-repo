@@ -11,13 +11,13 @@
 		<text>Entra en el laboratorio X16</text>
 	</string>
 	<string id="yan_find_scientist">
-		<text>Toma mediciones de la radiaci n</text>
+		<text>Toma mediciones de la radiación</text>
 	</string>
 	<string id="yan_find_vasilyev">
-		<text>Busca el cad ver de Vasiliev</text>
+		<text>Busca el cadáver de Vasiliev</text>
 	</string>
 	<string id="yan_kill_brain">
-		<text>Desactiva las emisiones ps quicas</text>
+		<text>Desactiva las emisiones psíquicas</text>
 	</string>
 	<string id="yan_kill_brain_task">
 		<text>Desconecta el mecanismo</text>
@@ -26,16 +26,16 @@
 		<text>Sal del laboratorio</text>
 	</string>
 	<string id="yan_provodnik_about_doctor">
-		<text>Habla con Gu a</text>
+		<text>Habla con Guía</text>
 	</string>
 	<string id="yan_provodnik_task">
-		<text>Re nete con Gu a</text>
+		<text>Reúnete con Guía</text>
 	</string>
 	<string id="yan_psi_zone_find">
-		<text>Acompa a a Kruglov al lugar de la medici n</text>
+		<text>Acompaña a Kruglov al lugar de la medición</text>
 	</string>
 	<string id="yan_psi_zone_find_semenov">
-		<text>Acompa a a Semenov al lugar de la medici n</text>
+		<text>Acompaña a Semenov al lugar de la medición</text>
 	</string>
 	<string id="yan_return_to_bunker">
 		<text>Trae los resultados a Sakharov</text>
@@ -47,16 +47,16 @@
 		<text>Habla con Sakharov</text>
 	</string>
 	<string id="yan_secret_tonnel">
-		<text>Sal por el t nel secreto</text>
+		<text>Sal por el túnel secreto</text>
 	</string>
 	<string id="yan_switcher_off_1">
-		<text>Desactiva el primer m dulo de control</text>
+		<text>Desactiva el primer módulo de control</text>
 	</string>
 	<string id="yan_switcher_off_2">
-		<text>Desactiva el segundo m dulo de control</text>
+		<text>Desactiva el segundo módulo de control</text>
 	</string>
 	<string id="yan_switcher_off_3">
-		<text>Desactiva el tercer m dulo de control</text>
+		<text>Desactiva el tercer módulo de control</text>
 	</string>
 	<string id="yan_talk_to_kruglov">
 		<text>Habla con Kruglov</text>
@@ -68,5 +68,5 @@
 		<text>PDA de Vasiliev</text>
 	</string>
 	<string id="yan_zombie_zone">
-		<text>Ubicaci n aproximada del laboratorio X16</text>
+		<text>Ubicación aproximada del laboratorio X16</text>
 	</string>

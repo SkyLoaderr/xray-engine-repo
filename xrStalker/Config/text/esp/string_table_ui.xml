@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="cant_walk">
-		<text>Est s demasiado cansado para andar</text>
+		<text>Estбs demasiado cansado para andar</text>
 	</string>
 	<string id="cant_walk_weight">
-		<text>Est s demasiado cargado como para continuar</text>
+		<text>Estбs demasiado cargado como para continuar</text>
 	</string>
 	<string id="dar_poltergeist_hold_the_door">
 		<text>Hay alguien en la puerta.</text>
@@ -34,16 +34,16 @@
 		<text>Presiona ($$ACTION_USE$$) para cerrar la puerta.</text>
 	</string>
 	<string id="tip_door_coded">
-		<text>La puerta est  cerrada con un c digo</text>
+		<text>La puerta estб cerrada con un cуdigo</text>
 	</string>
 	<string id="tip_door_decode">
 		<text>Presiona ($$ACTION_USE$$) para decodificar la puerta.</text>
 	</string>
 	<string id="tip_door_decoding">
-		<text>Decodificaci n en progreso</text>
+		<text>Decodificaciуn en progreso</text>
 	</string>
 	<string id="tip_door_locked">
-		<text>La puerta est  cerrada</text>
+		<text>La puerta estб cerrada</text>
 	</string>
 	<string id="tip_door_open">
 		<text>Presiona ($$ACTION_USE$$) para abrir la puerta.</text>
@@ -52,7 +52,7 @@
 		<text>Presiona ($$ACTION_USE$$) para cerrar la puerta.</text>
 	</string>
 	<string id="tip_gate_locked">
-		<text>La puerta est  bloqueada</text>
+		<text>La puerta estб bloqueada</text>
 	</string>
 	<string id="tip_gate_open">
 		<text>Presiona ($$ACTION_USE$$) para abrir la puerta.</text>

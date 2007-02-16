@@ -2,7 +2,7 @@
 		<text>Gris</text>
 	</string>
 	<string id="lname_bandit_1">
-		<text>Fren tico</text>
+		<text>Frenético</text>
 	</string>
 	<string id="lname_bandit_10">
 		<text>Podrido</text>
@@ -11,10 +11,10 @@
 		<text>Cirujano</text>
 	</string>
 	<string id="lname_bandit_101">
-		<text>Esp a</text>
+		<text>Espía</text>
 	</string>
 	<string id="lname_bandit_102">
-		<text>B falo</text>
+		<text>Búfalo</text>
 	</string>
 	<string id="lname_bandit_103">
 		<text>Castor</text>
@@ -26,10 +26,10 @@
 		<text>Toro</text>
 	</string>
 	<string id="lname_bandit_106">
-		<text>Gorri n</text>
+		<text>Gorrión</text>
 	</string>
 	<string id="lname_bandit_107">
-		<text>P jaro Carpintero</text>
+		<text>Pájaro Carpintero</text>
 	</string>
 	<string id="lname_bandit_108">
 		<text>Bestia</text>
@@ -65,7 +65,7 @@
 		<text>Boa</text>
 	</string>
 	<string id="lname_bandit_118">
-		<text>Bast n</text>
+		<text>Bastón</text>
 	</string>
 	<string id="lname_bandit_119">
 		<text>Gastado</text>
@@ -104,7 +104,7 @@
 		<text>Canuto</text>
 	</string>
 	<string id="lname_bandit_13">
-		<text>Cad ver</text>
+		<text>Cadáver</text>
 	</string>
 	<string id="lname_bandit_130">
 		<text>Cruz</text>
@@ -119,16 +119,16 @@
 		<text>Palanca</text>
 	</string>
 	<string id="lname_bandit_134">
-		<text>Analg sico</text>
+		<text>Analgésico</text>
 	</string>
 	<string id="lname_bandit_135">
 		<text>Pluma</text>
 	</string>
 	<string id="lname_bandit_136">
-		<text>Pist n</text>
+		<text>Pistón</text>
 	</string>
 	<string id="lname_bandit_137">
-		<text>N quel</text>
+		<text>Níquel</text>
 	</string>
 	<string id="lname_bandit_138">
 		<text>Cruz</text>
@@ -137,7 +137,7 @@
 		<text>Muerte</text>
 	</string>
 	<string id="lname_bandit_14">
-		<text>Lib lula</text>
+		<text>Libélula</text>
 	</string>
 	<string id="lname_bandit_140">
 		<text>Afilador</text>
@@ -152,7 +152,7 @@
 		<text>Pelele</text>
 	</string>
 	<string id="lname_bandit_144">
-		<text>Punz n</text>
+		<text>Punzón</text>
 	</string>
 	<string id="lname_bandit_145">
 		<text>Corbata</text>
@@ -164,7 +164,7 @@
 		<text>Chismes</text>
 	</string>
 	<string id="lname_bandit_148">
-		<text>Pu os</text>
+		<text>Puños</text>
 	</string>
 	<string id="lname_bandit_149">
 		<text>Gusano</text>
@@ -197,10 +197,10 @@
 		<text>Genghis</text>
 	</string>
 	<string id="lname_bandit_158">
-		<text>Pl tano</text>
+		<text>Plátano</text>
 	</string>
 	<string id="lname_bandit_159">
-		<text>Bast n</text>
+		<text>Bastón</text>
 	</string>
 	<string id="lname_bandit_16">
 		<text>Colador</text>
@@ -209,7 +209,7 @@
 		<text>Electricista</text>
 	</string>
 	<string id="lname_bandit_161">
-		<text>Acorde n</text>
+		<text>Acordeón</text>
 	</string>
 	<string id="lname_bandit_162">
 		<text>Colega</text>
@@ -275,7 +275,7 @@
 		<text>Petardo</text>
 	</string>
 	<string id="lname_bandit_181">
-		<text>Necr fago</text>
+		<text>Necrófago</text>
 	</string>
 	<string id="lname_bandit_19">
 		<text>Rencillas</text>
@@ -284,7 +284,7 @@
 		<text>Gastado</text>
 	</string>
 	<string id="lname_bandit_20">
-		<text>Taca o</text>
+		<text>Tacaño</text>
 	</string>
 	<string id="lname_bandit_21">
 		<text>Zmur</text>
@@ -332,7 +332,7 @@
 		<text>Avutarda</text>
 	</string>
 	<string id="lname_bandit_35">
-		<text>Par sito</text>
+		<text>Parásito</text>
 	</string>
 	<string id="lname_bandit_36">
 		<text>Modernillo</text>
@@ -380,16 +380,16 @@
 		<text>Bromista</text>
 	</string>
 	<string id="lname_bandit_5">
-		<text>Mam n</text>
+		<text>Mamón</text>
 	</string>
 	<string id="lname_bandit_50">
 		<text>Carroza</text>
 	</string>
 	<string id="lname_bandit_51">
-		<text>Cr nico</text>
+		<text>Crónico</text>
 	</string>
 	<string id="lname_bandit_52">
-		<text>Gru  n</text>
+		<text>Gruñón</text>
 	</string>
 	<string id="lname_bandit_53">
 		<text>Esteta</text>
@@ -416,7 +416,7 @@
 		<text>Vagabundo</text>
 	</string>
 	<string id="lname_bandit_60">
-		<text>Bar n</text>
+		<text>Barón</text>
 	</string>
 	<string id="lname_bandit_61">
 		<text>Camello</text>
@@ -425,7 +425,7 @@
 		<text>Gentil</text>
 	</string>
 	<string id="lname_bandit_63">
-		<text>Holgaz n</text>
+		<text>Holgazán</text>
 	</string>
 	<string id="lname_bandit_64">
 		<text>Contramaestre</text>
@@ -437,28 +437,28 @@
 		<text>Bourbon</text>
 	</string>
 	<string id="lname_bandit_67">
-		<text>Burgu s</text>
+		<text>Burgués</text>
 	</string>
 	<string id="lname_bandit_68">
 		<text>Transportista</text>
 	</string>
 	<string id="lname_bandit_69">
-		<text>Ladr n</text>
+		<text>Ladrón</text>
 	</string>
 	<string id="lname_bandit_7">
 		<text>Rapado</text>
 	</string>
 	<string id="lname_bandit_70">
-		<text>G ngster</text>
+		<text>Gángster</text>
 	</string>
 	<string id="lname_bandit_71">
 		<text>Mensajero</text>
 	</string>
 	<string id="lname_bandit_72">
-		<text>Gr fico</text>
+		<text>Gráfico</text>
 	</string>
 	<string id="lname_bandit_73">
-		<text>D spota</text>
+		<text>Déspota</text>
 	</string>
 	<string id="lname_bandit_74">
 		<text>Troglodita</text>
@@ -488,7 +488,7 @@
 		<text>Mayor</text>
 	</string>
 	<string id="lname_bandit_82">
-		<text>Man aco</text>
+		<text>Maníaco</text>
 	</string>
 	<string id="lname_bandit_83">
 		<text>Enterrador</text>
@@ -518,10 +518,10 @@
 		<text>Pirata</text>
 	</string>
 	<string id="lname_bandit_91">
-		<text>Pir mano</text>
+		<text>Pirómano</text>
 	</string>
 	<string id="lname_bandit_92">
-		<text>Pr ncipe</text>
+		<text>Príncipe</text>
 	</string>
 	<string id="lname_bandit_93">
 		<text>Bandido</text>
@@ -542,7 +542,7 @@
 		<text>Flamen</text>
 	</string>
 	<string id="lname_bandit_99">
-		<text>Qu mico</text>
+		<text>Químico</text>
 	</string>
 	<string id="lname_captain_0">
 		<text>Abdurhmanov</text>
@@ -3044,7 +3044,7 @@
 		<text>Oxidado</text>
 	</string>
 	<string id="lname_stalker_101">
-		<text>Rom ntico</text>
+		<text>Romántico</text>
 	</string>
 	<string id="lname_stalker_102">
 		<text>Truculento</text>
@@ -3053,7 +3053,7 @@
 		<text>Musculoso</text>
 	</string>
 	<string id="lname_stalker_104">
-		<text>So ador</text>
+		<text>Soñador</text>
 	</string>
 	<string id="lname_stalker_105">
 		<text>Cegato</text>
@@ -3071,7 +3071,7 @@
 		<text>Veterano</text>
 	</string>
 	<string id="lname_stalker_11">
-		<text>Fren tico</text>
+		<text>Frenético</text>
 	</string>
 	<string id="lname_stalker_110">
 		<text>Peluche</text>
@@ -3116,7 +3116,7 @@
 		<text>Orejas</text>
 	</string>
 	<string id="lname_stalker_123">
-		<text>Buf n</text>
+		<text>Bufón</text>
 	</string>
 	<string id="lname_stalker_124">
 		<text>Bromista</text>
@@ -3125,13 +3125,13 @@
 		<text>Carroza</text>
 	</string>
 	<string id="lname_stalker_126">
-		<text>Cr nico</text>
+		<text>Crónico</text>
 	</string>
 	<string id="lname_stalker_127">
 		<text>Tirillas</text>
 	</string>
 	<string id="lname_stalker_128">
-		<text>C nico</text>
+		<text>Cínico</text>
 	</string>
 	<string id="lname_stalker_129">
 		<text>Amigo</text>
@@ -3173,7 +3173,7 @@
 		<text>Maleante</text>
 	</string>
 	<string id="lname_stalker_140">
-		<text>Ap stol</text>
+		<text>Apóstol</text>
 	</string>
 	<string id="lname_stalker_141">
 		<text>Artista</text>
@@ -3191,7 +3191,7 @@
 		<text>Bardo</text>
 	</string>
 	<string id="lname_stalker_146">
-		<text>Bar n</text>
+		<text>Barón</text>
 	</string>
 	<string id="lname_stalker_147">
 		<text>Camello</text>
@@ -3203,13 +3203,13 @@
 		<text>Corredor</text>
 	</string>
 	<string id="lname_stalker_15">
-		<text>H roe</text>
+		<text>Héroe</text>
 	</string>
 	<string id="lname_stalker_150">
 		<text>Guerrero</text>
 	</string>
 	<string id="lname_stalker_151">
-		<text>Holgaz n</text>
+		<text>Holgazán</text>
 	</string>
 	<string id="lname_stalker_152">
 		<text>Contramaestre</text>
@@ -3221,16 +3221,16 @@
 		<text>Bourbon</text>
 	</string>
 	<string id="lname_stalker_155">
-		<text>Burgu s</text>
+		<text>Burgués</text>
 	</string>
 	<string id="lname_stalker_156">
-		<text>Bur crata</text>
+		<text>Burócrata</text>
 	</string>
 	<string id="lname_stalker_157">
 		<text>Gamberro</text>
 	</string>
 	<string id="lname_stalker_158">
-		<text>B rbaro</text>
+		<text>Bárbaro</text>
 	</string>
 	<string id="lname_stalker_159">
 		<text>Porteador</text>
@@ -3257,7 +3257,7 @@
 		<text>Jefe</text>
 	</string>
 	<string id="lname_stalker_166">
-		<text>Ladr n</text>
+		<text>Ladrón</text>
 	</string>
 	<string id="lname_stalker_167">
 		<text>Viajero</text>
@@ -3272,10 +3272,10 @@
 		<text>Cotorra</text>
 	</string>
 	<string id="lname_stalker_170">
-		<text>G ngster</text>
+		<text>Gángster</text>
 	</string>
 	<string id="lname_stalker_171">
-		<text>Ge logo</text>
+		<text>Geólogo</text>
 	</string>
 	<string id="lname_stalker_172">
 		<text>Gladiador</text>
@@ -3284,10 +3284,10 @@
 		<text>Mensajero</text>
 	</string>
 	<string id="lname_stalker_174">
-		<text>Hu sped</text>
+		<text>Huésped</text>
 	</string>
 	<string id="lname_stalker_175">
-		<text>Gr fico</text>
+		<text>Gráfico</text>
 	</string>
 	<string id="lname_stalker_176">
 		<text>Cargador</text>
@@ -3302,7 +3302,7 @@
 		<text>Traficante</text>
 	</string>
 	<string id="lname_stalker_18">
-		<text>Mam n</text>
+		<text>Mamón</text>
 	</string>
 	<string id="lname_stalker_180">
 		<text>Petimetre</text>
@@ -3311,13 +3311,13 @@
 		<text>Ayudante</text>
 	</string>
 	<string id="lname_stalker_182">
-		<text>D spota</text>
+		<text>Déspota</text>
 	</string>
 	<string id="lname_stalker_183">
 		<text>Troglodita</text>
 	</string>
 	<string id="lname_stalker_184">
-		<text>Diplom tico</text>
+		<text>Diplomático</text>
 	</string>
 	<string id="lname_stalker_185">
 		<text>Portuario</text>
@@ -3341,7 +3341,7 @@
 		<text>Legalista</text>
 	</string>
 	<string id="lname_stalker_191">
-		<text>Antia reo</text>
+		<text>Antiaéreo</text>
 	</string>
 	<string id="lname_stalker_192">
 		<text>Curandero</text>
@@ -3356,7 +3356,7 @@
 		<text>Mohawk</text>
 	</string>
 	<string id="lname_stalker_196">
-		<text>Capit n</text>
+		<text>Capitán</text>
 	</string>
 	<string id="lname_stalker_197">
 		<text>Portero</text>
@@ -3365,7 +3365,7 @@
 		<text>Payaso</text>
 	</string>
 	<string id="lname_stalker_199">
-		<text>Pr ncipe</text>
+		<text>Príncipe</text>
 	</string>
 	<string id="lname_stalker_2">
 		<text>Rojo</text>
@@ -3392,7 +3392,7 @@
 		<text>Padrino</text>
 	</string>
 	<string id="lname_stalker_206">
-		<text>Mercader</text>
+		<text>Comerciante</text>
 	</string>
 	<string id="lname_stalker_207">
 		<text>Fumador</text>
@@ -3416,7 +3416,7 @@
 		<text>Guardabosques</text>
 	</string>
 	<string id="lname_stalker_213">
-		<text>Se or</text>
+		<text>Señor</text>
 	</string>
 	<string id="lname_stalker_214">
 		<text>Magnate</text>
@@ -3425,16 +3425,16 @@
 		<text>Mayor</text>
 	</string>
 	<string id="lname_stalker_216">
-		<text>Man aco</text>
+		<text>Maníaco</text>
 	</string>
 	<string id="lname_stalker_217">
 		<text>Marciano</text>
 	</string>
 	<string id="lname_stalker_218">
-		<text>Mas n</text>
+		<text>Masón</text>
 	</string>
 	<string id="lname_stalker_219">
-		<text>Mec nico</text>
+		<text>Mecánico</text>
 	</string>
 	<string id="lname_stalker_22">
 		<text>Importante</text>
@@ -3527,7 +3527,7 @@
 		<text>Carpintero</text>
 	</string>
 	<string id="lname_stalker_247">
-		<text>Pir mano</text>
+		<text>Pirómano</text>
 	</string>
 	<string id="lname_stalker_248">
 		<text>Bombero</text>
@@ -3536,7 +3536,7 @@
 		<text>Planeador</text>
 	</string>
 	<string id="lname_stalker_25">
-		<text>Grandull n</text>
+		<text>Grandullón</text>
 	</string>
 	<string id="lname_stalker_250">
 		<text>Explorador polar</text>
@@ -3551,7 +3551,7 @@
 		<text>Poeta</text>
 	</string>
 	<string id="lname_stalker_254">
-		<text>Pr ncipe</text>
+		<text>Príncipe</text>
 	</string>
 	<string id="lname_stalker_255">
 		<text>Profeta</text>
@@ -3602,7 +3602,7 @@
 		<text>Contacto</text>
 	</string>
 	<string id="lname_stalker_27">
-		<text>Glot n</text>
+		<text>Glotón</text>
 	</string>
 	<string id="lname_stalker_270">
 		<text>Cura</text>
@@ -3650,7 +3650,7 @@
 		<text>Juez</text>
 	</string>
 	<string id="lname_stalker_284">
-		<text>Sult n</text>
+		<text>Sultán</text>
 	</string>
 	<string id="lname_stalker_285">
 		<text>Chulo</text>
@@ -3662,7 +3662,7 @@
 		<text>Tanquista</text>
 	</string>
 	<string id="lname_stalker_288">
-		<text>Bailar n</text>
+		<text>Bailarín</text>
 	</string>
 	<string id="lname_stalker_289">
 		<text>Tiranas</text>
@@ -3698,13 +3698,13 @@
 		<text>Francotirador</text>
 	</string>
 	<string id="lname_stalker_299">
-		<text>Qu mico</text>
+		<text>Químico</text>
 	</string>
 	<string id="lname_stalker_3">
 		<text>Oxidado</text>
 	</string>
 	<string id="lname_stalker_30">
-		<text>Parlanch n</text>
+		<text>Parlanchín</text>
 	</string>
 	<string id="lname_stalker_300">
 		<text>Cirujano</text>
@@ -3716,7 +3716,7 @@
 		<text>Pastor</text>
 	</string>
 	<string id="lname_stalker_303">
-		<text>Cham n</text>
+		<text>Chamán</text>
 	</string>
 	<string id="lname_stalker_304">
 		<text>Prospector</text>
@@ -3740,7 +3740,7 @@
 		<text>Chepa</text>
 	</string>
 	<string id="lname_stalker_310">
-		<text>Esp a</text>
+		<text>Espía</text>
 	</string>
 	<string id="lname_stalker_311">
 		<text>Electricista</text>
@@ -3752,7 +3752,7 @@
 		<text>Pagano</text>
 	</string>
 	<string id="lname_stalker_314">
-		<text>Caim n</text>
+		<text>Caimán</text>
 	</string>
 	<string id="lname_stalker_315">
 		<text>Anaconda</text>
@@ -3761,7 +3761,7 @@
 		<text>Babuino</text>
 	</string>
 	<string id="lname_stalker_317">
-		<text>B falo</text>
+		<text>Búfalo</text>
 	</string>
 	<string id="lname_stalker_318">
 		<text>Lemming</text>
@@ -3785,13 +3785,13 @@
 		<text>Puerco</text>
 	</string>
 	<string id="lname_stalker_324">
-		<text>Gorri n</text>
+		<text>Gorrión</text>
 	</string>
 	<string id="lname_stalker_325">
 		<text>Cuervo</text>
 	</string>
 	<string id="lname_stalker_326">
-		<text>Rat n</text>
+		<text>Ratón</text>
 	</string>
 	<string id="lname_stalker_327">
 		<text>Urogallo</text>
@@ -3812,7 +3812,7 @@
 		<text>Oca</text>
 	</string>
 	<string id="lname_stalker_332">
-		<text>Delf n</text>
+		<text>Delfín</text>
 	</string>
 	<string id="lname_stalker_333">
 		<text>Dinosaurio</text>
@@ -3821,7 +3821,7 @@
 		<text>Petirrojo</text>
 	</string>
 	<string id="lname_stalker_335">
-		<text>P jaro carpintero</text>
+		<text>Pájaro carpintero</text>
 	</string>
 	<string id="lname_stalker_336">
 		<text>Erizo</text>
@@ -3848,7 +3848,7 @@
 		<text>Pavo</text>
 	</string>
 	<string id="lname_stalker_343">
-		<text>Jabal </text>
+		<text>Jabalí</text>
 	</string>
 	<string id="lname_stalker_344">
 		<text>Carpa</text>
@@ -3881,7 +3881,7 @@
 		<text>Saltamontes</text>
 	</string>
 	<string id="lname_stalker_353">
-		<text>Sopl n</text>
+		<text>Soplón</text>
 	</string>
 	<string id="lname_stalker_354">
 		<text>Alce</text>
@@ -3905,10 +3905,10 @@
 		<text>Largo</text>
 	</string>
 	<string id="lname_stalker_360">
-		<text>T bano</text>
+		<text>Tábano</text>
 	</string>
 	<string id="lname_stalker_361">
-		<text>Ara a</text>
+		<text>Araña</text>
 	</string>
 	<string id="lname_stalker_362">
 		<text>Patsyuk</text>
@@ -3917,19 +3917,19 @@
 		<text>Peregrino</text>
 	</string>
 	<string id="lname_stalker_364">
-		<text>Pira a</text>
+		<text>Piraña</text>
 	</string>
 	<string id="lname_stalker_365">
-		<text>Pit n</text>
+		<text>Pitón</text>
 	</string>
 	<string id="lname_stalker_366">
 		<text>Liebre</text>
 	</string>
 	<string id="lname_stalker_367">
-		<text>B ho</text>
+		<text>Búho</text>
 	</string>
 	<string id="lname_stalker_368">
-		<text>Halc n</text>
+		<text>Halcón</text>
 	</string>
 	<string id="lname_stalker_369">
 		<text>Marmota</text>
@@ -3941,13 +3941,13 @@
 		<text>Ardilla de tierra</text>
 	</string>
 	<string id="lname_stalker_371">
-		<text>B ho cornudo</text>
+		<text>Búho cornudo</text>
 	</string>
 	<string id="lname_stalker_372">
 		<text>Cucaracha</text>
 	</string>
 	<string id="lname_stalker_373">
-		<text>Tar ntula</text>
+		<text>Tarántula</text>
 	</string>
 	<string id="lname_stalker_374">
 		<text>Jerbo</text>
@@ -3956,10 +3956,10 @@
 		<text>Boa</text>
 	</string>
 	<string id="lname_stalker_376">
-		<text>B ho real</text>
+		<text>Búho real</text>
 	</string>
 	<string id="lname_stalker_377">
-		<text>Hur n</text>
+		<text>Hurón</text>
 	</string>
 	<string id="lname_stalker_378">
 		<text>Gusano</text>
@@ -3974,13 +3974,13 @@
 		<text>Absoluto</text>
 	</string>
 	<string id="lname_stalker_381">
-		<text>Anomal a</text>
+		<text>Anomalía</text>
 	</string>
 	<string id="lname_stalker_382">
 		<text>Parachoques</text>
 	</string>
 	<string id="lname_stalker_383">
-		<text>Bast n</text>
+		<text>Bastón</text>
 	</string>
 	<string id="lname_stalker_384">
 		<text>Gastado</text>
@@ -4001,13 +4001,13 @@
 		<text>Pandereta</text>
 	</string>
 	<string id="lname_stalker_39">
-		<text>Lib lula</text>
+		<text>Libélula</text>
 	</string>
 	<string id="lname_stalker_390">
 		<text>Bollo</text>
 	</string>
 	<string id="lname_stalker_391">
-		<text>Vac o</text>
+		<text>Vacío</text>
 	</string>
 	<string id="lname_stalker_392">
 		<text>Jack</text>
@@ -4055,7 +4055,7 @@
 		<text>Peine</text>
 	</string>
 	<string id="lname_stalker_405">
-		<text>Ata d</text>
+		<text>Ataúd</text>
 	</string>
 	<string id="lname_stalker_406">
 		<text>Aldeano</text>
@@ -4082,7 +4082,7 @@
 		<text>Pala</text>
 	</string>
 	<string id="lname_stalker_413">
-		<text>Is topo</text>
+		<text>Isótopo</text>
 	</string>
 	<string id="lname_stalker_414">
 		<text>Piedra</text>
@@ -4091,7 +4091,7 @@
 		<text>Trampa</text>
 	</string>
 	<string id="lname_stalker_416">
-		<text>Card n</text>
+		<text>Cardán</text>
 	</string>
 	<string id="lname_stalker_417">
 		<text>Karma</text>
@@ -4103,13 +4103,13 @@
 		<text>Pegamento</text>
 	</string>
 	<string id="lname_stalker_42">
-		<text>Comil n</text>
+		<text>Comilón</text>
 	</string>
 	<string id="lname_stalker_420">
 		<text>Llave</text>
 	</string>
 	<string id="lname_stalker_421">
-		<text>L tigo</text>
+		<text>Látigo</text>
 	</string>
 	<string id="lname_stalker_422">
 		<text>Triunfo</text>
@@ -4121,13 +4121,13 @@
 		<text>Marmota</text>
 	</string>
 	<string id="lname_stalker_425">
-		<text>Co ac</text>
+		<text>Coñac</text>
 	</string>
 	<string id="lname_stalker_426">
-		<text>Ra z</text>
+		<text>Raíz</text>
 	</string>
 	<string id="lname_stalker_427">
-		<text>Guada a</text>
+		<text>Guadaña</text>
 	</string>
 	<string id="lname_stalker_428">
 		<text>Cosmos</text>
@@ -4157,7 +4157,7 @@
 		<text>Palanca</text>
 	</string>
 	<string id="lname_stalker_436">
-		<text>M quina</text>
+		<text>Máquina</text>
 	</string>
 	<string id="lname_stalker_437">
 		<text>Diana</text>
@@ -4166,7 +4166,7 @@
 		<text>Motor</text>
 	</string>
 	<string id="lname_stalker_439">
-		<text>Tuber a</text>
+		<text>Tubería</text>
 	</string>
 	<string id="lname_stalker_44">
 		<text>Hierro</text>
@@ -4178,13 +4178,13 @@
 		<text>Arma recortada</text>
 	</string>
 	<string id="lname_stalker_442">
-		<text>Analg sico</text>
+		<text>Analgésico</text>
 	</string>
 	<string id="lname_stalker_443">
-		<text>Paraca das</text>
+		<text>Paracaídas</text>
 	</string>
 	<string id="lname_stalker_444">
-		<text>Patr n</text>
+		<text>Patrón</text>
 	</string>
 	<string id="lname_stalker_445">
 		<text>Descanso</text>
@@ -4193,19 +4193,19 @@
 		<text>Pluma</text>
 	</string>
 	<string id="lname_stalker_447">
-		<text>Pist n</text>
+		<text>Pistón</text>
 	</string>
 	<string id="lname_stalker_448">
 		<text>Plastilina</text>
 	</string>
 	<string id="lname_stalker_449">
-		<text>P lvora</text>
+		<text>Pólvora</text>
 	</string>
 	<string id="lname_stalker_45">
 		<text>Silbido</text>
 	</string>
 	<string id="lname_stalker_450">
-		<text>N quel</text>
+		<text>Níquel</text>
 	</string>
 	<string id="lname_stalker_451">
 		<text>Cohete</text>
@@ -4256,7 +4256,7 @@
 		<text>Cincel</text>
 	</string>
 	<string id="lname_stalker_466">
-		<text>Ca  n</text>
+		<text>Cañón</text>
 	</string>
 	<string id="lname_stalker_467">
 		<text>Pecho</text>
@@ -4304,7 +4304,7 @@
 		<text>Gordo</text>
 	</string>
 	<string id="lname_stalker_480">
-		<text>Punz n</text>
+		<text>Punzón</text>
 	</string>
 	<string id="lname_stalker_481">
 		<text>Espina</text>
@@ -4349,7 +4349,7 @@
 		<text>Hueso</text>
 	</string>
 	<string id="lname_stalker_494">
-		<text>Pu o</text>
+		<text>Puño</text>
 	</string>
 	<string id="lname_stalker_495">
 		<text>Nervio</text>
@@ -4370,7 +4370,7 @@
 		<text>Canoso</text>
 	</string>
 	<string id="lname_stalker_50">
-		<text>Taca o</text>
+		<text>Tacaño</text>
 	</string>
 	<string id="lname_stalker_500">
 		<text>Barmaley</text>
@@ -4379,7 +4379,7 @@
 		<text>Batiy</text>
 	</string>
 	<string id="lname_stalker_502">
-		<text>H roe</text>
+		<text>Héroe</text>
 	</string>
 	<string id="lname_stalker_503">
 		<text>Pinocho</text>
@@ -4412,7 +4412,7 @@
 		<text>Porcelana</text>
 	</string>
 	<string id="lname_stalker_512">
-		<text> caro</text>
+		<text>Ícaro</text>
 	</string>
 	<string id="lname_stalker_513">
 		<text>Casanova</text>
@@ -4421,10 +4421,10 @@
 		<text>Kaschey</text>
 	</string>
 	<string id="lname_stalker_515">
-		<text>C sar</text>
+		<text>César</text>
 	</string>
 	<string id="lname_stalker_516">
-		<text>Soldado</text>
+		<text>El gordo</text>
 	</string>
 	<string id="lname_stalker_517">
 		<text>Kutuzov</text>
@@ -4433,7 +4433,7 @@
 		<text>Hombrecito</text>
 	</string>
 	<string id="lname_stalker_519">
-		<text>Napole n</text>
+		<text>Napoleón</text>
 	</string>
 	<string id="lname_stalker_52">
 		<text>Amable</text>
@@ -4445,7 +4445,7 @@
 		<text>Neptuno</text>
 	</string>
 	<string id="lname_stalker_522">
-		<text> scar</text>
+		<text>Óscar</text>
 	</string>
 	<string id="lname_stalker_523">
 		<text>Prometeo</text>
@@ -4475,7 +4475,7 @@
 		<text>Pedernal</text>
 	</string>
 	<string id="lname_stalker_531">
-		<text>C sar</text>
+		<text>César</text>
 	</string>
 	<string id="lname_stalker_532">
 		<text>Chapayev</text>
@@ -4499,7 +4499,7 @@
 		<text>Shtirlits</text>
 	</string>
 	<string id="lname_stalker_539">
-		<text>Pl tano</text>
+		<text>Plátano</text>
 	</string>
 	<string id="lname_stalker_54">
 		<text>De vista aguda</text>
@@ -4508,13 +4508,13 @@
 		<text>Barabashka</text>
 	</string>
 	<string id="lname_stalker_541">
-		<text>Bast n</text>
+		<text>Bastón</text>
 	</string>
 	<string id="lname_stalker_542">
 		<text>Electricista</text>
 	</string>
 	<string id="lname_stalker_543">
-		<text>Acorde n</text>
+		<text>Acordeón</text>
 	</string>
 	<string id="lname_stalker_544">
 		<text>Amigo</text>
@@ -4535,13 +4535,13 @@
 		<text>Whist</text>
 	</string>
 	<string id="lname_stalker_55">
-		<text>De dientes afilados</text>
+		<text>De dientes afil.</text>
 	</string>
 	<string id="lname_stalker_550">
 		<text>Gangrena</text>
 	</string>
 	<string id="lname_stalker_551">
-		<text>H brido</text>
+		<text>Híbrido</text>
 	</string>
 	<string id="lname_stalker_552">
 		<text>Problemilla</text>
@@ -4550,7 +4550,7 @@
 		<text>Duende</text>
 	</string>
 	<string id="lname_stalker_554">
-		<text>Monta ero</text>
+		<text>Montañero</text>
 	</string>
 	<string id="lname_stalker_555">
 		<text>Graduado</text>
@@ -4562,13 +4562,13 @@
 		<text>Licor</text>
 	</string>
 	<string id="lname_stalker_558">
-		<text>T o</text>
+		<text>Tío</text>
 	</string>
 	<string id="lname_stalker_559">
 		<text>Reventado</text>
 	</string>
 	<string id="lname_stalker_56">
-		<text>Fr o</text>
+		<text>Frío</text>
 	</string>
 	<string id="lname_stalker_560">
 		<text>Paria</text>
@@ -4637,7 +4637,7 @@
 		<text>Disminuido</text>
 	</string>
 	<string id="lname_stalker_580">
-		<text>Oficial de operaciones especiales</text>
+		<text>Oficial de Op. Esp.</text>
 	</string>
 	<string id="lname_stalker_581">
 		<text>Gordito</text>
@@ -4646,7 +4646,7 @@
 		<text>Pimienta</text>
 	</string>
 	<string id="lname_stalker_583">
-		<text>Gal n</text>
+		<text>Galón</text>
 	</string>
 	<string id="lname_stalker_584">
 		<text>Rosquilla</text>
@@ -4688,7 +4688,7 @@
 		<text>Calabaza</text>
 	</string>
 	<string id="lname_stalker_596">
-		<text>Necr fago</text>
+		<text>Necrófago</text>
 	</string>
 	<string id="lname_stalker_597">
 		<text>Flamen</text>
@@ -4709,7 +4709,7 @@
 		<text>Comatoso</text>
 	</string>
 	<string id="lname_stalker_62">
-		<text>Fregona</text>
+		<text>Virollo</text>
 	</string>
 	<string id="lname_stalker_63">
 		<text>Torpe</text>
@@ -4727,7 +4727,7 @@
 		<text>Cortaesquinas</text>
 	</string>
 	<string id="lname_stalker_68">
-		<text>Gre udo</text>
+		<text>Greñudo</text>
 	</string>
 	<string id="lname_stalker_69">
 		<text>Baldy</text>
@@ -4745,7 +4745,7 @@
 		<text>Hombrecito</text>
 	</string>
 	<string id="lname_stalker_73">
-		<text>Cad ver</text>
+		<text>Cadáver</text>
 	</string>
 	<string id="lname_stalker_74">
 		<text>Muerto</text>
@@ -4790,7 +4790,7 @@
 		<text>Avutarda</text>
 	</string>
 	<string id="lname_stalker_87">
-		<text>Par sito</text>
+		<text>Parásito</text>
 	</string>
 	<string id="lname_stalker_88">
 		<text>Paranoico</text>
@@ -4814,7 +4814,7 @@
 		<text>Honrado</text>
 	</string>
 	<string id="lname_stalker_94">
-		<text>Simpl n</text>
+		<text>Simplón</text>
 	</string>
 	<string id="lname_stalker_95">
 		<text>Chiflado</text>

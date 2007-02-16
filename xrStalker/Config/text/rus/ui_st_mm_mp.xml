@@ -121,7 +121,7 @@
 		<text>Без аномалий</text>
 	</string>
 	<string id="mm_mp_options">
-		<text>Опции Сервера</text>
+		<text>Опции</text>
 	</string>
 	<string id="mm_mp_password">
 		<text>Пароль</text>
@@ -230,5 +230,11 @@
 	</string>
 	<string id="server name">
 		<text>ИМЯ СЕРВЕРА</text>
+	</string>
+	<string id="version">
+		<text>Версия</text>
+	</string>
+	<string id="st_mp_gsfilter">
+		<text>Фильтр:</text>
 	</string>
 </string_table>

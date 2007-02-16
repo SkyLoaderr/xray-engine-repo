@@ -1,5 +1,5 @@
 	<string id="agr_find_ghost">
-		<text>Averigua qu  le pas  a Ghost</text>
+		<text>Averigua qué le pasó a Ghost</text>
 	</string>
 	<string id="agr_gunslinger_cache">
 		<text>Escondite de Strelok</text>
@@ -32,16 +32,16 @@
 		<text>Ve al encuentro de los stalkers</text>
 	</string>
 	<string id="agr_meet_krot_band">
-		<text>Obt n informaci n sobre Strelok</text>
+		<text>Obtén información sobre Strelok</text>
 	</string>
 	<string id="agr_meet_krot_band_0">
-		<text>Obt n informaci n sobre Mole</text>
+		<text>Obtén información sobre Mole</text>
 	</string>
 	<string id="agr_meet_krot_band_1">
-		<text>Re nete con el grupo de Mole</text>
+		<text>Reúnete con el grupo de Mole</text>
 	</string>
 	<string id="agr_meet_krot_band_2">
-		<text>Obt n informaci n de Mole</text>
+		<text>Obtén información de Mole</text>
 	</string>
 	<string id="agroprom_find_gunslinger_cache">
 		<text>Encuentra el escondite del grupo de Strelok.</text>
@@ -53,7 +53,7 @@
 		<text>Encuentra el escondite</text>
 	</string>
 	<string id="agroprom_find_gunslinger_cache_2">
-		<text>Encuentra informaci n sobre Strelok en el escondite</text>
+		<text>Encuentra información sobre Strelok en el escondite</text>
 	</string>
 	<string id="agroprom_find_gunslinger_cache_3">
 		<text>Sal del subsuelo</text>
@@ -62,7 +62,7 @@
 		<text>Encuentra a Ghost</text>
 	</string>
 	<string id="agroprom_find_stalker_phantom_0">
-		<text>Ghost sabe d nde est  Strelok.</text>
+		<text>Ghost sabe dónde está Strelok.</text>
 	</string>
 	<string id="agroprom_get_military_documents">
 		<text>Encuentra los documentos militares</text>

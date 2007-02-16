@@ -5,7 +5,7 @@
 		<text>Teams one and two - check the first floor, team three - main hall, four and five - check the second floor</text>
 	</string>
 	<string id="tips_rad_sos_suicide">
-		<text>…help me, I'm dying…</text>
+		<text>...help me, I'm dying...</text>
 	</string>
 	<string id="tips_rad_switcher_press">
 		<text>To turn the machine off, press ($$ACTION_USE$$)</text>

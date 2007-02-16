@@ -171,4 +171,34 @@
 	<string id="st_loading_sectors_portals">
 		<text>Caricamento settori e portali</text>
 	</string>
+	<string id="ui_st_conn_version_differs">
+		<text>Errore di connessione: versione non compatibile.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_invalid">
+		<text>Errore di connessione: codice CD non valido.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_in_use">
+		<text>Errore di connessione: codice CD in uso.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_disabled">
+		<text>Errore di connessione: il codice CD è disattivato. Contattare il servizio clienti.</text>
+	</string>
+	<string id="ui_st_conn_new_patch">
+		<text>Una nuova patch è disponibile. \n Versione: %s\n Posizione: %s\nScaricarla adesso?</text>
+	</string>
+	<string id="ui_st_conn_no_new_patch">
+		<text>Nessuna patch disponibile.</text>
+	</string>
+	<string id="ui_mm_delete_existing_file_q">
+		<text>Sei sicuro di voler eliminare questo file?</text>
+	</string>
+	<string id="st_game_paused">
+		<text>Pausa</text>
+	</string>
+	<string id="st_bolt">
+		<text>Bullone</text>
+	</string>
+	<string id="st_items">
+		<text>Oggetti</text>
+	</string>
 </string_table>

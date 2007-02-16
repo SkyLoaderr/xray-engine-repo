@@ -46,7 +46,7 @@
 		<text>comer</text>
 	</string>
 	<string id="st_move_on_belt">
-		<text>poner en el cintur n</text>
+		<text>poner en el cinturón</text>
 	</string>
 	<string id="st_move_to_bag">
 		<text>ir a la mochila</text>
@@ -70,13 +70,13 @@
 		<text>peso</text>
 	</string>
 	<string id="ui_inv_accuracy">
-		<text>Precisi n</text>
+		<text>Precisión</text>
 	</string>
 	<string id="ui_inv_bag">
 		<text>Mochila</text>
 	</string>
 	<string id="ui_inv_belt">
-		<text>Cintur n</text>
+		<text>Cinturón</text>
 	</string>
 	<string id="ui_inv_cancel">
 		<text>Cancelar</text>
@@ -85,10 +85,10 @@
 		<text>Eliminar</text>
 	</string>
 	<string id="ui_inv_damage">
-		<text>Da o</text>
+		<text>Daño</text>
 	</string>
 	<string id="ui_inv_description">
-		<text>Descripci n</text>
+		<text>Descripción</text>
 	</string>
 	<string id="ui_inv_drop">
 		<text>Sacar</text>
@@ -121,31 +121,31 @@
 		<text>Quemadura</text>
 	</string>
 	<string id="ui_inv_outfit_chemical_burn_protection">
-		<text>Quemadura qu mica</text>
+		<text>Quemadura química</text>
 	</string>
 	<string id="ui_inv_outfit_explosion_protection">
-		<text>Explosi n</text>
+		<text>Explosión</text>
 	</string>
 	<string id="ui_inv_outfit_fire_wound_protection">
 		<text>Gorro antibalas</text>
 	</string>
 	<string id="ui_inv_outfit_params">
-		<text>Par metros</text>
+		<text>Parámetros</text>
 	</string>
 	<string id="ui_inv_outfit_radiation_protection">
-		<text>Radiaci n</text>
+		<text>Radiación</text>
 	</string>
 	<string id="ui_inv_outfit_shock_protection">
-		<text>Descarga el ctrica</text>
+		<text>Descarga eléctrica</text>
 	</string>
 	<string id="ui_inv_outfit_strike_protection">
 		<text>Impacto</text>
 	</string>
 	<string id="ui_inv_outfit_telepatic_protection">
-		<text>Telepat a</text>
+		<text>Telepatía</text>
 	</string>
 	<string id="ui_inv_outfit_wound_protection">
-		<text>Ruptura</text>
+		<text>Arañazo</text>
 	</string>
 	<string id="ui_inv_outfits">
 		<text>Trajes</text>
@@ -178,7 +178,7 @@
 		<text>Francotirador</text>
 	</string>
 	<string id="ui_inv_time">
-		<text>Tiempo</text>
+		<text>Hora</text>
 	</string>
 	<string id="ui_inv_total_money">
 		<text>Dinero total</text>
@@ -187,10 +187,10 @@
 		<text>Peso</text>
 	</string>
 	<string id="ui_inv_ammo_pistol">
-		<text>Comprar munici n b sica para pistola (Q)</text>
+		<text>Comprar munición básica para pistola (Q)</text>
 	</string>
 	<string id="ui_inv_ammo_rifle">
-		<text>Comprar munici n para fusil (W)</text>
+		<text>Comprar munición para fusil (W)</text>
 	</string>
 	<string id="ui_inv_granadelauncher_rifle">
 		<text>Comprar lanzagranadas para fusil (D)</text>
@@ -199,7 +199,7 @@
 		<text>Granadas</text>
 	</string>
 	<string id="ui_inv_scope_rifle">
-		<text>Comprar mira telesc pica para fusil (S)</text>
+		<text>Comprar mira telescópica para fusil (S)</text>
 	</string>
 	<string id="ui_inv_silencer_pistol">
 		<text>Comprar silenciador para pistola (A)</text>

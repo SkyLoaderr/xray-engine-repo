@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="ui_map_desc_mp_agroprom_large">
-		<text>Dr le d'endroit. Bien des secrets entourent ce b timent silencieux, mais malgr  le danger, les Stalkers sont attir s par les nombreux artefacts qu'il abrite. La chance ne vous sourira qu'  condition d' tre rapide et pr cis.</text>
+		<text>Drфle d'endroit. Bien des secrets entourent ce bвtiment silencieux, mais malgrй le danger, les Stalkers sont attirйs par les nombreux artefacts qu'il abrite. La chance ne vous sourira qu'а condition d'кtre rapide et prйcis.</text>
 	</string>
 	<string id="ui_map_desc_mp_agroprom_short">
-		<text>Dr le d'endroit. Bien des secrets entourent ce b timent silencieux, mais malgr  le danger, les Stalkers sont attir s par les nombreux artefacts qu'il abrite.</text>
+		<text>Drфle d'endroit. Bien des secrets entourent ce bвtiment silencieux, mais malgrй le danger, les Stalkers sont attirйs par les nombreux artefacts qu'il abrite.</text>
 	</string>
 	<string id="ui_map_desc_mp_atp_large">
-		<text>Ce d p t est la porte d'entr e de la Zone. Les v hicules y sont immobilis s pour toujours. Aucun artefact n'y a jamais  t  signal , mais l'endroit est tr s appr ci  des Stalkers chevronn s qui y recrutent des nouveaux et r cup rent ce qu'ils peuvent. Mettez-vous   couvert dans les b timents et derri re les diff rents  quipements, et prenez garde aux ennemis positionn s sur les toits.</text>
+		<text>Ce dйpфt est la porte d'entrйe de la Zone. Les vйhicules y sont immobilisйs pour toujours. Aucun artefact n'y a jamais йtй signalй, mais l'endroit est trиs apprйciй des Stalkers chevronnйs qui y recrutent des nouveaux et rйcupиrent ce qu'ils peuvent. Mettez-vous а couvert dans les bвtiments et derriиre les diffйrents йquipements, et prenez garde aux ennemis positionnйs sur les toits.</text>
 	</string>
 	<string id="ui_map_desc_mp_atp_short">
-		<text>Ce d p t est la porte d'entr e de la Zone. Les v hicules y sont immobilis s pour toujours.</text>
+		<text>Ce dйpфt est la porte d'entrйe de la Zone. Les vйhicules y sont immobilisйs pour toujours.</text>
 	</string>
 	<string id="ui_map_desc_mp_bath_large">
-		<text>Ce myst rieux endroit exerce une  trange fascination sur les gens. Qui a construit ce bassin exp rimental et dans quel but ? Cela restera   jamais un secret. On ne trouve ici aucun artefact. Seuls les vestiges de machines et appareils insolites y attirent les Stalkers. Surveillez les toits et souvenez-vous que le niveau de radiations est extr mement  lev  dans ce secteur.</text>
+		<text>Ce mystйrieux endroit exerce une йtrange fascination sur les gens. Qui a construit ce bassin expйrimental et dans quel but ? Cela restera а jamais un secret. On ne trouve ici aucun artefact. Seuls les vestiges de machines et appareils insolites y attirent les Stalkers. Surveillez les toits et souvenez-vous que le niveau de radiations est extrкmement йlevй dans ce secteur.</text>
 	</string>
 	<string id="ui_map_desc_mp_bath_short">
-		<text>Ce myst rieux endroit exerce une  trange fascination sur les gens. Qui a construit ce bassin exp rimental et dans quel but ? Cela restera   jamais un secret.</text>
+		<text>Ce mystйrieux endroit exerce une йtrange fascination sur les gens. Qui a construit ce bassin expйrimental et dans quel but ? Cela restera а jamais un secret.</text>
 	</string>
 	<string id="ui_map_desc_mp_factory_large">
-		<text>Lugubre usine d saffect e. On ignore combien de Stalkers ont trouv  la mort dans ces murs hant s par toutes sortes d'anomalies. L'endroit attire n anmoins les Stalkers comme des aimants, car il abrite de pr cieux artefacts. Mais attention aux niveaux de radiations !</text>
+		<text>Lugubre usine dйsaffectйe. On ignore combien de Stalkers ont trouvй la mort dans ces murs hantйs par toutes sortes d'anomalies. L'endroit attire nйanmoins les Stalkers comme des aimants, car il abrite de prйcieux artefacts. Mais attention aux niveaux de radiations !</text>
 	</string>
 	<string id="ui_map_desc_mp_factory_short">
-		<text>Lugubre usine d saffect e. On ignore combien de Stalkers ont trouv  la mort dans ces murs.</text>
+		<text>Lugubre usine dйsaffectйe. On ignore combien de Stalkers ont trouvй la mort dans ces murs.</text>
 	</string>
 	<string id="ui_map_desc_mp_garbage_large">
-		<text>Il s'agit d'une partie de l'immense d charge o  des montagnes de d chets radioactifs ont  t  d pos es apr s la catastrophe de 1986... des grues d labr es, du mat riel, etc. On y trouve les vestiges d'anciennes installations ainsi qu'un immense hangar. Le tout   proximit  de l'entr e de la Zone, avec de nombreux artefacts. C'est ce qui attire les Stalkers en qu te de trouvailles faciles.</text>
+		<text>Il s'agit d'une partie de l'immense dйcharge oщ des montagnes de dйchets radioactifs ont йtй dйposйes aprиs la catastrophe de 1986... des grues dйlabrйes, du matйriel, etc. On y trouve les vestiges d'anciennes installations ainsi qu'un immense hangar. Le tout а proximitй de l'entrйe de la Zone, avec de nombreux artefacts. C'est ce qui attire les Stalkers en quкte de trouvailles faciles.</text>
 	</string>
 	<string id="ui_map_desc_mp_garbage_short">
-		<text>Il s'agit d'une partie de l'immense d charge o  des montagnes de d chets radioactifs ont  t  d pos es apr s la catastrophe de 1986... des grues d labr es, du mat riel, etc.</text>
+		<text>Il s'agit d'une partie de l'immense dйcharge oщ des montagnes de dйchets radioactifs ont йtй dйposйes aprиs la catastrophe de 1986... des grues dйlabrйes, du matйriel, etc.</text>
 	</string>
 	<string id="ui_map_desc_mp_lost_village_large">
-		<text>Village d sert  situ  au c ur de la Zone. Le petit lac peu profond couleur rouille, dont les fonds sont jonch s d' paves de voitures, engendre une peur inconsciente chez les explorateurs de la Zone. M fiez-vous des snipers et souvenez-vous que la Zone r compense les braves.</text>
+		<text>Village dйsertй situй au coeur de la Zone. Le petit lac peu profond couleur rouille, dont les fonds sont jonchйs d'йpaves de voitures, engendre une peur inconsciente chez les explorateurs de la Zone. Mйfiez-vous des snipers et souvenez-vous que la Zone rйcompense les braves.</text>
 	</string>
 	<string id="ui_map_desc_mp_lost_village_short">
-		<text>Village d sert  situ  au c ur de la Zone. Le petit lac peu profond couleur rouille, dont les fonds sont jonch s d' paves de voitures, engendre une peur inconsciente chez les explorateurs de la Zone.</text>
+		<text>Village dйsertй situй au coeur de la Zone. Le petit lac peu profond couleur rouille, dont les fonds sont jonchйs d'йpaves de voitures, engendre une peur inconsciente chez les explorateurs de la Zone.</text>
 	</string>
 	<string id="ui_map_desc_mp_military_1_large">
-		<text>Base militaire d saffect e abritant des camions et v hicules blind s d labr s et rouill s ainsi qu'un centre de commandement et une caserne en ruine. Mais ne vous fiez pas aux apparences. La base est riche en artefacts et l'ennemi peut  tre cach  derri re chaque recoin. Faites preuve de courage et vous d crocherez le gros lot !</text>
+		<text>Base militaire dйsaffectйe abritant des camions et vйhicules blindйs dйlabrйs et rouillйs ainsi qu'un centre de commandement et une caserne en ruine. Mais ne vous fiez pas aux apparences. La base est riche en artefacts et l'ennemi peut кtre cachй derriиre chaque recoin. Faites preuve de courage et vous dйcrocherez le gros lot !</text>
 	</string>
 	<string id="ui_map_desc_mp_military_1_short">
-		<text>Base militaire d saffect e abritant des camions et v hicules blind s d labr s et rouill s ainsi qu'un centre de commandement et une caserne en ruine.</text>
+		<text>Base militaire dйsaffectйe abritant des camions et vйhicules blindйs dйlabrйs et rouillйs ainsi qu'un centre de commandement et une caserne en ruine.</text>
 	</string>
 	<string id="ui_map_desc_mp_military_2_large">
-		<text>Cet ancien hameau est un lieu sinistre et dangereux. Mais si vous avez parcouru tout ce chemin malgr  les risques, attendez-vous   mourir d'une mort subite, car nulle part ici vous ne serez en s curit . Que votre lunette et votre silencieux vous gardent en vie !</text>
+		<text>Cet ancien hameau est un lieu sinistre et dangereux. Mais si vous avez parcouru tout ce chemin malgrй les risques, attendez-vous а mourir d'une mort subite, car nulle part ici vous ne serez en sйcuritй. Que votre lunette et votre silencieux vous gardent en vie !</text>
 	</string>
 	<string id="ui_map_desc_mp_military_2_short">
-		<text>Cet ancien hameau est un lieu sinistre et dangereux. Mais si vous avez parcouru tout ce chemin malgr  les risques, attendez-vous   mourir d'une mort subite.</text>
+		<text>Cet ancien hameau est un lieu sinistre et dangereux. Mais si vous avez parcouru tout ce chemin malgrй les risques, attendez-vous а mourir d'une mort subite.</text>
 	</string>
 	<string id="ui_map_desc_mp_prypiat_large">
-		<text>Vestiges de la ville de Pripyat, qui h bergeait jadis les ouvriers d'AES. Les ruines de ce squelette industriel sont extr mement dangereuses. Ici, vous devez  tre particuli rement vigilant pour rester en vie.</text>
+		<text>Vestiges de la ville de Pripyat, qui hйbergeait jadis les ouvriers d'AES. Les ruines de ce squelette industriel sont extrкmement dangereuses. Ici, vous devez кtre particuliиrement vigilant pour rester en vie.</text>
 	</string>
 	<string id="ui_map_desc_mp_prypiat_short">
-		<text>La ville de Pripyat est tout proche d'AES - l'h ritage de la catastrophe de Tchernobyl.</text>
+		<text>La ville de Pripyat est tout proche d'AES - l'hйritage de la catastrophe de Tchernobyl.</text>
 	</string>
 	<string id="ui_map_desc_mp_railraod_short">
 		<text>Petite gare ferroviaire de l'usine de Rostok.</text>
 	</string>
 	<string id="ui_map_desc_mp_railroad_large">
-		<text>Petite gare ferroviaire de l'usine de Rostok. Les wagons et locomotives rouill s sont d sormais   jamais immobilis s sur les rails. Les nombreux artefacts disponibles ici attirent les Stalkers d sesp r s de toute la Zone.</text>
+		<text>Petite gare ferroviaire de l'usine de Rostok. Les wagons et locomotives rouillйs sont dйsormais а jamais immobilisйs sur les rails. Les nombreux artefacts disponibles ici attirent les Stalkers dйsespйrйs de toute la Zone.</text>
 	</string>
 	<string id="ui_map_desc_mp_rostok_large">
-		<text>Sous les tas de ferraille et derri re les murs de b ton, cette usine baigne dans un silence tr s particulier. Au si cle dernier, elle bouillonnait d'activit  et les ouvriers s'y affairaient sous les slogans crach s par les haut-parleurs… Mais   pr sent, l'usine semble endormie.</text>
+		<text>Sous les tas de ferraille et derriиre les murs de bйton, cette usine baigne dans un silence trиs particulier. Au siиcle dernier, elle bouillonnait d'activitй et les ouvriers s'y affairaient sous les slogans crachйs par les haut-parleurs... Mais а prйsent, l'usine semble endormie.</text>
 	</string>
 	<string id="ui_map_desc_mp_rostok_short">
-		<text>Sous les tas de ferraille et derri re les murs de b ton, l'usine d saffect e baigne dans un profond silence.</text>
+		<text>Sous les tas de ferraille et derriиre les murs de bйton, l'usine dйsaffectйe baigne dans un profond silence.</text>
 	</string>
 	<string id="ui_map_desc_mp_workshop_large">
-		<text>Abords de l'usine de Rostok avant l'arriv e du Devoir. Ce secteur d labr  est n anmoins tr s riche en artefacts. Dans les hangars et entrep ts vides, le danger est partout. Soyez extr mement prudent et surveillez bien la tour blanche.</text>
+		<text>Abords de l'usine de Rostok avant l'arrivйe du Devoir. Ce secteur dйlabrй est nйanmoins trиs riche en artefacts. Dans les hangars et entrepфts vides, le danger est partout. Soyez extrкmement prudent et surveillez bien la tour blanche.</text>
 	</string>
 	<string id="ui_map_desc_mp_workshop_short">
-		<text>Abords de l'usine de Rostok avant l'arriv e du Devoir. Ce secteur d labr  est n anmoins tr s riche en artefacts.</text>
+		<text>Abords de l'usine de Rostok avant l'arrivйe du Devoir. Ce secteur dйlabrй est nйanmoins trиs riche en artefacts.</text>
 	</string>
 </string_table>

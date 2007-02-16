@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="actor_break_dialog_0">
-		<text> Nos vemos!</text>
+		<text>ЎNos vemos!</text>
 	</string>
 	<string id="actor_help_wounded_0">
-		<text> Est s bien?</text>
+		<text>їEstбs bien?</text>
 	</string>
 	<string id="actor_help_wounded_1">
-		<text>Estoy herido, maldita sea,  no lo ves? Necesito un botiqu n, o al menos una venda.</text>
+		<text>Estoy herido, maldita sea, їno lo ves? Necesito un botiquнn, o al menos una venda.</text>
 	</string>
 	<string id="actor_help_wounded_11">
-		<text>Toma este botiqu n.</text>
+		<text>Toma este botiquнn.</text>
 	</string>
 	<string id="actor_help_wounded_111">
-		<text>Gracias, no lo olvidar .</text>
+		<text>Gracias, no lo olvidarй.</text>
 	</string>
 	<string id="actor_help_wounded_12">
 		<text>Toma esta venda.</text>
@@ -22,18 +22,18 @@
 		<text>Lo siento, no tengo.</text>
 	</string>
 	<string id="actor_help_wounded_131">
-		<text> C mo se te ocurre ir a la Zona?  Qu  pasa si te infectas?  Ni siquiera podr s curarte! </text>
+		<text>їCуmo se te ocurre ir a la Zona? їQuй pasa si te infectas? ЎNi siquiera podrбs curarte! </text>
 	</string>
 	<string id="actor_help_wounded_14">
-		<text>Mala suerte, t o. Lo siento, si te doy, se me acaban. </text>
+		<text>Mala suerte, tнo. Lo siento, si te doy, se me acaban. </text>
 	</string>
 	<string id="actor_help_wounded_141">
-		<text>Es tu trabajo, colega, pero no te da ning n m rito.</text>
+		<text>Es tu trabajo, colega, pero no te da ningъn mйrito.</text>
 	</string>
 	<string id="hello_dialog_2">
-		<text> Eh!</text>
+		<text>ЎEh!</text>
 	</string>
 	<string id="hello_dialog_3">
-		<text>Eh, colega,  me ayudas?</text>
+		<text>Eh, colega, їme ayudas?</text>
 	</string>
 </string_table>

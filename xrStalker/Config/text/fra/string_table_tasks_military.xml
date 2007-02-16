@@ -1,5 +1,5 @@
 	<string id="mil_blockpost_help">
-		<text>Aider   l'avant-poste de la Barri re de la Libert .</text>
+		<text>Aider à l'avant-poste de la Barrière de la Liberté.</text>
 	</string>
 	<string id="mil_courier">
 		<text>La Balance.</text>
@@ -11,16 +11,16 @@
 		<text>Rejoindre la ferme.</text>
 	</string>
 	<string id="mil_courier_phase2">
-		<text>Attendre que la Balance am ne son agent.</text>
+		<text>Attendre que la Balance amène son agent.</text>
 	</string>
 	<string id="mil_courier_phase3">
-		<text>Se d barrasser de la Balance.</text>
+		<text>Se débarrasser de la Balance.</text>
 	</string>
 	<string id="mil_courier_phase4">
-		<text>Se d barrasser de l'agent.</text>
+		<text>Se débarrasser de l'agent.</text>
 	</string>
 	<string id="mil_courier_phase5">
-		<text>Faire un rapport   Lukash sur la mission.</text>
+		<text>Faire un rapport à Lukash sur la mission.</text>
 	</string>
 	<string id="mil_crazy">
 		<text>Stalker fou.</text>
@@ -29,16 +29,16 @@
 		<text>Faction du Devoir</text>
 	</string>
 	<string id="mil_dolg_assault_freedom">
-		<text>Aider la faction du Devoir    liminer Lukash</text>
+		<text>Aider la faction du Devoir à éliminer Lukash</text>
 	</string>
 	<string id="mil_dolg_assault_headquarter">
 		<text>Tuer Lukash</text>
 	</string>
 	<string id="mil_dolg_assault_support">
-		<text> liminer le sniper</text>
+		<text>Éliminer le sniper</text>
 	</string>
 	<string id="mil_dolg_return_to_khutor">
-		<text>Retourner   la ferme du Devoir et recevoir ma r compense</text>
+		<text>Retourner à la ferme du Devoir et recevoir ma récompense</text>
 	</string>
 	<string id="mil_dolg_return_to_skull">
 		<text>Rejoindre Kran</text>
@@ -47,25 +47,25 @@
 		<text>Cap du commandant de l'avant-poste</text>
 	</string>
 	<string id="mil_fblockpost_phase2">
-		<text>Participer   l' limination de l' quipe d'attaque Monolithe</text>
+		<text>Participer à l'élimination de l'équipe d'attaque Monolithe</text>
 	</string>
 	<string id="mil_fblockpost_phase3">
-		<text>Parler au commandant de l'avant-poste de la Barri re</text>
+		<text>Parler au commandant de l'avant-poste de la Barrière</text>
 	</string>
 	<string id="mil_find_cook">
-		<text>Trouver le cuisinier de la base Libert </text>
+		<text>Trouver le cuisinier de la base Liberté</text>
 	</string>
 	<string id="mil_freedom_rg6_task">
-		<text>Se procurer un Bulldog 6 de la Libert </text>
+		<text>Se procurer un Bulldog 6 de la Liberté</text>
 	</string>
 	<string id="mil_go_max">
-		<text>Faire un rapport   Max.</text>
+		<text>Faire un rapport à Max.</text>
 	</string>
 	<string id="mil_go_to_miser_task">
-		<text>Rejoindre la base de Libert  pour voir le Radin et obtenir une r compense</text>
+		<text>Rejoindre la base de Liberté pour voir le Radin et obtenir une récompense</text>
 	</string>
 	<string id="mil_go_to_miser_task_main">
-		<text>Recevoir une r compense pour les sangsues  limin es</text>
+		<text>Recevoir une récompense pour les sangsues éliminées</text>
 	</string>
 	<string id="mil_hunters_phase1">
 		<text>Trouver le Magouilleur au village</text>
@@ -86,7 +86,7 @@
 		<text>Tuer les sangsues</text>
 	</string>
 	<string id="mil_kill_dolg">
-		<text> liminer l' quipe du Devoir.</text>
+		<text>Éliminer l'équipe du Devoir.</text>
 	</string>
 	<string id="mil_lukash">
 		<text>Lukash.</text>
@@ -95,22 +95,22 @@
 		<text>Max.</text>
 	</string>
 	<string id="mil_put_flash_to_max">
-		<text>Donnez   Max la cl  USA.</text>
+		<text>Donnez à Max la clé USA.</text>
 	</string>
 	<string id="mil_quest_kill_sniper">
 		<text>Tuer le sniper de la tour</text>
 	</string>
 	<string id="mil_quest_report_dolg">
-		<text>Faire un rapport sur la mission   l' quipe du Devoir</text>
+		<text>Faire un rapport sur la mission à l'équipe du Devoir</text>
 	</string>
 	<string id="mil_return_lukash">
-		<text>Retourner   Lukash.</text>
+		<text>Retourner à Lukash.</text>
 	</string>
 	<string id="mil_return_to_ugrumy">
 		<text>Faire un rapport au Magouilleur sur la mission</text>
 	</string>
 	<string id="mil_return_to_voronin">
-		<text>Apporter le Bulldog 6 au g n ral Voronin</text>
+		<text>Apporter le Bulldog 6 au général Voronin</text>
 	</string>
 	<string id="mil_rg6">
 		<text>Trouver Bulldog 6</text>
@@ -122,13 +122,13 @@
 		<text>Sniper.</text>
 	</string>
 	<string id="mil_take_flash">
-		<text>Obtenir une cl  USB du sniper fou.</text>
+		<text>Obtenir une clé USB du sniper fou.</text>
 	</string>
 	<string id="mil_talk_cook">
 		<text>Parler au chef</text>
 	</string>
 	<string id="mil_talk_with_cap">
-		<text>Parler au cap, le commandant de l'avant-poste Libert </text>
+		<text>Parler au cap, le commandant de l'avant-poste Liberté</text>
 	</string>
 	<string id="mil_test_task_phase1">
 		<text>Entrer restricteur 1</text>
@@ -137,7 +137,7 @@
 		<text>Entrer restricteur 2</text>
 	</string>
 	<string id="mil_test_task_phase3">
-		<text>Larguer le Bulldog 6 si la mission est termin e et le TRs 301 en cas d' chec</text>
+		<text>Larguer le Bulldog 6 si la mission est terminée et le TRs 301 en cas d'échec</text>
 	</string>
 	<string id="mil_test_task_title">
 		<text>Mission test</text>
@@ -146,5 +146,5 @@
 		<text>Le Magouilleur</text>
 	</string>
 	<string id="mil_lukash_job">
-		<text>D truisez l'unit  du Devoir</text>
+		<text>Détruisez l'unité du Devoir</text>
 	</string>

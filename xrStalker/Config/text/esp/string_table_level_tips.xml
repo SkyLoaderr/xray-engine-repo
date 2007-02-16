@@ -10,16 +10,16 @@
 		<text>Hablar ($$ACTION_USE$$)</text>
 	</string>
 	<string id="dead_character_use">
-		<text>Buscar cuerpo ($$ACTION_USE$$) \n Arrastrar cuerpo (MAY S+$$ACTION_USE$$)</text>
+		<text>Registrar cuerpo ($$ACTION_USE$$) \n Arrastrar cuerpo (MAYÚS+$$ACTION_USE$$)</text>
 	</string>
 	<string id="general_complete_task">
-		<text>Misi n cumplida:</text>
+		<text>Misión cumplida:</text>
 	</string>
 	<string id="general_fail_task">
-		<text>Misi n fallida:</text>
+		<text>Misión fallida:</text>
 	</string>
 	<string id="general_help">
-		<text> R pido, necesito un botiqu n!  Me muero!</text>
+		<text>¡Rápido, necesito un botiquín! ¡Me muero!</text>
 	</string>
 	<string id="general_in_item">
 		<text>Objeto recibido:</text>
@@ -34,7 +34,7 @@
 		<text>Nueva entrada de la enciclopedia.</text>
 	</string>
 	<string id="general_new_task">
-		<text>Nueva misi n:</text>
+		<text>Nueva misión:</text>
 	</string>
 	<string id="general_out_item">
 		<text>Objeto perdido:</text>
@@ -43,16 +43,16 @@
 		<text>Dinero perdido:</text>
 	</string>
 	<string id="general_update_task">
-		<text>Misi n actualizada:</text>
+		<text>Misión actualizada:</text>
 	</string>
 	<string id="physic_shell_use">
 		<text>Mover objeto ($$ACTION_USE$$)</text>
 	</string>
 	<string id="st_codelock">
-		<text>Combinaci n ($$ACTION_USE$$)</text>
+		<text>Combinación ($$ACTION_USE$$)</text>
 	</string>
 	<string id="to_aes">
-		<text>A la central nuclear de Chern bil</text>
+		<text>A la central nuclear de Chernóbil</text>
 	</string>
 	<string id="to_agroprom">
 		<text>A Agroprom</text>
@@ -67,7 +67,7 @@
 		<text>Al Valle Oscuro</text>
 	</string>
 	<string id="to_escape">
-		<text>Al Cord n</text>
+		<text>Al Cordón</text>
 	</string>
 	<string id="to_garbage">
 		<text>Al vertedero</text>
@@ -88,15 +88,15 @@
 		<text>A Yantar</text>
 	</string>
 	<string id="st_helmet_countdown">
-		<text>Desactivaci n de protecci n</text>
+		<text>Desactivación de protección</text>
 	</string>
 	<string id="st_psy_danger">
-		<text>Nivel cr tico de emisiones ps quicas. Abandonar la zona peligrosa inmediatamente.</text>
+		<text>Nivel crítico de emisiones psíquicas. Abandonar la zona peligrosa inmediatamente.</text>
 	</string>
 	<string id="st_radiation_danger">
-		<text>Nivel de radiaci n peligroso Se necesita protecci n para pasar.</text>
+		<text>Nivel de radiación peligroso Se necesita protección para pasar.</text>
 	</string>
 	<string id="st_found_new_pda">
-		<text>Informaci n hallada:</text>
+		<text>Información hallada:</text>
 	</string>
 </string_table>

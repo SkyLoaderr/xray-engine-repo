@@ -28,7 +28,7 @@
 		<text>Wipe out the bandit gang that settled at the Garbage. It has to be a quick and efficient operation.</text>
 	</string>
 	<string id="barmen_eliminate_camp_1_text">
-		<text>A job, eh? Let’s see what we’ve got… Aha! Here you go: can you knock out that pack of bandits at the Garbage? The Duty, with all their speeches about law and order, just can’t get down to it. Those are some rare scumbags, so they won't last long anyway. But the guy who gets them first will score big… and the booze is on me, of course.</text>
+		<text>A job, eh? Let’s see what we’ve got... Aha! Here you go: can you knock out that pack of bandits at the Garbage? The Duty, with all their speeches about law and order, just can’t get down to it. Those are some rare scumbags, so they won't last long anyway. But the guy who gets them first will score big... and the booze is on me, of course.</text>
 	</string>
 	<string id="barmen_eliminate_camp_2">
 		<text>Eliminate the Mercs and bandits in Rostok.</text>
@@ -37,7 +37,7 @@
 		<text>Destroy the group of Mercs and bandits that block the passage through Rostok.</text>
 	</string>
 	<string id="barmen_eliminate_camp_2_text">
-		<text>There’s a gang of Mercs not far away, in Rostok. They hit it off with the bandits, so now they’re scheming to block the passage through the plant. I don’t need to tell you what a nuisance it is, it’s got to be resolved straight away. The Duty guys and some of the old-timers have already gone to teach them a lessons, but we haven’t heard from them in a while… So why don’t you… eh… go and check on them. The money's good, too.</text>
+		<text>There’s a gang of Mercs not far away, in Rostok. They hit it off with the bandits, so now they’re scheming to block the passage through the plant. I don’t need to tell you what a nuisance it is, it’s got to be resolved straight away. The Duty guys and some of the old-timers have already gone to teach them a lessons, but we haven’t heard from them in a while... So why don’t you... eh... go and check on them. The money's good, too.</text>
 	</string>
 	<string id="barmen_eliminate_camp_3">
 		<text>Eliminate the bandits at the farmstead.</text>
@@ -46,7 +46,7 @@
 		<text>It's all simple: clear the farmstead of bandits.</text>
 	</string>
 	<string id="barmen_eliminate_camp_3_text">
-		<text>There’s the farmstead by the old warehouses. Used to be a perfect place for a rendezvous, to exchange goods, you know… that sort of thing. But now the bandits have occupied it and, by the looks of it, they are not about to make off. Now, that doesn’t suit me at all. I need this farmstead asap. I don’t care what happens to the lodgers.</text>
+		<text>There’s the farmstead by the old warehouses. Used to be a perfect place for a rendezvous, to exchange goods, you know... that sort of thing. But now the bandits have occupied it and, by the looks of it, they are not about to make off. Now, that doesn’t suit me at all. I need this farmstead asap. I don’t care what happens to the lodgers.</text>
 	</string>
 	<string id="barmen_eliminate_camp_4">
 		<text>Purge the bandits' camp at Wild Territory</text>
@@ -82,7 +82,7 @@
 		<text>Destroy the lair of snorks in the Dark Valley</text>
 	</string>
 	<string id="barmen_eliminate_camp_7_text">
-		<text>Yeah…It seems that the ones who say that the zone is expanding are right. They spotted a few snorks in the Dark Valley, but before they never saw them there. And here some started to panic. The Dutiers promised to destroy the snorks, but they can't seem to get around to doing it. Will you take it on?</text>
+		<text>Yeah...It seems that the ones who say that the zone is expanding are right. They spotted a few snorks in the Dark Valley, but before they never saw them there. And here some started to panic. The Dutiers promised to destroy the snorks, but they can't seem to get around to doing it. Will you take it on?</text>
 	</string>
 	<string id="barmen_find_artefact_1">
 		<text>Find the Meat chunk artifact</text>
@@ -91,7 +91,7 @@
 		<text>Find the Meat chunk artifact that heals ailments and injuries.</text>
 	</string>
 	<string id="barmen_find_artefact_1_text">
-		<text>Some padres have stopped by, left an order for a Meat chunk. You know, they have a certain interest in this healing artifact… those rotten miracle-workers! Anyway… You gonna do it? It’s up to you.</text>
+		<text>Some padres have stopped by, left an order for a Meat chunk. You know, they have a certain interest in this healing artifact... those rotten miracle-workers! Anyway... You gonna do it? It’s up to you.</text>
 	</string>
 	<string id="barmen_find_artefact_2">
 		<text>Find the Crystal Thorn artifact</text>
@@ -100,7 +100,7 @@
 		<text>Find the Crystal Thorn artifact that protects against psi-attacks.</text>
 	</string>
 	<string id="barmen_find_artefact_2_text">
-		<text>A "crone"?.. No, that’s not it. "Crystal corn"?.. No, wrong again… Bugger! "Crystal Thorn", that’s it! So here’s the deal: I have an order for this artifact, "Crystal Thorn". Have you heard of it? They say that if you’ve got one, no creature will be able to mess with your brain. So what do you say?</text>
+		<text>A "crone"?.. No, that’s not it. "Crystal corn"?.. No, wrong again... Bugger! "Crystal Thorn", that’s it! So here’s the deal: I have an order for this artifact, "Crystal Thorn". Have you heard of it? They say that if you’ve got one, no creature will be able to mess with your brain. So what do you say?</text>
 	</string>
 	<string id="barmen_find_artefact_3">
 		<text>Find the Night Star artifact</text>
@@ -109,7 +109,7 @@
 		<text>Find the Night Star artifact to help the national military research effort.</text>
 	</string>
 	<string id="barmen_find_artefact_3_text">
-		<text>I need the Night Star artifact. I'm sorry to say it doesn't grant any wishes, been there, done that, but it can make you wealthy. Scientists pay a lot for it. They say they make some military things out of it…So, are you up for it?</text>
+		<text>I need the Night Star artifact. I'm sorry to say it doesn't grant any wishes, been there, done that, but it can make you wealthy. Scientists pay a lot for it. They say they make some military things out of it...So, are you up for it?</text>
 	</string>
 	<string id="barmen_find_artefact_4">
 		<text>Find the artifact Flash</text>
@@ -136,16 +136,16 @@
 		<text>Find the suit that provides efficient protection against psi-emissions. The place to look for it is the deserted labs in the Dark Valley.</text>
 	</string>
 	<string id="barmen_find_item_1_text">
-		<text>In those labs in the Dark Valley, they were trying to find a way to protect human brains from psi-emissions. They were taking their time, that’s for sure… Anyway, one of their attempts actually was a success, and there’s supposed to be this suit somewhere that you can wear and even kiss the controller. Yep, it’s that good. So if you get me this doodah, I’ll never forget it.</text>
+		<text>In those labs in the Dark Valley, they were trying to find a way to protect human brains from psi-emissions. They were taking their time, that’s for sure... Anyway, one of their attempts actually was a success, and there’s supposed to be this suit somewhere that you can wear and even kiss the controller. Yep, it’s that good. So if you get me this doodah, I’ll never forget it.</text>
 	</string>
 	<string id="barmen_find_item_2">
 		<text>Find the foreigner's gun.</text>
 	</string>
 	<string id="barmen_find_item_2_descr">
-		<text>An interesting assignment. The name rings a bell… but where do I know him from?</text>
+		<text>An interesting assignment. The name rings a bell... but where do I know him from?</text>
 	</string>
 	<string id="barmen_find_item_2_text">
-		<text>There once was this foreigner in our neck of the woods… Gordon was his name? His whole manner gave out an experienced stalker, but he said he’d never been to the Zone. But anyway, that’s not the point. He did vanish somewhere in the Zone eventually. But he had this rather curious thing, the Black Kite. If I could just take a closer look at it…</text>
+		<text>There once was this foreigner in our neck of the woods... Gordon was his name? His whole manner gave out an experienced stalker, but he said he’d never been to the Zone. But anyway, that’s not the point. He did vanish somewhere in the Zone eventually. But he had this rather curious thing, the Black Kite. If I could just take a closer look at it...</text>
 	</string>
 	<string id="barmen_find_item_3">
 		<text>Find the modified Vintar</text>
@@ -154,16 +154,16 @@
 		<text>Find the modified Vintar. Apparently, the place to look is the Red Forest area.</text>
 	</string>
 	<string id="barmen_find_item_3_text">
-		<text>There was this odd story. This one fellow pops up, pockets full of dough, and sets off hiring himself a gang, not the old-timers though, but more of the nippy type. Bought tons of gear… I had this one brand new Vintar, a marvelous gun! - so I was fool enough to sell it to him. I won’t lie to you, I made quite a bit of money… except this whole crew got knocked out close to the Red Forest. What can I say, they died for nothing… well, a good lesson for all to learn: you can’t pave your way through the Zone with money. But anyway… I can't stop thinking about that Vintar, such a bang-up gun rusting somewhere! Won’t you find it for me? I’m paying good money!</text>
+		<text>There was this odd story. This one fellow pops up, pockets full of dough, and sets off hiring himself a gang, not the old-timers though, but more of the nippy type. Bought tons of gear... I had this one brand new Vintar, a marvelous gun! - so I was fool enough to sell it to him. I won’t lie to you, I made quite a bit of money... except this whole crew got knocked out close to the Red Forest. What can I say, they died for nothing... well, a good lesson for all to learn: you can’t pave your way through the Zone with money. But anyway... I can't stop thinking about that Vintar, such a bang-up gun rusting somewhere! Won’t you find it for me? I’m paying good money!</text>
 	</string>
 	<string id="barmen_kill_stalker_1">
 		<text>Kill the soldier</text>
 	</string>
 	<string id="barmen_kill_stalker_1_descr">
-		<text>A soldier has to bite the dust. The job is a piece of cake, except… it’s weird that the target’s a man in uniform, and the customer really has his dander up.</text>
+		<text>A soldier has to bite the dust. The job is a piece of cake, except... it’s weird that the target’s a man in uniform, and the customer really has his dander up.</text>
 	</string>
 	<string id="barmen_kill_stalker_1_text">
-		<text>I need you to down this one grunt… don't ask me who he is, what do I care! Just do it. So? Can I entrust you with it?</text>
+		<text>I need you to take down this grunt... don't ask me who he is, what do I care! Just do it. So? Can I entrust you with it?</text>
 	</string>
 	<string id="barmen_kill_stalker_2">
 		<text>Kill the stalker</text>
@@ -172,7 +172,7 @@
 		<text>Do in one of the stalkers. Death to the cheater, that's the trader's revenge.</text>
 	</string>
 	<string id="barmen_kill_stalker_2_text">
-		<text>You know, there’s this type of men that you could never say a bad word about… you trust him as you trust yourself, right? You bank on him… But suddenly you find out that he is the vilest and meanest son of a bitch… So here’s the deal: there’s this one case that needs to get sorted. Do it, and I’ll take care of the rest.</text>
+		<text>You know, there’s this type of men that you could never say a bad word about... you trust him as you trust yourself, right? You bank on him... But suddenly you find out that he is the vilest and meanest son of a bitch... So here’s the deal: there’s this one case that needs to get sorted. Do it, and I’ll take care of the rest.</text>
 	</string>
 	<string id="barmen_kill_stalker_3">
 		<text>Kill the stalker from the Monolith grouping</text>
@@ -181,7 +181,7 @@
 		<text>Find trader's ex-friend and help him die.</text>
 	</string>
 	<string id="barmen_kill_stalker_3_text">
-		<text>I used to have a friend… hard to believe, eh? Ah! we came to the Zone together when none of this stuff was here... The things we used to do, the places we used to go to… oh well, we were young, didn’t give a damn about anything… But he could never get enough. He wanted to go to the center of the Zone and was talking me into it, but I refused, and did the right thing… We had a really bad row, and he left on his own… And now I hear someone saw him there… he’s with Monolith now. So the deal is, Marked One… As a friend, do this for me, find him and… well, don’t make him suffer, it must be bad enough… He was like a brother to me, you know?</text>
+		<text>I used to have a friend... hard to believe, eh? Ah! we came to the Zone together when none of this stuff was here... The things we used to do, the places we used to go to... oh well, we were young, didn’t give a damn about anything... But he could never get enough. He wanted to go to the center of the Zone and was talking me into it, but I refused, and did the right thing... We had a really bad row, and he left on his own... And now I hear someone saw him there... he’s with Monolith now. So the deal is, Marked One... As a friend, do this for me, find him and... well, don’t make him suffer, it must be bad enough... He was like a brother to me, you know?</text>
 	</string>
 	<string id="barmen_kill_stalker_4">
 		<text>Kill the stalker called Vampire</text>
@@ -190,7 +190,7 @@
 		<text>Find and kill the stalker called Vampire.</text>
 	</string>
 	<string id="barmen_kill_stalker_4_text">
-		<text>That's it, I’ve had enough of this scumbag! I mean Vampire; do you know him? That bastard! Sucking luck out of people instead of blood. Whoever goes with him, they all die, all to a man, but he always comes back safe and sound! Done it five times now! That’s evil, don’t you think? I’d love to put some flowers on this Vampire’s grave… So, do you take the job?</text>
+		<text>That's it, I’ve had enough of this scumbag! I mean Vampire; do you know him? That bastard! Sucking luck out of people instead of blood. Whoever goes with him, they all die, all to a man, but he always comes back safe and sound! Done it five times now! That’s evil, don’t you think? I’d love to put some flowers on this Vampire’s grave... So, do you take the job?</text>
 	</string>
 	<string id="barmen_kill_stalker_5">
 		<text>Kill the stalker called Sparrow</text>
@@ -199,7 +199,7 @@
 		<text>Find Sparrow and avenge the death of another stalker.</text>
 	</string>
 	<string id="barmen_kill_stalker_5_text">
-		<text>Damn musketeers! Playing D'Artagnan, assholes! As if surfing around anomalies and bowing to bullets is not enough, the oafs have now taken to fighting duels! Get this: there was this row… no one can even remember any more what started it. So these two dumbheads decided to shed some blood. And there you go, one dropped dead… a fine stalker he was, too! And the other one, Sparrow, beetled off, because I’d be the first one to put a bullet in his head. Find him. I’m sure he’s still in the Zone. Will you do it?</text>
+		<text>Damn musketeers! Playing D'Artagnan, assholes! As if surfing around anomalies and bowing to bullets is not enough, the oafs have now taken to fighting duels! Get this: there was this row... no one can even remember any more what started it. So these two dumbheads decided to shed some blood. And there you go, one dropped dead... a fine stalker he was, too! And the other one, Sparrow, beetled off, because I’d be the first one to put a bullet in his head. Find him. I’m sure he’s still in the Zone. Will you do it?</text>
 	</string>
 	<string id="barmen_monster_part_1">
 		<text>Obtain the flesh's eye</text>
@@ -280,7 +280,7 @@
 		<text>Eliminate the snorks in the tunnels in the Yantar sector.</text>
 	</string>
 	<string id="dolg_eliminate_lager_14_text">
-		<text>This time you'll need to get to purging. The tunnels at Yantar are simply breaking from all the snorks: there's around ten of them there. Yeah, now you can't weather the storm there as before…</text>
+		<text>This time you'll need to get to purging. The tunnels at Yantar are simply breaking from all the snorks: there's around ten of them there. Yeah, now you can't weather the storm there as before...</text>
 	</string>
 	<string id="dolg_eliminate_lager_2">
 		<text>Destroy the herd of fleshes</text>
@@ -289,7 +289,7 @@
 		<text>Destroy the herd of fleshes at the Wild Territory.</text>
 	</string>
 	<string id="dolg_eliminate_lager_2_text">
-		<text>We tracked the migration of a large herd of beasts…Quite disgusting swine-like mutants whom everyone calls fleshes. Now they're in the area of the Garbage. All of our people are busy, but these beasts need to be destroyed. It's a special kind of job - we'll pay.</text>
+		<text>We tracked the migration of a large herd of beasts...Quite disgusting swine-like mutants whom everyone calls fleshes. Now they're in the area of the Garbage. All of our people are busy, but these beasts need to be destroyed. It's a special kind of job - we'll pay.</text>
 	</string>
 	<string id="dolg_eliminate_lager_3">
 		<text>Destroy the pseudodogs</text>
@@ -370,7 +370,7 @@
 		<text>Neutralize the bandit Poker.</text>
 	</string>
 	<string id="dolg_kill_stalker_1_text">
-		<text>Subject's nickname - Poker. One of the most cruel bandits' leader, swine and rapist…Evidently his head is not okay: they say he caught a rare disease in the Zone. Now he suffers quite frequent lapses of memory, and when he gains consciousness, he can't remember who and where he is. Nevertheless, he's always armed and very aggressive. Presumable location: Dark Valley. Ready for the task?</text>
+		<text>Subject's nickname - Poker. One of the most cruel bandits' leader, swine and rapist...Evidently his head is not okay: they say he caught a rare disease in the Zone. Now he suffers quite frequent lapses of memory, and when he gains consciousness, he can't remember who and where he is. Nevertheless, he's always armed and very aggressive. Presumable location: Dark Valley. Ready for the task?</text>
 	</string>
 	<string id="drunk_dolg_find_item">
 		<text>Find the weapon of the Dutyer.</text>
@@ -379,7 +379,7 @@
 		<text>The Dutyer is asking you to find his weapon, he lost it somewhere in the Dark Valley during another scouting expedition.</text>
 	</string>
 	<string id="drunk_dolg_find_item_text">
-		<text>Shouldn't have freaked out like that. How the zone messes with your head. Thought I had good nerves, never afraid of anything, and here this. This howling in the ears. Everything was going as usual. There was a scouting expedition to the Dark Valley, we got down into the trench with Krivoi to cover the rest of the group, and then once I heard the howling, I was gripped by fear. Damn, I don't even remember how I got to the coordinate. When I returned to the base, Voronin almost shot me on the spot: he had just given me an enhanced canon, for good service, so to speak. And here...I paniced and took off so fast that I left the canon there. Could you bring it back for me, else where will I go now without a decent weapon.</text>
+		<text>Shouldn't have freaked out like that. How the zone messes with your head. Thought I had good nerves, never afraid of anything, and here this. This howling in the ears. Everything was going as usual. There was a scouting expedition to the Dark Valley, we got down into the trench with Krivoi to cover the rest of the group, and then once I heard the howling, I was gripped by fear. Damn, I don't even remember how I got to the coordinate. When I returned to the base, Voronin almost shot me on the spot: he had just given me an enhanced cannon, for good service, so to speak. And here...I paniced and took off so fast that I left the cannon there. Could you bring it back for me, else where will I go now without a decent weapon.</text>
 	</string>
 	<string id="ecolog_eliminate_lager_1">
 		<text>Purge the lair of the snorks</text>
@@ -406,7 +406,7 @@
 		<text>Bring the Fireball artifact to the scientists for researches</text>
 	</string>
 	<string id="ecolog_find_artefact_1_text">
-		<text>We've managed to obtain the artifact in laboratory conditions! This is a breakthrough! Now all the world will hear about our success. And the Nobel Prize will be close at hand! This is the unique artifact - "Pellicle", it's main quality is to protect from the chemical burns. Do you want me to give it to you on behalf of science. However, I do have one request - in return I need the artifact "Fireball", do you know about such? Unique thermal qualities of its surface require thorough research.</text>
+		<text>We've managed to obtain the artifact in laboratory conditions! This is a breakthrough! Now all the world will hear about our success. And the Nobel Prize will be close at hand! This is the unique artifact - "Pellicle", it's main quality is to protect from the chemical burns. Do you want me to give it to you on behalf of science? However, I do have one request - in return I need the artifact "Fireball", do you know about such? Unique thermal qualities of its surface require thorough research.</text>
 	</string>
 	<string id="ecolog_find_artefact_2">
 		<text>Find the "Gravi" artifact</text>
@@ -430,10 +430,10 @@
 		<text>Find the "Moonlight" artifact</text>
 	</string>
 	<string id="ecolog_find_artefact_4_descr">
-		<text>Provide "Moonlight" to the scientists at Yantar. A good artifact…</text>
+		<text>Provide "Moonlight" to the scientists at Yantar. A good artifact...</text>
 	</string>
 	<string id="ecolog_find_artefact_4_text">
-		<text>We desperately need materials for continuing our research in the field of energetics. You see, we learned to generate energy with the help of artifacts. Granted, this works while the KPD isn't high enough. We were able to get the best results with the artifact Moonlight. Pleasebring us a sample for experiments.</text>
+		<text>We desperately need materials for continuing our research in the field of energetics. You see, we learned to generate energy with the help of artifacts. Granted, this works while the KPD isn't high enough. We were able to get the best results with the artifact Moonlight. Please bring us a sample for experiments.</text>
 	</string>
 	<string id="ecolog_find_artefact_5">
 		<text>Find the artifact called Sea Urchin</text>
@@ -460,7 +460,7 @@
 		<text>It's a piece of cake getting a fragment of a snork in these parts.</text>
 	</string>
 	<string id="ecolog_monster_part_1_text">
-		<text>Oh, young man! You know, we feel a need for a part of the body of a specific creature. Your colleagues call it a zombie, and I must say, this is not a very successful name for a body that had modified itself so that... Anyway, we need its arm. I have to tell you: our team is working on implanting the extremities of... eh... zombies to those who have lost an arm or a leg for some reason. In addition, further down the line, we intend to use vital organs as well; however, for the time being, this is a purely theoretical issue. So, the arm! Would you be interested, young man?</text>
+		<text>We got acquainted with Semenov back in the university where I was giving lectures on genetics, and he was my student. Thus I became his scientific chief. Back then, we were only slightly unveiling the curtain of mystery of genome modification. So what was I saying? Oh, right. For genetic experiments we will need the samples of fresh cells of the muscular tissue of snork. You will have to search the bogs for this genic material. There is a hypothesis that snorks as species are the new level of human's evolution. In order to know this for sure, DNA test must be procured!</text>
 	</string>
 	<string id="ecolog_monster_part_2">
 		<text>Bring the eye of a flesh</text>
@@ -484,7 +484,7 @@
 		<text>Bring the leg of a boar</text>
 	</string>
 	<string id="ecolog_monster_part_4_descr">
-		<text>Gourmet thrillseekers… Alright, I'll get them some ham.</text>
+		<text>Gourmet thrillseekers... Alright, I'll get them some ham.</text>
 	</string>
 	<string id="ecolog_monster_part_4_text">
 		<text>Welcome, eh... traveler! I'm so glad you dropped by: we are in need of a man to take part in a highly important experiment. My colleague Brenter wants to try and cook a meal using local fauna for a practical experiment to study the influence of mutated protein on human body. For a start, we decided to try the boars. We need ham. A boar's leg, do you undestand? And if you agree to do it, please select the healthiest specimen.</text>
@@ -496,7 +496,7 @@
 		<text>What they are going to do with bloodsucker's jaw, I don't care. I care about how much they will give me for this rarity.</text>
 	</string>
 	<string id="ecolog_monster_part_5_text">
-		<text>Good news, dear stalker! We've been racking our brain over this one question: what makes snorks literally drift above the ground, crawl up the walls, jump amazing distances... And the solution turned out very simple, young man! Snorks panic at the sight of the ground! They suffer from geophobia! The receptors that developed at the tips of their extremities send a signal of the greatest irritation when in contact with the ground or any more or less horizontal surface. We need a sample of the snork's paw: we'll try to inject a vaccine that may relieve these poor creatures of this unusual disease.</text>
+		<text>Oh, stalker, glad to see you! Listen… You already met bloodsuckers in your adventures, right? If not, then we want it to happen. Bring us the lower jaw of the representative of this species, with all his so to say tableware. Unfortunately, I can't disclose the details of the experiment, besides it will negatively impact the stability of your psyche. We'll be waiting.</text>
 	</string>
 	<string id="eliminate_lager">
 		<text>Camp elimination.</text>
@@ -574,7 +574,7 @@
 		<text>Destroy the herd of boars and fleshes by the military warehouses.</text>
 	</string>
 	<string id="freedom_eliminate_camp_6_text">
-		<text>Our sniper sits at the entrance to the base. He sits there on the tower at night…it's quiet, night-time…and suddenly there's an explosion, wild screeching, a flash! What the!...It turns out, boars and fleshes got into the habit of wandering around by the minefield. The devil knows what makes them go there, but sure enough at least once every week one of those beasts gets torn up by a mine. The assignment is simple - kill all of those suckers off. Will you do it?</text>
+		<text>Our sniper sits at the entrance to the base. He sits there on the tower at night...it's quiet, night-time...and suddenly there's an explosion, wild screeching, a flash! What the!...It turns out, boars and fleshes got into the habit of wandering around by the minefield. The devil knows what makes them go there, but sure enough at least once every week one of those beasts gets torn up by a mine. The assignment is simple - kill all of those suckers off. Will you do it?</text>
 	</string>
 	<string id="freedom_eliminate_camp_7">
 		<text>Destroy the herd of rodents</text>
@@ -712,7 +712,7 @@
 		<text>The merc should pay for the assassination of each master. The fewer masters there are, the easier it is for the mercs.</text>
 	</string>
 	<string id="mercenary_kill_stalker_text">
-		<text>We're not interested in the fact that walking dreadnoughts might wander across the Zone: stalkers in exo-skeletons armed to the teeth. The work becomes even more dangerous and harder over this. The fewer of them there are – the better it is for us. Kill one of them – and receive your reward.</text>
+		<text>We're not interested in the fact that walking dreadnoughts might wander across the Zone: stalkers in exo-skeletons armed to the teeth. The work becomes even more dangerous and harder over this. The fewer of them there are - the better it is for us. Kill one of them - and receive your reward.</text>
 	</string>
 	<string id="monster_part">
 		<text>Get a part of a monster body.</text>
@@ -724,7 +724,7 @@
 		<text>One stalker, a former dutyer, who had a lot of important information about objects at Pripyat, recently came over to the Freedom side. He needs to be killed before he says too much.</text>
 	</string>
 	<string id="petrenko_kill_stalker_text">
-		<text>Listen here. We have maps of Pripyat - not up-to-date ones, but old ones, made in the early 90's. The most important thing on them is the marking of all military objects: underground warehouses, bomb shelters. Now there's little use from it, of course, but if we find a road to Pripyat, this information will become priceless. Here's the problem though. One of the officers went over to the Freedom side, and he knew about this information. Bottom line, he needs to be destroyed before he says too much.</text>
+		<text>Listen here. We have maps of Pripyat - not up-to-date ones, but old ones, made in the early 90's. The most important thing on them is the marking of all military objects: underground warehouses, bomb shelters. Now there's little use from it, of course, but if we find a road to Pripyat, this information will become priceless. Here's the problem though. One of the officers went over to the Freedom side, and he knew about this information. Bottom line, he needs to be silenced before he says too much.</text>
 	</string>
 	<string id="return_for_reward">
 		<text>Come back for the reward.</text>
@@ -826,7 +826,7 @@
 		<text>Eliminate the bandits at the Auto park. Apparently, they're new to the Zone, so the job is gonna be easy.</text>
 	</string>
 	<string id="tm_eliminate_camp_2_text">
-		<text>The bandits have been hanging around the Auto park again. So did you guess already what the job is about? Well then… jump to it! Pass our warmest greetings to them and come back, I'll thank you then. Deal?</text>
+		<text>The bandits have been hanging around the Auto park again. So did you guess already what the job is about? Well then... jump to it! Pass our warmest greetings to them and come back, I'll thank you then. Deal?</text>
 	</string>
 	<string id="tm_eliminate_camp_3">
 		<text>Eliminate the bandits by the Agroprom Research Institute.</text>
@@ -853,7 +853,7 @@
 		<text>Make the road to one of the best places in the Zone accessible to all.</text>
 	</string>
 	<string id="tm_eliminate_camp_5_text">
-		<text>Recently one of the best places in the Zone became inaccessible for lovers of the wonderful. At the Garbage…yeah, the Garbage, there's a quaint little place like nothing else, where all your sadness leaves you, where you forget about the dirt, about money, about blood. Forgot, that is, because now there are two dirty freaks sitting there, who threaten to kill anyone who doesn't pay them for being able to enter the place. Get rid of them - I have no other place to take the tourists.</text>
+		<text>Recently one of the best places in the Zone became inaccessible for lovers of the wonderful. At the Garbage...yeah, the Garbage, there's a quaint little place like nothing else, where all your sadness leaves you, where you forget about the dirt, about money, about blood. Forgot, that is, because now there are two dirty freaks sitting there, who threaten to kill anyone who doesn't pay them for being able to enter the place. Get rid of them - I have no other place to take the tourists.</text>
 	</string>
 	<string id="tm_eliminate_camp_6">
 		<text>Kill the bloodsucker in the Dark Valley</text>
@@ -880,7 +880,7 @@
 		<text>Find the Stone Flower artifact formed in the Springboard anomaly. The pay is supposed to be pretty good.</text>
 	</string>
 	<string id="tm_find_artefact_2_text">
-		<text>I have a request for the Stone Flower. The order is from the jewellers, by the way, so let's try to make the pretty ladies happy, eh? If you get it, you'll get the money and a bottle to drink to their health…</text>
+		<text>I have a request for the Stone Flower. The order is from the jewellers, by the way, so let's try to make the pretty ladies happy, eh? If you get it, you'll get the money and a bottle to drink to their health...</text>
 	</string>
 	<string id="tm_find_artefact_3">
 		<text>Find the Night Star artifact</text>
@@ -910,7 +910,7 @@
 		<text>Man, now there's a fad about using rigged weapons and nobody wants to shoot from normal weapons anymore, not even the newbies! Anyway, there's an order for an improved machine gun. Rumor has it the commander of the soldiers, the one who collects money for passing under the bridge, has a "Fort" with a fat cartridge clip. Will you get it?</text>
 	</string>
 	<string id="tm_freedom_has_no_job">
-		<text>There's no job right now, really…</text>
+		<text>There's no job right now, really...</text>
 	</string>
 	<string id="tm_freedom_job_ask">
 		<text>So what is it that you want to discuss?</text>
@@ -958,7 +958,7 @@
 		<text>Kill the trader stalker</text>
 	</string>
 	<string id="tm_kill_stalker_2_descr">
-		<text>Kill a stalker… Well, that's not the best job, lifting a hand against a fellow worker. But the pay is pretty good, and this may be what matters the most.</text>
+		<text>Kill a stalker... Well, that's not the best job, lifting a hand against a fellow worker. But the pay is pretty good, and this may be what matters the most.</text>
 	</string>
 	<string id="tm_kill_stalker_2_text">
 		<text>I'm having a confrontation with this one trader. Well, if he doesn't want to cooperate, the hell with him! But I won't let anyone start filthy rumors. In short, he needs to be wasted so the others don't get out of hand. Let them all know who's the boss here...</text>
@@ -967,10 +967,10 @@
 		<text>Kill the rookie stalker</text>
 	</string>
 	<string id="tm_kill_stalker_3_descr">
-		<text>Finish off a rookie stalker, who may not be a rookie at all… Then who is he? Ah, who cares! As long as the job's not messy.</text>
+		<text>Finish off a rookie stalker, who may not be a rookie at all... Then who is he? Ah, who cares! As long as the job's not messy.</text>
 	</string>
 	<string id="tm_kill_stalker_3_text">
-		<text>There's this one guy here loafing about, pretending to be a rookie, but he's rather weird… So anyway, if he suddenly disappears, you'll be doing me a great favor. You know what I mean?</text>
+		<text>There's this one guy here loafing about, pretending to be a rookie, but he's rather weird... So anyway, if he suddenly disappears, you'll be doing me a great favor. You know what I mean?</text>
 	</string>
 	<string id="tm_kill_stalker_4">
 		<text>Kill the stalker called Fiend</text>
@@ -988,7 +988,7 @@
 		<text>To kill a man preaching in the Zone against gathering and selling artifacts? Exactly.</text>
 	</string>
 	<string id="tm_kill_stalker_5_text">
-		<text>I always said business and religion can't go together, they can never cross, and should never ever meddle in the other's affairs! It's just this padre, Lord forgive me, Diodor... well... he just can't see this simple truth. He keeps raving about artifact hunting, says that trading in them drives people to sin not just in the Zone, but in the whole world, on and on along those lines. Get this, he preaches the destruction of artifacts altogether!! See what he is up to? The worst bit is that he's actually got some converts! I've tried to approach this Diodor this way and other, but he just keeps at it. Here's the deal: you're going to send him upstairs wher he can preach all he likes... you get the point, right? And I'll give you a cool artifact. So, we've got a deal?</text>
+		<text>I always said business and religion can't go together, they can never cross, and should never ever meddle in the other's affairs! It's just this padre, Lord forgive me, Diodor... well... he just can't see this simple truth. He keeps raving about artifact hunting, says that trading in them drives people to sin not just in the Zone, but in the whole world, on and on along those lines. Get this, he preaches the destruction of artifacts altogether! See what he is up to? The worst bit is that he's actually got some converts! I've tried to approach this Diodor this way and other, but he just keeps at it. Here's the deal: you're going to send him upstairs where he can preach all he likes... you get the point, right? And I'll give you a cool artifact. So, we've got a deal?</text>
 	</string>
 	<string id="tm_kill_stalker_6">
 		<text>Kill the "sales representative"</text>
@@ -997,7 +997,7 @@
 		<text>Kill the "sales representative". The trader is looking after his reputation</text>
 	</string>
 	<string id="tm_kill_stalker_6_text">
-		<text>Imagine this: there's some weirdo running around here who introduces himself to my sales representatives, uses my reputation, and then tries to hand off second-rate stuff! Broken barrells, the armor that's falling apart, expired canned goods. I've already had to deal with a few unhappy clients. Bottom line, I need a man to have a little chat with that "sales representative", whatever it takes.</text>
+		<text>Imagine this: there's some weirdo running around here who introduces himself as my sales representative, uses my reputation, and then tries to hand off second-rate stuff! Broken barrells, the armor that's falling apart, expired canned goods. I've already had to deal with a few unhappy clients. Bottom line, I need a man to have a little chat with that "sales representative", whatever it takes.</text>
 	</string>
 	<string id="tm_lisiy_has_no_job">
 		<text>For the moment there's nothing.</text>
@@ -1021,7 +1021,7 @@
 		<text>What task do you want to talk about?</text>
 	</string>
 	<string id="tm_mercenary_job_complete">
-		<text>Task complete… and here's the reward!</text>
+		<text>Task complete... and here's the reward!</text>
 	</string>
 	<string id="tm_mercenary_job_what">
 		<text>So what's with the task?</text>
@@ -1099,7 +1099,7 @@
 		<text>What job do you want to talk about?</text>
 	</string>
 	<string id="tm_trader_job_complete">
-		<text>Job's done… and here's the reward!</text>
+		<text>Job's done... and here's the reward!</text>
 	</string>
 	<string id="tm_trader_job_what">
 		<text>What about the job?</text>

@@ -76,7 +76,7 @@
 		<text>Eine starke Taschenlampe. Dank eines modernen Transformators wurde die Aufladezeit der Akkus verkürzt.</text>
 	</string>
 	<string id="enc_equipment_energydrink">
-		<text>Non-Stop ist ein hervorragender Energiedrink aus Koffein, Taurin und erfrischenden Vitaminen. Genau das Richtige, wenn man im Stehen einschläft!</text>
+		<text>Dies ist ein hervorragender Energiedrink aus Koffein, Taurin und erfrischenden Vitaminen. Genau das Richtige, wenn man im Stehen einschläft!</text>
 	</string>
 	<string id="enc_equipment_food_bread1">
 		<text>Schwer zu sagen, wer es schafft, in der Zone Brot zu backen, aber das Brot ist unverseucht und gut essbar. Jedenfalls hat sich noch kein Stalker darüber beschwert.</text>
@@ -100,7 +100,7 @@
 		<text>Ein Allzweck-Medkit. Man behandelt damit verschiedene Arten von Verletzungen - Wunden, Verbrennungen, Giftunfälle, usw.</text>
 	</string>
 	<string id="enc_equipment_medi_medkit2">
-		<text>Ein spezielles Medkit gegen physischen Schaden und Blutverlust. Darin enthalten sind ein blutgerinnendes Mittel, Antiobiotika, Immunstimulatoren und Schmerzmittel.</text>
+		<text>Ein spezielles Medkit gegen physischen Schaden und Blutverlust. Darin enthalten sind ein blutgerinnendes Mittel, Antibiotika, Immunstimulatoren und Schmerzmittel.</text>
 	</string>
 	<string id="enc_equipment_medi_medkit3">
 		<text>Medkit, speziell entworfen für die Zone. Das Kit enthält Mittel zur Wundheilung wie zur Eliminierung von Radionukliden aus dem Körper. Verhindert das Entstehen der Strahlenkrankheit und senkt die Dosis der gesamtabsorbierten Strahlung.</text>

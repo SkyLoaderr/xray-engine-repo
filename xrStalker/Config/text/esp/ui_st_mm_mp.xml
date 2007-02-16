@@ -10,10 +10,10 @@
 		<text>MAPA</text>
 	</string>
 	<string id="mm_mp_allowvoting">
-		<text>Permitir votaci n</text>
+		<text>Permitir votación</text>
 	</string>
 	<string id="mm_mp_anomalytime">
-		<text>Tiempo de anomal a (m n.)</text>
+		<text>Tiempo de anomalía (mín.)</text>
 	</string>
 	<string id="mm_mp_artefactcapture">
 		<text>Captura del artefacto</text>
@@ -22,16 +22,16 @@
 		<text>Desfase del artefacto (seg.)</text>
 	</string>
 	<string id="mm_mp_artefnum">
-		<text>N mero de artefactos</text>
+		<text>Número de artefactos</text>
 	</string>
 	<string id="mm_mp_artefstay">
-		<text>Vida del artefacto (m n.)</text>
+		<text>Vida del artefacto (mín.)</text>
 	</string>
 	<string id="mm_mp_autoteambalance">
-		<text>Equilibrar equipos autom ticamente</text>
+		<text>Equilibrar equipos automáticamente</text>
 	</string>
 	<string id="mm_mp_autoteamswap">
-		<text>Cambiar equipos autom ticamente</text>
+		<text>Cambiar equipos automáticamente</text>
 	</string>
 	<string id="mm_mp_avail_maps">
 		<text>MAPAS DISPONIBLES</text>
@@ -61,22 +61,22 @@
 		<text>Dedicado</text>
 	</string>
 	<string id="mm_mp_empty">
-		<text>Vac os</text>
+		<text>Vacíos</text>
 	</string>
 	<string id="mm_mp_filters">
 		<text>Filtros</text>
 	</string>
 	<string id="mm_mp_forcerespawn">
-		<text>Forzar reaparici n (seg.)</text>
+		<text>Forzar reaparición (seg.)</text>
 	</string>
 	<string id="mm_mp_fraglimit">
-		<text>L mite de frags</text>
+		<text>Límite de frags</text>
 	</string>
 	<string id="mm_mp_frags">
 		<text>Frags</text>
 	</string>
 	<string id="mm_mp_freezetime">
-		<text>Tiempo de inmovilizaci n</text>
+		<text>Tiempo de inmovilización</text>
 	</string>
 	<string id="mm_mp_friendlyfire">
 		<text>Fuego amigo</text>
@@ -106,25 +106,25 @@
 		<text>LAN</text>
 	</string>
 	<string id="mm_mp_listenservers">
-		<text>Vac os</text>
+		<text>Activo</text>
 	</string>
 	<string id="mm_mp_mapratation">
 		<text>Lista de mapas</text>
 	</string>
 	<string id="mm_mp_maxplayers">
-		<text>L mite de jugadores</text>
+		<text>Límite de jugadores</text>
 	</string>
 	<string id="mm_mp_network_connection">
-		<text>Conexi n en red</text>
+		<text>Conexión en red</text>
 	</string>
 	<string id="mm_mp_noanomalies">
-		<text>Sin anomal as</text>
+		<text>Sin anomalías</text>
 	</string>
 	<string id="mm_mp_options">
 		<text>Opciones</text>
 	</string>
 	<string id="mm_mp_password">
-		<text>Contrase a</text>
+		<text>Contraseña</text>
 	</string>
 	<string id="mm_mp_player_name">
 		<text>Nombre del jugador:</text>
@@ -133,10 +133,10 @@
 		<text>Jugadores</text>
 	</string>
 	<string id="mm_mp_publicserver">
-		<text>Servidor p blico</text>
+		<text>Servidor público</text>
 	</string>
 	<string id="mm_mp_quickrefresh">
-		<text>Actualizaci n r pida</text>
+		<text>Actualización rápida</text>
 	</string>
 	<string id="mm_mp_rateofchange">
 		<text>Velocidad de cambio</text>
@@ -148,7 +148,7 @@
 		<text>Refuerzos (seg.)</text>
 	</string>
 	<string id="mm_mp_respawnoptions">
-		<text>Opciones de reaparici n</text>
+		<text>Opciones de reaparición</text>
 	</string>
 	<string id="mm_mp_sel_maps">
 		<text>MAPAS SELECCIONADOS</text>
@@ -163,7 +163,7 @@
 		<text>Propiedades del servidor</text>
 	</string>
 	<string id="mm_mp_serverinfo">
-		<text>Informaci n del servidor</text>
+		<text>Información del servidor</text>
 	</string>
 	<string id="mm_mp_serverlist">
 		<text>Servidor</text>
@@ -172,7 +172,7 @@
 		<text>Nombre del servidor</text>
 	</string>
 	<string id="mm_mp_serversettings">
-		<text>Configuraci n del servidor</text>
+		<text>Configuración del servidor</text>
 	</string>
 	<string id="mm_mp_spectator">
 		<text>Espectador</text>
@@ -181,7 +181,7 @@
 		<text>Primera persona</text>
 	</string>
 	<string id="mm_mp_spectator_freefly">
-		<text>C mara libre</text>
+		<text>Cámara libre</text>
 	</string>
 	<string id="mm_mp_spectator_freelook">
 		<text>Bloqueada libre</text>
@@ -190,34 +190,34 @@
 		<text>Tercera persona</text>
 	</string>
 	<string id="mm_mp_spectator_options">
-		<text>Configuraci n del espectador</text>
+		<text>Configuración del espectador</text>
 	</string>
 	<string id="mm_mp_spectator_teamonly">
 		<text>Solo equipo</text>
 	</string>
 	<string id="mm_mp_startweather">
-		<text>Meteorolog a inicial</text>
+		<text>Meteorología inicial</text>
 	</string>
 	<string id="mm_mp_timelimit">
-		<text>L mite de tiempo (min.)</text>
+		<text>Límite de tiempo (min.)</text>
 	</string>
 	<string id="mm_mp_warmuptime">
 		<text>Tiempo de calentamiento (seg.)</text>
 	</string>
 	<string id="mm_mp_weatheroptions">
-		<text>Opciones meteorol gicas</text>
+		<text>Opciones meteorológicas</text>
 	</string>
 	<string id="mm_mp_withoutfriendlyfire">
 		<text>Sin fuego amigo</text>
 	</string>
 	<string id="mm_mp_withoutpassword">
-		<text>Sin contrase a</text>
+		<text>Sin contraseña</text>
 	</string>
 	<string id="mm_mp_withoutpunkbuster">
 		<text>Sin Punk Buster</text>
 	</string>
 	<string id="mm_mp_withpassword">
-		<text>Usar contrase a</text>
+		<text>Usar contraseña</text>
 	</string>
 	<string id="mp_vote_hint">
 		<text>Votos A FAVOR:[$$ACTION_VOTE_YES$$]\nVotos EN CONTRA:[$$ACTION_VOTE_NO$$]\nResultado:[$$ACTION_VOTE$$]</text>
@@ -230,5 +230,11 @@
 	</string>
 	<string id="server name">
 		<text>NOMBRE DEL SERVIDOR</text>
+	</string>
+	<string id="version">
+		<text>Versión</text>
+	</string>
+	<string id="st_mp_gsfilter">
+		<text>Filtro:</text>
 	</string>
 </string_table>

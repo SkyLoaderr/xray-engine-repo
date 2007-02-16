@@ -34,7 +34,7 @@
 		<text>Exoskeleton PNB-4UZ</text>
 	</string>
 	<string id="experienced">
-		<text>experienced</text>
+		<text>Experienced</text>
 	</string>
 	<string id="Found_PDA">
 		<text>Found PDA</text>
@@ -103,7 +103,7 @@
 		<text>neutral</text>
 	</string>
 	<string id="novice">
-		<text>rookie</text>
+		<text>Rookie</text>
 	</string>
 	<string id="st_no_active_task">
 		<text>No active task</text>
@@ -136,7 +136,7 @@
 		<text>reputation</text>
 	</string>
 	<string id="very_bad">
-		<text>very bad</text>
+		<text>Very bad</text>
 	</string>
 	<string id="very_good">
 		<text>very good</text>
@@ -230,5 +230,23 @@
 	</string>
 	<string id="st_mp_voting_failed">
 		<text>Voting failed!</text>
+	</string>
+	<string id="l03u_agr_underground">
+		<text>Agroprom Underground</text>
+	</string>
+	<string id="l04u_labx18">
+		<text>Lab X-18</text>
+	</string>
+	<string id="l08u_brainlab">
+		<text>Lab X-16</text>
+	</string>
+	<string id="l10u_bunker">
+		<text>Lab X-10</text>
+	</string>
+	<string id="l12u_sarcofag">
+		<text>Sarcophagus</text>
+	</string>
+	<string id="l12u_control_monolith">
+		<text>Monolith control unit</text>
 	</string>
 </string_table>

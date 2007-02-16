@@ -2,7 +2,7 @@
 		<text>Tuer les bandits de l'usine</text>
 	</string>
 	<string id="esc_bandits_on_factory_0">
-		<text>Tuer les bandits planqu s dans l'usine.</text>
+		<text>Tuer les bandits planqués dans l'usine.</text>
 	</string>
 	<string id="esc_bandits_on_factory_1">
 		<text>Tuer tous les bandits de l'usine</text>
@@ -14,25 +14,25 @@
 		<text>Parler au loup</text>
 	</string>
 	<string id="esc_blockpost_case_to_trader">
-		<text>Voler la bo te   l'avant-poste militaire</text>
+		<text>Voler la boîte à l'avant-poste militaire</text>
 	</string>
 	<string id="esc_blockpost_case_to_trader_0">
-		<text>Voler la bo te contenant d'important documents   l'avant-poste militaire.</text>
+		<text>Voler la boîte contenant d'important documents à l'avant-poste militaire.</text>
 	</string>
 	<string id="esc_blockpost_case_to_trader_1">
-		<text>Voler la bo te   l'avant-poste militaire</text>
+		<text>Voler la boîte à l'avant-poste militaire</text>
 	</string>
 	<string id="esc_blockpost_case_to_trader_2">
-		<text>Apporter la bo te au marchand</text>
+		<text>Apporter la boîte au marchand</text>
 	</string>
 	<string id="esc_defend_lager_from_killers">
-		<text>Prot ger le camp des nouveaux des Mercenaires</text>
+		<text>Protéger le camp des nouveaux des Mercenaires</text>
 	</string>
 	<string id="esc_defend_lager_from_killers_0">
-		<text>Prot ger le camp des nouveaux des Mercenaires.</text>
+		<text>Protéger le camp des nouveaux des Mercenaires.</text>
 	</string>
 	<string id="esc_defend_lager_from_killers_1">
-		<text> liminer les Mercenaires.</text>
+		<text>Éliminer les Mercenaires.</text>
 	</string>
 	<string id="esc_defend_lager_from_killers_2">
 		<text>Parler au commandant des nouveaux</text>
@@ -53,10 +53,10 @@
 		<text>Parler au Loup</text>
 	</string>
 	<string id="esc_help_wounded_from_raid">
-		<text>Se renseigner aupr s de Fox sur Strelok</text>
+		<text>Se renseigner auprès de Fox sur Strelok</text>
 	</string>
 	<string id="esc_help_wounded_from_raid_0">
-		<text>Aider le Stalker bless </text>
+		<text>Aider le Stalker blessé</text>
 	</string>
 	<string id="esc_help_wounded_from_raid_1">
 		<text>Aider Fox</text>
@@ -71,10 +71,10 @@
 		<text>Livrer le paquet au marchand. Il sera en mesure de t'aider.</text>
 	</string>
 	<string id="garbage_meet_stalker">
-		<text>Rencontrer le Grison.</text>
+		<text>Rencontrer Seriy.</text>
 	</string>
 	<string id="garbage_meet_stalker_0">
-		<text>Rencontrer le Grison   la D charge.</text>
+		<text>Rencontrer le Grison à la Décharge.</text>
 	</string>
 	<string id="meet_with_doctor">
 		<text>Rencontrer le Doc.</text>
@@ -83,7 +83,7 @@
 		<text>Rencontrer le Doc.</text>
 	</string>
 	<string id="meet_with_doctor_2">
-		<text>Rencontrer le Doc   la planque de Strelok</text>
+		<text>Rencontrer le Doc à la planque de Strelok</text>
 	</string>
 	<string id="storyline_escape_eliminate_gunslinger">
 		<text>Tuer Strelok</text>
@@ -104,25 +104,25 @@
 		<text>Prendre l'artefact au marchand.</text>
 	</string>
 	<string id="tutorial_help_wounded">
-		<text>Se renseigner aupr s de l' claireur</text>
+		<text>Se renseigner auprès de l'éclaireur</text>
 	</string>
 	<string id="tutorial_help_wounded_0">
-		<text>Se renseigner aupr s du marchand</text>
+		<text>Se renseigner auprès du marchand</text>
 	</string>
 	<string id="tutorial_help_wounded_1">
 		<text>Parler au Loup</text>
 	</string>
 	<string id="tutorial_help_wounded_2">
-		<text>R cup rer la cl  USB aupr s d'Allegro</text>
+		<text>Récupérer la clé USB auprès d'Allegro</text>
 	</string>
 	<string id="tutorial_help_wounded_3">
-		<text>R cup rer la cl  USB aupr s du marchand</text>
+		<text>Récupérer la clé USB auprès du marchand</text>
 	</string>
 	<string id="esc_trader_job">
 		<text>Travaillez pour le marchand</text>
 	</string>
 	<string id="esc_trader_job_text">
-		<text>Obtenez la mission sp ciale du marchand</text>
+		<text>Obtenez la mission spéciale du marchand</text>
 	</string>
 	<string id="bar_barman_job">
 		<text>Travaillez pour le Barman</text>
@@ -140,11 +140,11 @@
 		<text>Allez vers le remblai</text>
 	</string>
 	<string id="find_railroad_passage_1">
-		<text>Rencontrez le guide</text>
+		<text>Rencontrer le guide</text>
 	</string>
 	<string id="find_railroad_passage_2">
-		<text>Traversez le remblai</text>
+		<text>Traverser le remblai</text>
 	</string>
 	<string id="find_railroad_passage_text">
-		<text>Avant de p n trer dans la Zone, il est n cessaire de traverser le vieux remblai. Le seul passage s r est gard  par les militaires. Mais il y a un petit tunnel sur la gauche, les nouveaux passent par l  en g n ral. L -bas, un de mes hommes t'attendra.</text>
+		<text>Avant de pénétrer dans la Zone, il est nécessaire de traverser le vieux remblai. Le seul passage sûr est gardé par les militaires. Mais il y a un petit tunnel sur la gauche, les nouveaux passent par là en général. Là-bas, un de mes hommes t'attendra.</text>
 	</string>

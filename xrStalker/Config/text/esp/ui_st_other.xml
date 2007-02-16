@@ -4,7 +4,7 @@
 		<text>Dinero</text>
 	</string>
 	<string id="mm_mp_pda_hunt">
-		<text>Bonificaci n de la PDA</text>
+		<text>Bonificación de la PDA</text>
 	</string>
 	<string id="st_drink">
 		<text>beber</text>
@@ -40,31 +40,31 @@
 		<text>Aceptar</text>
 	</string>
 	<string id="ui_st_btn_yes">
-		<text>S </text>
+		<text>Sí</text>
 	</string>
 	<string id="ui_st_cant_run_r2">
 		<text>No es posible ejecutar Render 2 en el PC</text>
 	</string>
 	<string id="ui_st_conn_invalid_host">
-		<text>Error de conexi n: alojamiento no v lido</text>
+		<text>Error de conexión: alojamiento no válido</text>
 	</string>
 	<string id="ui_st_conn_invalid_pass">
-		<text>Error de conexi n: contrase a no v lida</text>
+		<text>Error de conexión: contraseña no válida</text>
 	</string>
 	<string id="ui_st_conn_rejected_server">
-		<text>Error de conexi n: conexi n rechazada por el servidor</text>
+		<text>Error de conexión: conexión rechazada por el servidor</text>
 	</string>
 	<string id="ui_st_conn_sess_full">
-		<text>Error de conexi n: la sesi n est  completa</text>
+		<text>Error de conexión: la sesión está completa</text>
 	</string>
 	<string id="ui_st_days">
-		<text>D as</text>
+		<text>Días</text>
 	</string>
 	<string id="ui_st_error">
 		<text>Error</text>
 	</string>
 	<string id="ui_st_file_exist_owerwrite_q">
-		<text>Ya existe un archivo con este nombre.  Quieres sobrescribirlo?</text>
+		<text>Ya existe un archivo con este nombre. ¿Quieres sobrescribirlo?</text>
 	</string>
 	<string id="ui_st_file_name_is_empty">
 		<text>El archivo no tiene nombre</text>
@@ -82,7 +82,7 @@
 		<text>meses</text>
 	</string>
 	<string id="ui_st_params">
-		<text>Par metros</text>
+		<text>Parámetros</text>
 	</string>
 	<string id="ui_st_secs">
 		<text>segundos</text>
@@ -97,19 +97,19 @@
 		<text>Restante</text>
 	</string>
 	<string id="ui_st_trade">
-		<text>Negocio</text>
+		<text>Negociar</text>
 	</string>
 	<string id="ui_st_voting_disabled">
-		<text>Votaci n deshabilitada</text>
+		<text>Votación deshabilitada</text>
 	</string>
 	<string id="ui_st_want_to_leave_game_q">
-		<text> Seguro que quieres salir del juego?</text>
+		<text>¿Seguro que quieres salir del juego?</text>
 	</string>
 	<string id="ui_st_your_items">
 		<text>Tus objetos</text>
 	</string>
 	<string id="st_game_over_press_jump">
-		<text>Presiona ($$ACTION_JUMP$$) para volver al men  principal</text>
+		<text>Presiona ($$ACTION_JUMP$$) para volver al menú principal</text>
 	</string>
 	<string id="st_level">
 		<text>Nivel</text>
@@ -121,7 +121,7 @@
 		<text>Cargando CFORM</text>
 	</string>
 	<string id="st_prefetching_objects">
-		<text>Buscando objetos con antelaci n</text>
+		<text>Buscando objetos con antelación</text>
 	</string>
 	<string id="st_creating_new_game">
 		<text>Creando juego nuevo</text>
@@ -160,7 +160,7 @@
 		<text>Cargando tonos</text>
 	</string>
 	<string id="st_loading_geometry">
-		<text>Cargando geometr a</text>
+		<text>Cargando geometría</text>
 	</string>
 	<string id="st_loading_spatial_db">
 		<text>Cargando base de datos espacial</text>
@@ -170,5 +170,35 @@
 	</string>
 	<string id="st_loading_sectors_portals">
 		<text>Cargando sectores y portales</text>
+	</string>
+	<string id="ui_st_conn_version_differs">
+		<text>Error de conexión:                Versión diferente.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_invalid">
+		<text>Error de conexión:                Clave de CD no válida.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_in_use">
+		<text>Error de conexión:                Clave de CD en uso.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_disabled">
+		<text>Error de conexión:                Clave de CD desactivada.    Contactar con el servicio de atención al cliente.</text>
+	</string>
+	<string id="ui_st_conn_new_patch">
+		<text>Nuevo patch disponible.\n Versión: %s\n Localización: %s\n¿Descargar ahora?</text>
+	</string>
+	<string id="ui_st_conn_no_new_patch">
+		<text>No hay nuevos patch disponibles.</text>
+	</string>
+	<string id="ui_mm_delete_existing_file_q">
+		<text>¿Seguro que quieres eliminar este archivo?</text>
+	</string>
+	<string id="st_game_paused">
+		<text>Pausa</text>
+	</string>
+	<string id="st_bolt">
+		<text>Tornillo</text>
+	</string>
+	<string id="st_items">
+		<text>Objetos</text>
 	</string>
 </string_table>

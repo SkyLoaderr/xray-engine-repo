@@ -2,13 +2,13 @@
 		<text>Borov</text>
 	</string>
 	<string id="bar_darklab_documents_2_hint">
-		<text>T nel</text>
+		<text>Túnel</text>
 	</string>
 	<string id="bar_darklab_documents_3_hint">
 		<text>Entrada del laboratorio</text>
 	</string>
 	<string id="bar_darklab_documents_4_hint">
-		<text>Tuber a</text>
+		<text>Tubería</text>
 	</string>
 	<string id="bar_darklab_documents2_1_hint">
 		<text>Documentos del laboratorio</text>
@@ -41,10 +41,10 @@
 		<text>Granja.\nComprar Gauss.</text>
 	</string>
 	<string id="val_zone_monolith_hint">
-		<text>Vieja f brica</text>
+		<text>Vieja fábrica</text>
 	</string>
 	<string id="val_zone_pipe_hint">
-		<text>Tuber a de la alcantarilla</text>
+		<text>Tubería de la alcantarilla</text>
 	</string>
 	<string id="val_zone_robbers_hint">
 		<text>Granja de cerdos abandonada</text>

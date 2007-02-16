@@ -121,7 +121,7 @@
 		<text>Il giocatore %s è il vincitore!</text>
 	</string>
 	<string id="mp_players">
-		<text>Giocatori</text>
+		<text>Gioc.</text>
 	</string>
 	<string id="mp_press_fire2spectator">
 		<text>Premi Spara per passare alla modallità Spettatore</text>

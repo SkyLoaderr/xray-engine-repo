@@ -7,22 +7,22 @@
 		<text>par temps nuageux</text>
 	</string>
 	<string id="Default">
-		<text>interm diaire</text>
+		<text>intermédiaire</text>
 	</string>
 	<string id="Extreme">
 		<text>maximum</text>
 	</string>
 	<string id="gd_master">
-		<text>ma tre</text>
+		<text>maître</text>
 	</string>
 	<string id="gd_novice">
-		<text>d butant</text>
+		<text>débutant</text>
 	</string>
 	<string id="gd_stalker">
 		<text>Stalker</text>
 	</string>
 	<string id="gd_veteran">
-		<text>v t ran</text>
+		<text>vétéran</text>
 	</string>
 	<string id="High">
 		<text>maximum</text>
@@ -34,7 +34,7 @@
 		<text>minimum</text>
 	</string>
 	<string id="mm_mp_check_cdkey">
-		<text>v rifier le num ro de s rie</text>
+		<text>vérifier le numéro de série</text>
 	</string>
 	<string id="Nigth">
 		<text>nuit</text>
@@ -43,37 +43,37 @@
 		<text>pluvieux</text>
 	</string>
 	<string id="renderer_r1">
-		<text> clairage statique</text>
+		<text>Éclairage statique</text>
 	</string>
 	<string id="renderer_r2">
-		<text> clairage dynamique complet</text>
+		<text>Éclairage dynamique complet</text>
 	</string>
 	<string id="renderer_r2a">
-		<text> clairage dynamique des objets</text>
+		<text>Éclairage dynamique des objets</text>
 	</string>
 	<string id="st_artefacthunt">
 		<text>Chasse aux artefacts</text>
 	</string>
 	<string id="st_deathmatch">
-		<text>Match   mort</text>
+		<text>Match à mort</text>
 	</string>
 	<string id="st_rank_experienced">
-		<text>exp riment </text>
+		<text>Expérimenté</text>
 	</string>
 	<string id="st_rank_legend">
-		<text>Stalker l gendaire</text>
+		<text>Stalker légendaire</text>
 	</string>
 	<string id="st_rank_novice">
-		<text>d butant</text>
+		<text>débutant</text>
 	</string>
 	<string id="st_rank_professional">
 		<text>professionnel</text>
 	</string>
 	<string id="st_rank_veteran">
-		<text>v t ran</text>
+		<text>Vétéran</text>
 	</string>
 	<string id="st_team_deathmatch">
-		<text>Jeu en  quipe</text>
+		<text>Jeu en équipe</text>
 	</string>
 	<string id="testers_mp_agroprom">
 		<text>Usine "Agroprom"</text>
@@ -82,16 +82,16 @@
 		<text>Parking</text>
 	</string>
 	<string id="testers_mp_darkvalley">
-		<text>Vall e obscure</text>
+		<text>Vallée obscure</text>
 	</string>
 	<string id="testers_mp_factory">
 		<text>Usine de "Yantar"</text>
 	</string>
 	<string id="testers_mp_lost_village">
-		<text>Village d sert </text>
+		<text>Village déserté</text>
 	</string>
 	<string id="testers_mp_military_1">
-		<text>Entrep ts militaires</text>
+		<text>Entrepôts militaires</text>
 	</string>
 	<string id="testers_mp_pool">
 		<text>Bassin</text>
@@ -103,16 +103,16 @@
 		<text>Usine de "Rostok"</text>
 	</string>
 	<string id="testers_mp_workshop">
-		<text>Usine d saffect e</text>
+		<text>Usine désaffectée</text>
 	</string>
 	<string id="ui_mm_60_hz">
-		<text>Fr quence 60Hz</text>
+		<text>Fréquence 60Hz</text>
 	</string>
 	<string id="ui_mm_action">
 		<text>action</text>
 	</string>
 	<string id="ui_mm_advanced">
-		<text>Avanc </text>
+		<text>Avancé</text>
 	</string>
 	<string id="ui_mm_anisotropic">
 		<text>Filtrage des textures</text>
@@ -121,7 +121,7 @@
 		<text>Utiliser</text>
 	</string>
 	<string id="ui_mm_back">
-		<text>Arri re</text>
+		<text>Retour</text>
 	</string>
 	<string id="ui_mm_blood">
 		<text>Sang</text>
@@ -139,31 +139,31 @@
 		<text>Commandes</text>
 	</string>
 	<string id="ui_mm_credits">
-		<text>Cr dits</text>
+		<text>Crédits</text>
 	</string>
 	<string id="ui_mm_crosshair_distance">
-		<text>Distance cible sur le r ticule</text>
+		<text>Distance cible sur le réticule</text>
 	</string>
 	<string id="ui_mm_delete">
 		<text>Supprimer</text>
 	</string>
 	<string id="ui_mm_difficulty">
-		<text>Difficult </text>
+		<text>Difficulté</text>
 	</string>
 	<string id="ui_mm_disconnect">
-		<text>D connexion</text>
+		<text>Déconnexion</text>
 	</string>
 	<string id="ui_mm_disconnect_message">
-		<text>Voulez-vous vraiment vous d connecter ?</text>
+		<text>Voulez-vous vraiment vous déconnecter ?</text>
 	</string>
 	<string id="ui_mm_dyn_crosshair">
-		<text>R ticule dynamique</text>
+		<text>Réticule dynamique</text>
 	</string>
 	<string id="ui_mm_eax">
 		<text>EAX</text>
 	</string>
 	<string id="ui_mm_fullscreen">
-		<text>Plein  cran</text>
+		<text>Plein écran</text>
 	</string>
 	<string id="ui_mm_gameplay">
 		<text>Partie</text>
@@ -172,10 +172,10 @@
 		<text>Gamma</text>
 	</string>
 	<string id="ui_mm_geometry_lod">
-		<text>D tail des objets</text>
+		<text>Détail des objets</text>
 	</string>
 	<string id="ui_mm_invert_mouse">
-		<text>Souris invers e</text>
+		<text>Souris inversée</text>
 	</string>
 	<string id="ui_mm_key">
 		<text>bouton</text>
@@ -184,10 +184,10 @@
 		<text>Configuration du clavier</text>
 	</string>
 	<string id="ui_mm_last_save">
-		<text>Derni re sauvegarde</text>
+		<text>Dernière sauvegarde</text>
 	</string>
 	<string id="ui_mm_light_distance">
-		<text>Distance d' clairage</text>
+		<text>Distance d'éclairage</text>
 	</string>
 	<string id="ui_mm_load">
 		<text>Charger</text>
@@ -196,31 +196,31 @@
 		<text>Charger partie</text>
 	</string>
 	<string id="ui_mm_master">
-		<text>Ma tre</text>
+		<text>Maître</text>
 	</string>
 	<string id="ui_mm_master_volume">
 		<text>Volume</text>
 	</string>
 	<string id="ui_mm_mouse_sense">
-		<text>Sensibilit  de la souris</text>
+		<text>Sensibilité de la souris</text>
 	</string>
 	<string id="ui_mm_multiplayer">
-		<text>PARTIE EN R SEAU</text>
+		<text>PARTIE EN RÉSEAU</text>
 	</string>
 	<string id="ui_mm_multiplayer_n">
-		<text>Partie en r seau</text>
+		<text>Partie en réseau</text>
 	</string>
 	<string id="ui_mm_music_volume">
 		<text>Volume de la musique</text>
 	</string>
 	<string id="ui_mm_need_restart">
-		<text>Les modifications ne seront appliqu es qu'apr s le red marrage du jeu.</text>
+		<text>Les modifications ne seront appliquées qu'après le redémarrage du jeu.</text>
 	</string>
 	<string id="ui_mm_newgame">
 		<text>Nouvelle partie</text>
 	</string>
 	<string id="ui_mm_novice">
-		<text>D butant</text>
+		<text>Débutant</text>
 	</string>
 	<string id="ui_mm_npc_torch">
 		<text>PNJ avec lampe de poche</text>
@@ -235,37 +235,37 @@
 		<text>Distance des particules</text>
 	</string>
 	<string id="ui_mm_quality_presets">
-		<text>Param tres de qualit </text>
+		<text>Paramètres de qualité</text>
 	</string>
 	<string id="ui_mm_quit_game">
-		<text>Quitter le jeu</text>
+		<text>Quitter partie</text>
 	</string>
 	<string id="ui_mm_quit_game_message">
 		<text>Voulez-vous vraiment quitter le jeu ?</text>
 	</string>
 	<string id="ui_mm_quit_windows_message">
-		<text>Voulez-vous vraiment revenir   Windows ?</text>
+		<text>Voulez-vous vraiment revenir à Windows ?</text>
 	</string>
 	<string id="ui_mm_quit2windows">
-		<text>Revenir   Windows</text>
+		<text>Retour à Windows</text>
 	</string>
 	<string id="ui_mm_renderer">
 		<text>Rendu</text>
 	</string>
 	<string id="ui_mm_resolution">
-		<text>R solution</text>
+		<text>Résolution</text>
 	</string>
 	<string id="ui_mm_return_game">
-		<text>Reprendre la partie</text>
+		<text>Reprendre</text>
 	</string>
 	<string id="ui_mm_save">
 		<text>Sauvegarder</text>
 	</string>
 	<string id="ui_mm_save_game">
-		<text>Sauvegarder la partie</text>
+		<text>Sauvegarder</text>
 	</string>
 	<string id="ui_mm_show_crosshair">
-		<text>Afficher le r ticule</text>
+		<text>Afficher le réticule</text>
 	</string>
 	<string id="ui_mm_show_weapon">
 		<text>Afficher l'arme</text>
@@ -277,31 +277,31 @@
 		<text>Audio</text>
 	</string>
 	<string id="ui_mm_sound_quality">
-		<text>Qualit  audio</text>
+		<text>Qualité audio</text>
 	</string>
 	<string id="ui_mm_stalker">
 		<text>Stalker</text>
 	</string>
 	<string id="ui_mm_sun_quality">
-		<text>Qualit  des ombres</text>
+		<text>Qualité des ombres</text>
 	</string>
 	<string id="ui_mm_supersample">
-		<text>Anticr nelage</text>
+		<text>Anticrènelage</text>
 	</string>
 	<string id="ui_mm_switch_torch">
 		<text>L'IA utilise les lampes de poche</text>
 	</string>
 	<string id="ui_mm_texture_quality">
-		<text>D tail des textures</text>
+		<text>Détail des textures</text>
 	</string>
 	<string id="ui_mm_tips">
 		<text>Identification de PNJ</text>
 	</string>
 	<string id="ui_mm_veteran">
-		<text>V t ran</text>
+		<text>Vétéran</text>
 	</string>
 	<string id="ui_mm_video">
-		<text>Vid o</text>
+		<text>Vidéo</text>
 	</string>
 	<string id="ui_mm_vis_distance">
 		<text>Distance de vision</text>
@@ -310,19 +310,19 @@
 		<text>Synchronisation verticale</text>
 	</string>
 	<string id="ui_st_last_set">
-		<text>Derniers param tres pr d finis</text>
+		<text>Derniers paramètres prédéfinis</text>
 	</string>
 	<string id="ui_st_preset1">
-		<text>Param tres pr d finis 1</text>
+		<text>Paramètres prédéfinis 1</text>
 	</string>
 	<string id="ui_st_preset2">
-		<text>Param tres pr d finis 2</text>
+		<text>Paramètres prédéfinis 2</text>
 	</string>
 	<string id="ui_st_preset3">
-		<text>Param tres pr d finis 3</text>
+		<text>Paramètres prédéfinis 3</text>
 	</string>
 	<string id="ui_st_reset">
-		<text>R initialiser</text>
+		<text>Réinitialiser</text>
 	</string>
 	<string id="ui_st_sell_all">
 		<text>Tout vendre</text>

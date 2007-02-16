@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="mp_art_destroyed">
-		<text>L'artefact a  t  d truit.</text>
+		<text>L'artefact a йtй dйtruit.</text>
 	</string>
 	<string id="mp_art_spowned">
-		<text>L'artefact a  t  g n r . Rapportez-le   la base pour marquer un point.</text>
+		<text>L'artefact a йtй gйnйrй. Rapportez-le а la base pour marquer un point.</text>
 	</string>
 	<string id="mp_artefacts">
 		<text>Artefacts </text>
@@ -13,10 +13,10 @@
 		<text>Artefacts</text>
 	</string>
 	<string id="mp_auto_select">
-		<text>S lection automatique</text>
+		<text>Sйlection automatique</text>
 	</string>
 	<string id="mp_back">
-		<text>Arri re</text>
+		<text>Retour</text>
 	</string>
 	<string id="mp_ban">
 		<text>Interdire</text>
@@ -31,13 +31,13 @@
 		<text>Changer de carte</text>
 	</string>
 	<string id="mp_change_weather">
-		<text>Changer la m t o</text>
+		<text>Changer la mйtйo</text>
 	</string>
 	<string id="mp_chat">
 		<text>Chat</text>
 	</string>
 	<string id="mp_connected">
-		<text>connect </text>
+		<text>connectй</text>
 	</string>
 	<string id="mp_deaths">
 		<text>morts</text>
@@ -46,7 +46,7 @@
 		<text>Description</text>
 	</string>
 	<string id="mp_disconnected">
-		<text>d connect </text>
+		<text>dйconnectй</text>
 	</string>
 	<string id="mp_enter_text">
 		<text>Entrez un texte pour le vote</text>
@@ -55,7 +55,7 @@
 		<text>a rejoint la partie</text>
 	</string>
 	<string id="mp_first_eye">
-		<text>(vue Premi re personne)</text>
+		<text>(vue Premiиre personne)</text>
 	</string>
 	<string id="mp_frags">
 		<text>frags</text>
@@ -64,10 +64,10 @@
 		<text>Frags</text>
 	</string>
 	<string id="mp_free_fly">
-		<text>(Cam ra libre)</text>
+		<text>(Camйra libre)</text>
 	</string>
 	<string id="mp_free_look">
-		<text>(vue Troisi me personne)</text>
+		<text>(vue Troisiиme personne)</text>
 	</string>
 	<string id="mp_from">
 		<text>avec</text>
@@ -76,7 +76,7 @@
 		<text>GO !</text>
 	</string>
 	<string id="mp_has_drop_art">
-		<text>a abandonn  l'artefact %s</text>
+		<text>a abandonnй l'artefact %s</text>
 	</string>
 	<string id="mp_has_tak_art">
 		<text>a pris l'artefact %s</text>
@@ -85,22 +85,22 @@
 		<text>Mercenaires</text>
 	</string>
 	<string id="mp_is_now">
-		<text>est d sormais</text>
+		<text>est dйsormais</text>
 	</string>
 	<string id="mp_joined">
 		<text>a rejoint</text>
 	</string>
 	<string id="mp_kick">
-		<text>Abandonner</text>
+		<text>Lвcher</text>
 	</string>
 	<string id="mp_look_at">
-		<text>(Troisi me personne libre)</text>
+		<text>(Troisiиme personne libre)</text>
 	</string>
 	<string id="mp_map_desc">
 		<text>Description de la carte</text>
 	</string>
 	<string id="mp_match_started">
-		<text>Match commenc  !</text>
+		<text>Match commencй !</text>
 	</string>
 	<string id="mp_modes">
 		<text>Modes</text>
@@ -112,13 +112,13 @@
 		<text>Suivant(e)</text>
 	</string>
 	<string id="mp_no_voted">
-		<text>N'ont pas vot </text>
+		<text>N'ont pas votй</text>
 	</string>
 	<string id="mp_ping">
 		<text>ping</text>
 	</string>
 	<string id="mp_player_wins">
-		<text>Le joueur %s a gagn  le match !</text>
+		<text>Le joueur %s a gagnй le match !</text>
 	</string>
 	<string id="mp_players">
 		<text>Joueurs</text>
@@ -127,55 +127,55 @@
 		<text>Appuyez sur Tirer pour passer en mode Spectateur</text>
 	</string>
 	<string id="mp_press_jump2pay_spaw">
-		<text>Appuyez sur Sauter pour acheter une r g n ration instantan e</text>
+		<text>Appuyez sur Sauter pour acheter une rйgйnйration instantanйe</text>
 	</string>
 	<string id="mp_press_jump2select_skin">
-		<text>Appuyez sur Sauter pour s lectionner une apparence</text>
+		<text>Appuyez sur Sauter pour sйlectionner une apparence</text>
 	</string>
 	<string id="mp_press_jump2select_team">
-		<text>Appuyez sur Sauter pour s lectionner les  quipes</text>
+		<text>Appuyez sur Sauter pour sйlectionner les йquipes</text>
 	</string>
 	<string id="mp_press_jump2spawn">
-		<text>Appuyez sur Sauter pour vous r g n rer</text>
+		<text>Appuyez sur Sauter pour vous rйgйnйrer</text>
 	</string>
 	<string id="mp_press_jump2start">
 		<text>Appuyez sur Sauter pour commencer</text>
 	</string>
 	<string id="mp_press_to_buy">
-		<text>Appuyez sur ($$ACTION_BUY_MENU$$) pour acc der au menu Marchander</text>
+		<text>Appuyez sur ($$ACTION_BUY_MENU$$) pour accйder au menu Marchander</text>
 	</string>
 	<string id="mp_press_yes2pay">
-		<text>Vous avez %d $. Vous pouvez vous r g n rer pour %d $. Cliquez sur Oui pour payer.</text>
+		<text>Vous avez %d $. Vous pouvez vous rйgйnйrer pour %d $. Cliquez sur Oui pour payer.</text>
 	</string>
 	<string id="mp_ready">
-		<text>Pr t…</text>
+		<text>Prкt...</text>
 	</string>
 	<string id="mp_restart">
-		<text>Red marrer</text>
+		<text>Redйmarrer</text>
 	</string>
 	<string id="mp_restart_fast">
-		<text>Red marrage rapide</text>
+		<text>Redйmarrage rapide</text>
 	</string>
 	<string id="mp_scores">
-		<text>un point marqu </text>
+		<text>un point marquй</text>
 	</string>
 	<string id="mp_select_ban">
-		<text>S lectionnez le joueur   interdire en votant</text>
+		<text>Sйlectionnez le joueur а interdire en votant</text>
 	</string>
 	<string id="mp_select_category">
-		<text>S lectionnez la cat gorie de vote</text>
+		<text>Sйlectionnez la catйgorie de vote</text>
 	</string>
 	<string id="mp_select_kick">
-		<text>S lectionnez le joueur   expulser en votant</text>
+		<text>Sйlectionnez le joueur а expulser en votant</text>
 	</string>
 	<string id="mp_select_kick_player">
-		<text>S lectionnez le joueur   expulser en votant</text>
+		<text>Sйlectionnez le joueur а expulser en votant</text>
 	</string>
 	<string id="mp_select_map">
-		<text>S lectionnez la carte pour le vote</text>
+		<text>Sйlectionnez la carte pour le vote</text>
 	</string>
 	<string id="mp_skin_selection">
-		<text>S lection de l'apparence</text>
+		<text>Sйlection de l'apparence</text>
 	</string>
 	<string id="mp_spectator">
 		<text>Spectateur</text>
@@ -187,25 +187,25 @@
 		<text>statut</text>
 	</string>
 	<string id="mp_switched_to">
-		<text>est pass   </text>
+		<text>est passй а</text>
 	</string>
 	<string id="mp_team_free_stalkers">
-		<text>Libert </text>
+		<text>Libertй</text>
 	</string>
 	<string id="mp_team_selection">
-		<text>S lection de l' quipe</text>
+		<text>Sйlection de l'йquipe</text>
 	</string>
 	<string id="mp_team_wins">
-		<text>L' quipe %s A GAGN  !</text>
+		<text>L'йquipe %s A GAGNЙ !</text>
 	</string>
 	<string id="mp_text">
 		<text>Texte</text>
 	</string>
 	<string id="mp_time2respawn">
-		<text>Temps restant avant la r g n ration</text>
+		<text>Temps restant avant la rйgйnйration</text>
 	</string>
 	<string id="mp_time2start">
-		<text>Temps restant avant le d marrage :</text>
+		<text>Temps restant avant le dйmarrage :</text>
 	</string>
 	<string id="mp_timeleft">
 		<text>Temps restant : %d:%d; D'accord : %.2f%</text>
@@ -217,7 +217,7 @@
 		<text>Oui</text>
 	</string>
 	<string id="mp_voted">
-		<text>a vot </text>
+		<text>a votй</text>
 	</string>
 	<string id="mp_voted_no">
 		<text>Non</text>
@@ -226,13 +226,13 @@
 		<text>Oui</text>
 	</string>
 	<string id="mp_voting_broken">
-		<text>Vote annul  par le serveur !</text>
+		<text>Vote annulй par le serveur !</text>
 	</string>
 	<string id="mp_voting_started">
-		<text>Le vote '%s' a  t  lanc  par %s.</text>
+		<text>Le vote '%s' a йtй lancй par %s.</text>
 	</string>
 	<string id="mp_voting_started_msg">
-		<text>Le vote a commenc  !</text>
+		<text>Le vote a commencй !</text>
 	</string>
 	<string id="mp_weather_clear">
 		<text>Par temps clair</text>
@@ -247,19 +247,19 @@
 		<text>Par temps pluvieux</text>
 	</string>
 	<string id="mp_with_backstab">
-		<text>Poignard  dans le dos !!!</text>
+		<text>Poignardй dans le dos !!!</text>
 	</string>
 	<string id="mp_with_headshot">
-		<text>Tu  d'une balle dans la t te !!!</text>
+		<text>Tuй d'une balle dans la tкte !!!</text>
 	</string>
 	<string id="mp_your_rank">
-		<text>Votre rang est d sormais</text>
+		<text>Votre rang est dйsormais</text>
 	</string>
 	<string id="ui_st_description">
 		<text>Description</text>
 	</string>
 	<string id="ui_st_team1_name">
-		<text>Libert </text>
+		<text>Libertй</text>
 	</string>
 	<string id="ui_st_team2_name">
 		<text>Mercenaires</text>
@@ -271,10 +271,10 @@
 		<text>C'est vous</text>
 	</string>
 	<string id="friend">
-		<text>Alli </text>
+		<text>Alliй</text>
 	</string>
 	<string id="team_base_1">
-		<text>Base de la Libert </text>
+		<text>Base de la Libertй</text>
 	</string>
 	<string id="team_base_2">
 		<text>Base des Mercenaires</text>

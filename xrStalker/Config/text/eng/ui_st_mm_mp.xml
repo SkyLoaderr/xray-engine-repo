@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="version">
-		<text>Version</text>
-	</string>
-	<string id="st_mp_gsfilter">
-		<text>Filter:</text>
-	</string>
 	<string id="game type">
 		<text>GAME TYPE</text>
 	</string>
@@ -127,7 +121,7 @@
 		<text>No anomalies</text>
 	</string>
 	<string id="mm_mp_options">
-		<text>Server Options</text>
+		<text>Options</text>
 	</string>
 	<string id="mm_mp_password">
 		<text>Password</text>
@@ -236,5 +230,11 @@
 	</string>
 	<string id="server name">
 		<text>SERVER NAME</text>
+	</string>
+	<string id="version">
+		<text>Version</text>
+	</string>
+	<string id="st_mp_gsfilter">
+		<text>Filter:</text>
 	</string>
 </string_table>

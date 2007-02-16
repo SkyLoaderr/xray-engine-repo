@@ -34,7 +34,7 @@
 		<text>Esocheletro PNB-4UZ</text>
 	</string>
 	<string id="experienced">
-		<text>esperto</text>
+		<text>Esperto</text>
 	</string>
 	<string id="Found_PDA">
 		<text>Palmari trovati</text>
@@ -103,7 +103,7 @@
 		<text>neutrale</text>
 	</string>
 	<string id="novice">
-		<text>novellino</text>
+		<text>Novellino</text>
 	</string>
 	<string id="st_no_active_task">
 		<text>Nessuna missione attiva</text>
@@ -178,7 +178,7 @@
 		<text>il PNG non ha denaro sufficiente</text>
 	</string>
 	<string id="ui_st_opponent_items">
-		<text>Zaino dell'avversario</text>
+		<text>I suoi oggetti</text>
 	</string>
 	<string id="st_search_treasure">
 		<text>Perlustra il nascondiglio ($$ACTION_USE$$)</text>
@@ -187,7 +187,7 @@
 		<text>Raccogli oggetto ($$ACTION_USE$$)</text>
 	</string>
 	<string id="ui_mm_check_updates">
-		<text>Verifica se ci sono aggiornamenti</text>
+		<text>Aggiorna</text>
 	</string>
 	<string id="ui_mm_alternative">
 		<text>Alternativa</text>
@@ -230,5 +230,23 @@
 	</string>
 	<string id="st_mp_voting_failed">
 		<text>Votazione fallita!</text>
+	</string>
+	<string id="l03u_agr_underground">
+		<text>Sotterranei Agroprom</text>
+	</string>
+	<string id="l04u_labx18">
+		<text>Lab. X18</text>
+	</string>
+	<string id="l08u_brainlab">
+		<text>Lab. X16</text>
+	</string>
+	<string id="l10u_bunker">
+		<text>Lab. X10</text>
+	</string>
+	<string id="l12u_sarcofag">
+		<text>Sarcofago</text>
+	</string>
+	<string id="l12u_control_monolith">
+		<text>Centro controllo Monolite</text>
 	</string>
 </string_table>

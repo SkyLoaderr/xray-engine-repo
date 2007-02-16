@@ -58,7 +58,7 @@
 		<text>Free for all</text>
 	</string>
 	<string id="st_rank_experienced">
-		<text>experienced</text>
+		<text>Experienced</text>
 	</string>
 	<string id="st_rank_legend">
 		<text>legendary stalker</text>
@@ -70,7 +70,7 @@
 		<text>professional</text>
 	</string>
 	<string id="st_rank_veteran">
-		<text>veteran</text>
+		<text>Veteran</text>
 	</string>
 	<string id="st_team_deathmatch">
 		<text>Team play</text>
@@ -321,10 +321,6 @@
 	<string id="ui_st_preset3">
 		<text>Preset 3</text>
 	</string>
-	<string id="ui_st_preset_def">
-		<text>Default</text>
-	</string>
-
 	<string id="ui_st_reset">
 		<text>Reset</text>
 	</string>

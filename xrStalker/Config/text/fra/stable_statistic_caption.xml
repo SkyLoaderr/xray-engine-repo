@@ -1,14 +1,14 @@
 	<string id="bandit_experienced">
-		<text>bandit, exp riment </text>
+		<text>bandit, expérimenté</text>
 	</string>
 	<string id="bandit_master">
 		<text>bandit, pro</text>
 	</string>
 	<string id="bandit_novice">
-		<text>bandit, d butant</text>
+		<text>bandit, débutant</text>
 	</string>
 	<string id="bandit_veteran">
-		<text>bandit, ma tre</text>
+		<text>bandit, maître</text>
 	</string>
 	<string id="bloodsucker_normal">
 		<text>sangsue de base</text>
@@ -44,40 +44,40 @@
 		<text>chien sauvage</text>
 	</string>
 	<string id="dolg_experienced">
-		<text>Devoir, exp riment </text>
+		<text>Devoir, expérimenté</text>
 	</string>
 	<string id="dolg_master">
 		<text>Devoir, expert</text>
 	</string>
 	<string id="dolg_veteran">
-		<text>Devoir, v t ran</text>
+		<text>Devoir, vétéran</text>
 	</string>
 	<string id="ecolog_experienced">
-		<text>scientifique,  rudit</text>
+		<text>scientifique, érudit</text>
 	</string>
 	<string id="ecolog_novice">
 		<text>scientifique, assistant</text>
 	</string>
 	<string id="flesh_normal">
-		<text>croque des for ts</text>
+		<text>croque des forêts</text>
 	</string>
 	<string id="flesh_strong">
 		<text>croque des marais</text>
 	</string>
 	<string id="flesh_weak">
-		<text>croque des pr s</text>
+		<text>croque des prés</text>
 	</string>
 	<string id="freedom_experienced">
-		<text>Libert , exp riment </text>
+		<text>Liberté, expérimenté</text>
 	</string>
 	<string id="freedom_master">
-		<text>Libert , as</text>
+		<text>Liberté, as</text>
 	</string>
 	<string id="freedom_veteran">
-		<text>Libert , chien de guerre</text>
+		<text>Liberté, chien de guerre</text>
 	</string>
 	<string id="killer_experienced">
-		<text>Mercenaire, entra n </text>
+		<text>Mercenaire, entraîné</text>
 	</string>
 	<string id="killer_master">
 		<text>Mercenaire, coriace</text>
@@ -98,7 +98,7 @@
 		<text>soldat, lieutenant</text>
 	</string>
 	<string id="monolith_experienced">
-		<text>Monolithe, exp riment </text>
+		<text>Monolithe, expérimenté</text>
 	</string>
 	<string id="monolith_master">
 		<text>Monolithe, expert</text>
@@ -107,25 +107,25 @@
 		<text>Monolithe, nouveau</text>
 	</string>
 	<string id="monolith_veteran">
-		<text>Monolithe, v t ran</text>
+		<text>Monolithe, vétéran</text>
 	</string>
 	<string id="neutral_experienced">
-		<text>Stalker, entra n </text>
+		<text>Stalker, entraîné</text>
 	</string>
 	<string id="neutral_master">
-		<text>Stalker, exp riment </text>
+		<text>Stalker, expérimenté</text>
 	</string>
 	<string id="neutral_novice">
 		<text>Stalker, boiteux</text>
 	</string>
 	<string id="neutral_veteran">
-		<text>Stalker, ancien ma tre</text>
+		<text>Stalker, ancien maître</text>
 	</string>
 	<string id="poltergeist_weak">
 		<text>poltergeist</text>
 	</string>
 	<string id="pseudo_gigant_weak">
-		<text>pseudo-g ant</text>
+		<text>pseudo-géant</text>
 	</string>
 	<string id="pseudodog_normal">
 		<text>pseudo-chien adulte</text>
@@ -161,14 +161,14 @@
 		<text>zombie</text>
 	</string>
 	<string id="zombied_experienced">
-		<text>Stalker zombifi , exp riment </text>
+		<text>Stalker zombifié, expérimenté</text>
 	</string>
 	<string id="zombied_master">
-		<text>Stalker zombifi , expert</text>
+		<text>Stalker zombifié, expert</text>
 	</string>
 	<string id="zombied_novice">
-		<text>Stalker zombifi , nouveau</text>
+		<text>Stalker zombifié, nouveau</text>
 	</string>
 	<string id="zombied_veteran">
-		<text>Stalker zombifi , v t ran</text>
+		<text>Stalker zombifié, vétéran</text>
 	</string>

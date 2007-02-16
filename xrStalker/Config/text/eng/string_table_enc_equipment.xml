@@ -76,7 +76,7 @@
 		<text>A powerful flashlight. Battery recharge time has been reduced thanks to a modernized transformer.</text>
 	</string>
 	<string id="enc_equipment_energydrink">
-		<text>Non-Stop is an excellent energy drink consisting of caffeine, taurine and a mixture of rejuvenating vitamins. Just the ticket when you're too tired to push forward!</text>
+		<text>This is an excellent energy drink consisting of caffeine, taurine and a mixture of rejuvenating vitamins. Just the ticket when you're too tired to push forward!</text>
 	</string>
 	<string id="enc_equipment_food_bread1">
 		<text>Hard to say who manages to bake these loaves in the Zone, but the bread isn't contaminated and is perfectly edible. Well, at least none of the stalkers have complained about it.</text>
@@ -136,7 +136,7 @@
 		<text>Scientific EXP-4</text>
 	</string>
 	<string id="Vodka">
-		<text>Cossack vodka</text>
+		<text>Cossacks vodka</text>
 	</string>
 	<string id="st_detector">
 		<text>Anomaly detector</text>

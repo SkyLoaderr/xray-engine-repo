@@ -457,7 +457,7 @@
 		<text>Was weißt du über einen Stalker, der "Ghost" genannt wird.</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_41">
-		<text>Er ist einer von Streloks Männern. Man sagt, er könnte sich überall hinschleichen, ohne bemerkt zu werden. Dann habe ich gehört, dass er den Anführer irgendeiner verrückten Gruppe erledigt haben soll ... wie war der Name doch gleich? Ach ja, 'Letzter Tag', das war's. Die waren ziemlich wild, diese Jungs ... Ach übrigens, ich habe gehört, dass das Ghost ein paar Jobs für die Wissenschaftler erledigt. Wenn du ihn also suchst, solltest du beim mobilen Labor am Jantarsee vorbeischauen.</text>
+		<text>Er ist einer von Streloks Männern. Man sagt, er könnte sich überall hinschleichen, ohne bemerkt zu werden. Dann habe ich gehört, dass er den Anführer irgendeiner verrückten Gruppe erledigt haben soll ... wie war der Name doch gleich? Ach ja, 'Letzter Tag', das war's. Die waren ziemlich wild, diese Jungs ... Ach übrigens, ich habe gehört, dass Ghost ein paar Jobs für die Wissenschaftler erledigt. Wenn du ihn also suchst, solltest du beim mobilen Labor am Jantarsee vorbeischauen.</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_51">
 		<text>Er ist ein alter Stalker im Ruhestand, lebt in den Sümpfen. Ich markiere die Stelle für dich auf der Karte. Er gehörte damals Streloks Gruppe an.</text>
@@ -484,7 +484,7 @@
 		<text>Nun, das klingt sehr interessant.</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_8111">
-		<text>Die Legende berichtet von dem Monolithen, der vielleicht die Ursache für die Zone ist. Als die Zone 2006 explodierte, wurden die Menschen im Umfeld evakuiert und die Zone selbst wurde von der Armee abgeriegelt. Alle waren in Panik, niemand wusste, was vor sich geht, die Zone weitete sich aus und die Feldlabore konnten nichts ausrichten! Unmengen Menschen starben. Alle hatten Angst vor der Strahlung, die halb Europa betreffen könnte. Nachdem einige Jahre vergangen waren, erschienen ein paar mutige Jungs, wie du, die sich selbst Stalker nannten. Sie schlichen sich an der Armee vorbei, weil sie glaubten, dass es in der Zone Sachen gäbe, die sie reich machen könnten. Stück für Stück brachten sie seltsame Dinge aus der Zone an, Artefakte, mit denen letztendlich eine Menge Kohle machen konnten. Die Wissenschaftler waren wie irre hinter den Dingern her. Sie zahlten damals fantastisch viel Geld für Kinkerlitzchen ... anders als heute.</text>
+		<text>Die Legende berichtet von dem Monolithen, der vielleicht die Ursache für die Zone ist. Als die Zone 2006 explodierte, wurden die Menschen im Umfeld evakuiert und die Zone selbst wurde von der Armee abgeriegelt. Alle waren in Panik, niemand wusste, was vor sich geht, die Zone weitete sich aus und die Feldlabore konnten nichts ausrichten! Unmengen Menschen starben. Alle hatten Angst vor der Strahlung, die halb Europa betreffen könnte. Nachdem einige Jahre vergangen waren, erschienen ein paar mutige Jungs, wie du, die sich selbst Stalker nannten. Sie schlichen sich an der Armee vorbei, weil sie glaubten, dass es in der Zone Sachen gäbe, die sie reich machen könnten. Stück für Stück brachten sie seltsame Dinge aus der Zone an, Artefakte, mit denen sie letztendlich eine Menge Kohle machen konnten. Die Wissenschaftler waren wie irre hinter den Dingern her. Sie zahlten damals fantastisch viel Geld für Kinkerlitzchen ... anders als heute.</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_81111">
 		<text>Erzähl weiter ...</text>
@@ -610,10 +610,10 @@
 		<text>Ich möchte ein paar Informationen kaufen.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_21">
-		<text>Im Augenblick kann ich dir Informationen über Streloks Gruppe für fast gar nichts verkaufen - 1500 Rubel.</text>
+		<text>Im Augenblick kann ich dir Informationen über Streloks Gruppe für fast gar nichts verkaufen - 4000 Rubel.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_211">
-		<text>In Ordnung, die nehme ich. Hier sind die 1500.</text>
+		<text>In Ordnung, die nehme ich. Hier sind die 4000.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_2111">
 		<text>Sie befindet sich beim Agroprom Forschungsinstitut, dort gibt es ein unterirdisches Versteck. Möglicherweise finden sich dort Informationen über die Pläne der Gruppe und eine Liste der Mitglieder. Die Koordinaten des Verstecks habe ich hier.</text>
@@ -625,10 +625,10 @@
 		<text>Das ist deine Sache. Komm zur Bar, wenn du dich umentscheidest - ich bin immer hier.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_31">
-		<text>Ich Augenblick habe ich Informationen über eine Gruppe, die es bis ins Zentrum der Zone geschafft hat. Sie sind praktisch geschenkt - nur 3000 Rubel.</text>
+		<text>Ich Augenblick habe ich Informationen über eine Gruppe, die es bis ins Zentrum der Zone geschafft hat. Sie sind praktisch geschenkt - nur 2000 Rubel.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_311">
-		<text>In Ordnung, ich nehme sie. Hier sind die 3000.</text>
+		<text>In Ordnung, ich nehme sie. Hier sind die 2000.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_3111">
 		<text>Strelok, Ghost und Fang gingen ins Zentrum der Zone. Was sie dort vorfanden, weiß niemand. Aber Strelok ging verloren, während Ghost und Fang völlig niedergeschlagen und mutlos zurückkamen. Die letzten Nachrichten über Ghost waren, dass er zum mobilen Labor am Jantarsee gegangen ist. Hier sind die Koordinaten des Lagers der Wissenschaftler.</text>
@@ -640,10 +640,10 @@
 		<text>Das ist deine Sache. Komm zur Bar, wenn du dich umentscheidest - ich bin immer hier.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_41">
-		<text>Ich habe ein paar Informationen über das Geheimnis vom Jantarsee. Der Preis ist nur symbolisch - 4500 Rubel!</text>
+		<text>Ich habe ein paar Informationen über das Geheimnis vom Jantarsee. Der Preis ist nur symbolisch - 3500 Rubel!</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_411">
-		<text>In Ordnung, gekauft. Nimm 4500.</text>
+		<text>In Ordnung, gekauft. Nimm 3500.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_4111">
 		<text>Das Geheimnis vom Jantarsee gleicht dem des Hirnschmelzers, sie wirken in vielerlei Hinsicht ähnlich. Eine Art Emission macht aus allen, die damit in Berührung kommen, Zombies. Die zombifizierten Stalker bewegen sich um das Zentrum eines Emitters und greifen jeden an. Es gibt Informationen, die annehmen lassen, dass die Lösung zum Rätsel des Jantarsees unterirdisch zu finden ist. Hier sind die Koordinaten des Emitters am Jantarsee und die des Hirnschmelzers.</text>
@@ -1177,7 +1177,7 @@
 		<text>Ich hatte eine kleine "Unterhaltung" mit Tyran von den Söldnern. Im Wesentlichen hat er seinen Fehler verstanden und versprochen, sich in Zukunft zu benehmen. Ich bin mir ziemlich sicher, dass er sein Wort nicht brechen wird - Tote lügen nicht.</text>
 	</string>
 	<string id="bar_dolg_zavskald_reward_121">
-		<text>Tyran war uns ein echter Dorn im Auge! Schön, dass du ihn terminiert hast. Hier ist deine Belohnung - eine OC-14 Groza, unser Markenzeichen.</text>
+		<text>Tyran war uns ein echter Dorn im Auge! Schön, dass du ihn terminiert hast. Hier ist deine Belohnung - eine S14 Thunder, unser Markenzeichen.</text>
 	</string>
 	<string id="bar_dolg_zavskald_reward_1211">
 		<text>Nicht übel. Ich muss los, noch ein paar Dinge dieser Art erledigen. Bis dann.</text>
@@ -1201,7 +1201,7 @@
 		<text>Wer sind Sie und wie sind Sie hierher gelangt?</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_give_info_dp_111">
-		<text>Mein Name ist Kruglow. Ich bin Professor der Biologie und erforsche die Zone. Gestern habe ich zum Beispiel ein besonders interessantes Tier gefunden - Antropomorphus dendromutantus vulgaris. Hauptsächlich suche und dokumentiere ich neue Arten von mutierten Tieren, ihr Verhalten und ihre besonderen Eigenschaften. Diese Informationen werden dann sorffältig ausgewertet und an die Außenwelt weitergegeben. Ein Teil davon geht natürlich an den Wirt. Meine Entdeckungen haben dabei geholfen, das Leben vieler Stalker zu retten. Ich war gerade dabei die Ergebnisse meiner neuesten Forschungen zum Labor am Jantarsee zu bringen, als der Helikopter unter Beschuss geriet.</text>
+		<text>Mein Name ist Kruglow. Ich bin Professor der Biologie und erforsche die Zone. Gestern habe ich zum Beispiel ein besonders interessantes Tier gefunden - Antropomorphus dendromutantus vulgaris. Hauptsächlich suche und dokumentiere ich neue Arten von mutierten Tieren, ihr Verhalten und ihre besonderen Eigenschaften. Diese Informationen werden dann sorgfältig ausgewertet und an die Außenwelt weitergegeben. Ein Teil davon geht natürlich an den Wirt. Meine Entdeckungen haben dabei geholfen, das Leben vieler Stalker zu retten. Ich war gerade dabei die Ergebnisse meiner neuesten Forschungen zum Labor am Jantarsee zu bringen, als der Helikopter unter Beschuss geriet.</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_give_info_dp_12">
 		<text>Erzählen Sie mir etwas über die Zone.</text>
@@ -1219,7 +1219,7 @@
 		<text>Vielleicht ist es ganz nützlich, die Zone zu erforschen.</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_give_info_dp_12121">
-		<text>Das verstehen Sie? Es ist wunderbar, zu entdecken, dass es immer wieder Leute gibt, die nicht engstirnig sondern praktisch veranlagt sind. Ich habe schon immer gesagt, dass es wichtig ist, alles aus einer größeren Perspektive zu betrachten, um sich selbst von den Maßstäben den einfachen Menschendaseins zu lösen. Selbst, wenn die Zone der Menschheit Schaden zugefügt hat, kann sie für uns von großem Nutzen sein. Von sehr großem Nutzen!</text>
+		<text>Das verstehen Sie? Es ist wunderbar, zu entdecken, dass es immer wieder Leute gibt, die nicht engstirnig sondern praktisch veranlagt sind. Ich habe schon immer gesagt, dass es wichtig ist, alles aus einer größeren Perspektive zu betrachten, um sich selbst von den Maßstäben des einfachen Menschendaseins zu lösen. Selbst, wenn die Zone der Menschheit Schaden zugefügt hat, kann sie für uns von großem Nutzen sein. Von sehr großem Nutzen!</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_give_info_dp_13">
 		<text>Warum wollen die Söldner diese Informationen haben?</text>

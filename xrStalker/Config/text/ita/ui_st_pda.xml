@@ -199,9 +199,9 @@
 		<text>Tempo</text>
 	</string>
 	<string id="zoom_in_btn_hint">
-		<text>zoom avanti</text>
+		<text>Zoom avanti</text>
 	</string>
 	<string id="zoom_out_btn_hint">
-		<text>zoom indietro</text>
+		<text>Zoom indietro</text>
 	</string>
 </string_table>

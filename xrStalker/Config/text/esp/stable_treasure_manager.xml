@@ -1,133 +1,133 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="agr_secret_0000_descr">
-		<text>Por ahora, nuestro escondite secreto est  en el t nel. Es buen lugar, ya que pocos lo conocen; y las anomal as impedir n que otros lo encuentren.</text>
+		<text>Por ahora, nuestro escondite secreto estб en el tъnel. Es buen lugar, ya que pocos lo conocen; y las anomalнas impedirбn que otros lo encuentren.</text>
 	</string>
 	<string id="agr_secret_0000_name">
 		<text>Escondite secreto de Gris</text>
 	</string>
 	<string id="agr_secret_0001_descr">
-		<text>Lo escond  en el tronco cerca del t nel. Tiene un buen agujero.</text>
+		<text>Lo escondн en el tronco cerca del tъnel. Tiene un buen agujero.</text>
 	</string>
 	<string id="agr_secret_0001_name">
 		<text>Tronco con agujero</text>
 	</string>
 	<string id="agr_secret_0002_descr">
-		<text>Enterr  algunas cosas debajo de la cruz, al lado de los matorrales.</text>
+		<text>Enterrй algunas cosas debajo de la cruz, al lado de los matorrales.</text>
 	</string>
 	<string id="agr_secret_0002_name">
-		<text>La marca est  debajo de la cruz.</text>
+		<text>La marca estб debajo de la cruz.</text>
 	</string>
 	<string id="agr_secret_0003_descr">
-		<text>Dej  la mochila debajo del  rbol talado.</text>
+		<text>Dejй la mochila debajo del бrbol talado.</text>
 	</string>
 	<string id="agr_secret_0003_name">
-		<text>Mochila debajo del  rbol</text>
+		<text>Mochila debajo del бrbol</text>
 	</string>
 	<string id="agr_secret_0004_descr">
-		<text>Puse la mochila en la tuber a cercana a la f brica. Nadie la encontrar .</text>
+		<text>Puse la mochila en la tuberнa cercana a la fбbrica. Nadie la encontrarб.</text>
 	</string>
 	<string id="agr_secret_0004_name">
 		<text>Mochila de Deshollinador</text>
 	</string>
 	<string id="agr_secret_0005_descr">
-		<text>Guard  el cofre en el tejado de la f brica. Nadie lo encontrar . El problema es que se oxidar  si llueve.</text>
+		<text>Guardй el cofre en el tejado de la fбbrica. Nadie lo encontrarб. El problema es que se oxidarб si llueve.</text>
 	</string>
 	<string id="agr_secret_0005_name">
 		<text>Cofre en el tejado</text>
 	</string>
 	<string id="agr_secret_0006_descr">
-		<text>Estaban disparando, as  que tuve que dejar la mochila en el vag n, detr s del asiento. Por lo menos pude escapar. Luego volver  para recuperarla.</text>
+		<text>Estaban disparando, asн que tuve que dejar la mochila en el vagуn, detrбs del asiento. Por lo menos pude escapar. Luego volverй para recuperarla.</text>
 	</string>
 	<string id="agr_secret_0006_name">
 		<text>Mochila de borracho</text>
 	</string>
 	<string id="agr_secret_0007_descr">
-		<text>La escond  debajo de la cruz, detr s de las cisternas. Excava un poco sin pasarte.</text>
+		<text>La escondн debajo de la cruz, detrбs de las cisternas. Excava un poco sin pasarte.</text>
 	</string>
 	<string id="agr_secret_0007_name">
 		<text>Cerca de las tres cisternas.</text>
 	</string>
 	<string id="agr_secret_0008_descr">
-		<text>Dej  la mochila en la parte de arriba de la f brica. Nadie la ver . El problema es que no me acuerdo exactamente de lo que hay en ella. </text>
+		<text>Dejй la mochila en la parte de arriba de la fбbrica. Nadie la verб. El problema es que no me acuerdo exactamente de lo que hay en ella. </text>
 	</string>
 	<string id="agr_secret_0008_name">
-		<text>La mochila est  en la cueva</text>
+		<text>La mochila estб en la cueva</text>
 	</string>
 	<string id="agr_secret_0009_descr">
-		<text>Escond  mis cosas en un cofre dentro de la f brica.</text>
+		<text>Escondн mis cosas en un cofre dentro de la fбbrica.</text>
 	</string>
 	<string id="agr_secret_0009_name">
 		<text>Cofre radiactivo</text>
 	</string>
 	<string id="agr_secret_0010_descr">
-		<text>En el cofre que est  debajo de las escaleras hay un escondite secreto.</text>
+		<text>En el cofre que estб debajo de las escaleras hay un escondite secreto.</text>
 	</string>
 	<string id="agr_secret_0010_name">
 		<text>Cofre en el hueco de la escalera</text>
 	</string>
 	<string id="agr_secret_0011_descr">
-		<text>Lo escond  en el cofre. Nadie lo mirar , de todos modos.</text>
+		<text>Lo escondн en el cofre. Nadie lo mirarб, de todos modos.</text>
 	</string>
 	<string id="agr_secret_0011_name">
-		<text>Cofre de la f brica</text>
+		<text>Cofre de la fбbrica</text>
 	</string>
 	<string id="agr_secret_0012_descr">
-		<text>Lanc  la mochila por la ventana. La recoger  m s tarde.</text>
+		<text>Lancй la mochila por la ventana. La recogerй mбs tarde.</text>
 	</string>
 	<string id="agr_secret_0012_name">
-		<text>La mochila est  en el puntal.</text>
+		<text>La mochila estб en el puntal.</text>
 	</string>
 	<string id="agr_secret_0013_descr">
-		<text>Kolyan y yo nos dimos un buen paseo por Agroprom. Encontramos un mont n de trastos, pero pudimos esconder un par de cosas. Pusimos el cofre en el cubo de basura.</text>
+		<text>Kolyan y yo nos dimos un buen paseo por Agroprom. Encontramos un montуn de trastos, pero pudimos esconder un par de cosas. Pusimos el cofre en el cubo de basura.</text>
 	</string>
 	<string id="agr_secret_0013_name">
 		<text>Cofre en la basura</text>
 	</string>
 	<string id="agr_secret_0014_descr">
-		<text>Encontr  una caja fuerte bajo un  rbol talado. Voy a esconder todo ah  por ahora.</text>
+		<text>Encontrй una caja fuerte bajo un бrbol talado. Voy a esconder todo ahн por ahora.</text>
 	</string>
 	<string id="agr_secret_0014_name">
-		<text>Caja fuerte bajo el  rbol</text>
+		<text>Caja fuerte bajo el бrbol</text>
 	</string>
 	<string id="agr_secret_0015_descr">
-		<text>Dej  las cosas dentro de la tuber a; las recoger  m s tarde. No tuve otro remedio. Si no, por supuesto que me las habr a llevado. Solo espero que no se mojen.</text>
+		<text>Dejй las cosas dentro de la tuberнa; las recogerй mбs tarde. No tuve otro remedio. Si no, por supuesto que me las habrнa llevado. Solo espero que no se mojen.</text>
 	</string>
 	<string id="agr_secret_0015_name">
-		<text>Cosas en la tuber a</text>
+		<text>Cosas en la tuberнa</text>
 	</string>
 	<string id="agr_secret_0016_descr">
-		<text>El material est  en la tuber a vieja. Tenemos que dec rselo a los chicos. No pienso subir ah .</text>
+		<text>El material estб en la tuberнa vieja. Tenemos que decнrselo a los chicos. No pienso subir ahн.</text>
 	</string>
 	<string id="agr_secret_0016_name">
-		<text>Tuber a radiactiva</text>
+		<text>Tuberнa radiactiva</text>
 	</string>
 	<string id="agr_secret_0017_descr">
-		<text>Hu  de la base, que se vayan al infierno, con todos esos stalkers disparando... Escond  mis cosas en una tuber a, donde el mont n. Me quedar  aqu  hasta que se vayan, y entonces, las recoger .</text>
+		<text>Huн de la base, que se vayan al infierno, con todos esos stalkers disparando... Escondн mis cosas en una tuberнa, donde el montуn. Me quedarй aquн hasta que se vayan, y entonces, las recogerй.</text>
 	</string>
 	<string id="agr_secret_0017_name">
-		<text>El mont n</text>
+		<text>El montуn</text>
 	</string>
 	<string id="agr_secret_0018_descr">
-		<text>Hay una caja fuerte medio enterrada debajo del arbusto. Ah  es donde escondo todo.</text>
+		<text>Hay una caja fuerte medio enterrada debajo del arbusto. Ahн es donde escondo todo.</text>
 	</string>
 	<string id="agr_secret_0018_name">
 		<text>Caja fuerte debajo del arbusto</text>
 	</string>
 	<string id="agr_secret_0019_descr">
-		<text>Han descubierto el cofre de debajo del puntal. Alguien lo arrastr  todo el camino desde el Instituto de investigaci n. Vamos a esperar al helic ptero para recogerlo.</text>
+		<text>Han descubierto el cofre de debajo del puntal. Alguien lo arrastrу todo el camino desde el Instituto de investigaciуn. Vamos a esperar al helicуptero para recogerlo.</text>
 	</string>
 	<string id="agr_secret_0019_name">
 		<text>Archivador</text>
 	</string>
 	<string id="agr_secret_0020_descr">
-		<text>Escond  mis cosas en una c psula de hierro.</text>
+		<text>Escondн mis cosas en una cбpsula de hierro.</text>
 	</string>
 	<string id="agr_secret_0020_name">
 		<text>Debajo de la trampilla.</text>
 	</string>
 	<string id="agr_secret_0021_descr">
-		<text>Hay una caja fuerte medio enterrada debajo del arbusto. Ah  es donde lo escondo todo.</text>
+		<text>Hay una caja fuerte medio enterrada debajo del arbusto. Ahн es donde lo escondo todo.</text>
 	</string>
 	<string id="agr_secret_0021_name">
 		<text>Debajo del arbusto cercano al muro</text>
@@ -139,16 +139,16 @@
 		<text>Cofre del Instituto</text>
 	</string>
 	<string id="agr_secret_0023_descr">
-		<text>Lo guard  en la caja fuerte, pero entonces vinieron los soldados y ahora no puedo sacar las cosas.</text>
+		<text>Lo guardй en la caja fuerte, pero entonces vinieron los soldados y ahora no puedo sacar las cosas.</text>
 	</string>
 	<string id="agr_secret_0023_name">
 		<text>Caja fuerte de Agroprom</text>
 	</string>
 	<string id="agr_secret_0024_descr">
-		<text>Dej  mis cosas en la tuber a. Las recoger  m s tarde.</text>
+		<text>Dejй mis cosas en la tuberнa. Las recogerй mбs tarde.</text>
 	</string>
 	<string id="agr_secret_0024_name">
-		<text>El cuerpo del cami n</text>
+		<text>El cuerpo del camiуn</text>
 	</string>
 	<string id="agr_secret_0025_descr">
 		<text>Coge las cosas del tronco podrido</text>
@@ -157,91 +157,91 @@
 		<text>Tronco podrido</text>
 	</string>
 	<string id="agr_secret_0026_descr">
-		<text>Un buen cofre para acumular trastos adicionales El inventario del equipamiento del Instituto estaba all .</text>
+		<text>Un buen cofre para acumular trastos adicionales El inventario del equipamiento del Instituto estaba allн.</text>
 	</string>
 	<string id="agr_secret_0026_name">
 		<text>Cofre de Zavhoz</text>
 	</string>
 	<string id="agr_secret_0027_descr">
-		<text>Un buen cofre para cosas peque as. Tengo mis instrumentos de metalister a en un cofre como este en casa.</text>
+		<text>Un buen cofre para cosas pequeсas. Tengo mis instrumentos de metalisterнa en un cofre como este en casa.</text>
 	</string>
 	<string id="agr_secret_0027_name">
-		<text>Inventario de metalister a</text>
+		<text>Inventario de metalisterнa</text>
 	</string>
 	<string id="agr_u_secret_0000_descr">
-		<text>Los bandidos esconden algo debajo de la tuber a. Tengo que comprobarlo. Parece estar claro por nuestra conversaci n que guardan provisiones ah .</text>
+		<text>Los bandidos esconden algo debajo de la tuberнa. Tengo que comprobarlo. Parece estar claro por nuestra conversaciуn que guardan provisiones ahн.</text>
 	</string>
 	<string id="agr_u_secret_0000_name">
-		<text>El "fondo" com n de los bandidos</text>
+		<text>El "fondo" comъn de los bandidos</text>
 	</string>
 	<string id="agr_u_secret_0001_descr">
-		<text>Escond  la mochila detr s de unos bloques de cemento para liberarme del peso. Es mejor tener hambre que estar muerto.</text>
+		<text>Escondн la mochila detrбs de unos bloques de cemento para liberarme del peso. Es mejor tener hambre que estar muerto.</text>
 	</string>
 	<string id="agr_u_secret_0001_name">
-		<text>La mochila est  en un callej n</text>
+		<text>La mochila estб en un callejуn</text>
 	</string>
 	<string id="agr_u_secret_0002_descr">
-		<text>El cofre est  detr s de un "barril" oxidado en el s tano. Todo est  dentro. No pienso volver ah  de ninguna de las maneras. Es un milagro que haya podido con el chupasangre. A n no recuerdo c mo lo hice.</text>
+		<text>El cofre estб detrбs de un "barril" oxidado en el sуtano. Todo estб dentro. No pienso volver ahн de ninguna de las maneras. Es un milagro que haya podido con el chupasangre. Aъn no recuerdo cуmo lo hice.</text>
 	</string>
 	<string id="agr_u_secret_0002_name">
 		<text>Cofre del chupasangre</text>
 	</string>
 	<string id="agr_u_secret_0003_descr">
-		<text>Hay algunas cosas detr s de la puerta.  Me encanta jugar al escondite!</text>
+		<text>Hay algunas cosas detrбs de la puerta. ЎMe encanta jugar al escondite!</text>
 	</string>
 	<string id="agr_u_secret_0003_name">
 		<text>Cosas de stalker</text>
 	</string>
 	<string id="agr_u_secret_0004_descr">
-		<text>He encontrado unas cosas. Un buen sitio para mi escondite secreto. No habr  forma de encontrarlo en un barril amarillo.</text>
+		<text>He encontrado unas cosas. Un buen sitio para mi escondite secreto. No habrб forma de encontrarlo en un barril amarillo.</text>
 	</string>
 	<string id="agr_u_secret_0004_name">
 		<text>Agujero de Mole</text>
 	</string>
 	<string id="bar_secret_0000_description">
-		<text>Escond  la mochila cerca de la base de Deber. La recoger  m s tarde.</text>
+		<text>Escondн la mochila cerca de la base de Deber. La recogerй mбs tarde.</text>
 	</string>
 	<string id="bar_secret_0000_name">
 		<text>Mochila escondida</text>
 	</string>
 	<string id="bar_secret_0001_description">
-		<text>Me persegu a una jaur a de perros. Si no hubiera dejado la mochila, no habr a llegado a la puerta.</text>
+		<text>Me perseguнa una jaurнa de perros. Si no hubiera dejado la mochila, no habrнa llegado a la puerta.</text>
 	</string>
 	<string id="bar_secret_0001_name">
-		<text>La mochila que qued  atr s</text>
+		<text>La mochila que quedу atrбs</text>
 	</string>
 	<string id="bar_secret_0002_description">
-		<text>Todo lo que qued  atr s lo enterraron debajo de la cruz.</text>
+		<text>Todo lo que quedу atrбs lo enterraron debajo de la cruz.</text>
 	</string>
 	<string id="bar_secret_0002_name">
 		<text>Escondite secreto debajo de la cruz.</text>
 	</string>
 	<string id="bar_secret_0003_description">
-		<text>Dej  mi mochila aqu . As  ser  m s f cil.</text>
+		<text>Dejй mi mochila aquн. Asн serб mбs fбcil.</text>
 	</string>
 	<string id="bar_secret_0003_name">
 		<text>Mochila</text>
 	</string>
 	<string id="bar_secret_0004_description">
-		<text>La munici n del punto de control de seguridad de Deber est  almacenada en un b nker, pero nadie le est  echando un ojo al cofre.</text>
+		<text>La municiуn del punto de control de seguridad de Deber estб almacenada en un bъnker, pero nadie le estб echando un ojo al cofre.</text>
 	</string>
 	<string id="bar_secret_0004_name">
-		<text>Provisiones en el b nker</text>
+		<text>Provisiones en el bъnker</text>
 	</string>
 	<string id="bar_secret_0005_description">
-		<text>Vi a un miembro de Deber poner algo en la tuber a, cerca de la puerta.</text>
+		<text>Vi a un miembro de Deber poner algo en la tuberнa, cerca de la puerta.</text>
 	</string>
 	<string id="bar_secret_0005_name">
 		<text>Escondite secreto</text>
 	</string>
 	<string id="bar_secret_0006_description">
-		<text>Todo esto era suyo. Podr a quedarse aqu  por ahora.</text>
+		<text>Todo esto era suyo. Podrнa quedarse aquн por ahora.</text>
 	</string>
 	<string id="bar_secret_0006_name">
 		<text>Escondite secreto debajo de la cruz.</text>
 	</string>
 	<string id="bar_secret_0007_description">
-		<text>Voy al bar. Dej  la mochila en el hangar.</text>
+		<text>Voy al bar. Dejй la mochila en el hangar.</text>
 	</string>
 	<string id="bar_secret_0007_name">
 		<text>Mochila</text>
@@ -253,25 +253,25 @@
 		<text>Cuadro de mandos con un escondite secreto</text>
 	</string>
 	<string id="bar_secret_0009_description">
-		<text>Dej  el cofre en la parte de arriba de la torre delante de las narices de los Deber. Nadie se dar  cuenta.</text>
+		<text>Dejй el cofre en la parte de arriba de la torre delante de las narices de los Deber. Nadie se darб cuenta.</text>
 	</string>
 	<string id="bar_secret_0009_name">
 		<text>Escondite secreto de la torre</text>
 	</string>
 	<string id="bar_secret_0010_description">
-		<text>Lo escond  en la tuber a de debajo de las escaleras.</text>
+		<text>Lo escondн en la tuberнa de debajo de las escaleras.</text>
 	</string>
 	<string id="bar_secret_0010_name">
 		<text>Escondite secreto</text>
 	</string>
 	<string id="bar_secret_0011_description">
-		<text>Escond  las cosas cerca del bar, detr s de las anomal as. Nadie ir  hasta all . Y si fueran, no sabr an c mo abrirlo. Pero es muy sencillo, solo hay que tirar un poco de la puerta y se abrir .</text>
+		<text>Escondн las cosas cerca del bar, detrбs de las anomalнas. Nadie irб hasta allн. Y si fueran, no sabrнan cуmo abrirlo. Pero es muy sencillo, solo hay que tirar un poco de la puerta y se abrirб.</text>
 	</string>
 	<string id="bar_secret_0011_name">
 		<text>Escondite secreto de Arny</text>
 	</string>
 	<string id="bar_secret_0012_description">
-		<text>Enterr  las cosas cerca del bar</text>
+		<text>Enterrй las cosas cerca del bar</text>
 	</string>
 	<string id="bar_secret_0012_name">
 		<text>Escondite secreto</text>
@@ -283,13 +283,13 @@
 		<text>Cofre</text>
 	</string>
 	<string id="bar_secret_0014_description">
-		<text>Escond  el cofre en un callej n cerca del bar.</text>
+		<text>Escondн el cofre en un callejуn cerca del bar.</text>
 	</string>
 	<string id="bar_secret_0014_name">
-		<text>Cofre peque o</text>
+		<text>Cofre pequeсo</text>
 	</string>
 	<string id="bar_secret_0015_description">
-		<text>Lo enterr  debajo de la cruz, detr s de los pinos.</text>
+		<text>Lo enterrй debajo de la cruz, detrбs de los pinos.</text>
 	</string>
 	<string id="bar_secret_0015_name">
 		<text>Escondite secreto</text>
@@ -301,13 +301,13 @@
 		<text>Escondite secreto</text>
 	</string>
 	<string id="bar_secret_0017_description">
-		<text>Escond  el cofre con el ant doto contra radiaciones en una tuber a cercana al campo de batalla.</text>
+		<text>Escondн el cofre con el antнdoto contra radiaciones en una tuberнa cercana al campo de batalla.</text>
 	</string>
 	<string id="bar_secret_0017_name">
-		<text>Cofre peque o</text>
+		<text>Cofre pequeсo</text>
 	</string>
 	<string id="bar_secret_0018_description">
-		<text>Escond  mis cosas en una tuber a debajo de la torre.</text>
+		<text>Escondн mis cosas en una tuberнa debajo de la torre.</text>
 	</string>
 	<string id="bar_secret_0018_name">
 		<text>Escondite secreto</text>
@@ -319,85 +319,85 @@
 		<text>Escondite secreto</text>
 	</string>
 	<string id="esc_secret_0000_descr">
-		<text>Escond  provisiones militares en un vag n durante el reagrupamiento. No olvidar.</text>
+		<text>Escondн provisiones militares en un vagуn durante el reagrupamiento. No olvidar.</text>
 	</string>
 	<string id="esc_secret_0000_name">
-		<text>Vag n encima del puente.</text>
+		<text>Vagуn encima del puente.</text>
 	</string>
 	<string id="esc_secret_0001_descr">
-		<text>Vi a un stalker caer en una anomal a cerca del t nel de ferrocarril del bosque. Parec a que ten a buena mercanc a.</text>
+		<text>Vi a un stalker caer en una anomalнa cerca del tъnel de ferrocarril del bosque. Parecнa que tenнa buena mercancнa.</text>
 	</string>
 	<string id="esc_secret_0001_name">
-		<text>Las cosas del que muri  en la anomal a.</text>
+		<text>Las cosas del que muriу en la anomalнa.</text>
 	</string>
 	<string id="esc_secret_0002_descr">
-		<text>Escond  el bot n debajo de la cruz, cerca del campamento bandido.</text>
+		<text>Escondн el botнn debajo de la cruz, cerca del campamento bandido.</text>
 	</string>
 	<string id="esc_secret_0002_name">
-		<text>La cruz pr xima al campamento bandido</text>
+		<text>La cruz prуxima al campamento bandido</text>
 	</string>
 	<string id="esc_secret_0003_descr">
-		<text>Han encontrado en el s tano del edificio central el cofre que robaron los bandidos. Tengo que preparar un destacamento y hacerme con  l.</text>
+		<text>Han encontrado en el sуtano del edificio central el cofre que robaron los bandidos. Tengo que preparar un destacamento y hacerme con йl.</text>
 	</string>
 	<string id="esc_secret_0003_name">
-		<text>Almac n de los bandidos</text>
+		<text>Almacйn de los bandidos</text>
 	</string>
 	<string id="esc_secret_0004_descr">
-		<text>Cuando mis colegas y yo est bamos luchando contra esos perros de uniforme, enterr  algunas cosas debajo del puente. Vamos a dejarlas ah  por ahora.</text>
+		<text>Cuando mis colegas y yo estбbamos luchando contra esos perros de uniforme, enterrй algunas cosas debajo del puente. Vamos a dejarlas ahн por ahora.</text>
 	</string>
 	<string id="esc_secret_0004_name">
 		<text>Debajo de la cruz</text>
 	</string>
 	<string id="esc_secret_0005_descr">
-		<text>Dej  la mochila en el s tano. Volver  m s tarde, ahora no puedo.</text>
+		<text>Dejй la mochila en el sуtano. Volverй mбs tarde, ahora no puedo.</text>
 	</string>
 	<string id="esc_secret_0005_name">
-		<text>Refugio en el s tano</text>
+		<text>Refugio en el sуtano</text>
 	</string>
 	<string id="esc_secret_0006_descr">
-		<text>Encontr  una caja fuerte medio enterrada en la granja. Dejar  las cosas ah  por ahora.</text>
+		<text>Encontrй una caja fuerte medio enterrada en la granja. Dejarй las cosas ahн por ahora.</text>
 	</string>
 	<string id="esc_secret_0006_name">
 		<text>Caja fuerte en la granja</text>
 	</string>
 	<string id="esc_secret_0007_descr">
-		<text>Me ha dicho un pajarito que alguien esconde algo en el vag n del puente. Tendr  que comprobarlo cuando vuelva. Me pregunto qui n ser …</text>
+		<text>Me ha dicho un pajarito que alguien esconde algo en el vagуn del puente. Tendrй que comprobarlo cuando vuelva. Me pregunto quiйn serб...</text>
 	</string>
 	<string id="esc_secret_0007_name">
-		<text>Recipiente en el vag n</text>
+		<text>Recipiente en el vagуn</text>
 	</string>
 	<string id="esc_secret_0008_descr">
-		<text>Escond  las cosas bajo el tejado de la casita cercana al puente.</text>
+		<text>Escondн las cosas bajo el tejado de la casita cercana al puente.</text>
 	</string>
 	<string id="esc_secret_0008_name">
 		<text>Cosas del tirador</text>
 	</string>
 	<string id="esc_secret_0009_descr">
-		<text>Escond  mis cosas en uno de los cofres, cerca del puente. Eso es, hagamos las paces. Adi s a la Zona. Hasta siempre, colegas. Nunca olvidar  la madre patria.</text>
+		<text>Escondн mis cosas en uno de los cofres, cerca del puente. Eso es, hagamos las paces. Adiуs a la Zona. Hasta siempre, colegas. Nunca olvidarй la madre patria.</text>
 	</string>
 	<string id="esc_secret_0009_name">
 		<text>Cosas cerca del puente</text>
 	</string>
 	<string id="esc_secret_0010_descr">
-		<text>Un stalker la palm  cerca del campamento de los novatos. Habr a que echar un ojo a sus cosas.</text>
+		<text>Un stalker la palmу cerca del campamento de los novatos. Habrнa que echar un ojo a sus cosas.</text>
 	</string>
 	<string id="esc_secret_0010_name">
-		<text>La mochila est  cerca del pueblo.</text>
+		<text>La mochila estб cerca del pueblo.</text>
 	</string>
 	<string id="esc_secret_0011_descr">
-		<text>Me enter  por Lihoi de que el escondite secreto est  en el s tano. Estaba hablando demasiado, as  que le hicimos callar.</text>
+		<text>Me enterй por Lihoi de que el escondite secreto estб en el sуtano. Estaba hablando demasiado, asн que le hicimos callar.</text>
 	</string>
 	<string id="esc_secret_0011_name">
-		<text>S tano en el pueblo</text>
+		<text>Sуtano en el pueblo</text>
 	</string>
 	<string id="esc_secret_0012_descr">
-		<text>Encontr  un buen escondite en el s tano. Esperar  hasta que alguien ponga algo all .</text>
+		<text>Encontrй un buen escondite en el sуtano. Esperarй hasta que alguien ponga algo allн.</text>
 	</string>
 	<string id="esc_secret_0012_name">
 		<text>Un buen lugar</text>
 	</string>
 	<string id="esc_secret_0013_descr">
-		<text>Supe por Vorpal que hay un escondite secreto en el s tano. Nuestros hombres hicieron una expedici n para explorar la zona. Vamos a comprobarlo.</text>
+		<text>Supe por Vorpal que hay un escondite secreto en el sуtano. Nuestros hombres hicieron una expediciуn para explorar la zona. Vamos a comprobarlo.</text>
 	</string>
 	<string id="esc_secret_0013_name">
 		<text>Escondite secreto de Vorpal</text>
@@ -409,85 +409,85 @@
 		<text>Los objetos de valor del comandante</text>
 	</string>
 	<string id="esc_secret_0015_descr">
-		<text>Un stalker la palm  cerca del campamento de los novatos. Deber amos ir a ver lo que llevaba. Pero, digo yo,  qui n los deja entrar?</text>
+		<text>Un stalker la palmу cerca del campamento de los novatos. Deberнamos ir a ver lo que llevaba. Pero, digo yo, їquiйn los deja entrar?</text>
 	</string>
 	<string id="esc_secret_0015_name">
 		<text>Cerca de un camino</text>
 	</string>
 	<string id="esc_secret_0016_descr">
-		<text>Las cosas est n escondidas en el s tano de los bandidos. Hasta ahora no estaban all . Ser a estupendo encontrar un buen momento para ir a recogerlas.</text>
+		<text>Las cosas estбn escondidas en el sуtano de los bandidos. Hasta ahora no estaban allн. Serнa estupendo encontrar un buen momento para ir a recogerlas.</text>
 	</string>
 	<string id="esc_secret_0016_name">
-		<text>El s tano de los ladrones</text>
+		<text>El sуtano de los ladrones</text>
 	</string>
 	<string id="esc_secret_0017_descr">
-		<text>Descubr  el inventario en la tuber a, cerca de la granja. Cuando salga de la prisi n militar, tengo claro que regresar .</text>
+		<text>Descubrн el inventario en la tuberнa, cerca de la granja. Cuando salga de la prisiуn militar, tengo claro que regresarй.</text>
 	</string>
 	<string id="esc_secret_0017_name">
-		<text>Tuber a de gas</text>
+		<text>Tuberнa de gas</text>
 	</string>
 	<string id="esc_secret_0018_descr">
-		<text>Dej  mi mochila cerca del puesto. Deber a recuperarla enseguida, antes de que el comandante nos transfiera a otro lugar.</text>
+		<text>Dejй mi mochila cerca del puesto. Deberнa recuperarla enseguida, antes de que el comandante nos transfiera a otro lugar.</text>
 	</string>
 	<string id="esc_secret_0018_name">
 		<text>Cosas escondidas</text>
 	</string>
 	<string id="esc_secret_0019_descr">
-		<text>Dej  el cofre en la torre por el momento. Lo recoger  cuando pueda.</text>
+		<text>Dejй el cofre en la torre por el momento. Lo recogerй cuando pueda.</text>
 	</string>
 	<string id="esc_secret_0019_name">
 		<text>Torre en el puesto de control</text>
 	</string>
 	<string id="gar_secret_0000_descr">
-		<text>Vi a un bandido esconder sus cosas en un cofre, en el hangar.  C mo podr a robarlas sin levantar sospechas?</text>
+		<text>Vi a un bandido esconder sus cosas en un cofre, en el hangar. їCуmo podrнa robarlas sin levantar sospechas?</text>
 	</string>
 	<string id="gar_secret_0000_name">
-		<text>Almac n de los bandidos</text>
+		<text>Almacйn de los bandidos</text>
 	</string>
 	<string id="gar_secret_0001_descr">
-		<text>Vasya y yo fuimos a echar un vistazo y, de repente, le alcanz  una bala.  Yo no tuve nada que ver! Fue la maldita bala. Escond  las cosas en una tuber a.</text>
+		<text>Vasya y yo fuimos a echar un vistazo y, de repente, le alcanzу una bala. ЎYo no tuve nada que ver! Fue la maldita bala. Escondн las cosas en una tuberнa.</text>
 	</string>
 	<string id="gar_secret_0001_name">
-		<text>Gr a vieja</text>
+		<text>Grъa vieja</text>
 	</string>
 	<string id="gar_secret_0002_descr">
-		<text>Grizzly llevaba todas sus cosas cuando la palm  en el vertedero, en el t nel de ferrocarril, detr s de la locomotora. Es una pena lo de Grizzly.</text>
+		<text>Grizzly llevaba todas sus cosas cuando la palmу en el vertedero, en el tъnel de ferrocarril, detrбs de la locomotora. Es una pena lo de Grizzly.</text>
 	</string>
 	<string id="gar_secret_0002_name">
 		<text>Cosas de Grizzly</text>
 	</string>
 	<string id="gar_secret_0003_descr">
-		<text>Escond  las cosas en una tuber a, en el vertedero.</text>
+		<text>Escondн las cosas en una tuberнa, en el vertedero.</text>
 	</string>
 	<string id="gar_secret_0003_name">
-		<text>Tuber a del mont n norte</text>
+		<text>Tuberнa del montуn norte</text>
 	</string>
 	<string id="gar_secret_0004_descr">
-		<text>Las cosas est n en el vertedero, en una de las tuber as. Si no sabes exactamente d nde est n, no las encontrar s.</text>
+		<text>Las cosas estбn en el vertedero, en una de las tuberнas. Si no sabes exactamente dуnde estбn, no las encontrarбs.</text>
 	</string>
 	<string id="gar_secret_0004_name">
 		<text>Dinero extra entre la chatarra.</text>
 	</string>
 	<string id="gar_secret_0005_descr">
-		<text>Escond  las cosas en una tuber a de metal al lado de las dos cisternas. Deber a recogerlas, pero no tengo tiempo.</text>
+		<text>Escondн las cosas en una tuberнa de metal al lado de las dos cisternas. Deberнa recogerlas, pero no tengo tiempo.</text>
 	</string>
 	<string id="gar_secret_0005_name">
 		<text>Horno de hierro al lado de la cisterna.</text>
 	</string>
 	<string id="gar_secret_0006_descr">
-		<text>Hay cosas muy  tiles escondidas entre los residuos nucleares, donde se acerca poca gente.</text>
+		<text>Hay cosas muy ъtiles escondidas entre los residuos nucleares, donde se acerca poca gente.</text>
 	</string>
 	<string id="gar_secret_0006_name">
-		<text>Tuber a del mont n este</text>
+		<text>Tuberнa del montуn este</text>
 	</string>
 	<string id="gar_secret_0007_descr">
-		<text>Alguien ha dejado abandonada una mochila en el valle, con anomal as por todas partes.  C mo podr as hacerte con ella?</text>
+		<text>Alguien ha dejado abandonada una mochila en el valle, con anomalнas por todas partes. їCуmo podrнas hacerte con ella?</text>
 	</string>
 	<string id="gar_secret_0007_name">
-		<text>Mochila sin due o</text>
+		<text>Mochila sin dueсo</text>
 	</string>
 	<string id="gar_secret_0008_descr">
-		<text>Acab  con el traidor en el pantano y all  lo enterramos. Dej  sus cosas debajo de la cruz. Ten a cosas m s importantes de las que preocuparme.</text>
+		<text>Acabй con el traidor en el pantano y allн lo enterramos. Dejй sus cosas debajo de la cruz. Tenнa cosas mбs importantes de las que preocuparme.</text>
 	</string>
 	<string id="gar_secret_0008_name">
 		<text>Las pertenencias del muerto</text>
@@ -505,172 +505,172 @@
 		<text>Tronco en el bosque</text>
 	</string>
 	<string id="gar_secret_0011_descr">
-		<text>Petrenko quer a confirmar que hay informaci n sobre el escondite secreto de la facci n de Strelok en el vertedero. Aqu , en el suelo del valle, tiene que haber una alcantarilla, y hay un truco para abrirla. En cuanto todo se calme, iremos a comprobarlo.</text>
+		<text>Petrenko querнa confirmar que hay informaciуn sobre el escondite secreto de la facciуn de Strelok en el vertedero. Aquн, en el suelo del valle, tiene que haber una alcantarilla, y hay un truco para abrirla. En cuanto todo se calme, iremos a comprobarlo.</text>
 	</string>
 	<string id="gar_secret_0011_name">
-		<text>Almac n de la facci n de Strelok</text>
+		<text>Almacйn de la facciуn de Strelok</text>
 	</string>
 	<string id="gar_secret_0012_descr">
-		<text>Lo escond  en el coche; el Largo dijo que era un buen lugar.</text>
+		<text>Lo escondн en el coche; el Largo dijo que era un buen lugar.</text>
 	</string>
 	<string id="gar_secret_0012_name">
 		<text>Escondite secreto en el coche.</text>
 	</string>
 	<string id="gar_secret_0013_descr">
-		<text>Puse la mochila en el autob s. All  no la encontrar n.</text>
+		<text>Puse la mochila en el autobъs. Allн no la encontrarбn.</text>
 	</string>
 	<string id="gar_secret_0013_name">
-		<text>Mochila del stalker en el autob s.</text>
+		<text>Mochila del stalker en el autobъs.</text>
 	</string>
 	<string id="gar_secret_0014_descr">
-		<text>Puse las provisiones en el cofre, y el cofre lo dej  en la casa vieja que hay a la vuelta de la esquina. A n no entiendo para qu  sirve esa estructura.</text>
+		<text>Puse las provisiones en el cofre, y el cofre lo dejй en la casa vieja que hay a la vuelta de la esquina. Aъn no entiendo para quй sirve esa estructura.</text>
 	</string>
 	<string id="gar_secret_0014_name">
 		<text>Provisiones variadas</text>
 	</string>
 	<string id="gar_secret_0015_descr">
-		<text>Hay una caja fuerte medio enterrada en un mont n de basura. Todo est  ah  dentro. Ser  mejor no olvidarse de lo que es.</text>
+		<text>Hay una caja fuerte medio enterrada en un montуn de basura. Todo estб ahн dentro. Serб mejor no olvidarse de lo que es.</text>
 	</string>
 	<string id="gar_secret_0015_name">
-		<text>Caja fuerte en el mont n sur</text>
+		<text>Caja fuerte en el montуn sur</text>
 	</string>
 	<string id="gar_secret_0016_descr">
-		<text>Puse las cosas en el mont n de basura de la tuber a.</text>
+		<text>Puse las cosas en el montуn de basura de la tuberнa.</text>
 	</string>
 	<string id="gar_secret_0016_name">
-		<text>Almac n entre la chatarra</text>
+		<text>Almacйn entre la chatarra</text>
 	</string>
 	<string id="gar_secret_0017_descr">
-		<text>El jefe de comunicaciones por radio nos orden  la retirada. Encontr  un cofre, met  en  l todo el peso que me sobraba y me retir  con las manos vac as.</text>
+		<text>El jefe de comunicaciones por radio nos ordenу la retirada. Encontrй un cofre, metн en йl todo el peso que me sobraba y me retirй con las manos vacнas.</text>
 	</string>
 	<string id="gar_secret_0017_name">
 		<text>Provisiones en el cofre</text>
 	</string>
 	<string id="gar_secret_0018_descr">
-		<text>Dej  las cosas en la tuber a del vertedero. No estar n all  mucho tiempo.</text>
+		<text>Dejй las cosas en la tuberнa del vertedero. No estarбn allн mucho tiempo.</text>
 	</string>
 	<string id="gar_secret_0018_name">
-		<text>Tuber a cerca del autob s</text>
+		<text>Tuberнa cerca del autobъs</text>
 	</string>
 	<string id="gar_secret_0019_descr">
-		<text>Es f cil esconder la mochila en las ruinas. Espero que no haya problemas para recuperarla; a ver si los bandidos no se entrometen.</text>
+		<text>Es fбcil esconder la mochila en las ruinas. Espero que no haya problemas para recuperarla; a ver si los bandidos no se entrometen.</text>
 	</string>
 	<string id="gar_secret_0019_name">
 		<text>Mochila en las ruinas</text>
 	</string>
 	<string id="gar_secret_0020_descr">
-		<text>Mientras los miembros de Deber disparaban, escond  el bot n en el vag n. Tengo que llegar all  y recuperarlo como sea. Y dar las gracias a Deber.</text>
+		<text>Mientras los miembros de Deber disparaban, escondн el botнn en el vagуn. Tengo que llegar allн y recuperarlo como sea. Y dar las gracias a Deber.</text>
 	</string>
 	<string id="gar_secret_0020_name">
 		<text>Mochila en punto de control militar fuertemente armado</text>
 	</string>
 	<string id="gar_secret_0021_descr">
-		<text>Dicen que Weakling la palm  en el vertedero. Tengo que pasarme por all  para echar un ojo al bot n. Si no, vendr n muchos interesados.</text>
+		<text>Dicen que Weakling la palmу en el vertedero. Tengo que pasarme por allн para echar un ojo al botнn. Si no, vendrбn muchos interesados.</text>
 	</string>
 	<string id="gar_secret_0021_name">
 		<text>Mochila de Weakling</text>
 	</string>
 	<string id="gar_secret_0022_descr">
-		<text>Esconder  las cosas en la cueva por ahora. Espero que no las encuentren.</text>
+		<text>Esconderй las cosas en la cueva por ahora. Espero que no las encuentren.</text>
 	</string>
 	<string id="gar_secret_0022_name">
 		<text>Mochila en la cueva</text>
 	</string>
 	<string id="gar_secret_0023_descr">
-		<text>Una anomal a caz  a alguien cerca de las escaleras mec nicas. Veo la mochila, pero es dif cil de conseguir.</text>
+		<text>Una anomalнa cazу a alguien cerca de las escaleras mecбnicas. Veo la mochila, pero es difнcil de conseguir.</text>
 	</string>
 	<string id="gar_secret_0023_name">
 		<text>Debajo de la pala de la excavadora</text>
 	</string>
 	<string id="gar_secret_0024_descr">
-		<text>Est  debajo de las vigas; me cost , pero al menos la mochila est  bien escondida. Nadie intentar  subir hasta aqu .</text>
+		<text>Estб debajo de las vigas; me costу, pero al menos la mochila estб bien escondida. Nadie intentarб subir hasta aquн.</text>
 	</string>
 	<string id="gar_secret_0024_name">
-		<text>El dinero extra est  debajo de los bloques de cemento.</text>
+		<text>El dinero extra estб debajo de los bloques de cemento.</text>
 	</string>
 	<string id="mil_secret_0000_description">
-		<text>Escond  las cosas en el tronco. No creo que nadie las encuentre.</text>
+		<text>Escondн las cosas en el tronco. No creo que nadie las encuentre.</text>
 	</string>
 	<string id="mil_secret_0000_name">
 		<text>Escondite secreto en el tronco</text>
 	</string>
 	<string id="mil_secret_0001_description">
-		<text>Escond  las cosas en el horno.</text>
+		<text>Escondн las cosas en el horno.</text>
 	</string>
 	<string id="mil_secret_0001_name">
 		<text>Escondite secreto en el horno</text>
 	</string>
 	<string id="mil_secret_0002_description">
-		<text>Escond  las cosas en la oficina de KAMAZ.</text>
+		<text>Escondн las cosas en la oficina de KAMAZ.</text>
 	</string>
 	<string id="mil_secret_0002_name">
 		<text>Escondite secreto en KAMAZ</text>
 	</string>
 	<string id="mil_secret_0003_description">
-		<text>Enterr  cosas debajo de la cruz cercana al pueblo.</text>
+		<text>Enterrй cosas debajo de la cruz cercana al pueblo.</text>
 	</string>
 	<string id="mil_secret_0003_name">
 		<text>Tesoro debajo de la cruz</text>
 	</string>
 	<string id="mil_secret_0004_description">
-		<text>Dej  mis cosas en la tuber a. Las recoger  m s tarde.</text>
+		<text>Dejй mis cosas en la tuberнa. Las recogerй mбs tarde.</text>
 	</string>
 	<string id="mil_secret_0004_name">
-		<text>Escondite secreto en la tuber a</text>
+		<text>Escondite secreto en la tuberнa</text>
 	</string>
 	<string id="mil_secret_0005_description">
-		<text>Escondite secreto en el cofre, dentro del dep sito de agua. </text>
+		<text>Escondite secreto en el cofre, dentro del depуsito de agua. </text>
 	</string>
 	<string id="mil_secret_0005_name">
-		<text>Tesoro en el dep sito</text>
+		<text>Tesoro en el depуsito</text>
 	</string>
 	<string id="mil_secret_0006_description">
-		<text>Dej  mi mochila en el horno. Me ser   til m s tarde.</text>
+		<text>Dejй mi mochila en el horno. Me serб ъtil mбs tarde.</text>
 	</string>
 	<string id="mil_secret_0006_name">
 		<text>Escondite secreto en el horno</text>
 	</string>
 	<string id="mil_secret_0007_description">
-		<text>Escond  las cosas en el coche, en el pueblo abandonado.</text>
+		<text>Escondн las cosas en el coche, en el pueblo abandonado.</text>
 	</string>
 	<string id="mil_secret_0007_name">
 		<text>Auto-escondite secreto</text>
 	</string>
 	<string id="mil_secret_0008_description">
-		<text>Dej  la mochila en las ruinas radiactivas. Ten a miedo de acercarme por all .</text>
+		<text>Dejй la mochila en las ruinas radiactivas. Tenнa miedo de acercarme por allн.</text>
 	</string>
 	<string id="mil_secret_0008_name">
 		<text>Secreto peligroso</text>
 	</string>
 	<string id="mil_secret_0009_description">
-		<text>Enterr  las cosas debajo de la cruz, en un lugar oculto.</text>
+		<text>Enterrй las cosas debajo de la cruz, en un lugar oculto.</text>
 	</string>
 	<string id="mil_secret_0009_name">
 		<text>Escondite de stalker</text>
 	</string>
 	<string id="mil_secret_0010_description">
-		<text>Escond  la mochila con el equipamiento en un lugar estupendo. </text>
+		<text>Escondн la mochila con el equipamiento en un lugar estupendo. </text>
 	</string>
 	<string id="mil_secret_0010_name">
 		<text>Mochila con equipamiento</text>
 	</string>
 	<string id="mil_secret_0011_description">
-		<text>Escond  las cosas en el coche, en una colina.</text>
+		<text>Escondн las cosas en el coche, en una colina.</text>
 	</string>
 	<string id="mil_secret_0011_name">
 		<text>Escondite secreto en una colina</text>
 	</string>
 	<string id="mil_secret_0012_description">
-		<text>Un helic ptero cay  cerca de la base militar abandonada. El cofre est  justo all , debajo del helic ptero. El problema es que hay anomal as y radiaci n por todas partes.</text>
+		<text>Un helicуptero cayу cerca de la base militar abandonada. El cofre estб justo allн, debajo del helicуptero. El problema es que hay anomalнas y radiaciуn por todas partes.</text>
 	</string>
 	<string id="mil_secret_0012_name">
-		<text>Cofre del helic ptero</text>
+		<text>Cofre del helicуptero</text>
 	</string>
 	<string id="mil_secret_0013_description">
-		<text>Enterr  las cosas en la colina, debajo de la cruz.</text>
+		<text>Enterrй las cosas en la colina, debajo de la cruz.</text>
 	</string>
 	<string id="mil_secret_0013_name">
-		<text>Secreto en la l pida</text>
+		<text>Secreto en la lбpida</text>
 	</string>
 	<string id="mil_secret_0014_description">
 		<text>Hay un escondite secreto en el tronco. Un buen lugar.</text>
@@ -679,37 +679,37 @@
 		<text>Tronco secreto</text>
 	</string>
 	<string id="mil_secret_0015_description">
-		<text>Dej  la mochila en la cabina de la gr a. La recoger  m s tarde.</text>
+		<text>Dejй la mochila en la cabina de la grъa. La recogerй mбs tarde.</text>
 	</string>
 	<string id="mil_secret_0015_name">
 		<text>Escondite secreto del trabajador de grandes alturas</text>
 	</string>
 	<string id="mil_secret_0016_description">
-		<text>Todo est  en el cofre, en un vag n cerca de la base. As  es como lo planeamos. Ahora solo tenemos que esperar.</text>
+		<text>Todo estб en el cofre, en un vagуn cerca de la base. Asн es como lo planeamos. Ahora solo tenemos que esperar.</text>
 	</string>
 	<string id="mil_secret_0016_name">
 		<text>El escondite secreto acordado</text>
 	</string>
 	<string id="mil_secret_0017_description">
-		<text>Dej  las cosas en el tronco. No creo que encuentren nada.</text>
+		<text>Dejй las cosas en el tronco. No creo que encuentren nada.</text>
 	</string>
 	<string id="mil_secret_0017_name">
 		<text>Tesoro en el tronco</text>
 	</string>
 	<string id="mil_secret_0018_description">
-		<text>Dej  las cosas en una tuber a a la orilla de un lago.</text>
+		<text>Dejй las cosas en una tuberнa a la orilla de un lago.</text>
 	</string>
 	<string id="mil_secret_0018_name">
-		<text>Tuber a con cosas guardadas</text>
+		<text>Tuberнa con cosas guardadas</text>
 	</string>
 	<string id="mil_secret_0019_description">
-		<text>Escond  mis cosas en una c psula de hierro.</text>
+		<text>Escondн mis cosas en una cбpsula de hierro.</text>
 	</string>
 	<string id="mil_secret_0019_name">
 		<text>Escondite secreto del stalker</text>
 	</string>
 	<string id="mil_secret_0020_description">
-		<text>Dej  las cosas en un tronco. No creo que las encuentren.</text>
+		<text>Dejй las cosas en un tronco. No creo que las encuentren.</text>
 	</string>
 	<string id="mil_secret_0020_name">
 		<text>Cosas guardadas en el tronco</text>
@@ -721,10 +721,10 @@
 		<text>Buen cofre para provisiones</text>
 	</string>
 	<string id="mil_secret_0022_description">
-		<text>Escond  la mochila con las cosas en el t nel.</text>
+		<text>Escondн la mochila con las cosas en el tъnel.</text>
 	</string>
 	<string id="mil_secret_0022_name">
-		<text>Mochila en el t nel</text>
+		<text>Mochila en el tъnel</text>
 	</string>
 	<string id="mil_secret_0023_description">
 		<text>Un buen cofre para acumular cosas extra</text>
@@ -733,130 +733,130 @@
 		<text>Cofre con cosas guardadas</text>
 	</string>
 	<string id="mil_secret_0024_description">
-		<text>Dej  las cosas en un tronco. No creo que las encuentren.</text>
+		<text>Dejй las cosas en un tronco. No creo que las encuentren.</text>
 	</string>
 	<string id="mil_secret_0024_name">
 		<text>Escondite secreto en el tronco</text>
 	</string>
 	<string id="mil_secret_0025_description">
-		<text>Dej  las cosas en el cofre. Las recoger  m s tarde.</text>
+		<text>Dejй las cosas en el cofre. Las recogerй mбs tarde.</text>
 	</string>
 	<string id="mil_secret_0025_name">
 		<text>Escondite secreto temporal</text>
 	</string>
 	<string id="mil_secret_0026_description">
-		<text>Escond  las cosas en la alcantarilla. Alg n d a nos ser n muy  tiles.</text>
+		<text>Escondн las cosas en la alcantarilla. Algъn dнa nos serбn muy ъtiles.</text>
 	</string>
 	<string id="mil_secret_0026_name">
 		<text>Escondite secreto de acero</text>
 	</string>
 	<string id="mil_secret_0027_description">
-		<text>Dej  las cosas en el cofre. Las recoger  m s tarde.</text>
+		<text>Dejй las cosas en el cofre. Las recogerй mбs tarde.</text>
 	</string>
 	<string id="mil_secret_0027_name">
 		<text>Cofre con cosas guardadas</text>
 	</string>
 	<string id="mil_secret_0028_description">
-		<text>Escond  las cosas en el coche, ante las narices de los de Libertad. No ten a tiempo de buscar un sitio mejor.</text>
+		<text>Escondн las cosas en el coche, ante las narices de los de Libertad. No tenнa tiempo de buscar un sitio mejor.</text>
 	</string>
 	<string id="mil_secret_0028_name">
 		<text>Escondite secreto en el coche</text>
 	</string>
 	<string id="pri_secret_0000_description">
-		<text>Se dice que un famoso stalker la palm  aqu  y nadie se ha llevado sus cosas todav a.</text>
+		<text>Se dice que un famoso stalker la palmу aquн y nadie se ha llevado sus cosas todavнa.</text>
 	</string>
 	<string id="pri_secret_0000_name">
 		<text>Cosas del stalker muerto</text>
 	</string>
 	<string id="pri_secret_0001_description">
-		<text>Seg n dicen, hay un cofre en el garaje con un mont n de cosas valiosas.</text>
+		<text>Segъn dicen, hay un cofre en el garaje con un montуn de cosas valiosas.</text>
 	</string>
 	<string id="pri_secret_0001_name">
 		<text>Tesoro del garaje</text>
 	</string>
 	<string id="pri_secret_0002_description">
-		<text>Dicen que hay un cofre en la guarder a con un mont n de cosas valiosas.</text>
+		<text>Dicen que hay un cofre en la guarderнa con un montуn de cosas valiosas.</text>
 	</string>
 	<string id="pri_secret_0002_name">
 		<text>Viejo escondite secreto</text>
 	</string>
 	<string id="pri_secret_0003_description">
-		<text>Enterraron a Fang en Pripyat, debajo de un monumento. Dejaron todas sus cosas con  l; no est  bien robarle las pertenencias a un muerto.</text>
+		<text>Enterraron a Fang en Pripyat, debajo de un monumento. Dejaron todas sus cosas con йl; no estб bien robarle las pertenencias a un muerto.</text>
 	</string>
 	<string id="pri_secret_0003_name">
 		<text>Cosas de Fang</text>
 	</string>
 	<string id="pri_secret_0004_description">
-		<text>Lo  ltimo que se sabe de  l es que fue el  nico que sobrevivi  al Cauterizador. Dej  todas las cosas en un viejo supermercado y se fue. Todo hab a salido mal, y  l era el mejor l der que ha tenido nunca Libertad.</text>
+		<text>Lo ъltimo que se sabe de йl es que fue el ъnico que sobreviviу al Cauterizador. Dejу todas las cosas en un viejo supermercado y se fue. Todo habнa salido mal, y йl era el mejor lнder que ha tenido nunca Libertad.</text>
 	</string>
 	<string id="pri_secret_0004_name">
-		<text>Cosas del l der de Libertad</text>
+		<text>Cosas del lнder de Libertad</text>
 	</string>
 	<string id="rad_secret_0000_description">
-		<text>La cruz est  en el camino que va al Cauterizador; no avanc  m s, escond  todo debajo de la cruz.</text>
+		<text>La cruz estб en el camino que va al Cauterizador; no avancй mбs, escondн todo debajo de la cruz.</text>
 	</string>
 	<string id="rad_secret_0000_name">
-		<text>Tesoro de Sombr o</text>
+		<text>Tesoro de Sombrнo</text>
 	</string>
 	<string id="rad_secret_0001_description">
-		<text>Un stalker muri  aqu  y todas sus cosas siguen por ah ; nadie ha podido hacerse con ellas.</text>
+		<text>Un stalker muriу aquн y todas sus cosas siguen por ahн; nadie ha podido hacerse con ellas.</text>
 	</string>
 	<string id="rad_secret_0001_name">
 		<text>Cosas del stalker muerto</text>
 	</string>
 	<string id="rad_secret_0002_description">
-		<text>Seg n cuentan, hay una caja fuerte medio enterrada en el bosque con un mont n de cosas valiosas dentro.</text>
+		<text>Segъn cuentan, hay una caja fuerte medio enterrada en el bosque con un montуn de cosas valiosas dentro.</text>
 	</string>
 	<string id="rad_secret_0002_name">
 		<text>Objetos de la caja fuerte</text>
 	</string>
 	<string id="rad_secret_0003_description">
-		<text>Les advirtieron que no sobrevolaran el Cauterizador, y ahora mira. Aterrizaron en medio del bosque y es poco probable que haya supervivientes. Y con ellos est  toda la mercanc a que nos tra an.</text>
+		<text>Les advirtieron que no sobrevolaran el Cauterizador, y ahora mira. Aterrizaron en medio del bosque y es poco probable que haya supervivientes. Y con ellos estб toda la mercancнa que nos traнan.</text>
 	</string>
 	<string id="rad_secret_0003_name">
 		<text>Paquete para Deber</text>
 	</string>
 	<string id="rad_secret_0004_description">
-		<text>Cuentan que toda la mercanc a de la facci n, que trataba de llegar al centro de la Zona, sigue all , expuesta a la radiaci n del Cauterizador. No regres  ninguno de ellos y su mercanc a sigue all , esperando a que alguien se la lleve.</text>
+		<text>Cuentan que toda la mercancнa de la facciуn, que trataba de llegar al centro de la Zona, sigue allн, expuesta a la radiaciуn del Cauterizador. No regresу ninguno de ellos y su mercancнa sigue allн, esperando a que alguien se la lleve.</text>
 	</string>
 	<string id="rad_secret_0004_name">
-		<text>Mercanc a del grupo temerario</text>
+		<text>Mercancнa del grupo temerario</text>
 	</string>
 	<string id="rad_secret_0005_description">
-		<text>Se dice que el l der de una antigua facci n la palm  aqu , y llevaba un mont n de cosas valiosas consigo.</text>
+		<text>Se dice que el lнder de una antigua facciуn la palmу aquн, y llevaba un montуn de cosas valiosas consigo.</text>
 	</string>
 	<string id="rad_secret_0005_name">
-		<text>Mercanc a del l der de una antigua facci n</text>
+		<text>Mercancнa del lнder de una antigua facciуn</text>
 	</string>
 	<string id="ros_secret_0000_description">
-		<text>Escond  la mochila detr s de la placa de metal</text>
+		<text>Escondн la mochila detrбs de la placa de metal</text>
 	</string>
 	<string id="ros_secret_0000_name">
 		<text>Mochila escondida</text>
 	</string>
 	<string id="ros_secret_0001_description">
-		<text>Escond  la mercanc a debajo de la cruz</text>
+		<text>Escondн la mercancнa debajo de la cruz</text>
 	</string>
 	<string id="ros_secret_0001_name">
 		<text>Escondite secreto bajo la cruz</text>
 	</string>
 	<string id="ros_secret_0002_description">
-		<text>Escond  unas cosas en el cofre, debajo de la casa peque a. No debo olvidarme.</text>
+		<text>Escondн unas cosas en el cofre, debajo de la casa pequeсa. No debo olvidarme.</text>
 	</string>
 	<string id="ros_secret_0002_name">
-		<text>Cofre bajo la casa peque a</text>
+		<text>Cofre bajo la casa pequeсa</text>
 	</string>
 	<string id="ros_secret_0003_description">
-		<text>Met  la mochila debajo de la escalera, y de repente aparecieron esos desgraciados.  C mo voy a recuperarla ahora?</text>
+		<text>Metн la mochila debajo de la escalera, y de repente aparecieron esos desgraciados. їCуmo voy a recuperarla ahora?</text>
 	</string>
 	<string id="ros_secret_0003_name">
 		<text>Mochila del stalker</text>
 	</string>
 	<string id="ros_secret_0004_description">
-		<text>Hay una caja fuerte medio enterrada en la esquina, detr s del  rbol. Dejar  all  mis cosas por ahora.</text>
+		<text>Hay una caja fuerte medio enterrada en la esquina, detrбs del бrbol. Dejarй allн mis cosas por ahora.</text>
 	</string>
 	<string id="ros_secret_0004_name">
-		<text>Escondite secreto tras el  rbol</text>
+		<text>Escondite secreto tras el бrbol</text>
 	</string>
 	<string id="ros_secret_0005_description">
 		<text>Escondieron todo lo que robaron durante la lluvia en un cofre, en el garaje.</text>
@@ -865,139 +865,139 @@
 		<text>Escondite secreto del garaje</text>
 	</string>
 	<string id="ros_secret_0006_description">
-		<text>Escond  algunas cosas en el cofre, detr s de la cabina</text>
+		<text>Escondн algunas cosas en el cofre, detrбs de la cabina</text>
 	</string>
 	<string id="ros_secret_0006_name">
 		<text>Cofre escondido</text>
 	</string>
 	<string id="ros_secret_0007_description">
-		<text>Met  la mochila en un agujero; parece que no se ve desde arriba.</text>
+		<text>Metн la mochila en un agujero; parece que no se ve desde arriba.</text>
 	</string>
 	<string id="ros_secret_0007_name">
 		<text>Mochila en el escondite secreto</text>
 	</string>
 	<string id="ros_secret_0008_description">
-		<text>Escond  el peque o cofre en un lugar seguro</text>
+		<text>Escondн el pequeсo cofre en un lugar seguro</text>
 	</string>
 	<string id="ros_secret_0008_name">
 		<text>Cofre en lugar seguro</text>
 	</string>
 	<string id="ros_secret_0009_description">
-		<text>Mi mochila est  justo bajo el tejado. La dej  all  por si llueve.</text>
+		<text>Mi mochila estб justo bajo el tejado. La dejй allн por si llueve.</text>
 	</string>
 	<string id="ros_secret_0009_name">
 		<text>Escondite secreto de Strelok</text>
 	</string>
 	<string id="ros_secret_0010_description">
-		<text>Seg n dicen, hay una caja fuerte en esa casa peque a y tiene algo dentro</text>
+		<text>Segъn dicen, hay una caja fuerte en esa casa pequeсa y tiene algo dentro</text>
 	</string>
 	<string id="ros_secret_0010_name">
 		<text>Caja fuerte en la casa</text>
 	</string>
 	<string id="ros_secret_0011_description">
-		<text>Lo escond  en la casa, en una tuber a. Con cuidado, aquello es un desastre.</text>
+		<text>Lo escondн en la casa, en una tuberнa. Con cuidado, aquello es un desastre.</text>
 	</string>
 	<string id="ros_secret_0011_name">
-		<text>Escondite secreto de la tuber a</text>
+		<text>Escondite secreto de la tuberнa</text>
 	</string>
 	<string id="ros_secret_0012_description">
-		<text>Coge lo que hemos hablado del cofre; normalmente nadie mira all .</text>
+		<text>Coge lo que hemos hablado del cofre; normalmente nadie mira allн.</text>
 	</string>
 	<string id="ros_secret_0012_name">
 		<text>Cofre escondido</text>
 	</string>
 	<string id="ros_secret_0013_description">
-		<text>Lo escond  debajo de la cruz, en un callej n</text>
+		<text>Lo escondн debajo de la cruz, en un callejуn</text>
 	</string>
 	<string id="ros_secret_0013_name">
 		<text>Escondite secreto bajo la cruz</text>
 	</string>
 	<string id="ros_secret_0014_description">
-		<text>Escondieron la mercanc a extra debajo del cemento, en las obras.</text>
+		<text>Escondieron la mercancнa extra debajo del cemento, en las obras.</text>
 	</string>
 	<string id="ros_secret_0014_name">
 		<text>Escondite secreto bajo el cemento</text>
 	</string>
 	<string id="ros_secret_0015_description">
-		<text>Dejaremos el bot n dentro el cofre donde las obras por si tenemos que salir corriendo.</text>
+		<text>Dejaremos el botнn dentro el cofre donde las obras por si tenemos que salir corriendo.</text>
 	</string>
 	<string id="ros_secret_0015_name">
 		<text>Escondite secreto de Afortunado</text>
 	</string>
 	<string id="ros_secret_0016_description">
-		<text>Lo escond  en uno de los callejones de las obras</text>
+		<text>Lo escondн en uno de los callejones de las obras</text>
 	</string>
 	<string id="ros_secret_0016_name">
 		<text>Nychka</text>
 	</string>
 	<string id="ros_secret_0017_description">
-		<text>Met  todo en una tuber a, lo recoger  m s tarde.</text>
+		<text>Metн todo en una tuberнa, lo recogerй mбs tarde.</text>
 	</string>
 	<string id="ros_secret_0017_name">
-		<text>Escondite secreto de la tuber a</text>
+		<text>Escondite secreto de la tuberнa</text>
 	</string>
 	<string id="ros_secret_0018_description">
-		<text>Escond  la medicina en un cofre, cerca de las obras</text>
+		<text>Escondн la medicina en un cofre, cerca de las obras</text>
 	</string>
 	<string id="ros_secret_0018_name">
 		<text>Cofre con medicina</text>
 	</string>
 	<string id="ros_secret_0019_description">
-		<text>Arrastr  el cofre hasta el interior de la cabina de la gr a</text>
+		<text>Arrastrй el cofre hasta el interior de la cabina de la grъa</text>
 	</string>
 	<string id="ros_secret_0019_name">
-		<text>Cofre de la gr a</text>
+		<text>Cofre de la grъa</text>
 	</string>
 	<string id="ros_secret_0020_description">
-		<text>Escond  mis cosas en la alcantarilla de la esquina</text>
+		<text>Escondн mis cosas en la alcantarilla de la esquina</text>
 	</string>
 	<string id="ros_secret_0020_name">
 		<text>Escondite secreto de la alcantarilla</text>
 	</string>
 	<string id="ros_secret_0021_description">
-		<text>Fui a buscar el artefacto y me met  en una anomal a; a duras penas pude dejar la mochila en la esquina</text>
+		<text>Fui a buscar el artefacto y me metн en una anomalнa; a duras penas pude dejar la mochila en la esquina</text>
 	</string>
 	<string id="ros_secret_0021_name">
 		<text>Mochila abandonada</text>
 	</string>
 	<string id="ros_secret_0022_description">
-		<text>Dej  el cofre justo bajo el tejado, donde la torre, para que nadie lo viera</text>
+		<text>Dejй el cofre justo bajo el tejado, donde la torre, para que nadie lo viera</text>
 	</string>
 	<string id="ros_secret_0022_name">
-		<text>Peque o cofre bajo el tejado</text>
+		<text>Pequeсo cofre bajo el tejado</text>
 	</string>
 	<string id="ros_secret_0023_description">
-		<text>Escondimos el alijo en una tuber a pr xima a las obras</text>
+		<text>Escondimos el alijo en una tuberнa prуxima a las obras</text>
 	</string>
 	<string id="ros_secret_0023_name">
-		<text>Escondite secreto de la tuber a</text>
+		<text>Escondite secreto de la tuberнa</text>
 	</string>
 	<string id="ros_secret_0024_description">
-		<text>Met  todas las cosas en el le o; seguro que no las encuentran</text>
+		<text>Metн todas las cosas en el leсo; seguro que no las encuentran</text>
 	</string>
 	<string id="ros_secret_0024_name">
 		<text>Escondite secreto</text>
 	</string>
 	<string id="ros_secret_0025_description">
-		<text>Abandon  la mochila junto a la gr a</text>
+		<text>Abandonй la mochila junto a la grъa</text>
 	</string>
 	<string id="ros_secret_0025_name">
 		<text>Mochila</text>
 	</string>
 	<string id="val_secret_0000_description">
-		<text>Escond  algunas cosas debajo de la cruz que hay junto a la monta a</text>
+		<text>Escondн algunas cosas debajo de la cruz que hay junto a la montaсa</text>
 	</string>
 	<string id="val_secret_0000_name">
 		<text>Escondite secreto bajo la cruz</text>
 	</string>
 	<string id="val_secret_0001_description">
-		<text>Met  toda la mercanc a en un le o; seguro que no la encuentran.</text>
+		<text>Metн toda la mercancнa en un leсo; seguro que no la encuentran.</text>
 	</string>
 	<string id="val_secret_0001_name">
-		<text>Escondite secreto del le o</text>
+		<text>Escondite secreto del leсo</text>
 	</string>
 	<string id="val_secret_0002_description">
-		<text>Puse la mochila debajo del puente, la dejar  all  por ahora</text>
+		<text>Puse la mochila debajo del puente, la dejarй allн por ahora</text>
 	</string>
 	<string id="val_secret_0002_name">
 		<text>Mochila debajo del puente</text>
@@ -1015,88 +1015,88 @@
 		<text>Escondite secreto del tronco</text>
 	</string>
 	<string id="val_secret_0005_description">
-		<text>Encontr  un gran cofre en la granja; dejar  la mercanc a all  por ahora</text>
+		<text>Encontrй un gran cofre en la granja; dejarй la mercancнa allн por ahora</text>
 	</string>
 	<string id="val_secret_0005_name">
-		<text>Cofre con mercanc a</text>
+		<text>Cofre con mercancнa</text>
 	</string>
 	<string id="val_secret_0006_description">
-		<text>Puse mis cosas dentro de la tuber a, las coger  m s tarde.</text>
+		<text>Puse mis cosas dentro de la tuberнa, las cogerй mбs tarde.</text>
 	</string>
 	<string id="val_secret_0006_name">
-		<text>Escondite secreto de la tuber a</text>
+		<text>Escondite secreto de la tuberнa</text>
 	</string>
 	<string id="val_secret_0007_description">
-		<text>Escond  la mochila debajo de un pino</text>
+		<text>Escondн la mochila debajo de un pino</text>
 	</string>
 	<string id="val_secret_0007_name">
 		<text>Escondite secreto bajo el pino</text>
 	</string>
 	<string id="val_secret_0008_description">
-		<text>Al final el novato rob  el cofre a los bandidos y lo meti  en el Niva que est  volcado. Dice que por su aspecto debe de ser un cofre del gobierno. Cogeremos las armas e iremos a buscarlo.</text>
+		<text>Al final el novato robу el cofre a los bandidos y lo metiу en el Niva que estб volcado. Dice que por su aspecto debe de ser un cofre del gobierno. Cogeremos las armas e iremos a buscarlo.</text>
 	</string>
 	<string id="val_secret_0008_name">
 		<text>Cofre del gobierno</text>
 	</string>
 	<string id="val_secret_0009_description">
-		<text>Est n robando en todas partes. Incluso roban a los de su bando, pero nunca encontrar n mi cofre</text>
+		<text>Estбn robando en todas partes. Incluso roban a los de su bando, pero nunca encontrarбn mi cofre</text>
 	</string>
 	<string id="val_secret_0009_name">
 		<text>Cofre</text>
 	</string>
 	<string id="val_secret_0010_description">
-		<text>Escond  mis cosas en la alcantarilla, puede que alg n d a hagan falta</text>
+		<text>Escondн mis cosas en la alcantarilla, puede que algъn dнa hagan falta</text>
 	</string>
 	<string id="val_secret_0010_name">
 		<text>Escondite secreto de la alcantarilla</text>
 	</string>
 	<string id="val_secret_0011_description">
-		<text>Puse la mochila debajo de un  rbol; si no, no habr a conseguido escapar de los bandidos.</text>
+		<text>Puse la mochila debajo de un бrbol; si no, no habrнa conseguido escapar de los bandidos.</text>
 	</string>
 	<string id="val_secret_0011_name">
 		<text>Mochila del stalker</text>
 	</string>
 	<string id="val_secret_0012_description">
-		<text>Met  mis cosas en una tuber a, ir  a por ellas m s tarde</text>
+		<text>Metн mis cosas en una tuberнa, irй a por ellas mбs tarde</text>
 	</string>
 	<string id="val_secret_0012_name">
 		<text>Escondite secreto</text>
 	</string>
 	<string id="val_secret_0013_description">
-		<text>Escond  todo lo que le rob  a Borov en una caja fuerte, debajo de un pino. Ahora tendr  que esperar a que se calmen.</text>
+		<text>Escondн todo lo que le robй a Borov en una caja fuerte, debajo de un pino. Ahora tendrй que esperar a que se calmen.</text>
 	</string>
 	<string id="val_secret_0013_name">
 		<text>Caja fuerte oculta</text>
 	</string>
 	<string id="val_secret_0014_description">
-		<text>El cuartel general temporal est  en el vag n, y all  est  el cofre con la mercanc a</text>
+		<text>El cuartel general temporal estб en el vagуn, y allн estб el cofre con la mercancнa</text>
 	</string>
 	<string id="val_secret_0014_name">
-		<text>Almac n del vag n</text>
+		<text>Almacйn del vagуn</text>
 	</string>
 	<string id="val_secret_0015_description">
-		<text>A duras penas consegu  entrar en la tuber a que hay debajo de la carretera. Ahora tendr  un sitio para esconder mi mochila.</text>
+		<text>A duras penas conseguн entrar en la tuberнa que hay debajo de la carretera. Ahora tendrй un sitio para esconder mi mochila.</text>
 	</string>
 	<string id="val_secret_0015_name">
-		<text>Escondite secreto de la tuber a</text>
+		<text>Escondite secreto de la tuberнa</text>
 	</string>
 	<string id="val_secret_0016_description">
-		<text>Met  la mercanc a en el cofre, ir  a por ella m s tarde</text>
+		<text>Metн la mercancнa en el cofre, irй a por ella mбs tarde</text>
 	</string>
 	<string id="val_secret_0016_name">
 		<text>Cofre con cosas guardadas</text>
 	</string>
 	<string id="val_secret_0017_description">
-		<text>Voy a esconder la mercanc a detr s de la tuber a: va a ser dif cil recogerla, pero al menos no podr n quit rmela.</text>
+		<text>Voy a esconder la mercancнa detrбs de la tuberнa: va a ser difнcil recogerla, pero al menos no podrбn quitбrmela.</text>
 	</string>
 	<string id="val_secret_0017_name">
-		<text>Escondite secreto detr s de la tuber a</text>
+		<text>Escondite secreto detrбs de la tuberнa</text>
 	</string>
 	<string id="val_secret_0018_description">
-		<text>Encontr  unos cartuchos en el cuarto de las conexiones el ctricas</text>
+		<text>Encontrй unos cartuchos en el cuarto de las conexiones elйctricas</text>
 	</string>
 	<string id="val_secret_0018_name">
-		<text>Escondite secreto del cuarto de conexiones el ctricas</text>
+		<text>Escondite secreto del cuarto de conexiones elйctricas</text>
 	</string>
 	<string id="val_secret_0019_description">
 		<text>Dejamos todo lo que encontramos en el cofre, lo recogeremos a la vuelta.</text>
@@ -1105,31 +1105,31 @@
 		<text>Escondite secreto del cofre</text>
 	</string>
 	<string id="val_secret_0020_description">
-		<text>Escond  la mochila del novato, y no pudo encontrarla</text>
+		<text>Escondн la mochila del novato, y no pudo encontrarla</text>
 	</string>
 	<string id="val_secret_0020_name">
 		<text>Mochila escondida</text>
 	</string>
 	<string id="val_secret_0021_description">
-		<text>El cofre est  en la camioneta, hay que ir a buscarlo</text>
+		<text>El cofre estб en la camioneta, hay que ir a buscarlo</text>
 	</string>
 	<string id="val_secret_0021_name">
 		<text>Cofre olvidado</text>
 	</string>
 	<string id="val_secret_0022_description">
-		<text>Encontr  una caja fuerte en la gasolinera y escond  mis cosas all . Parece que nadie viene por este lugar.</text>
+		<text>Encontrй una caja fuerte en la gasolinera y escondн mis cosas allн. Parece que nadie viene por este lugar.</text>
 	</string>
 	<string id="val_secret_0022_name">
 		<text>Caja fuerte de la gasolinera</text>
 	</string>
 	<string id="val_secret_0023_description">
-		<text>Arrastr  el cofre hasta la cisterna</text>
+		<text>Arrastrй el cofre hasta la cisterna</text>
 	</string>
 	<string id="val_secret_0023_name">
 		<text>Cofre</text>
 	</string>
 	<string id="val_secret_0024_description">
-		<text>Escond  la mercanc a en la caja fuerte de la gasolinera</text>
+		<text>Escondн la mercancнa en la caja fuerte de la gasolinera</text>
 	</string>
 	<string id="val_secret_0024_name">
 		<text>Caja fuerte de la gasolinera</text>
@@ -1141,61 +1141,61 @@
 		<text>Cofre del coche</text>
 	</string>
 	<string id="val_secret_0026_description">
-		<text>Met  el cofre en el escondite secreto: es un lugar seguro</text>
+		<text>Metн el cofre en el escondite secreto: es un lugar seguro</text>
 	</string>
 	<string id="val_secret_0026_name">
 		<text>Cofre del escondite secreto</text>
 	</string>
 	<string id="val_secret_0027_description">
-		<text>Dej  la mochila en un edificio abandonado; bien, nadie va nunca por all </text>
+		<text>Dejй la mochila en un edificio abandonado; bien, nadie va nunca por allн</text>
 	</string>
 	<string id="val_secret_0027_name">
 		<text>Mochila abandonada</text>
 	</string>
 	<string id="val_secret_0028_description">
-		<text>Guardaremos la mercanc a en la caja fuerte; seguro que pasa inadvertida. Un d a de  stos, los soldados vendr n y se llevar n todo lo que encuentren, pero no buscar n demasiado, as  que dejar n todos los objetos de valor para m .</text>
+		<text>Guardaremos la mercancнa en la caja fuerte; seguro que pasa inadvertida. Un dнa de йstos, los soldados vendrбn y se llevarбn todo lo que encuentren, pero no buscarбn demasiado, asн que dejarбn todos los objetos de valor para mн.</text>
 	</string>
 	<string id="val_secret_0028_name">
 		<text>Escondite secreto de Borov</text>
 	</string>
 	<string id="val_secret_0029_description">
-		<text>Escond  la mochila junto al edificio</text>
+		<text>Escondн la mochila junto al edificio</text>
 	</string>
 	<string id="val_secret_0029_name">
 		<text>Mochila en un lugar secreto</text>
 	</string>
 	<string id="val_secret_0030_description">
-		<text>Met  la mercanc a en un cofre que no llamar  mucho la atenci n; iremos a por ella m s tarde.</text>
+		<text>Metн la mercancнa en un cofre que no llamarб mucho la atenciуn; iremos a por ella mбs tarde.</text>
 	</string>
 	<string id="val_secret_0030_name">
 		<text>Cofre poco llamativo</text>
 	</string>
 	<string id="val_secret_0031_description">
-		<text>Escond  la mochila debajo del coche, nadie mirar  ah </text>
+		<text>Escondн la mochila debajo del coche, nadie mirarб ahн</text>
 	</string>
 	<string id="val_secret_0031_name">
 		<text>Mochila escondida</text>
 	</string>
 	<string id="val_secret_0032_description">
-		<text>Escond  los objetos de valor en el coche, justo delante de las narices de los bandidos; no tuve tiempo de buscar un sitio mejor.</text>
+		<text>Escondн los objetos de valor en el coche, justo delante de las narices de los bandidos; no tuve tiempo de buscar un sitio mejor.</text>
 	</string>
 	<string id="val_secret_0032_name">
 		<text>Escondite secreto en el coche</text>
 	</string>
 	<string id="x16_secret_0000_description">
-		<text>Se rumorea que un stalker entr  en el laboratorio y escondi  su mercanc a donde los enchufes el ctricos del hueco del ascensor. Y cuando quiso ir a recogerla ya no pudo.</text>
+		<text>Se rumorea que un stalker entrу en el laboratorio y escondiу su mercancнa donde los enchufes elйctricos del hueco del ascensor. Y cuando quiso ir a recogerla ya no pudo.</text>
 	</string>
 	<string id="x16_secret_0000_name">
-		<text>Mercanc a en el hueco del ascensor</text>
+		<text>Mercancнa en el hueco del ascensor</text>
 	</string>
 	<string id="x16_secret_0001_description">
-		<text>Se rumorea que un stalker entr  en el laboratorio y la palm  en la zona donde se hac an los experimentos llevando consigo todos sus objetos de valor.</text>
+		<text>Se rumorea que un stalker entrу en el laboratorio y la palmу en la zona donde se hacнan los experimentos llevando consigo todos sus objetos de valor.</text>
 	</string>
 	<string id="x16_secret_0001_name">
 		<text>Mochila del explorador</text>
 	</string>
 	<string id="x18_secret_0000_description">
-		<text>Ahumado meti  todo en una caja fuerte del laboratorio subterr neo. No es un mal sitio, nadie tiene las llaves del laboratorio. El  nico problema es que cuando menos te lo esperas, salen rocas disparadas por todas partes. Dicen que algunos han muerto as .</text>
+		<text>Ahumado metiу todo en una caja fuerte del laboratorio subterrбneo. No es un mal sitio, nadie tiene las llaves del laboratorio. El ъnico problema es que cuando menos te lo esperas, salen rocas disparadas por todas partes. Dicen que algunos han muerto asн.</text>
 	</string>
 	<string id="x18_secret_0000_name">
 		<text>Escondite secreto de Ahumado</text>
@@ -1207,90 +1207,90 @@
 		<text>Mochila abandonada</text>
 	</string>
 	<string id="yan_secret_0000_description">
-		<text>La cruz est  en una colina, y la mochila est  debajo de la cruz.</text>
+		<text>La cruz estб en una colina, y la mochila estб debajo de la cruz.</text>
 	</string>
 	<string id="yan_secret_0000_name">
 		<text>Escondite secreto bajo la cruz</text>
 	</string>
 	<string id="yan_secret_0001_description">
-		<text>Se dice que hay una caja fuerte medio enterrada en un peque o islote del pantano. Necesito saber si es cierto.</text>
+		<text>Se dice que hay una caja fuerte medio enterrada en un pequeсo islote del pantano. Necesito saber si es cierto.</text>
 	</string>
 	<string id="yan_secret_0001_name">
 		<text>Vieja caja fuerte</text>
 	</string>
 	<string id="yan_secret_0002_description">
-		<text>Met  la mercanc a en una tuber a que hay junto al campamento</text>
+		<text>Metн la mercancнa en una tuberнa que hay junto al campamento</text>
 	</string>
 	<string id="yan_secret_0002_name">
-		<text>Tuber a con mercanc a</text>
+		<text>Tuberнa con mercancнa</text>
 	</string>
 	<string id="yan_secret_0003_description">
-		<text>Escond  los objetos de valor detr s de los garajes.</text>
+		<text>Escondн los objetos de valor detrбs de los garajes.</text>
 	</string>
 	<string id="yan_secret_0003_name">
-		<text>Mochila escondida detr s de los garajes</text>
+		<text>Mochila escondida detrбs de los garajes</text>
 	</string>
 	<string id="yan_secret_0004_description">
-		<text>Escond  la mochila en una caseta, justo detr s de la chatarra</text>
+		<text>Escondн la mochila en una caseta, justo detrбs de la chatarra</text>
 	</string>
 	<string id="yan_secret_0004_name">
-		<text>Mochila con el bot n</text>
+		<text>Mochila con el botнn</text>
 	</string>
 	<string id="yan_secret_0005_description">
-		<text>Dej  el cofre en el autob s; no creo que nadie lo descubra</text>
+		<text>Dejй el cofre en el autobъs; no creo que nadie lo descubra</text>
 	</string>
 	<string id="yan_secret_0005_name">
-		<text>Escondite secreto del autob s</text>
+		<text>Escondite secreto del autobъs</text>
 	</string>
 	<string id="yan_secret_0006_description">
-		<text>He escondido la mercanc a en el coche, no muy lejos del territorio. La radiaci n no es demasiado alta.</text>
+		<text>He escondido la mercancнa en el coche, no muy lejos del territorio. La radiaciуn no es demasiado alta.</text>
 	</string>
 	<string id="yan_secret_0006_name">
-		<text>El bot n est  en el coche</text>
+		<text>El botнn estб en el coche</text>
 	</string>
 	<string id="yan_secret_0007_description">
-		<text>Se dice que alguien dej  sus cosas all , pero no se puede llegar debido a la radiaci n.</text>
+		<text>Se dice que alguien dejу sus cosas allн, pero no se puede llegar debido a la radiaciуn.</text>
 	</string>
 	<string id="yan_secret_0007_name">
 		<text>Vieja mochila</text>
 	</string>
 	<string id="yan_secret_0008_description">
-		<text>Seg n cuentan, aqu  hay un escondite secreto de una de las facciones. Me pregunto c mo consiguieron llegar aqu  con la radiaci n.</text>
+		<text>Segъn cuentan, aquн hay un escondite secreto de una de las facciones. Me pregunto cуmo consiguieron llegar aquн con la radiaciуn.</text>
 	</string>
 	<string id="yan_secret_0008_name">
-		<text>Escondite secreto de una facci n</text>
+		<text>Escondite secreto de una facciуn</text>
 	</string>
 	<string id="yan_secret_0009_description">
-		<text>Otro stalker voluntario la palm  aqu  porque llevaba un prototipo que no le protegi  de la radiaci n. S lo consigui  llegar al centro del territorio y all  se qued . Sakharov quiere tomar mediciones m s precisas, pero yo no ir ; si lo hago seguro que me quedo all , cerca del territorio. </text>
+		<text>Otro stalker voluntario la palmу aquн porque llevaba un prototipo que no le protegiу de la radiaciуn. Sуlo consiguiу llegar al centro del territorio y allн se quedу. Sakharov quiere tomar mediciones mбs precisas, pero yo no irй; si lo hago seguro que me quedo allн, cerca del territorio. </text>
 	</string>
 	<string id="yan_secret_0009_name">
 		<text>Mochila del voluntario</text>
 	</string>
 	<string id="yan_secret_0010_description">
-		<text>Dicen que alguien dej  all  su bot n, pero no hay manera de llegar por culpa de la radiaci n.</text>
+		<text>Dicen que alguien dejу allн su botнn, pero no hay manera de llegar por culpa de la radiaciуn.</text>
 	</string>
 	<string id="yan_secret_0010_name">
 		<text>Viejo escondite secreto</text>
 	</string>
 	<string id="yan_secret_0011_description">
-		<text>Tengo que moverme. Sakharov y Kruglov est n pirados; quieren que vaya con un stalker al centro de la radiaci n. Que se fastidien; en cuanto coja toda la mercanc a de la alcantarilla me largo.</text>
+		<text>Tengo que moverme. Sakharov y Kruglov estбn pirados; quieren que vaya con un stalker al centro de la radiaciуn. Que se fastidien; en cuanto coja toda la mercancнa de la alcantarilla me largo.</text>
 	</string>
 	<string id="yan_secret_0011_name">
-		<text>Escondite secreto del cient fico</text>
+		<text>Escondite secreto del cientнfico</text>
 	</string>
 	<string id="yan_secret_0012_description">
-		<text>Met  toda la mercanc a en un le o, seguro que no la encuentran.</text>
+		<text>Metн toda la mercancнa en un leсo, seguro que no la encuentran.</text>
 	</string>
 	<string id="yan_secret_0012_name">
-		<text>Tesoro del le o</text>
+		<text>Tesoro del leсo</text>
 	</string>
 	<string id="yan_secret_0013_description">
-		<text>Dicen que alguien dej  aqu  una caja fuerte, pero no hay manera de llegar por culpa de la radiaci n.</text>
+		<text>Dicen que alguien dejу aquн una caja fuerte, pero no hay manera de llegar por culpa de la radiaciуn.</text>
 	</string>
 	<string id="yan_secret_0013_name">
-		<text>Cofre con mercanc a</text>
+		<text>Cofre con mercancнa</text>
 	</string>
 	<string id="st_found_new_treasure">
-		<text>Informaci n sobre el escondite</text>
+		<text>Informaciуn sobre el escondite</text>
 	</string>
 </string_table>

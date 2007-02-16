@@ -50,7 +50,7 @@
 		<text>Information from X18</text>
 	</string>
 	<string id="pass_to_1st_door">
-		<text>Excellent, Colleague. I'm glad that you've received 2nd level access. At last you will find out what goes on in our laboratory. Your access code is 1243. Chief of Laboratory Õ-18, Piotr Ilyitch Kalugin.</text>
+		<text>Excellent, Colleague. I'm glad that you've received 2nd level access. At last you will find out what goes on in our laboratory. Your access code is 1243. Chief of Laboratory X-18, Piotr Ilyitch Kalugin.</text>
 	</string>
 	<string id="pass_to_2nd_door">
 		<text>Dear colleague, may I remind you that starting tomorrow you will attend to the container in the central laboratory room. You must inspect the containers every two hours. Report everything directly to me. The code to the central laboratory room is 9524. Chief of Laboratory X18, Piotr Ilyitch Kalugin.</text>
@@ -59,13 +59,13 @@
 		<text>A strange dream</text>
 	</string>
 	<string id="sl_x18_dream_text">
-		<text>I had a strange dream. The colossal Chernobyl power plant emerges in the twilight. Everything looks peaceful. A lonely man appears. I see him from behind against the background of the plant. The wind starts to blow. Suddenly hordes of rats begin to skitter away from the station in all directions. The man, with his back still turned to me, shoots at the rats. There is an abrupt scream: "Strelok!". The man shudders, freezes for a moment, then starts to turn slowly in my direction, but… just an instant before I am to get a glance at his face, I wake up. What does this dream mean? I don't know, but I think it's something I have seen before.</text>
+		<text>I had a strange dream. The colossal Chernobyl power plant emerges in the twilight. Everything looks peaceful. A lonely man appears. I see him from behind against the background of the plant. The wind starts to blow. Suddenly hordes of rats begin to skitter away from the station in all directions. The man, with his back still turned to me, shoots at the rats. There is an abrupt scream: "Strelok!". The man shudders, freezes for a moment, then starts to turn slowly in my direction, but... just an instant before I am to get a glance at his face, I wake up. What does this dream mean? I don't know, but I think it's something I have seen before.</text>
 	</string>
 	<string id="val_captive_help_txt">
 		<text>Duty member Bullet wants me to rescue his partner who was captured by bandits. He is soon to be escorted to the deserted factory.</text>
 	</string>
 	<string id="val_prisoner_help_art_txt">
-		<text>Dutyer: "They have another one of ours: Serega. They're keeping him in the cellar…there's a large building there…not finished…Help him out, okay? Or they'll put an end to him too…"</text>
+		<text>Dutyer: "They have another one of ours: Serega. They're keeping him in the cellar...there's a large building there...not finished...Help him out, okay? Or they'll put an end to him too..."</text>
 	</string>
 	<string id="val_x18_conclusion">
 		<text>Lab X18</text>

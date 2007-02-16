@@ -1,8 +1,8 @@
 	<string id="general_ecolog_tip_1">
-		<text>Qu'est-ce qui s'est pass  ? Il est mort ? Reviens imm diatement !</text>
+		<text>Qu'est-ce qui s'est passé ? Il est mort ? Reviens immédiatement !</text>
 	</string>
 	<string id="general_ecolog_tip_2">
-		<text>Qu'est-ce qui s'est pass  ? Il est mort ? R cup re les  chantillons et reviens imm diatement !</text>
+		<text>Qu'est-ce qui s'est passé ? Il est mort ? Récupère les échantillons et reviens immédiatement !</text>
 	</string>
 	<string id="storyline_ghost_tip">
 		<text>Enregistrement sonore d'un spectre.</text>
@@ -11,14 +11,14 @@
 		<text>Enregistrement sonore de Vasiliev.</text>
 	</string>
 	<string id="tips_labx16switcher_press">
-		<text>Pour  teindre la machine   miracles, appuyez sur ($$ACTION_USE$$)</text>
+		<text>Pour éteindre la machine à miracles, appuyez sur ($$ACTION_USE$$)</text>
 	</string>
 	<string id="yan_saharov_message">
-		<text>Bon sang, le Tatou , vous avez r ussi. Il est de la plus haute importance qu'on  tudie la machine qui est dans le labo. Essayez de l' teindre pour qu'on puisse y jeter un coup d' il.</text>
+		<text>Bon sang, le Tatoué, vous avez réussi. Il est de la plus haute importance qu'on étudie la machine qui est dans le labo. Essayez de l'éteindre pour qu'on puisse y jeter un coup d'oeil.</text>
 	</string>
 	<string id="yan_saharov_message_2">
-		<text> coutez, ce prototype ne vous prot gera pas longtemps des  missions les plus puissantes. Je m'y attendais, alors chaque fois qu'une  mission est d tect e, un chronom tre se d clenche. Lorsque le d lai est  coul , le prototype ne prot ge plus, alors soyez prudent et gardez un  il sur le chrono.</text>
+		<text>Écoutez, ce prototype ne vous protégera pas longtemps des émissions les plus puissantes. Je m'y attendais, alors chaque fois qu'une émission est détectée, un chronomètre se déclenche. Lorsque le délai est écoulé, le prototype ne protège plus, alors soyez prudent et gardez un oeil sur le chrono.</text>
 	</string>
 	<string id="yan_saharov_message_3">
-		<text>Bien jou , le Tatou . L' mission a  t  d sactiv e et vous  tes toujours en vie. Mais, je dois vous mettre en garde. On a appel  des h licopt res militaires pour d barrasser le secteur des zombies.  vitez au maximum les d placements. Oh, au fait, faites un saut jusqu'  notre bunker   l'occasion, d'accord ?</text>
+		<text>Bien joué, le Tatoué. L'émission a été désactivée et vous êtes toujours en vie. Mais, je dois vous mettre en garde. On a appelé des hélicoptères militaires pour débarrasser le secteur des zombies. Évitez au maximum les déplacements. Oh, au fait, faites un saut jusqu'à notre bunker à l'occasion, d'accord ?</text>
 	</string>

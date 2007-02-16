@@ -1,14 +1,14 @@
 	<string id="gar_angar">
-		<text>Hangar abandonn .</text>
+		<text>Hangar abandonné.</text>
 	</string>
 	<string id="gar_bandit_agr">
-		<text>Camp de bandits   la sortie d'Agroprom.</text>
+		<text>Camp de bandits à la sortie d'Agroprom.</text>
 	</string>
 	<string id="gar_bandit_post">
 		<text>Base des bandits sur la route d'Agroprom.</text>
 	</string>
 	<string id="gar_bandits_leader">
-		<text>Raid des bandits men  par le boss.</text>
+		<text>Raid des bandits mené par le boss.</text>
 	</string>
 	<string id="gar_boars_nest">
 		<text>Horde de sangliers.</text>
@@ -17,19 +17,19 @@
 		<text>Casse automobile.</text>
 	</string>
 	<string id="gar_dogs_in_forest">
-		<text>For t infest e de chiens</text>
+		<text>Forêt infestée de chiens</text>
 	</string>
 	<string id="gar_dolg_blokpost">
-		<text>Poste de contr le du Devoir sur la route du bar.</text>
+		<text>Poste de contrôle du Devoir sur la route du bar.</text>
 	</string>
 	<string id="gar_hellcar">
-		<text>Groupe de Stalkers neutres appelant   l'aide.</text>
+		<text>Groupe de Stalkers neutres appelant à l'aide.</text>
 	</string>
 	<string id="gar_newbie">
-		<text>Nouveau effray  et  puis .</text>
+		<text>Nouveau effrayé et épuisé.</text>
 	</string>
 	<string id="gar_secret1">
-		<text>Planque secr te du nouveau.</text>
+		<text>Planque secrète du nouveau.</text>
 	</string>
 	<string id="gar_seriy">
 		<text>Groupe de Seriy.</text>
@@ -38,11 +38,11 @@
 		<text>Le Bourbier de Grimpen.</text>
 	</string>
 	<string id="gar_trash1">
-		<text>D potoir contenant des anomalies et des artefacts.</text>
+		<text>Dépotoir contenant des anomalies et des artefacts.</text>
 	</string>
 	<string id="gar_tunnel">
 		<text>Tunnel ferroviaire.</text>
 	</string>
 	<string id="gar_wounded_help">
-		<text>SOS. Probablement un Stalker bless .</text>
+		<text>SOS. Probablement un Stalker blessé.</text>
 	</string>

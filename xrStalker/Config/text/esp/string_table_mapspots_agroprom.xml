@@ -1,11 +1,11 @@
 	<string id="agr_captains_chamber_hint">
-		<text>Armer a del capit n</text>
+		<text>Armería del capitán</text>
 	</string>
 	<string id="agr_collector_entrance_hint">
 		<text>Entrada de la catacumba</text>
 	</string>
 	<string id="agr_factory_hint">
-		<text>F brica</text>
+		<text>Fábrica</text>
 	</string>
 	<string id="agr_find_gunslinger_cache_hint">
 		<text>Encuentra el escondite secreto de Strelok en las catacumbas</text>
@@ -20,7 +20,7 @@
 		<text>Salva a los stalkers</text>
 	</string>
 	<string id="agr_meet_krot_hint">
-		<text>Re nete con Mole</text>
+		<text>Reúnete con Mole</text>
 	</string>
 	<string id="agr_nii_hint">
 		<text>Instituto Agroprom. Base militar</text>
@@ -32,7 +32,7 @@
 		<text>Roba los documentos</text>
 	</string>
 	<string id="agr_take_krots_info_hint">
-		<text>Obt n informaci n sobre el escondite de Mole</text>
+		<text>Obtén información sobre el escondite de Mole</text>
 	</string>
 	<string id="agr_zaz_hint">
 		<text>ZAZ</text>

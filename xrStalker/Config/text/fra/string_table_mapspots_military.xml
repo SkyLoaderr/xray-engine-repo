@@ -1,5 +1,5 @@
 	<string id="mil_cap_hint">
-		<text>Parlez au commandant du poste de contr le de la Barri re.</text>
+		<text>Parlez au commandant du poste de contrôle de la Barrière.</text>
 	</string>
 	<string id="mil_courier_hint1">
 		<text>Suivez la balance.</text>
@@ -14,7 +14,7 @@
 		<text>Tuez l'informateur.</text>
 	</string>
 	<string id="mil_crazy_hint">
-		<text>Emparez-vous de la cl  USB du Stalker fou.</text>
+		<text>Emparez-vous de la clé USB du Stalker fou.</text>
 	</string>
 	<string id="mil_dolg_khutor">
 		<text>Ferme du Devoir</text>
@@ -29,7 +29,7 @@
 		<text>Retournez voir le Radin.</text>
 	</string>
 	<string id="mil_kill_dolg_hint">
-		<text>D truisez l'unit  du Devoir.</text>
+		<text>Détruisez l'unité du Devoir.</text>
 	</string>
 	<string id="mil_kill_lukash_hint">
 		<text>Tuez Lukash.</text>
@@ -38,23 +38,23 @@
 		<text>Le Radin</text>
 	</string>
 	<string id="mil_report_to_max_hint">
-		<text>Faites votre rapport aupr s de Max.</text>
+		<text>Faites votre rapport auprès de Max.</text>
 	</string>
 	<string id="mil_return_to_lukash_hint">
-		<text>Faites votre rapport aupr s de Lukash.</text>
+		<text>Faites votre rapport auprès de Lukash.</text>
 	</string>
 	<string id="mil_return_to_max_hint">
-		<text>Donnez la cl  USB   Max.</text>
+		<text>Donnez la clé USB à Max.</text>
 	</string>
 	<string id="mil_rg6_hint1">
-		<text>Trouvez le cuisinier de la base de la Libert .</text>
+		<text>Trouvez le cuisinier de la base de la Liberté.</text>
 	</string>
 	<string id="mil_rg6_hint2">
 		<text>Parlez au Chef.</text>
 	</string>
 	<string id="mil_rg6_hint3">
-		<text>R cup rez le Bulldog 6 dans la planque du village.</text>
+		<text>Récupérez le Bulldog 6 dans la planque du village.</text>
 	</string>
 	<string id="mil_watertower_hint">
-		<text>Ch teau d'eau</text>
+		<text>Château d'eau</text>
 	</string>

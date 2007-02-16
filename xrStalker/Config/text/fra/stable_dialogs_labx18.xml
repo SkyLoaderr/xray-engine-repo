@@ -4,28 +4,28 @@
 		<text>Je suis en mission.</text>
 	</string>
 	<string id="dar_explorer_dialog_11">
-		<text>Hum. Quel genre de mission ? Tu cherches quelque chose ? Tu l'as peut- tre d j  trouv  ? Il para t qu'on trouve plein de trucs par ici...</text>
+		<text>Hum. Quel genre de mission ? Tu cherches quelque chose ? Tu l'as peut-être déjà trouvé ? Il paraît qu'on trouve plein de trucs par ici...</text>
 	</string>
 	<string id="dar_explorer_dialog_111">
-		<text>D sol , je sais pas, et j'ai pas le temps de toute fa on.</text>
+		<text>Désolé, je sais pas, et j'ai pas le temps de toute façon.</text>
 	</string>
 	<string id="dar_explorer_dialog_1111">
-		<text>Attends, t'enfuis pas. T'auras bien assez d'occasions pour  a... Qu'est-ce que tu as trouv  ? Tu sais je tra ne pas non plus dans le coin par hasard.</text>
+		<text>Attends, t'enfuis pas. T'auras bien assez d'occasions pour ça... Qu'est-ce que tu as trouvé ? Tu sais je traîne pas non plus dans le coin par hasard.</text>
 	</string>
 	<string id="dar_explorer_dialog_11111">
-		<text> a te regarde pas.</text>
+		<text>Ça te regarde pas.</text>
 	</string>
 	<string id="dar_explorer_dialog_11112">
-		<text>J'ai trouv  des documents du labo X18. Le Barman a promis de m'en donner un bon prix.</text>
+		<text>J'ai trouvé des documents du labo X18. Le Barman a promis de m'en donner un bon prix.</text>
 	</string>
 	<string id="dar_explorer_dialog_112">
-		<text>J'ai rien trouv .</text>
+		<text>J'ai rien trouvé.</text>
 	</string>
 	<string id="dar_explorer_dialog_2">
-		<text>Je sais m me pas comment j'ai atterri l . J'ai aucune envie de m'attarder.</text>
+		<text>Je sais même pas comment j'ai atterri là. J'ai aucune envie de m'attarder.</text>
 	</string>
 	<string id="dar_explorer_dialog_21">
-		<text>T'as rien trouv  d'int ressant, hein ? Il para t qu'il y a des informations sur des exp riences scientifiques.  a vaut un paquet...</text>
+		<text>T'as rien trouvé d'intéressant, hein ? Il paraît qu'il y a des informations sur des expériences scientifiques. Ça vaut un paquet...</text>
 	</string>
 	<string id="dar_explorer_dialog_211">
 		<text>Non, rien.</text>
@@ -37,76 +37,76 @@
 		<text>Non.</text>
 	</string>
 	<string id="dar_explorer_dialog_21112">
-		<text>Pourquoi tu me demandes  a ?</text>
+		<text>Pourquoi tu me demandes ça ?</text>
 	</string>
 	<string id="dar_explorer_dialog_21113">
 		<text>Tu me menaces ?</text>
 	</string>
 	<string id="dar_explorer_dialog_212">
-		<text>Je m'en fous de tes informations. J'ai d j  du mal   rester en vie...</text>
+		<text>Je m'en fous de tes informations. J'ai déjà du mal à rester en vie...</text>
 	</string>
 	<string id="dar_explorer_dialog_2121">
 		<text>OK, vas-y. Si tu trouves quelque chose, je serai dans le coin...</text>
 	</string>
 	<string id="dar_explorer_dialog_25">
-		<text> coute vieux, j'ai surv cu au feu, aux anomalies et aux monstres, et je suis toujours vivant comme tu le vois ! Alors c'est pas toi qui vas m'emp cher de parler. Je suis l  pour les documents et je partirai pas sans. Si tu les as, je te conseille de me les filer, sinon ce trou sera ta tombe ! Pig  ?</text>
+		<text>Écoute vieux, j'ai survécu au feu, aux anomalies et aux monstres, et je suis toujours vivant comme tu le vois ! Alors c'est pas toi qui vas m'empêcher de parler. Je suis là pour les documents et je partirai pas sans. Si tu les as, je te conseille de me les filer, sinon ce trou sera ta tombe ! Pigé ?</text>
 	</string>
 	<string id="dar_explorer_dialog_251">
-		<text>Pig .</text>
+		<text>Pigé.</text>
 	</string>
 	<string id="dar_explorer_dialog_2511">
-		<text>T'es dans la merde si tu me mens. Si t'essaies de me baiser, t'es dans la merde aussi. Et si tu me racontes des conneries, t'es encore plus dans la merde. En fait, t'es tellement dans la merde que tu vas pas tarder   t' touffer ! Alors on va la refaire une derni re fois pour les cr tins qu'auraient pas compris : est-ce que t'as trouv  les documents ?</text>
+		<text>T'es dans la merde si tu me mens. Si t'essaies de me baiser, t'es dans la merde aussi. Et si tu me racontes des conneries, t'es encore plus dans la merde. En fait, t'es tellement dans la merde que tu vas pas tarder à t'étouffer ! Alors on va la refaire une dernière fois pour les crétins qu'auraient pas compris : est-ce que t'as trouvé les documents ?</text>
 	</string>
 	<string id="dar_explorer_dialog_2521">
-		<text>OK, et la prochaine fois fais gaffe   ce que tu dis. Tu peux y aller. Si jamais tu trouves quelque chose, je serai par l ...</text>
+		<text>OK, et la prochaine fois fais gaffe à ce que tu dis. Tu peux y aller. Si jamais tu trouves quelque chose, je serai par là...</text>
 	</string>
 	<string id="dar_explorer_dialog_253">
-		<text>Cette discussion est finie, d gage.</text>
+		<text>Cette discussion est finie, dégage.</text>
 	</string>
 	<string id="dar_explorer_dialog_26">
 		<text>J'ai aucun document.</text>
 	</string>
 	<string id="dar_explorer_dialog_271">
-		<text>C'est mieux, vieux. Maintenant donne-moi toutes les infos que t'as, jusqu'au dernier morceau de papier. Et t'avise surtout pas de faire de blague, parce que  a serait ta derni re...</text>
+		<text>C'est mieux, vieux. Maintenant donne-moi toutes les infos que t'as, jusqu'au dernier morceau de papier. Et t'avise surtout pas de faire de blague, parce que ça serait ta dernière...</text>
 	</string>
 	<string id="dar_explorer_dialog_51">
-		<text>T'as pas compris,  a suffit ! Je tra ne pas dans ce trou   rat par hasard ! </text>
+		<text>T'as pas compris, ça suffit ! Je traîne pas dans ce trou à rat par hasard ! </text>
 	</string>
 	<string id="dar_explorer_dialog_511">
 		<text>Je partage rien.</text>
 	</string>
 	<string id="dar_explorer_dialog_5111">
-		<text>Oh oh, d gage maintenant... Et un dernier conseil : sois prudent, Stalker, t'en auras besoin !</text>
+		<text>Oh oh, dégage maintenant... Et un dernier conseil : sois prudent, Stalker, t'en auras besoin !</text>
 	</string>
 	<string id="dar_explorer_dialog_512">
 		<text>Tu me menaces ?</text>
 	</string>
 	<string id="dar_explorer_dialog_5121">
-		<text>OK, OK, du calme... Je suis juste curieux, sors pas ton flingue ! J'arr te avec les questions. Sois juste prudent.</text>
+		<text>OK, OK, du calme... Je suis juste curieux, sors pas ton flingue ! J'arrête avec les questions. Sois juste prudent.</text>
 	</string>
 	<string id="dar_explorer_dialog_61">
-		<text>Des documents, hum...  a tombe bien, je suis l  pour la m me chose. Alors tu vas me les donner et reprendre ta route. Compris ?</text>
+		<text>Des documents, hum... Ça tombe bien, je suis là pour la même chose. Alors tu vas me les donner et reprendre ta route. Compris ?</text>
 	</string>
 	<string id="dar_explorer_dialog_6111">
 		<text>Je peux te payer.</text>
 	</string>
 	<string id="dar_explorer_dialog_6121">
-		<text>Bon allez, arr te de d conner. Faisons un march . Je peux te donner un joli pactole, tu le regretteras pas.</text>
+		<text>Bon allez, arrête de déconner. Faisons un marché. Je peux te donner un joli pactole, tu le regretteras pas.</text>
 	</string>
 	<string id="dar_explorer_dialog_6131">
-		<text> coute, ma vie d pend de ces documents. Montre un peu ce que tu as... On peut s rement trouver un arrangement...</text>
+		<text>Écoute, ma vie dépend de ces documents. Montre un peu ce que tu as... On peut sûrement trouver un arrangement...</text>
 	</string>
 	<string id="dar_explorer_dialog_8011">
-		<text>Il fait trop sombre, j'y vois rien. Et  a grouille de trucs bizarres... pourquoi j'ai accept  de faire  a ?! Et toi, comment t'as atterri ici ?</text>
+		<text>Il fait trop sombre, j'y vois rien. Et ça grouille de trucs bizarres... pourquoi j'ai accepté de faire ça ?! Et toi, comment t'as atterri ici ?</text>
 	</string>
 	<string id="dar_explorer_dialog_8021">
 		<text>Avance, Stalker.</text>
 	</string>
 	<string id="dar_explorer_dialog_8031">
-		<text>J'ai horreur qu'on me coupe quand je parle. Bref, je suis venu chercher des documents importants. Si t'as trouv  quelque chose, crache le morceau ou t'auras des ennuis. Si t'as rien, barre-toi et me fais pas perdre mon temps.</text>
+		<text>J'ai horreur qu'on me coupe quand je parle. Bref, je suis venu chercher des documents importants. Si t'as trouvé quelque chose, crache le morceau ou t'auras des ennuis. Si t'as rien, barre-toi et me fais pas perdre mon temps.</text>
 	</string>
 	<string id="dar_explorer_dialog_8041">
-		<text>J'ai horreur qu'on me coupe quand je parle. Donne-moi ces documents si tu veux pas dire adieu   la vie.</text>
+		<text>J'ai horreur qu'on me coupe quand je parle. Donne-moi ces documents si tu veux pas dire adieu à la vie.</text>
 	</string>
 	<string id="dar_explorer_dialog_9">
 		<text>Je m'en souviendrai.</text>

@@ -8,10 +8,10 @@
 		<text>Base bandida en la carretera hacia Agroprom.</text>
 	</string>
 	<string id="gar_bandits_leader">
-		<text>Incursi n de bandidos liderada por su jefe.</text>
+		<text>Incursión de bandidos liderada por su jefe.</text>
 	</string>
 	<string id="gar_boars_nest">
-		<text>Horda de jabal s.</text>
+		<text>Horda de jabalís.</text>
 	</string>
 	<string id="gar_car_graveyard">
 		<text>Desguace</text>
@@ -35,14 +35,14 @@
 		<text>Grupo de Seriy.</text>
 	</string>
 	<string id="gar_swamp">
-		<text>Ci naga pantanosa.</text>
+		<text>Ciénaga pantanosa.</text>
 	</string>
 	<string id="gar_trash1">
-		<text>Montones de basura con anomal as y artefactos.</text>
+		<text>Montones de basura con anomalías y artefactos.</text>
 	</string>
 	<string id="gar_tunnel">
-		<text>T nel del ferrocarril.</text>
+		<text>Túnel del ferrocarril.</text>
 	</string>
 	<string id="gar_wounded_help">
-		<text>Se al de SOS. Probablemente es un stalker herido.</text>
+		<text>Señal de SOS. Probablemente es un stalker herido.</text>
 	</string>

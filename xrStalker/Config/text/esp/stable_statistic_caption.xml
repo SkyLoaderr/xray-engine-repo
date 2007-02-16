@@ -20,10 +20,10 @@
 		<text>chupasangre</text>
 	</string>
 	<string id="boar_normal">
-		<text>jabal  adulto</text>
+		<text>jabalí adulto</text>
 	</string>
 	<string id="boar_strong">
-		<text>jabal  maduro</text>
+		<text>jabalí maduro</text>
 	</string>
 	<string id="boar_weak">
 		<text>jabato</text>
@@ -53,10 +53,10 @@
 		<text>Deber, veterano</text>
 	</string>
 	<string id="ecolog_experienced">
-		<text>cient fico, erudito</text>
+		<text>científico, erudito</text>
 	</string>
 	<string id="ecolog_novice">
-		<text>cient fico, ayudante</text>
+		<text>científico, ayudante</text>
 	</string>
 	<string id="flesh_normal">
 		<text>bestia de bosque</text>
@@ -89,7 +89,7 @@
 		<text>soldado, sargento</text>
 	</string>
 	<string id="military_master">
-		<text>soldado, capit n</text>
+		<text>soldado, capitán</text>
 	</string>
 	<string id="military_novice">
 		<text>soldado, soldado raso</text>
@@ -140,7 +140,7 @@
 		<text>pseudoperro oscuro</text>
 	</string>
 	<string id="snork_normal">
-		<text>snork carro ero</text>
+		<text>snork carroñero</text>
 	</string>
 	<string id="snork_strong">
 		<text>snork come hombres</text>

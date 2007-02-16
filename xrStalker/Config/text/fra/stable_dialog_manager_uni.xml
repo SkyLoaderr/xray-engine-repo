@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="dm_general_action_info">
-		<text>Qu'est-ce que tu fais l  ?</text>
+		<text>Qu'est-ce que tu fais lа ?</text>
 	</string>
 	<string id="dm_general_cool_info">
-		<text>T'es au courant de trucs int ressants ?</text>
+		<text>T'es au courant de trucs intйressants ?</text>
 	</string>
 	<string id="dm_general_cool_info_no_more">
 		<text>Je sais rien d'autre.</text>
@@ -19,7 +19,7 @@
 		<text>Il me faut des infos. Contre de l'argent.</text>
 	</string>
 	<string id="dm_general_trade_info_caption">
-		<text>Je te propose  a :</text>
+		<text>Je te propose зa :</text>
 	</string>
 	<string id="dm_general_trade_info_hasno">
 		<text>Je peux rien te proposer.</text>

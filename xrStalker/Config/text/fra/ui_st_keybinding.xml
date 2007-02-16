@@ -4,13 +4,13 @@
 		<text>Missions actives dans le PDA</text>
 	</string>
 	<string id="kb_always_run">
-		<text>S'accroupir</text>
+		<text>S'accroupir complètement</text>
 	</string>
 	<string id="kb_artefact">
 		<text>Artefact</text>
 	</string>
 	<string id="kb_backward">
-		<text>Arri re</text>
+		<text>Retour</text>
 	</string>
 	<string id="kb_binoculars">
 		<text>Jumelles</text>
@@ -22,7 +22,7 @@
 		<text>Chat</text>
 	</string>
 	<string id="kb_chat_team">
-		<text>Chat en  quipe</text>
+		<text>Chat en équipe</text>
 	</string>
 	<string id="kb_console">
 		<text>Console</text>
@@ -31,7 +31,7 @@
 		<text>Contacts PDA</text>
 	</string>
 	<string id="kb_crouch">
-		<text>S'accroupir</text>
+		<text>S'accroupir complètement</text>
 	</string>
 	<string id="kb_crouch_toggle">
 		<text>Toujours s'accroupir</text>
@@ -40,7 +40,7 @@
 		<text>Bas</text>
 	</string>
 	<string id="kb_drop">
-		<text>Abandonner</text>
+		<text>Lâcher</text>
 	</string>
 	<string id="kb_fire">
 		<text>Tirer</text>
@@ -49,7 +49,7 @@
 		<text>Mode de tir suivant</text>
 	</string>
 	<string id="kb_firemode_prev">
-		<text>Mode de tir pr c dent</text>
+		<text>Mode de tir précédent</text>
 	</string>
 	<string id="kb_forward">
 		<text>Avant</text>
@@ -58,7 +58,7 @@
 		<text>Lance-grenades</text>
 	</string>
 	<string id="kb_grp_common">
-		<text>G n ral</text>
+		<text>Général</text>
 	</string>
 	<string id="kb_grp_direction">
 		<text>Direction</text>
@@ -85,7 +85,7 @@
 		<text>Gauche</text>
 	</string>
 	<string id="kb_left_lookout">
-		<text>Se pencher   gauche</text>
+		<text>Se pencher à gauche</text>
 	</string>
 	<string id="kb_left_strafe">
 		<text>Pas vers la gauche</text>
@@ -94,7 +94,7 @@
 		<text>Carte PDA</text>
 	</string>
 	<string id="kb_next_slot">
-		<text>Arme case suivante</text>
+		<text>Arme suivante</text>
 	</string>
 	<string id="kb_night_vision">
 		<text>Vision nocturne</text>
@@ -106,7 +106,7 @@
 		<text>PDA</text>
 	</string>
 	<string id="kb_prev_slot">
-		<text>Arme case pr c dente</text>
+		<text>Arme précédente</text>
 	</string>
 	<string id="kb_quit">
 		<text>Quitter</text>
@@ -115,13 +115,13 @@
 		<text>Recharger</text>
 	</string>
 	<string id="kb_repair">
-		<text>R parer</text>
+		<text>Réparer</text>
 	</string>
 	<string id="kb_right">
 		<text>Droite</text>
 	</string>
 	<string id="kb_right_lookout">
-		<text>Se pencher   droite</text>
+		<text>Se pencher à droite</text>
 	</string>
 	<string id="kb_right_strafe">
 		<text>Pas vers la droite</text>
@@ -130,7 +130,7 @@
 		<text>Points</text>
 	</string>
 	<string id="kb_screenshot">
-		<text>Capture d' cran</text>
+		<text>Capture d'écran</text>
 	</string>
 	<string id="kb_skin_menu">
 		<text>Menu Apparences</text>
@@ -139,7 +139,7 @@
 		<text>Sprinter</text>
 	</string>
 	<string id="kb_team_menu">
-		<text>Menu  quipe</text>
+		<text>Menu Équipe</text>
 	</string>
 	<string id="kb_torch">
 		<text>Lampe de poche</text>
@@ -157,7 +157,7 @@
 		<text>Bandage rapide</text>
 	</string>
 	<string id="kb_use_medkit">
-		<text>Kit m dical rapide</text>
+		<text>Kit médical rapide</text>
 	</string>
 	<string id="kb_vote_begin">
 		<text>Commencer le vote</text>
@@ -193,7 +193,7 @@
 		<text>Changer de type de munitions</text>
 	</string>
 	<string id="kb_wpn_prev">
-		<text>Arme pr c. de ce type</text>
+		<text>Arme préc. de ce type</text>
 	</string>
 	<string id="kb_zoom">
 		<text>Zoom</text>

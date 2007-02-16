@@ -55,7 +55,7 @@
 		<text>Mercenarios</text>
 	</string>
 	<string id="l01_escape">
-		<text>Cord n</text>
+		<text>Cordón</text>
 	</string>
 	<string id="l02_garbage">
 		<text>Vertedero</text>
@@ -73,7 +73,7 @@
 		<text>Territorio salvaje</text>
 	</string>
 	<string id="l07_military">
-		<text>Almacenes del ej rcito</text>
+		<text>Almacenes del ejército</text>
 	</string>
 	<string id="l08_yantar">
 		<text>Yantar</text>
@@ -85,10 +85,10 @@
 		<text>Pripyat</text>
 	</string>
 	<string id="l12_stancia">
-		<text>Central nuclear de Chern bil</text>
+		<text>Central nuclear de Chernóbil</text>
 	</string>
 	<string id="l12_stancia_2">
-		<text>Central nuclear de Chern bil</text>
+		<text>Central nuclear de Chernóbil</text>
 	</string>
 	<string id="master">
 		<text>experto</text>
@@ -103,13 +103,13 @@
 		<text>neutral</text>
 	</string>
 	<string id="novice">
-		<text>novato</text>
+		<text>Novato</text>
 	</string>
 	<string id="st_no_active_task">
 		<text>Tarea inactiva</text>
 	</string>
 	<string id="st_time_till_surge">
-		<text>Tiempo hasta la explosi n</text>
+		<text>Tiempo hasta la explosión</text>
 	</string>
 	<string id="stalker">
 		<text>Solitario</text>
@@ -121,7 +121,7 @@
 		<text>Comerciante</text>
 	</string>
 	<string id="ui_st_community">
-		<text>agrupaci n</text>
+		<text>agrupación</text>
 	</string>
 	<string id="ui_st_price">
 		<text>precio</text>
@@ -133,7 +133,7 @@
 		<text>actitud</text>
 	</string>
 	<string id="ui_st_reputation">
-		<text>reputaci n</text>
+		<text>reputación</text>
 	</string>
 	<string id="very_bad">
 		<text>muy mala</text>
@@ -157,7 +157,7 @@
 		<text>Aceptar</text>
 	</string>
 	<string id="Btn_Yes">
-		<text>S </text>
+		<text>Sí</text>
 	</string>
 	<string id="global_map">
 		<text>Mapa de la Zona</text>
@@ -178,16 +178,16 @@
 		<text>el PNJ no tiene dinero suficiente</text>
 	</string>
 	<string id="ui_st_opponent_items">
-		<text>Equipamiento del oponente</text>
+		<text>Sus objetos</text>
 	</string>
 	<string id="st_search_treasure">
-		<text>Buscar el escondite ($$ACTION_USE$$)</text>
+		<text>Registrar escondite ($$ACTION_USE$$)</text>
 	</string>
 	<string id="inventory_item_use">
 		<text>Coger objeto ($$ACTION_USE$$)</text>
 	</string>
 	<string id="ui_mm_check_updates">
-		<text>Comprueba las actualizaciones</text>
+		<text>Actualizaciones</text>
 	</string>
 	<string id="ui_mm_alternative">
 		<text>Alternativo</text>
@@ -196,7 +196,7 @@
 		<text>Salud</text>
 	</string>
 	<string id="ui_inv_radiation">
-		<text>Radiaci n</text>
+		<text>Radiación</text>
 	</string>
 	<string id="ui_inv_satiety">
 		<text>Hambre</text>
@@ -226,9 +226,27 @@
 		<text>preparado</text>
 	</string>
 	<string id="st_mp_voting_succeed">
-		<text> Votaci n realizada!</text>
+		<text>¡Votación realizada!</text>
 	</string>
 	<string id="st_mp_voting_failed">
-		<text> Votaci n fallida!</text>
+		<text>¡Votación fallida!</text>
+	</string>
+	<string id="l03u_agr_underground">
+		<text>Subterráneo Agroprom</text>
+	</string>
+	<string id="l04u_labx18">
+		<text>Lab. X18</text>
+	</string>
+	<string id="l08u_brainlab">
+		<text>Lab. X16</text>
+	</string>
+	<string id="l10u_bunker">
+		<text>Lab. X10</text>
+	</string>
+	<string id="l12u_sarcofag">
+		<text>Sarcófago</text>
+	</string>
+	<string id="l12u_control_monolith">
+		<text>Centro de control del Monolito</text>
 	</string>
 </string_table>

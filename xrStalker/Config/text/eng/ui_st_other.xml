@@ -55,33 +55,8 @@
 		<text>Connection error: connection rejected by server</text>
 	</string>
 	<string id="ui_st_conn_sess_full">
-		<text>Connection error: session is full.</text>
+		<text>Connection error: session is full</text>
 	</string>
-	<string id="ui_st_conn_cdkey_invalid">
-		<text>Connection error: Invalid CD Key.</text>
-	</string>	
-	<string id="ui_st_conn_cdkey_in_use">
-		<text>Connection error: CD Key already in use.</text>
-	</string>
-	<string id="ui_st_conn_cdkey_disabled">
-		<text>Connection error: Your CD Key is disabled. Contact customer service.</text>
-	</string>	
-	<string id="ui_st_conn_version_differs">
-		<text>Connection error: Different version.</text>
-	</string>	
-	<string id="ui_st_conn_new_patch">
-		<text>New patch is available.\n Version: %s\n Location: %s\nDo you want to download it now?</text>
-	</string>	
-	<string id="ui_st_conn_no_new_patch">
-		<text>No new patch is available for now</text>
-	</string>	
-	<string id="ui_st_patch_download_error">
-		<text>Unable to download a patch.</text>
-	</string>	
-	<string id="ui_st_patch_download_success">
-		<text>Patch was successfully downloaded. Do you want to install it?</text>
-	</string>	
-	
 	<string id="ui_st_days">
 		<text>Days</text>
 	</string>
@@ -195,5 +170,35 @@
 	</string>
 	<string id="st_loading_sectors_portals">
 		<text>Loading sectors & portals</text>
+	</string>
+	<string id="ui_st_conn_version_differs">
+		<text>Connection error: Different version.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_invalid">
+		<text>Connection error: Invalid CD-Key.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_in_use">
+		<text>Connection error: CD-Key already in use.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_disabled">
+		<text>Connection error: Your CD-Key is disabled. Contact customer's service.</text>
+	</string>
+	<string id="ui_st_conn_new_patch">
+		<text>New patch is available.\n Version: %s\n Location: %s\nDo you want to download it now?</text>
+	</string>
+	<string id="ui_st_conn_no_new_patch">
+		<text>No new patches available now</text>
+	</string>
+	<string id="ui_mm_delete_existing_file_q">
+		<text>You really want to delete file?</text>
+	</string>
+	<string id="st_game_paused">
+		<text>Pause</text>
+	</string>
+	<string id="st_bolt">
+		<text>Bolt</text>
+	</string>
+	<string id="st_items">
+		<text>Items</text>
 	</string>
 </string_table>

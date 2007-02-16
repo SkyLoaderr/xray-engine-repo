@@ -22,19 +22,19 @@
 		<text>prix</text>
 	</string>
 	<string id="st_condition">
-		<text> tat</text>
+		<text>état</text>
 	</string>
 	<string id="st_detach_gl">
-		<text>d monter le lance-grenades</text>
+		<text>démonter le lance-grenades</text>
 	</string>
 	<string id="st_detach_scope">
-		<text>d monter la lunette</text>
+		<text>démonter la lunette</text>
 	</string>
 	<string id="st_detach_silencer">
-		<text>d monter le silencieux</text>
+		<text>démonter le silencieux</text>
 	</string>
 	<string id="st_dress_outfit">
-		<text>mettre sur la combinaison</text>
+		<text>mettre combinaison</text>
 	</string>
 	<string id="st_drop">
 		<text>abandonner</text>
@@ -46,13 +46,13 @@
 		<text>manger</text>
 	</string>
 	<string id="st_move_on_belt">
-		<text>fixer   la ceinture</text>
+		<text>fixer à la ceinture</text>
 	</string>
 	<string id="st_move_to_bag">
-		<text>d placer vers le sac   dos</text>
+		<text>déplacer vers le sac à dos</text>
 	</string>
 	<string id="st_move_to_slot">
-		<text>d placer vers la case</text>
+		<text>déplacer vers la case</text>
 	</string>
 	<string id="st_sell_item">
 		<text>vendre l'objet</text>
@@ -61,7 +61,7 @@
 		<text>enlever la combinaison</text>
 	</string>
 	<string id="st_unload_magazine">
-		<text>d charger</text>
+		<text>décharger</text>
 	</string>
 	<string id="st_use">
 		<text>utiliser</text>
@@ -70,10 +70,10 @@
 		<text>poids</text>
 	</string>
 	<string id="ui_inv_accuracy">
-		<text>Pr cision</text>
+		<text>Précision</text>
 	</string>
 	<string id="ui_inv_bag">
-		<text>Sac   dos</text>
+		<text>Sac à dos</text>
 	</string>
 	<string id="ui_inv_belt">
 		<text>Ceinture</text>
@@ -85,7 +85,7 @@
 		<text>Effacer</text>
 	</string>
 	<string id="ui_inv_damage">
-		<text>D g ts</text>
+		<text>Dégâts</text>
 	</string>
 	<string id="ui_inv_description">
 		<text>Description</text>
@@ -94,7 +94,7 @@
 		<text>Enlever</text>
 	</string>
 	<string id="ui_inv_equipment">
-		<text> quipement</text>
+		<text>Équipement</text>
 	</string>
 	<string id="ui_inv_exit">
 		<text>Quitter</text>
@@ -118,34 +118,34 @@
 		<text>OK</text>
 	</string>
 	<string id="ui_inv_outfit_burn_protection">
-		<text>Br lure</text>
+		<text>Brûlure</text>
 	</string>
 	<string id="ui_inv_outfit_chemical_burn_protection">
-		<text>Br lure chim.</text>
+		<text>Brûlure chim.</text>
 	</string>
 	<string id="ui_inv_outfit_explosion_protection">
 		<text>Explosion</text>
 	</string>
 	<string id="ui_inv_outfit_fire_wound_protection">
-		<text>Casque pare-b.</text>
+		<text>Perforation</text>
 	</string>
 	<string id="ui_inv_outfit_params">
-		<text>Param tres</text>
+		<text>Paramètres</text>
 	</string>
 	<string id="ui_inv_outfit_radiation_protection">
 		<text>Radiations</text>
 	</string>
 	<string id="ui_inv_outfit_shock_protection">
-		<text>D charge  lec.</text>
+		<text>Décharge élec.</text>
 	</string>
 	<string id="ui_inv_outfit_strike_protection">
 		<text>Impact</text>
 	</string>
 	<string id="ui_inv_outfit_telepatic_protection">
-		<text>T l pathie</text>
+		<text>Télépathie</text>
 	</string>
 	<string id="ui_inv_outfit_wound_protection">
-		<text>Rupture</text>
+		<text>Entailles</text>
 	</string>
 	<string id="ui_inv_outfits">
 		<text>Combinaisons</text>
@@ -178,7 +178,7 @@
 		<text>Sniper</text>
 	</string>
 	<string id="ui_inv_time">
-		<text>Temps</text>
+		<text>Heure</text>
 	</string>
 	<string id="ui_inv_total_money">
 		<text>Argent total</text>
@@ -208,12 +208,12 @@
 		<text>Acheter un silencieux pour le fusil (F)</text>
 	</string>
 	<string id="ui_inv_last_buy">
-		<text>Acheter l'ensemble pr c dent</text>
+		<text>Acheter l'ensemble précédent</text>
 	</string>
 	<string id="ui_inv_sell_items">
-		<text>Vendre tous les objets du sac   dos</text>
+		<text>Vendre tous les objets du sac à dos</text>
 	</string>
 	<string id="ui_st_preset_stored_to">
-		<text>Ensemble achet  enregistr  sous</text>
+		<text>Ensemble acheté enregistré sous</text>
 	</string>
 </string_table>

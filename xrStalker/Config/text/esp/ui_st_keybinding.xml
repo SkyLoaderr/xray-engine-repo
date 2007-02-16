@@ -10,13 +10,13 @@
 		<text>Artefacto</text>
 	</string>
 	<string id="kb_backward">
-		<text>Atr s</text>
+		<text>Atrás</text>
 	</string>
 	<string id="kb_binoculars">
 		<text>Binoculares</text>
 	</string>
 	<string id="kb_buy_menu">
-		<text>Men  de compra</text>
+		<text>Menú de compra</text>
 	</string>
 	<string id="kb_chat">
 		<text>Chat</text>
@@ -61,7 +61,7 @@
 		<text>General</text>
 	</string>
 	<string id="kb_grp_direction">
-		<text>Direcci n</text>
+		<text>Dirección</text>
 	</string>
 	<string id="kb_grp_inventory">
 		<text>Inventario</text>
@@ -94,10 +94,10 @@
 		<text>Mapa de la PDA</text>
 	</string>
 	<string id="kb_next_slot">
-		<text>Arma de la ranura siguiente</text>
+		<text>Arma siguiente</text>
 	</string>
 	<string id="kb_night_vision">
-		<text>Visi n nocturna</text>
+		<text>Visión nocturna</text>
 	</string>
 	<string id="kb_pause">
 		<text>Pausa</text>
@@ -106,7 +106,7 @@
 		<text>PDA</text>
 	</string>
 	<string id="kb_prev_slot">
-		<text>Arma de la ranura anterior</text>
+		<text>Arma anterior</text>
 	</string>
 	<string id="kb_quit">
 		<text>Salir</text>
@@ -133,13 +133,13 @@
 		<text>Captura de pantalla</text>
 	</string>
 	<string id="kb_skin_menu">
-		<text>Men  de aspectos</text>
+		<text>Menú de aspectos</text>
 	</string>
 	<string id="kb_sprint">
 		<text>Correr</text>
 	</string>
 	<string id="kb_team_menu">
-		<text>Men  de equipo</text>
+		<text>Menú de equipo</text>
 	</string>
 	<string id="kb_torch">
 		<text>Linterna</text>
@@ -151,22 +151,22 @@
 		<text>Arriba</text>
 	</string>
 	<string id="kb_use">
-		<text>Usar</text>
+		<text>Aplicar</text>
 	</string>
 	<string id="kb_use_bandage">
-		<text>Vendaje r pido</text>
+		<text>Vendaje rápido</text>
 	</string>
 	<string id="kb_use_medkit">
-		<text>Botiqu n r pido</text>
+		<text>Botiquín rápido</text>
 	</string>
 	<string id="kb_vote_begin">
-		<text>Iniciar votaci n</text>
+		<text>Iniciar votación</text>
 	</string>
 	<string id="kb_vote_menu">
 		<text>Votar</text>
 	</string>
 	<string id="kb_vote_no">
-		<text>Votar "S "</text>
+		<text>Votar "Sí"</text>
 	</string>
 	<string id="kb_vote_yes">
 		<text>Votar "No"</text>
@@ -190,7 +190,7 @@
 		<text>Arma 6</text>
 	</string>
 	<string id="kb_wpn_next">
-		<text>Cambiar munici n</text>
+		<text>Cambiar munición</text>
 	</string>
 	<string id="kb_wpn_prev">
 		<text>Previsualizar arma</text>

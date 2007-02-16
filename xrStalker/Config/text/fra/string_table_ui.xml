@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="cant_walk">
-		<text>Vous  tes trop  puis  pour marcher.</text>
+		<text>Vous кtes trop йpuisй pour marcher.</text>
 	</string>
 	<string id="cant_walk_weight">
-		<text>Vous  tes trop charg  pour continuer.</text>
+		<text>Vous кtes trop chargй pour continuer.</text>
 	</string>
 	<string id="dar_poltergeist_hold_the_door">
 		<text>Quelqu'un bloque la porte.</text>
@@ -13,19 +13,19 @@
 		<text>Carte du monde</text>
 	</string>
 	<string id="gun_jammed">
-		<text>L'arme est enray e. Vous devez la recharger.</text>
+		<text>L'arme est enrayйe. Vous devez la recharger.</text>
 	</string>
 	<string id="inventory_box_use">
-		<text>Fouiller la bo te ($$ACTION_USE$$)</text>
+		<text>Fouiller la boоte ($$ACTION_USE$$)</text>
 	</string>
 	<string id="Local Map">
 		<text>Carte locale</text>
 	</string>
 	<string id="st_game_saved">
-		<text>Partie sauvegard e</text>
+		<text>Partie sauvegardйe</text>
 	</string>
 	<string id="tip_car_locked">
-		<text>Bloqu e</text>
+		<text>Bloquйe</text>
 	</string>
 	<string id="tip_car_use">
 		<text>Ouvrir la porte ($$ACTION_USE$$)</text>
@@ -34,16 +34,16 @@
 		<text>Appuyez sur ($$ACTION_USE$$) pour fermer la porte.</text>
 	</string>
 	<string id="tip_door_coded">
-		<text>La porte est verrouill e par un code.</text>
+		<text>La porte est verrouillйe par un code.</text>
 	</string>
 	<string id="tip_door_decode">
-		<text>Appuyez sur ($$ACTION_USE$$) pour d coder la porte.</text>
+		<text>Appuyez sur ($$ACTION_USE$$) pour dйcoder la porte.</text>
 	</string>
 	<string id="tip_door_decoding">
-		<text>D codage en cours…</text>
+		<text>Dйcodage en cours...</text>
 	</string>
 	<string id="tip_door_locked">
-		<text>La porte est verrouill e.</text>
+		<text>La porte est verrouillйe.</text>
 	</string>
 	<string id="tip_door_open">
 		<text>Appuyez sur ($$ACTION_USE$$) pour ouvrir la porte.</text>
@@ -52,12 +52,12 @@
 		<text>Appuyez sur ($$ACTION_USE$$) pour fermer la porte.</text>
 	</string>
 	<string id="tip_gate_locked">
-		<text>La porte est bloqu e.</text>
+		<text>La porte est bloquйe.</text>
 	</string>
 	<string id="tip_gate_open">
 		<text>Appuyez sur ($$ACTION_USE$$) pour ouvrir la porte.</text>
 	</string>
 	<string id="tip_monolith">
-		<text>FAITES UN V U ($$ACTION_USE$$)</text>
+		<text>FAITES UN VOEU ($$ACTION_USE$$)</text>
 	</string>
 </string_table>

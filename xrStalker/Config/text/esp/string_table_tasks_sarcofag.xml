@@ -5,7 +5,7 @@
 		<text>Ve al Monolito.</text>
 	</string>
 	<string id="sar_monolith_1">
-		<text>Ac rcate sigilosamente al sarc fago.</text>
+		<text>Acércate sigilosamente al sarcófago.</text>
 	</string>
 	<string id="sar_monolith_2">
 		<text>Encuentra el Genio.</text>
@@ -14,35 +14,35 @@
 		<text>El secreto del Monolito.</text>
 	</string>
 	<string id="sar_monolith_destroy_0">
-		<text>Inf ltrate en el laboratorio secreto.</text>
+		<text>Infíltrate en el laboratorio secreto.</text>
 	</string>
 	<string id="sar_monolith_destroy_1">
 		<text>Averigua el secreto del Monolito.</text>
 	</string>
 	<string id="sar_monolith_destroy_2">
-		<text>Destruye los generadores de energ a del Monolito.</text>
+		<text>Destruye los generadores de energía del Monolito.</text>
 	</string>
 	<string id="sar_perception">
 		<text>El secreto de la Zona.</text>
 	</string>
 	<string id="sar_perception_1">
-		<text>Encuentra a los que est n manejando los hilos en el asunto del Monolito.</text>
+		<text>Encuentra a los que están manejando los hilos en el asunto del Monolito.</text>
 	</string>
 	<string id="sar_perception_2">
-		<text>Encuentra el laboratorio secreto y a los que est n manejando los hilos.</text>
+		<text>Encuentra el laboratorio secreto y a los que están manejando los hilos.</text>
 	</string>
 	<string id="sar_secret_lab">
 		<text>Laboratorio secreto.</text>
 	</string>
 	<string id="sar_secret_lab_0">
-		<text>Entra en el b nker secreto.</text>
+		<text>Entra en el búnker secreto.</text>
 	</string>
 	<string id="sar_secret_lab_1">
 		<text>Encuentra la puerta oculta.</text>
 	</string>
 	<string id="sar_secret_lab_2">
-		<text> brela utilizando el decodificador.</text>
+		<text>Ábrela utilizando el decodificador.</text>
 	</string>
 	<string id="sar_secret_lab_3">
-		<text>Averigua qu  hay detr s de la puerta.</text>
+		<text>Averigua qué hay detrás de la puerta.</text>
 	</string>

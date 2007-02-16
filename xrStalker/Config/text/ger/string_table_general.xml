@@ -34,7 +34,7 @@
 		<text>Panzerung PNB-4UZ</text>
 	</string>
 	<string id="experienced">
-		<text>erfahren</text>
+		<text>Erfahren</text>
 	</string>
 	<string id="Found_PDA">
 		<text>PDA gefunden</text>
@@ -136,7 +136,7 @@
 		<text>Ruf</text>
 	</string>
 	<string id="very_bad">
-		<text>sehr schlecht</text>
+		<text>Sehr schlecht</text>
 	</string>
 	<string id="very_good">
 		<text>sehr gut</text>
@@ -166,7 +166,7 @@
 		<text>Automatisches Speichern</text>
 	</string>
 	<string id="st_game_over">
-		<text>Game Over</text>
+		<text>Spiel aus.</text>
 	</string>
 	<string id="st_item_used">
 		<text>Benutzt</text>
@@ -187,7 +187,7 @@
 		<text>Folgendes Objekt aufheben: ($$ACTION_USE$$)</text>
 	</string>
 	<string id="ui_mm_check_updates">
-		<text>Suche nach Updates</text>
+		<text>Updates suchen</text>
 	</string>
 	<string id="ui_mm_alternative">
 		<text>Alternative</text>
@@ -230,5 +230,23 @@
 	</string>
 	<string id="st_mp_voting_failed">
 		<text>Abstimmung gescheitert!</text>
+	</string>
+	<string id="l03u_agr_underground">
+		<text>Agroprom Untergrund</text>
+	</string>
+	<string id="l04u_labx18">
+		<text>Labor X-18</text>
+	</string>
+	<string id="l08u_brainlab">
+		<text>Labor X-16</text>
+	</string>
+	<string id="l10u_bunker">
+		<text>Labor X-10</text>
+	</string>
+	<string id="l12u_sarcofag">
+		<text>Sarkophag</text>
+	</string>
+	<string id="l12u_control_monolith">
+		<text>Monolith-Kontrolleinheit</text>
 	</string>
 </string_table>

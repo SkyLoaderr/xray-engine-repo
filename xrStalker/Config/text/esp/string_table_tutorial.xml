@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="binoc_tutorial">
-		<text>Para utilizar los binoculares, selecci nalos ($$ACTION_wpn_5$$) y presiona "disparar" para acercar la vista.</text>
+		<text>Para utilizar los binoculares, selecciуnalos ($$ACTION_wpn_5$$) y presiona "disparar" para acercar la vista.</text>
 	</string>
 	<string id="binocular">
 		<text>Binoculares</text>
@@ -10,22 +10,22 @@
 		<text>Agacharse</text>
 	</string>
 	<string id="crouch_down_tutorial">
-		<text>Para agacharte m s, presiona ($$ACTION_crouch$$) + (May s)</text>
+		<text>Para agacharte mбs, presiona ($$ACTION_crouch$$) + (Mayъs)</text>
 	</string>
 	<string id="crouch_tutorial">
-		<text>Para agacharte, presiona ($$ACTION_crouch$$). Para agacharte a n m s, presiona ($$ACTION_crouch$$) + ($$ACTION_accel$$)</text>
+		<text>Para agacharte, presiona ($$ACTION_crouch$$). Para agacharte aъn mбs, presiona ($$ACTION_crouch$$) + ($$ACTION_accel$$)</text>
 	</string>
 	<string id="hide_weapon">
-		<text>Selecci n de armas</text>
+		<text>Selecciуn de armas</text>
 	</string>
 	<string id="hide_weapon_tutorial">
-		<text>Algunos stalkers no querr n hablar si les pones el arma delante. Para esconder el arma, solo tienes que seleccionar un tornillo. ($$ACTION_wpn_6$$).</text>
+		<text>Algunos stalkers no querrбn hablar si les pones el arma delante. Para esconder el arma, solo tienes que seleccionar un tornillo. ($$ACTION_wpn_6$$).</text>
 	</string>
 	<string id="jump">
 		<text>Saltar</text>
 	</string>
 	<string id="jump_tutorial">
-		<text>Los saltos te ayudar n a pasar por encima de barreras no muy altas. Para saltar, presiona ($$ACTION_jump$$)</text>
+		<text>Los saltos te ayudarбn a pasar por encima de barreras no muy altas. Para saltar, presiona ($$ACTION_jump$$)</text>
 	</string>
 	<string id="move_tutorial">
 		<text>Tipos de movimientos.</text>
@@ -34,31 +34,31 @@
 		<text>Sobrecarga</text>
 	</string>
 	<string id="overload_tutorial">
-		<text>No eres una mula de carga, as  que tienes un l mite para llevar cosas. Cuando el peso de tu material exceda del l mite, empezar s a perder energ a muy r pidamente. En el inventario ver s el peso actual de tu equipamiento y el peso m ximo que puedes llevar.</text>
+		<text>No eres una mula de carga, asн que tienes un lнmite para llevar cosas. Cuando el peso de tu material exceda del lнmite, empezarбs a perder energнa muy rбpidamente. En el inventario verбs el peso actual de tu equipamiento y el peso mбximo que puedes llevar.</text>
 	</string>
 	<string id="radiation">
-		<text>Radiaci n</text>
+		<text>Radiaciуn</text>
 	</string>
 	<string id="radiation_tutorial">
-		<text>Cuando un personaje lleve un artefacto radiactivo en el cintur n o entre en un  rea con un alto nivel de radiaci n, su salud empeorar  y empezar  a mostrar signos de envenenamiento por radiaci n. Los efectos de la radiaci n se pueden combatir tomando f rmacos contra la radiaci n y vodka.</text>
+		<text>Cuando un personaje lleve un artefacto radiactivo en el cinturуn o entre en un бrea con un alto nivel de radiaciуn, su salud empeorarб y empezarб a mostrar signos de envenenamiento por radiaciуn. Los efectos de la radiaciуn se pueden combatir tomando fбrmacos contra la radiaciуn y vodka.</text>
 	</string>
 	<string id="relation">
-		<text>Actitud</text>
+		<text>actitud</text>
 	</string>
 	<string id="relation_tutorial">
-		<text>Puedes mejorar la actitud de otros personajes, as  como tu reputaci n en general, si les ayudas. Una mejor actitud y una reputaci n m s alta te ayudar n a la hora de interactuar con la gente que te vayas encontrando. Ser n propensos a darte informaci n adicional y a venderte objetos m s baratos si les caes bien. Por otro lado, si abres fuego contra alguien, su actitud hacia ti ser  claramente negativa, as  como la de sus amigos, y te atacar n.</text>
+		<text>Puedes mejorar la actitud de otros personajes, asн como tu reputaciуn en general, si les ayudas. Una mejor actitud y una reputaciуn mбs alta te ayudarбn a la hora de interactuar con la gente que te vayas encontrando. Serбn propensos a darte informaciуn adicional y a venderte objetos mбs baratos si les caes bien. Por otro lado, si abres fuego contra alguien, su actitud hacia ti serб claramente negativa, asн como la de sus amigos, y te atacarбn.</text>
 	</string>
 	<string id="sleep_tutorial">
-		<text>Este es un buen lugar para detenerse. Aqu  puedes disfrutar de una buena noche de descanso, velar o simplemente matar el tiempo. Para dormir, abre el inventario, establece la cantidad de tiempo que quieres dormir y presiona el bot n Descansar. Tu personaje se despertar  a la hora que hayas establecido. A veces podr  so ar.</text>
+		<text>Este es un buen lugar para detenerse. Aquн puedes disfrutar de una buena noche de descanso, velar o simplemente matar el tiempo. Para dormir, abre el inventario, establece la cantidad de tiempo que quieres dormir y presiona el botуn Descansar. Tu personaje se despertarб a la hora que hayas establecido. A veces podrб soсar.</text>
 	</string>
 	<string id="sprint">
 		<text>Acelerar</text>
 	</string>
 	<string id="sprint_tutorial">
-		<text>A veces tendr s que correr m s r pido de lo normal. Para hacerlo, presiona ($$ACTION_sprint_toggle$$) mientras corres. Un personaje en carrera va m s r pido y salta m s, pero se cansa m s deprisa y no puede disparar.</text>
+		<text>A veces tendrбs que correr mбs rбpido de lo normal. Para hacerlo, presiona ($$ACTION_sprint_toggle$$) mientras corres. Un personaje en carrera va mбs rбpido y salta mбs, pero se cansa mбs deprisa y no puede disparar.</text>
 	</string>
 	<string id="starvation_tutorial">
-		<text>Si el personaje no come en un tiempo, empezar  a tener hambre. Si no encuentra nada de comer, su salud empezar  a empeorar. Para que esto no suceda, el personaje debe comer con regularidad. Una barra de pan, comida enlatada o un trozo de salchicha solucionan el problema durante un rato.</text>
+		<text>Si el personaje no come en un tiempo, empezarб a tener hambre. Si no encuentra nada de comer, su salud empezarб a empeorar. Para que esto no suceda, el personaje debe comer con regularidad. Una barra de pan, comida enlatada o un trozo de salchicha solucionan el problema durante un rato.</text>
 	</string>
 	<string id="tutorial">
 		<text>Entrenamiento</text>
@@ -67,21 +67,21 @@
 		<text>Cansancio</text>
 	</string>
 	<string id="weakness_tutorial">
-		<text>Correr de forma prolongada provoca fatiga. Cuando un personaje se canse, solo podr  caminar, y no correr. Cuantos m s objetos lleve el personaje, m s r pido se cansar . Quedarse quieto durante unos segundos es suficiente para recuperarse.</text>
+		<text>Correr de forma prolongada provoca fatiga. Cuando un personaje se canse, solo podrб caminar, y no correr. Cuantos mбs objetos lleve el personaje, mбs rбpido se cansarб. Quedarse quieto durante unos segundos es suficiente para recuperarse.</text>
 	</string>
 	<string id="weapon">
 		<text>Estado del arma</text>
 	</string>
 	<string id="weapon_tutorial">
-		<text>Todas las armas tienen un par metro de durabilidad. Cuanto m s baja sea la durabilidad del arma, m s frecuentemente se atascar . Para desatascarla, recarga el arma presionando $$ACTION_wpn_reload$$. La durabilidad del arma disminuye con el uso. Un arma puede quedar completamente inservible si la alcanza alguna bala.</text>
+		<text>Todas las armas tienen un parбmetro de durabilidad. Cuanto mбs baja sea la durabilidad del arma, mбs frecuentemente se atascarб. Para desatascarla, recarga el arma presionando $$ACTION_wpn_reload$$. La durabilidad del arma disminuye con el uso. Un arma puede quedar completamente inservible si la alcanza alguna bala.</text>
 	</string>
 	<string id="wound">
 		<text>Heridas abiertas</text>
 	</string>
 	<string id="wound_tutorial">
-		<text>Cuando el personaje est  herido, puede que sangre. Si un personaje sangra, su salud empeorar  de modo constante. Cuanto m s sangre (un icono verde significa poca sangre, uno rojo significa hemorragia seria), su salud empeorar  a mayor velocidad. La hemorragia se detiene con el tiempo, pero incluso las hemorragias serias se pueden atajar inmediatamente usando vendas.</text>
+		<text>Cuando el personaje estй herido, puede que sangre. Si un personaje sangra, su salud empeorarб de modo constante. Cuanto mбs sangre (un icono verde significa poca sangre, uno rojo significa hemorragia seria), su salud empeorarб a mayor velocidad. La hemorragia se detiene con el tiempo, pero incluso las hemorragias serias se pueden atajar inmediatamente usando vendas.</text>
 	</string>
 	<string id="pda_diary_tutorial">
-		<text>En la PDA del stalker muerto, encontrar s sus anotaciones sobre anomal as en los t neles. Parece que descubri  unas pautas de regularidad. Puedes leer esta informaci n en tu PDA, en la secci n "Diario".</text>
+		<text>En la PDA del stalker muerto, encontrarбs sus anotaciones sobre anomalнas en los tъneles. Parece que descubriу unas pautas de regularidad. Puedes leer esta informaciуn en tu PDA, en la secciуn "Diario".</text>
 	</string>
 </string_table>

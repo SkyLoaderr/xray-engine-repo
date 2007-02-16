@@ -610,10 +610,10 @@
 		<text>Voglio comprare qualche informazione.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_21">
-		<text>In questo momento posso venderti informazioni sul gruppo di Strelok praticamente per niente: 1500 Rubli.</text>
+		<text>In questo momento posso venderti informazioni sul gruppo di Strelok praticamente per niente: 4000 Rubli.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_211">
-		<text>Ok, accetto. Ecco i tuoi 1500.</text>
+		<text>Ok, accetto. Ecco i tuoi 4000.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_2111">
 		<text>Si trovano presso l'istituto di ricerca Agroprom. Hanno un nascondiglio sotto terra, dove probabilmente tengono i piani del gruppo e un elenco dei membri. Le coordinate del nascondiglio sono allegate.</text>
@@ -625,13 +625,13 @@
 		<text>Come vuoi. Passa dal bar se decidi diversamente. Io ci sono sempre.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_31">
-		<text>Al momento ho delle informazioni su un gruppo che è riuscito a raggiungere il centro della Zona. Praticamente le regalo: solo 3000 Rubli.</text>
+		<text>Al momento ho delle informazioni su un gruppo che è riuscito a raggiungere il centro della Zona. Praticamente le regalo: solo 2000 Rubli.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_311">
-		<text>Va bene, le compro. Ecco i tuoi 3000.</text>
+		<text>Va bene, le compro. Ecco i tuoi 2000.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_3111">
-		<text>Strelok, il Fantasma e Zanna sono arrivati al centro della Zona. Cosa vi abbiano trovato, nessuno lo sa, ma Strelok è scomparso, mentre il Fantasma e Zanna sonno tornati depressi e avviliti. Le ultime notizie sul Fantasma dicono che se n'è andato al laboratorio mobile al lago Yantar. Le coordinate dell'accampamento degli scienziati sono allegate.</text>
+		<text>Strelok, il Fantasma e Zanna sono arrivati al centro della Zona. Cosa vi abbiano trovato, nessuno lo sa, ma Strelok è scomparso, mentre il Fantasma e Zanna sono tornati depressi e avviliti. Le ultime notizie sul Fantasma dicono che se n'è andato al laboratorio mobile al lago Yantar. Le coordinate dell'accampamento degli scienziati sono allegate.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_312">
 		<text>No, ho cambiato idea.</text>
@@ -640,10 +640,10 @@
 		<text>Come vuoi. Passa dal bar se decidi diversamente. Io ci sono sempre.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_41">
-		<text>Ho delle informazioni sul segreto del lago Yantar. Il prezzo è del tutto simbolico: 4500 Rubli!</text>
+		<text>Ho delle informazioni sul segreto del lago Yantar. Il prezzo è del tutto simbolico: 3500 Rubli!</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_411">
-		<text>Va bene, ci sto. Tieni 4500 Rubli.</text>
+		<text>Va bene, ci sto. Tieni 3500 Rubli.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_4111">
 		<text>Il segreto del lago Yantar è simile a quello del Bruciacervella e i loro effetti sono simili per molti aspetti. Un'emissione di qualche tipo trasforma in zombie chiunque vi entri in contatto. Gli stalker zombie si muovono intorno al centro di una specie di emettitore e attaccano  chiunque si avvicini. Alcuni sostengono che la soluzione all'enigma del lago Yantar si trovi sotto terra. Eccoti le coordinate dell'emettitore e del Bruciacervella.</text>
@@ -1177,7 +1177,7 @@
 		<text>Ho fatto un "discorsetto" a Tyran dei Freedom. In sostanza, ha capito il suo errore e ha promesso di comportarsi bene. Sono sicuro che sarà di parola; i morti non mentono.</text>
 	</string>
 	<string id="bar_dolg_zavskald_reward_121">
-		<text>Hai fatto bene ad ammazzarlo: Tyran era una vera rottura di palle! Ecco la tua ricompensa: un OC-14 Groza, il nostro marchio di fabbrica.</text>
+		<text>Hai fatto bene ad ammazzarlo: Tyran era una vera rottura di palle! Ecco la tua ricompensa: un S14 Thunder, il nostro marchio di fabbrica.</text>
 	</string>
 	<string id="bar_dolg_zavskald_reward_1211">
 		<text>Niente male. Continuerò così. Ci vediamo.</text>

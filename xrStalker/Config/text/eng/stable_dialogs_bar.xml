@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="bar_arena_man_job_0">
-		<text>Go on…</text>
+		<text>Go on...</text>
 	</string>
 	<string id="bar_arena_man_job_11">
 		<text>So, your first fight? Your opponent is a piece of meat just like you. He's here because of debts and he only has two options: to come out and fight or to land himself in the nearest anomaly. He's gonna fight like a cornered animal. Equipment for today... lemme think... OK! Why don't you two use PMm's...two clips each should be plenty. Either you kick his arse or we feed you to the dogs - not much of a choice. Go on now.</text>
@@ -103,7 +103,7 @@
 		<text>I accomplished my mission. Here is Tyran's PDA.</text>
 	</string>
 	<string id="bar_bar_barman_killer_ambush_1">
-		<text>Wow, Marked One. Great job! What can I say? You made me happy, man. I wasn't sure you'd manage, to be honest…but you're alive and they're not!</text>
+		<text>Wow, Marked One. Great job! What can I say? You made me happy, man. I wasn't sure you'd manage, to be honest...but you're alive and they're not!</text>
 	</string>
 	<string id="bar_bar_barman_killer_ambush_2">
 		<text>What about my reward?</text>
@@ -115,7 +115,7 @@
 		<text>Here is Lucky's PDA. I did what you asked.</text>
 	</string>
 	<string id="bar_bar_barman_veterans_finish_1">
-		<text>Nice, Marked One. Great job! What can I say? You made me happy, man. I wasn't sure you'd manage, to be honest…but you're alive and they're not!</text>
+		<text>Nice, Marked One. Great job! What can I say? You made me happy, man. I wasn't sure you'd manage, to be honest...but you're alive and they're not!</text>
 	</string>
 	<string id="bar_bar_barman_veterans_finish_11">
 		<text>What about the reward?</text>
@@ -196,7 +196,7 @@
 		<text>No, I ain't got anything today.</text>
 	</string>
 	<string id="bar_bar_barmen_jobs_271">
-		<text>Don't get carried away, Marked One. You are looking for more work but you haven't even dealt with the veterans yet…</text>
+		<text>Don't get carried away, Marked One. You are looking for more work but you haven't even dealt with the veterans yet...</text>
 	</string>
 	<string id="bar_bar_barmen_jobs_311">
 		<text>No, nothing today.</text>
@@ -298,7 +298,7 @@
 		<text>Let's start. You ready?</text>
 	</string>
 	<string id="bar_bar_barmen_start_1131">
-		<text>Hmm… Where did you come from?</text>
+		<text>Hmm... Where did you come from?</text>
 	</string>
 	<string id="bar_bar_barmen_start_121">
 		<text>So, Marked One, you got the documents from X16?</text>
@@ -367,7 +367,7 @@
 		<text>What do you want, Marked One?</text>
 	</string>
 	<string id="bar_bar_barmen_start_162">
-		<text>Hey, Marked One! Times change but you don't still grumpy and aloof. Here, take a seat, have a drink - might make you nicer…</text>
+		<text>Hey, Marked One! Times change but you don't still grumpy and aloof. Here, take a seat, have a drink - might make you nicer...</text>
 	</string>
 	<string id="bar_bar_barmen_start_171">
 		<text>So, Marked One, you brought the documents from X18?</text>
@@ -382,7 +382,7 @@
 		<text>Go on.</text>
 	</string>
 	<string id="bar_bar_barmen_start_17212">
-		<text>It ain’t simple – you need to get to the scientists and find out where X16 is so you can get the missing documents. So, you up for it?</text>
+		<text>It ain’t simple. You need to get to the scientists and find out where X16 is so you can get the missing documents. So, you up for it?</text>
 	</string>
 	<string id="bar_bar_barmen_start_17213">
 		<text>Yeah.</text>
@@ -406,7 +406,7 @@
 		<text>What do you want, Marked One?</text>
 	</string>
 	<string id="bar_bar_barmen_start_182">
-		<text>Hey, Marked One! Times change but you don't still grumpy and aloof. Here, take a seat, have a drink - might make you nicer…</text>
+		<text>Hey, Marked One! Times change but you don't still grumpy and aloof. Here, take a seat, have a drink - might make you nicer...</text>
 	</string>
 	<string id="bar_bar_barmen_start_2">
 		<text>Hey, Marked One! Have you brought the documents from the Institute?</text>
@@ -415,7 +415,7 @@
 		<text>No, I haven't got the docs from the Institute yet.</text>
 	</string>
 	<string id="bar_bar_barmen_start_211">
-		<text>That ain't good, Marked One, ain't good at all... You understand how much we need 'em, don'tcha? We need 'em bad, believe you me. The Brain Scorcher is right under our noses but we don't even know what it is! Go get the documents right now - we'll talk after that.</text>
+		<text>That ain't good, Marked One, ain't good at all... You understand how much we need 'em, don'tcha? We need 'em bad, believe me. The Brain Scorcher is right under our noses but we don't even know what it is! Go get the documents right now - we'll talk after that.</text>
 	</string>
 	<string id="bar_bar_barmen_start_2111">
 		<text>I think I understand.</text>
@@ -436,7 +436,7 @@
 		<text>What do you want, Marked One?</text>
 	</string>
 	<string id="bar_bar_barmen_start_4">
-		<text>Hey, Marked One! Times change but you don't still grumpy and aloof. Here, take a seat, have a drink - might make you nicer…</text>
+		<text>Hey, Marked One! Times change but you don't still grumpy and aloof. Here, take a seat, have a drink - might make you nicer...</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_0">
 		<text>I want to know something.</text>
@@ -466,7 +466,7 @@
 		<text>What do you know about a stalker called Fang?</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_61">
-		<text>There was a man that went by that name, spoke with a lisp… He was a bit weird, that's for sure - talked to himself and stuff…but he seemed like an okay guy. I haven't seen him at the Bar for ages.</text>
+		<text>There was a man that went by that name, spoke with a lisp... He was a bit weird, that's for sure - talked to himself and stuff...but he seemed like an okay guy. I haven't seen him at the Bar for ages.</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_7">
 		<text>Tell me about the mobile science labs.</text>
@@ -478,7 +478,7 @@
 		<text>What is the wish granter?</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_81">
-		<text>O! That's an interesting question… I wish I knew the answer. I can tell you the legend about the Granter if you want but you make up your own mind how much truth there's in it. Wanna hear it?</text>
+		<text>O! That's an interesting question... I wish I knew the answer. I can tell you the legend about the Granter if you want but you make up your own mind how much truth there's in it. Wanna hear it?</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_811">
 		<text>Well, that's very interesting.</text>
@@ -487,19 +487,19 @@
 		<text>This legend is about the Monolith, which may be what caused the Zone to appear. When the Zone exploded in 2006, they evacuated people living near it and the Zone itself was cordoned off by the Army. Everyone was panicking, nobody knew what was going on, the Zone was expanding and the field labs couldn't do anything! Loads of people died there. Everyone was afraid of the radiation which could affect half of Europe. After a few years had passed, some reckless guys like you appeared. They called themselves stalkers. They started to sneak past army cordons believing that there are things in the Zone that would make them rich. Bit by bit, they brought out weird things, artifacts and which eventually turned out a race for them. Scientists went after them like crazy. They paid fantastic money for just one trinket back then, not like now.</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_81111">
-		<text>Go on…</text>
+		<text>Go on...</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_811111">
 		<text>After a while, the first tales and legends about what's deep inside the Zone by the tubledown nuclear power plant started to circulate. It was also then that one of the veterans told us the story of Monolith that allegedly grants your wishes. You should have seen the hysteria: experienced, level-headed men started trying to break through to the center - everyone wanted something from the Monolith. We got some morbid details about the first stalker who made it through to the Monolith...</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_8111111">
-		<text>Go on… tell me more.</text>
+		<text>Go on... tell me more.</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_81111111">
 		<text>When the Zone had just appeared many people were trapped inside and cut off from the outside world. Most of them died pretty quickly but there were a few lucky survivors who tried to do something about it. One of these survivors found himself by the station and noticed some strange light inside. With no way back he decided to try to get closer. He saw the broken roof of the sarcophagus and the light coming out through it. He climbed up the wall and looked inside. Among the debris of metal and molten concrete there lay a massive black rock. It was the Monolith. The stalker managed to shake off the "spell" and realised that he had climbed very close to the sarcophagus, which was highly radioactive. He was scared to death but through the fear he could sense the Monolith calling to him. The Monolith called to him and he came to see strange, unbelievable things about the Monolith inside his head...</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_811111111">
-		<text>Cool…</text>
+		<text>Cool...</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_811111112">
 		<text>I don't know what's true in this story and what's not but the point is the guy made a wish which came true, while the Zone grew by 5 kilometers. It seems the Zone gobbles up more land for every wish that is granted... But that ain't gonna stop hotshots like you. They keep trying to break through with their precious little wishes in their hearts...</text>
@@ -511,16 +511,16 @@
 		<text>It's your business, man. What exactly do you want to know?</text>
 	</string>
 	<string id="bar_bar_drunk_dolg_start_11">
-		<text>Hic… damn it! Yes, I'm drunk, I'm drunk! They wanna…they… wanna kick me out of Duty if I fail this task too…you know? But I'm not…hic…not feeling too…hic…good at the moment…you know…</text>
+		<text>Hic... damn it! Yes, I'm drunk, I'm drunk! They wanna...they... wanna kick me out of Duty if I fail this task too...you know? But I'm not...hic...not feeling too...hic...good at the moment...you know...</text>
 	</string>
 	<string id="bar_bar_drunk_dolg_start_111">
 		<text>I feel for you.</text>
 	</string>
 	<string id="bar_bar_drunk_dolg_start_21">
-		<text>What's up? Any news? You haven't whacked the little piece of shit, I can see it in your eyes. Life sucks… Listen, at least have a drink with me, will you, friend?</text>
+		<text>What's up? Any news? You haven't whacked the little piece of shit, I can see it in your eyes. Life sucks... Listen, at least have a drink with me, will you, friend?</text>
 	</string>
 	<string id="bar_bar_drunk_dolg_start_31">
-		<text>Maaan…hic…you… you… you helped me! Let's drink to Duty… I guess! And…Oh!</text>
+		<text>Maaan...hic...you... you... you helped me! Let's drink to Duty... I guess! And...Oh!</text>
 	</string>
 	<string id="bar_bar_hunter_quest_finish_0">
 		<text>I found it. Here is your rifle.</text>
@@ -547,7 +547,7 @@
 		<text>No. I've got more important things to do.</text>
 	</string>
 	<string id="bar_bar_hunter_quest_start_121">
-		<text>Up to you… but I hope you change your mind.</text>
+		<text>Up to you... but I hope you change your mind.</text>
 	</string>
 	<string id="bar_bar_hunter_quest_start_1212">
 		<text>We'll see.</text>
@@ -610,10 +610,10 @@
 		<text>I want to buy some information.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_21">
-		<text>Right now, I can sell you information about Strelok's group virtually for nothing - 1500 roubles.</text>
+		<text>Right now, I can sell you information about Strelok's group virtually for nothing - 4000 roubles.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_211">
-		<text>OK, I'll take it. Here's 1500.</text>
+		<text>OK, I'll take it. Here's 4000.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_2111">
 		<text>It's located by the Agroprom Research Institute, there's a stash in the underground. It probably contains information about the group's plans and a list of group members. The coordinates of the stash are attached.</text>
@@ -625,10 +625,10 @@
 		<text>Up to you. Come to the bar when you decide otherwise - I'm always here.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_31">
-		<text>Right now, I have some information about a group that made it to the center of the Zone. I'm practically giving it away - only 3000 roubles.</text>
+		<text>Right now, I have some information about a group that made it to the center of the Zone. I'm practically giving it away - only 2000 roubles.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_311">
-		<text>OK, I'll buy it. Here's 3000.</text>
+		<text>OK, I'll buy it. Here's 2000.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_3111">
 		<text>Strelok, Ghost and Fang went to the center of the Zone. What they found there, no one knows, but Strelok went missing while Ghost and Fang came back distraught.The latest news on Ghost is that he went to the mobile lab by Lake Yantar. Coordinates of the scientists' camp are attached.</text>
@@ -640,10 +640,10 @@
 		<text>Up to you. Come to the bar when you decide otherwise - I'm always here.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_41">
-		<text>I've got some information about the secret of Lake Yantar. The price is just 4500 roubles - any less and I'd be paying you!</text>
+		<text>I've got some information about the secret of Lake Yantar. The price is just 3500 roubles - any less and I'd be paying you!</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_411">
-		<text>Okay, I'll buy. Take 4500.</text>
+		<text>Okay, I'll buy. Take 3500.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_4111">
 		<text>The secret of Lake Yantar is similar to the secret of the Brain Scorcher and their effects are similar in many ways. Some kind of emission zombifies all who come in contact with it. The zombified stalkers move around the center of some emitter, attacking everyone. There is information to suggest that the solution to the riddle of Lake Yantar is below ground. Here are the coordinates of the emitter at Lake Yantar and those of the Brain Scorcher.</text>
@@ -658,25 +658,25 @@
 		<text>I don't have any new information at the moment.</text>
 	</string>
 	<string id="bar_bar_visitors_1_start_11">
-		<text>…it's about time someone whacked Borov! If I knew who it was, I'd buy him a drink.</text>
+		<text>...it's about time someone whacked Borov! If I knew who it was, I'd buy him a drink.</text>
 	</string>
 	<string id="bar_bar_visitors_1_start_111">
 		<text>Yeah, it was about time.</text>
 	</string>
 	<string id="bar_bar_visitors_1_start_21">
-		<text>…someone really pissed off Freedom: I heard one of their groups was destroyed in the Wild Territory…I wonder who did it?</text>
+		<text>...someone really pissed off Freedom: I heard one of their groups was destroyed in the Wild Territory...I wonder who did it?</text>
 	</string>
 	<string id="bar_bar_visitors_1_start_211">
-		<text>Yeah, I wish I knew…</text>
+		<text>Yeah, I wish I knew...</text>
 	</string>
 	<string id="bar_bar_visitors_1_start_31">
-		<text>…finally someone had the balls to clear out the bloodsuckers in the Wild Territory… What was Duty doing all this time?</text>
+		<text>...finally someone had the balls to clear out the bloodsuckers in the Wild Territory... What was Duty doing all this time?</text>
 	</string>
 	<string id="bar_bar_visitors_1_start_311">
 		<text>What was Duty doing? They were doing Freedom, what else?</text>
 	</string>
 	<string id="bar_bar_visitors_1_start_41">
-		<text>…I heard someone whacked the leader of Freedom. They're in for some tough times I think. Duty is gonna really put a squeeze on 'em…</text>
+		<text>...I heard someone whacked the leader of Freedom. They're in for some tough times I think. Duty is gonna really put a squeeze on 'em...</text>
 	</string>
 	<string id="bar_bar_visitors_1_start_411">
 		<text>Let's hope so.</text>
@@ -694,7 +694,7 @@
 		<text>I want to believe that the Scorcher can be switched off.</text>
 	</string>
 	<string id="bar_bar_visitors_1_start_71">
-		<text>What do you want? Don't you see, I'm trying to relax here…</text>
+		<text>What do you want? Don't you see, I'm trying to relax here...</text>
 	</string>
 	<string id="bar_bar_visitors_1_start_711">
 		<text>What's new?</text>
@@ -727,7 +727,7 @@
 		<text>Well, there used to be this group led by Strelok. There were all sorts of legends about it going around the Zone...good and bad, but few people really knew the truth. The truth is that they wanted to deal with the Zone, find out what created it. That's why military stalkers were after them but they didn't know where to look. The government didn't want normal stalkers to know things they shouldn't have known. One day Strelok found something really important and made a move towards the center of the Zone with some of his boys. Half of the group died on the way but the rest made it through... What happened to them there - no one knows. Looks like they've copped it. The other group members were caught and killed off... I don't think there are any of them left now. Sad story, eh?</text>
 	</string>
 	<string id="bar_bar_visitors_12_start_71111">
-		<text>Yeah… looks like someone really doesn't want the Zone to be understood…</text>
+		<text>Yeah... looks like someone really doesn't want the Zone to be understood...</text>
 	</string>
 	<string id="bar_bar_visitors_13_start_71">
 		<text>What do you want?</text>
@@ -781,7 +781,7 @@
 		<text>OK, Baldy, OK. Calm down, man. Thanks for telling me what happened. I'll talk to Spotty myself.</text>
 	</string>
 	<string id="bar_bar_visitors_14_start_91">
-		<text>Sorry. I'm not in the mood for talking… I'd rather just have another drink.</text>
+		<text>Sorry. I'm not in the mood for talking... I'd rather just have another drink.</text>
 	</string>
 	<string id="bar_bar_visitors_2_start_71">
 		<text>What do you want?</text>
@@ -811,7 +811,7 @@
 		<text>What do you want?</text>
 	</string>
 	<string id="bar_bar_visitors_4_start_711">
-		<text>What do you hear?</text>
+		<text>What did you hear?</text>
 	</string>
 	<string id="bar_bar_visitors_4_start_7111">
 		<text>If you go around Lake Yantar you'll come to the scientists' camp - they're do research of some sort there... They were dropped in by helicopter and they get regular supplies too. They've got a nice spot there really... You can deal with them too - they buy artifacts and might even give you a job to do.</text>
@@ -823,19 +823,19 @@
 		<text>What do you want?</text>
 	</string>
 	<string id="bar_bar_visitors_5_start_711">
-		<text>What do you hear?</text>
+		<text>What did you hear?</text>
 	</string>
 	<string id="bar_bar_visitors_5_start_7111">
 		<text>Nobody has managed to get through the vehicle scrapyard because of the Brain Scorcher. Some people did see a stalker go through the invisible border, fall over, then get up in a couple of minutes and head straight for the center of the scrapyards. He ain't been seen since...</text>
 	</string>
 	<string id="bar_bar_visitors_5_start_71111">
-		<text>Interesting…</text>
+		<text>Interesting...</text>
 	</string>
 	<string id="bar_bar_visitors_6_start_71">
 		<text>What do you want?</text>
 	</string>
 	<string id="bar_bar_visitors_6_start_711">
-		<text>What do you hear?</text>
+		<text>What did you hear?</text>
 	</string>
 	<string id="bar_bar_visitors_6_start_7111">
 		<text>Missing stalkers come back from time to time. It's a scary sight, I tell you: they mumble something and reach for their weapons, which they lost somewhere... One came to a Duty outpost some time ago and a crowd gathered to look at him. Someone even recognized him... He was scary...red eyes, all bloodshot and bruised...couldn't say a word, just moaned like an animal and went around in circles. Duty took him in, but he died after a couple of days anyway. Something happens to people in the Zone, but what is it?</text>
@@ -847,7 +847,7 @@
 		<text>What do you want?</text>
 	</string>
 	<string id="bar_bar_visitors_7_start_711">
-		<text>What do you hear?</text>
+		<text>What did you hear?</text>
 	</string>
 	<string id="bar_bar_visitors_7_start_7111">
 		<text>There are a lot of zombies around Lake Yantar. They wander around and attack any human they see. If you're spotted you might wanna run for your life - there are too many of them former stalkers around there... They died at the lake and that's all that's left of 'em.</text>
@@ -859,7 +859,7 @@
 		<text>What do you want?</text>
 	</string>
 	<string id="bar_bar_visitors_8_start_711">
-		<text>What do you hear?</text>
+		<text>What did you hear?</text>
 	</string>
 	<string id="bar_bar_visitors_8_start_7111">
 		<text>Traders say that there's a real treasure trove of artifacts in the center of the Zone, so anyone who makes it through will make enough money for two lifetimes. Personally, I think there's more to this. Obviously the traders think about their own interests, but there are strange rumours going around. Apparently, there's something better than artifacts there - something that ain't from this world, something alien or from another dimension altogether! They call it the Wish-granting machine. I heard a legend about a stalker who made it through. Only every time someone makes a wish the Zone grows and nobody who gets there uses his wish to make it disappear. I guess when you get to the Machine you don't give a shit about anyone else.</text>
@@ -871,7 +871,7 @@
 		<text>What do you want?</text>
 	</string>
 	<string id="bar_bar_visitors_9_start_711">
-		<text>What do you hear?</text>
+		<text>What did you hear?</text>
 	</string>
 	<string id="bar_bar_visitors_9_start_7111">
 		<text>Everyone who believes in the Monolith is completely nuts. They keep banging on about it but nobody actually knows what's in the center of the Zone. An invisible crystal that fell from the skies...ha-ha-ha! I reckon one of the secret labs blew up - I mean some stalkers used to work in a few of them. But, obviously, you can't bomb the Zone. Not only will the radiation spread all over the world, half of Europe would be flattened by the Zone's reaction. "Someone" has gone totally mad lately - I heard they're killing normal stalkers for no reason at all. How do you like that? Damn fanatics.</text>
@@ -979,10 +979,10 @@
 		<text>That's a good question, Marked One and there's an equally good answer to it - kill Freedom anarchists. You'll get a reward for every PDA of theirs you bring and you might get promoted too. Take all the PDAs you get to Petrenko - he gives out the rewards.</text>
 	</string>
 	<string id="bar_dolg_leader_join_0">
-		<text>Barkeep told me that you have some assignment for me at the military warehouses…</text>
+		<text>Barkeep told me that you have some assignment for me at the military warehouses...</text>
 	</string>
 	<string id="bar_dolg_leader_join_1">
-		<text>I want to ask you to do one thing, personally for me, you see? We're in the midst of territorial warefare with the Freedom faction and we need some weapons more powerful than what we have. Freedom has some excellent Bulldog 6 granade launchers. If you could penetrate into their territory and steal at least one such granade launcher, I would generously reward you. Since you aren't in our faction, you can quickly gain the trust of Freedom and, if you're lucky, get a hold of the Bulldog 6.</text>
+		<text>I want to ask you to do one thing, personally for me, you see? We're in the midst of territorial warefare with the Freedom faction and we need some weapons more powerful than what we have. Freedom has some excellent Bulldog 6 granade launchers. If you could penetrate their territory and steal at least one such granade launcher, I would generously reward you. Since you aren't in our faction, you can quickly gain the trust of Freedom and, if you're lucky, get a hold of the Bulldog 6.</text>
 	</string>
 	<string id="bar_dolg_leader_join_11">
 		<text>Go on.</text>
@@ -1132,7 +1132,7 @@
 		<text>You said there's a bar here. Can you tell me where exactly it is?</text>
 	</string>
 	<string id="bar_dolg_zastava_talk_2111">
-		<text>In the basement behind the hangar…I'll mark it on your map.</text>
+		<text>In the basement behind the hangar...I'll mark it on your map.</text>
 	</string>
 	<string id="bar_dolg_zastava_talk_21111">
 		<text>Thanks for the information.</text>
@@ -1231,7 +1231,7 @@
 		<text>I am looking for Lab X16. Could you tell me where it is?</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_give_info_dp_141">
-		<text>Lab X16? Hmm… Sakharov mentioned something of the sort in passing but I do not recall exactly what he said. Perhaps it's best to ask him yourself... He's currently in the mobile lab by Lake Yantar.</text>
+		<text>Lab X16? Hmm... Sakharov mentioned something of the sort in passing but I do not recall exactly what he said. Perhaps it's best to ask him yourself... He's currently in the mobile lab by Lake Yantar.</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_give_info_dp_15">
 		<text>Unfortunately I have to go. Good luck.</text>
@@ -1246,7 +1246,7 @@
 		<text>OK.</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_start_1012">
-		<text>Let's move. We'll try to break through…</text>
+		<text>Let's move. We'll try to break through...</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_start_10121">
 		<text>Let's hurry up.</text>
@@ -1264,7 +1264,7 @@
 		<text>No. Try to get out of here yourself.</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_start_1121">
-		<text>No. I am sure you don't mean that. I'll never make it out of here alone. If you change your mind, I'll be here…if I live.</text>
+		<text>No. I am sure you don't mean that. I'll never make it out of here alone. If you change your mind, I'll be here...if I live.</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_start_21">
 		<text>Hurry, we have to get out of here quickly.</text>
@@ -1294,7 +1294,7 @@
 		<text>OK.</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_start_512">
-		<text>Let's move. We'll try to break through…</text>
+		<text>Let's move. We'll try to break through...</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_start_5121">
 		<text>Let's go.</text>
@@ -1309,7 +1309,7 @@
 		<text>OK, I'll wait here.</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_start_612">
-		<text>Let's move. We'll try to break through…</text>
+		<text>Let's move. We'll try to break through...</text>
 	</string>
 	<string id="bar_ecolog_crush_professor_start_6121">
 		<text>OK, let's hurry.</text>

@@ -2,16 +2,16 @@
 		<text>Mallette avec docs</text>
 	</string>
 	<string id="esc_fox">
-		<text>Fox bless .</text>
+		<text>Fox blessé.</text>
 	</string>
 	<string id="esc_mill">
-		<text>Moulin abandonn . Le fr re bless  a  t  vu pour la derni re fois dans les parages.</text>
+		<text>Moulin abandonné. Le frère blessé a été vu pour la dernière fois dans les parages.</text>
 	</string>
 	<string id="escape_trader">
 		<text>Marchand.</text>
 	</string>
 	<string id="factory_bandits">
-		<text>Bandits   l'usine.</text>
+		<text>Bandits à l'usine.</text>
 	</string>
 	<string id="killers_team">
 		<text>Groupe de Mercenaires inconnus.</text>
@@ -20,13 +20,13 @@
 		<text>Chef du camp des nouveaux.</text>
 	</string>
 	<string id="soldiers_bridge">
-		<text>Poste de contr le militaire du pont d truit. Les soldats sont r put s corrompus. Ils laissent passer les gens en  change de pots de vin.</text>
+		<text>Poste de contrôle militaire du pont détruit. Les soldats sont réputés corrompus. Ils laissent passer les gens en échange de pots de vin.</text>
 	</string>
 	<string id="tutorial_artefact">
 		<text>Artefact.</text>
 	</string>
 	<string id="tutorial_bandits">
-		<text>Bandits ayant arr t  notre  claireur.</text>
+		<text>Bandits ayant arrêté notre éclaireur.</text>
 	</string>
 	<string id="tutorial_secret">
 		<text>Planque d'un Stalker mort.</text>
@@ -44,5 +44,5 @@
 		<text>Le Loup, le chef du camp des nouveaux.</text>
 	</string>
 	<string id="wolfs_rangers">
-		<text> claireurs du Loup.</text>
+		<text>Éclaireurs du Loup.</text>
 	</string>

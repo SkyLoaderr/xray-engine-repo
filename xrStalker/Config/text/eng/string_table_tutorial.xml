@@ -43,7 +43,7 @@
 		<text>When the character wears a radioactive artifact on his belt or enters an area with a high level of background radiation, he starts losing health and exhibits signs of radiation poisoning. Effect of radiation can be countered by using antiradiation drugs and vodka.</text>
 	</string>
 	<string id="relation">
-		<text>Attitude</text>
+		<text>attitude</text>
 	</string>
 	<string id="relation_tutorial">
 		<text>By helping other characters you improve their attitude towards you, as well as your general reputation. Better attitude and higher reputation help you when interacting with the people you meet. They will be prone to give you additional information and sell you their items cheaper if you're in their good books. On the other hand, if you open fire at someone, their attitude towards you will quickly turn negative, as will that of their friends, and they will attack you.</text>

@@ -4,7 +4,7 @@
 		<text>El artefacto ha sido destruido.</text>
 	</string>
 	<string id="mp_art_spowned">
-		<text>Se ha generado el artefacto. Tr elo a la base para obtener un punto.</text>
+		<text>Se ha generado el artefacto. Tráelo a la base para obtener un punto.</text>
 	</string>
 	<string id="mp_artefacts">
 		<text>Artefactos</text>
@@ -13,16 +13,16 @@
 		<text>Artefactos</text>
 	</string>
 	<string id="mp_auto_select">
-		<text>Seleccionar autom ticamente</text>
+		<text>Seleccionar automáticamente</text>
 	</string>
 	<string id="mp_back">
-		<text>Atr s</text>
+		<text>Atrás</text>
 	</string>
 	<string id="mp_ban">
 		<text>Excluir</text>
 	</string>
 	<string id="mp_by_anomaly">
-		<text>con una anomal a</text>
+		<text>con una anomalía</text>
 	</string>
 	<string id="mp_cancel">
 		<text>Cancelar</text>
@@ -31,7 +31,7 @@
 		<text>Cambiar el mapa</text>
 	</string>
 	<string id="mp_change_weather">
-		<text>Cambiar meteorolog a</text>
+		<text>Cambiar meteorología</text>
 	</string>
 	<string id="mp_chat">
 		<text>Chat</text>
@@ -43,13 +43,13 @@
 		<text>muertes</text>
 	</string>
 	<string id="mp_description">
-		<text>Descripci n</text>
+		<text>Descripción</text>
 	</string>
 	<string id="mp_disconnected">
 		<text>desconectado</text>
 	</string>
 	<string id="mp_enter_text">
-		<text>Escribir texto para la votaci n</text>
+		<text>Escribir texto para la votación</text>
 	</string>
 	<string id="mp_entered_game">
 		<text>se ha unido a la partida</text>
@@ -64,7 +64,7 @@
 		<text>Frags</text>
 	</string>
 	<string id="mp_free_fly">
-		<text>(C mara libre)</text>
+		<text>(Cámara libre)</text>
 	</string>
 	<string id="mp_free_look">
 		<text>(Vista en tercera persona)</text>
@@ -73,7 +73,7 @@
 		<text>con</text>
 	</string>
 	<string id="mp_go">
-		<text> VENGA!</text>
+		<text>¡VENGA!</text>
 	</string>
 	<string id="mp_has_drop_art">
 		<text>ha dejado %s artefactos</text>
@@ -97,10 +97,10 @@
 		<text>(Bloqueada libre)</text>
 	</string>
 	<string id="mp_map_desc">
-		<text>Descripci n del mapa</text>
+		<text>Descripción del mapa</text>
 	</string>
 	<string id="mp_match_started">
-		<text> Comienza la partida!</text>
+		<text>¡Comienza la partida!</text>
 	</string>
 	<string id="mp_modes">
 		<text>Modos</text>
@@ -118,7 +118,7 @@
 		<text>ping</text>
 	</string>
 	<string id="mp_player_wins">
-		<text> El jugador %s gana la partida!</text>
+		<text>¡El jugador %s gana la partida!</text>
 	</string>
 	<string id="mp_players">
 		<text>Jugadores</text>
@@ -127,7 +127,7 @@
 		<text>Presiona Disparar para cambiar al modo Espectador</text>
 	</string>
 	<string id="mp_press_jump2pay_spaw">
-		<text>Presiona Saltar para adquirir una reaparici n instant nea</text>
+		<text>Presiona Saltar para adquirir una reaparición instantánea</text>
 	</string>
 	<string id="mp_press_jump2select_skin">
 		<text>Presiona Saltar para seleccionar un aspecto</text>
@@ -142,10 +142,10 @@
 		<text>Presiona Saltar para empezar</text>
 	</string>
 	<string id="mp_press_to_buy">
-		<text>Presiona ($$ACTION_BUY_MENU$$) para acceder al Men  de compra</text>
+		<text>Presiona ($$ACTION_BUY_MENU$$) para acceder al Menú de compra</text>
 	</string>
 	<string id="mp_press_yes2pay">
-		<text>Tienes %d$. Para reaparecer necesitas %d$. Haz clic en S  para pagar.</text>
+		<text>Tienes %d$. Para reaparecer necesitas %d$. Haz clic en Sí para pagar.</text>
 	</string>
 	<string id="mp_ready">
 		<text>Preparado...</text>
@@ -154,28 +154,28 @@
 		<text>Reiniciar</text>
 	</string>
 	<string id="mp_restart_fast">
-		<text>Reinicio r pido</text>
+		<text>Reinicio rápido</text>
 	</string>
 	<string id="mp_scores">
 		<text>puntos conseguidos</text>
 	</string>
 	<string id="mp_select_ban">
-		<text>Seleccionar un jugador para excluir por votaci n</text>
+		<text>Seleccionar un jugador para excluir por votación</text>
 	</string>
 	<string id="mp_select_category">
-		<text>Seleccionar categor a de votaci n</text>
+		<text>Seleccionar categoría de votación</text>
 	</string>
 	<string id="mp_select_kick">
-		<text>Seleccionar jugador para expulsi n por votaci n</text>
+		<text>Seleccionar jugador para expulsión por votación</text>
 	</string>
 	<string id="mp_select_kick_player">
-		<text>Seleccionar jugador para expulsi n por votaci n</text>
+		<text>Seleccionar jugador para expulsión por votación</text>
 	</string>
 	<string id="mp_select_map">
-		<text>Seleccionar mapa para votaci n</text>
+		<text>Seleccionar mapa para votación</text>
 	</string>
 	<string id="mp_skin_selection">
-		<text>Selecci n de aspecto</text>
+		<text>Selección de aspecto</text>
 	</string>
 	<string id="mp_spectator">
 		<text>Espectador</text>
@@ -193,16 +193,16 @@
 		<text>Libertad</text>
 	</string>
 	<string id="mp_team_selection">
-		<text>Selecci n de equipo</text>
+		<text>Selección de equipo</text>
 	</string>
 	<string id="mp_team_wins">
-		<text> Gana el equipo %s!</text>
+		<text>¡Gana el equipo %s!</text>
 	</string>
 	<string id="mp_text">
 		<text>Texto</text>
 	</string>
 	<string id="mp_time2respawn">
-		<text>Tiempo hasta reaparici n</text>
+		<text>Tiempo hasta reaparición</text>
 	</string>
 	<string id="mp_time2start">
 		<text>Tiempo hasta inicio:</text>
@@ -214,7 +214,7 @@
 		<text>No</text>
 	</string>
 	<string id="mp_vote_yes">
-		<text>S </text>
+		<text>Sí</text>
 	</string>
 	<string id="mp_voted">
 		<text>ha votado</text>
@@ -223,16 +223,16 @@
 		<text>No</text>
 	</string>
 	<string id="mp_voted_yes">
-		<text>S </text>
+		<text>Sí</text>
 	</string>
 	<string id="mp_voting_broken">
-		<text> Votaci n cancelada por el servidor!</text>
+		<text>¡Votación cancelada por el servidor!</text>
 	</string>
 	<string id="mp_voting_started">
-		<text>%s ha iniciado la votaci n de '%s'.</text>
+		<text>%s ha iniciado la votación de '%s'.</text>
 	</string>
 	<string id="mp_voting_started_msg">
-		<text> Empieza la votaci n!</text>
+		<text>¡Empieza la votación!</text>
 	</string>
 	<string id="mp_weather_clear">
 		<text>Despejado</text>
@@ -247,16 +247,16 @@
 		<text>Lluvioso</text>
 	</string>
 	<string id="mp_with_backstab">
-		<text>   Apu alado!!!</text>
+		<text>¡¡¡Apuñalado!!!</text>
 	</string>
 	<string id="mp_with_headshot">
-		<text>   Tiro en la cabeza!!!</text>
+		<text>¡¡¡Tiro en la cabeza!!!</text>
 	</string>
 	<string id="mp_your_rank">
 		<text>Tu rango actual es</text>
 	</string>
 	<string id="ui_st_description">
-		<text>Descripci n</text>
+		<text>Descripción</text>
 	</string>
 	<string id="ui_st_team1_name">
 		<text>Libertad</text>
@@ -268,7 +268,7 @@
 		<text>Artefacto</text>
 	</string>
 	<string id="self">
-		<text>Eres t </text>
+		<text>Eres tú</text>
 	</string>
 	<string id="friend">
 		<text>Aliado</text>

@@ -7,7 +7,7 @@
 		<text>Hablar ($$ACTION_USE$$)</text>
 	</string>
 	<string id="dead_character_use">
-		<text>Buscar cuerpo ($$ACTION_USE$$)</text>
+		<text>Registrar cuerpo ($$ACTION_USE$$)</text>
 	</string>
 	<string id="inventory_item_use">
 		<text>Coger objeto ($$ACTION_USE$$)</text>

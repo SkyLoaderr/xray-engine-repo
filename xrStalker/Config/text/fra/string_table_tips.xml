@@ -13,6 +13,6 @@
 		<text>Ramasser un objet ($$ACTION_USE$$)</text>
 	</string>
 	<string id="physic_shell_use">
-		<text>D placer un objet ()</text>
+		<text>Déplacer un objet ()</text>
 	</string>
 </string_table>

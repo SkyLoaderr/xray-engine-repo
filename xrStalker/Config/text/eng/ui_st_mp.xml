@@ -148,7 +148,7 @@
 		<text>You have %d$. You can respawn for %d$. Click Yes to pay.</text>
 	</string>
 	<string id="mp_ready">
-		<text>Ready…</text>
+		<text>Ready...</text>
 	</string>
 	<string id="mp_restart">
 		<text>Restart</text>

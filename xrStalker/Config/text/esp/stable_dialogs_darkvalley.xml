@@ -1,76 +1,76 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="val_escort_captive_dialog_11">
-		<text>Bandidos... Esos desgraciados me llevaban a la vieja f brica. No s  lo que planeaban hacer conmigo, pero ya se llevaron una vez a otro tipo all  y nunca volv  a verle. Tienen a otro de los nuestros, Serega. Lo tienen en el s tano... en ese gran edificio de all ... uno enorme que est  a medio construir.  Le ayudar s? Si no lo haces, ellos... ya sabes...</text>
+		<text>Bandidos... Esos desgraciados me llevaban a la vieja fбbrica. No sй lo que planeaban hacer conmigo, pero ya se llevaron una vez a otro tipo allн y nunca volvн a verle. Tienen a otro de los nuestros, Serega. Lo tienen en el sуtano... en ese gran edificio de allн... uno enorme que estб a medio construir. їLe ayudarбs? Si no lo haces, ellos... ya sabes...</text>
 	</string>
 	<string id="val_escort_captive_dialog_2">
-		<text> Sabes lo que tienen en la f brica?</text>
+		<text>їSabes lo que tienen en la fбbrica?</text>
 	</string>
 	<string id="val_escort_captive_dialog_21">
-		<text>No s  mucho. Lo  nico que puedo decirte es que Borov, su jefe, tiene una parte de la clave a las cuevas. All  hab a un laboratorio, o algo parecido... Charlaban entre ellos y dec an que Borov hab a tratado de entrar, pero no lo hab a conseguido por no tener la segunda mitad de la clave. Esto... Si est s pensando en entrar ah , pi nsatelo dos veces. Est  lleno de matones. </text>
+		<text>No sй mucho. Lo ъnico que puedo decirte es que Borov, su jefe, tiene una parte de la clave a las cuevas. Allн habнa un laboratorio, o algo parecido... Charlaban entre ellos y decнan que Borov habнa tratado de entrar, pero no lo habнa conseguido por no tener la segunda mitad de la clave. Esto... Si estбs pensando en entrar ahн, piйnsatelo dos veces. Estб lleno de matones. </text>
 	</string>
 	<string id="val_escort_captive_dialog_211">
-		<text>Vale. Gracias. Lo tendr  en cuenta.</text>
+		<text>Vale. Gracias. Lo tendrй en cuenta.</text>
 	</string>
 	<string id="val_escort_captive_dialog_3">
-		<text>Intentar  ayudar a tu hombre.</text>
+		<text>Intentarй ayudar a tu hombre.</text>
 	</string>
 	<string id="val_escort_captive_dialog_41">
-		<text>Es una l stima lo de mi compa ero... Era un buen tipo. Pero te debo una.</text>
+		<text>Es una lбstima lo de mi compaсero... Era un buen tipo. Pero te debo una.</text>
 	</string>
 	<string id="val_escort_captive_dialog_411">
-		<text>La vida es as .</text>
+		<text>La vida es asн.</text>
 	</string>
 	<string id="val_escort_captive_dialog_51">
 		<text>Gracias por tu ayuda.</text>
 	</string>
 	<string id="val_escort_captive_dialog_511">
-		<text>Adi s.</text>
+		<text>Adiуs.</text>
 	</string>
 	<string id="val_escort_captive_dialog_61">
-		<text>La gente no te importa un carajo.  De qu  tenemos que hablar?</text>
+		<text>La gente no te importa un carajo. їDe quй tenemos que hablar?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21">
-		<text>Gracias, t o.  Sacaste a mi compa ero de all ! Mira, toma esto. Te lo doy de coraz n. </text>
+		<text>Gracias, tнo. ЎSacaste a mi compaсero de allн! Mira, toma esto. Te lo doy de corazуn. </text>
 	</string>
 	<string id="val_escort_nap1_dialog_2111">
 		<text>De acuerdo.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_212">
-		<text>Supongo que conoces bien esta  rea.  Qu  hay de interesante aqu ?</text>
+		<text>Supongo que conoces bien esta бrea. їQuй hay de interesante aquн?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_2121">
-		<text>Al Norte hay un campamento de bandidos. Al Este, una vieja f brica. Al Sudoeste hay una granja de cerdos abandonada y tras ella alg n tipo de puerta... No puedo decirte lo que hay all , nunca he llegado tan lejos.</text>
+		<text>Al Norte hay un campamento de bandidos. Al Este, una vieja fбbrica. Al Sudoeste hay una granja de cerdos abandonada y tras ella algъn tipo de puerta... No puedo decirte lo que hay allн, nunca he llegado tan lejos.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21211">
-		<text> Podr as contarme algo m s del campamento de bandidos?</text>
+		<text>їPodrнas contarme algo mбs del campamento de bandidos?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_212111">
-		<text>Um, no hay mucho que contar... Se instalaron en un edificio a medio construir al norte de aqu . Su l der es Borov, un verdadero animal, un malnacido. Por eso nos enviaron aqu , para eliminarlo.</text>
+		<text>Um, no hay mucho que contar... Se instalaron en un edificio a medio construir al norte de aquн. Su lнder es Borov, un verdadero animal, un malnacido. Por eso nos enviaron aquн, para eliminarlo.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21212">
-		<text> Qu  pasa con la f brica?</text>
+		<text>їQuй pasa con la fбbrica?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_212121">
-		<text>Descubrimos que all  hay una especie de c mara. Pero est  tan vigilada como Fort Knox.</text>
+		<text>Descubrimos que allн hay una especie de cбmara. Pero estб tan vigilada como Fort Knox.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_2121211">
-		<text> Qu  tipo de c mara?  Qu  hay en su interior?</text>
+		<text>їQuй tipo de cбmara? їQuй hay en su interior?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21212111">
-		<text>No s  nada m s, de verdad: no entramos. Lo  nico que s  es que Borov tiene la mitad de la clave de la entrada.</text>
+		<text>No sй nada mбs, de verdad: no entramos. Lo ъnico que sй es que Borov tiene la mitad de la clave de la entrada.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21213">
-		<text> Una aut ntica granja de cerdos?  Con cerdos y cosas por el estilo?</text>
+		<text>їUna autйntica granja de cerdos? їCon cerdos y cosas por el estilo?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_212131">
-		<text>Se te hace la boca agua pensando en unas chuletas,  eh? La zona est  llena de jabal es. Prueba un bocado de uno y no necesitar s una linterna nunca m s.  Te volver s fosforescente! Vale, vale, era broma... La granja lleva tiempo abandonada, y ahora es hogar de algunos stalkers. No me causaron una buena impresi n, y mi instinto no suele fallarme.</text>
+		<text>Se te hace la boca agua pensando en unas chuletas, їeh? La zona estб llena de jabalнes. Prueba un bocado de uno y no necesitarбs una linterna nunca mбs. ЎTe volverбs fosforescente! Vale, vale, era broma... La granja lleva tiempo abandonada, y ahora es hogar de algunos stalkers. No me causaron una buena impresiуn, y mi instinto no suele fallarme.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21214">
-		<text> C mo es esa puerta de la que hablabas?</text>
+		<text>їCуmo es esa puerta de la que hablabas?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_212141">
-		<text>No te lo sabr a decir. Solo es una puerta vieja, pero est  cerrada con llave y bien guardada. Nunca nos hemos aventurado hasta aquel lugar.</text>
+		<text>No te lo sabrнa decir. Solo es una puerta vieja, pero estб cerrada con llave y bien guardada. Nunca nos hemos aventurado hasta aquel lugar.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_21215">
 		<text>Ya veo, gracias.</text>
@@ -79,40 +79,40 @@
 		<text>De nada. Vuelve cuando quieras.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_213">
-		<text> Fuisteis a explorar los dos solos? </text>
+		<text>їFuisteis a explorar los dos solos? </text>
 	</string>
 	<string id="val_escort_nap1_dialog_2131">
-		<text>Hab a otro tipo, Serega. No s , se fue y no he vuelto a tener noticias suyas... Seguramente el grupo lo habr  matado.</text>
+		<text>Habнa otro tipo, Serega. No sй, se fue y no he vuelto a tener noticias suyas... Seguramente el grupo lo habrб matado.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_214">
 		<text>Ten cuidado.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_31">
-		<text>Ah, colega...  Qu  va a ser de m  ahora, amigo? Gracias, hermano. Al menos, trataste de ayudar. Y yo mantengo mi palabra.</text>
+		<text>Ah, colega... їQuй va a ser de mн ahora, amigo? Gracias, hermano. Al menos, trataste de ayudar. Y yo mantengo mi palabra.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_41">
-		<text>Gracias por tu ayuda.  Qu  m s quer as saber?</text>
+		<text>Gracias por tu ayuda. їQuй mбs querнas saber?</text>
 	</string>
 	<string id="val_escort_nap1_dialog_61">
-		<text>No me ayudaste cuando te lo ped . No hay nada m s que hablar, pi rdete.</text>
+		<text>No me ayudaste cuando te lo pedн. No hay nada mбs que hablar, piйrdete.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_611">
-		<text>Adi s.</text>
+		<text>Adiуs.</text>
 	</string>
 	<string id="val_prisoner_hello_11">
-		<text> Eh, chico!  Ay dame! Soy un explorador de Deber.  Ay dame a salir!</text>
+		<text>ЎEh, chico! ЎAyъdame! Soy un explorador de Deber. ЎAyъdame a salir!</text>
 	</string>
 	<string id="val_prisoner_hello_111">
-		<text>Lo intentar .</text>
+		<text>Lo intentarй.</text>
 	</string>
 	<string id="val_prisoner_hello_112">
 		<text>No puedo hacer nada por ti.</text>
 	</string>
 	<string id="val_prisoner_hello_21">
-		<text>Gracias, hermano. Te debo una. Mira de lo que me he enterado; podr a serte  til, qui n sabe... Borov, que es quien dirige el cotarro, ha reunido un mont n de mercanc a. Tiene una parte de la clave que abre el piso inferior de la vieja f brica. O  a los guardias hablar; dec an que all  hab a una especie de laboratorio. El problema es que acercarse a Borov no es tan sencillo.</text>
+		<text>Gracias, hermano. Te debo una. Mira de lo que me he enterado; podrнa serte ъtil, quiйn sabe... Borov, que es quien dirige el cotarro, ha reunido un montуn de mercancнa. Tiene una parte de la clave que abre el piso inferior de la vieja fбbrica. Oн a los guardias hablar; decнan que allн habнa una especie de laboratorio. El problema es que acercarse a Borov no es tan sencillo.</text>
 	</string>
 	<string id="val_prisoner_hello_211">
-		<text>Gracias por la informaci n.</text>
+		<text>Gracias por la informaciуn.</text>
 	</string>
 	<string id="val_prisoner_hello_2111">
 		<text>Es hora de volver con los nuestros. Algo me dice que tendremos suerte si logramos salir vivos...</text>
@@ -121,52 +121,52 @@
 		<text>Buena suerte.</text>
 	</string>
 	<string id="val_prisoner_hello_31">
-		<text> Tenemos que salir de aqu  antes de que esos cabrones nos descubran!  Necesitas algo?  R pido!</text>
+		<text>ЎTenemos que salir de aquн antes de que esos cabrones nos descubran! їNecesitas algo? ЎRбpido!</text>
 	</string>
 	<string id="val_prisoner_hello_311">
 		<text>No, nada.</text>
 	</string>
 	<string id="val_prisoner_hello_41">
-		<text> Eh, chico! En la pared hay un interruptor que abre la puerta de la celda.</text>
+		<text>ЎEh, chico! En la pared hay un interruptor que abre la puerta de la celda.</text>
 	</string>
 	<string id="val_prisoner_hello_411">
-		<text>De acuerdo, ir  a ver.</text>
+		<text>De acuerdo, irй a ver.</text>
 	</string>
 	<string id="val_rob_dialog_11">
-		<text> Quieres un arma incre ble? Encontr  algo cerca de Yantar... Parec a una especie de alijo. Entre otras cosas hab a un fusil Gauss. Lo que te digo, ese trasto es la leche; hace papilla todo lo que alcanza en un radio de cien metros...  Si me das 800 lo tendr s aqu  en un momento!</text>
+		<text>їQuieres un arma increнble? Encontrй algo cerca de Yantar... Parecнa una especie de alijo. Entre otras cosas habнa un fusil Gauss. Lo que te digo, ese trasto es la leche; hace papilla todo lo que alcanza en un radio de cien metros... ЎSi me das 800 lo tendrбs aquн en un momento!</text>
 	</string>
 	<string id="val_rob_dialog_111">
-		<text>Aqu  est  el dinero.</text>
+		<text>Aquн estб el dinero.</text>
 	</string>
 	<string id="val_rob_dialog_112">
 		<text>Gracias, pero no.</text>
 	</string>
 	<string id="val_rob_dialog_113">
-		<text>No, gu rdalo. El dinero es dif cil de conseguir.</text>
+		<text>No, guбrdalo. El dinero es difнcil de conseguir.</text>
 	</string>
 	<string id="val_rob_dialog_21">
-		<text> Tienes el dinero? Date prisa, tengo un mont n de clientes... Volver n pronto.</text>
+		<text>їTienes el dinero? Date prisa, tengo un montуn de clientes... Volverбn pronto.</text>
 	</string>
 	<string id="val_rob_dialog_3">
-		<text> Excelente! Espera aqu  e ir  a buscarlo.</text>
+		<text>ЎExcelente! Espera aquн e irй a buscarlo.</text>
 	</string>
 	<string id="val_rob_dialog_31">
 		<text>Espera.</text>
 	</string>
 	<string id="val_sos_dialog_11">
-		<text> Dame un botiqu n!</text>
+		<text>ЎDame un botiquнn!</text>
 	</string>
 	<string id="val_sos_dialog_111">
-		<text>Aqu  lo tienes.</text>
+		<text>Aquн lo tienes.</text>
 	</string>
 	<string id="val_sos_dialog_112">
-		<text>Lo siento, no tengo botiqu n.</text>
+		<text>Lo siento, no tengo botiquнn.</text>
 	</string>
 	<string id="val_sos_dialog_21">
-		<text>Gracias compa ero, me has sacado de  sta. Si vivo lo suficiente para volver a verte, te devolver  el favor. Ahora mismo lo  nico que puedo dejarte es una buena propina. De acuerdo, al sur de aqu  hay una granja donde unos stalkers despreocupados han establecido su campamento. Uno de ellos quiere vender un fusil Gauss realmente barato; solo pide 800. Iba a comprarlo, pero entonces me met  de lleno en toda esta mierda. As  que si tienes la pasta, ve all . </text>
+		<text>Gracias compaсero, me has sacado de йsta. Si vivo lo suficiente para volver a verte, te devolverй el favor. Ahora mismo lo ъnico que puedo dejarte es una buena propina. De acuerdo, al sur de aquн hay una granja donde unos stalkers despreocupados han establecido su campamento. Uno de ellos quiere vender un fusil Gauss realmente barato; solo pide 800. Iba a comprarlo, pero entonces me metн de lleno en toda esta mierda. Asн que si tienes la pasta, ve allн. </text>
 	</string>
 	<string id="val_sos_dialog_211">
-		<text>Gracias por la informaci n.</text>
+		<text>Gracias por la informaciуn.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_4111">
 		<text>Estoy en deuda contigo, y yo siempre pago mis deudas. Vamos.</text>
@@ -181,6 +181,6 @@
 		<text>Bueno, entonces buena suerte.</text>
 	</string>
 	<string id="val_escort_nap1_dialog_412">
-		<text>Adi s.</text>
+		<text>Adiуs.</text>
 	</string>
 </string_table>

@@ -4,28 +4,28 @@
 		<text>BTR-70</text>
 	</string>
 	<string id="enc_vehicles_btr-70">
-		<text>Transporteur personnel blind .</text>
+		<text>Transporteur personnel blindé.</text>
 	</string>
 	<string id="enc_vehicles_kamaz">
-		<text>Camion sovi tique tr s utilis .</text>
+		<text>Camion soviétique très utilisé.</text>
 	</string>
 	<string id="enc_vehicles_mi-24">
-		<text>H licopt re d'assaut de l'arm e.</text>
+		<text>Hélicoptère d'assaut de l'armée.</text>
 	</string>
 	<string id="enc_vehicles_niva">
 		<text>Voiture tout-terrain.</text>
 	</string>
 	<string id="enc_vehicles_uaz">
-		<text>Jeep de l'arm e sovi tique.</text>
+		<text>Jeep de l'armée soviétique.</text>
 	</string>
 	<string id="enc_vehicles_zaporozh">
-		<text>Petite voiture sovi tique.</text>
+		<text>Petite voiture soviétique.</text>
 	</string>
 	<string id="Kamaz">
 		<text>Camion KAMAZ</text>
 	</string>
 	<string id="mi-24">
-		<text>H licopt re Mi-24</text>
+		<text>Hélicoptère Mi-24</text>
 	</string>
 	<string id="Niva">
 		<text>Niva</text>
@@ -34,7 +34,7 @@
 		<text>UAZ</text>
 	</string>
 	<string id="Vehicles">
-		<text>V hicule de transport</text>
+		<text>Véhicule de transport</text>
 	</string>
 	<string id="Zaporozh">
 		<text>Zaporozhets</text>

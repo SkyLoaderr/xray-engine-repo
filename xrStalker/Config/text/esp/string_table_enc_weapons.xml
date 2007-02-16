@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="Ammo">
-		<text>Munici n</text>
+		<text>Municiуn</text>
 	</string>
 	<string id="ammo-11.43x23-fmj">
 		<text>Cartuchos .45 ACP</text>
@@ -16,10 +16,10 @@
 		<text>Hydro .45</text>
 	</string>
 	<string id="ammo-12x70-buck">
-		<text>Perdigones 12х70</text>
+		<text>Perdigones 12x70</text>
 	</string>
 	<string id="ammo-12x70-buck_s">
-		<text>Perdig n 12х70</text>
+		<text>Perdigуn 12x70</text>
 	</string>
 	<string id="ammo-12x76-dart">
 		<text>Balas de punta 12x76</text>
@@ -118,7 +118,7 @@
 		<text>9x39 SP-5 </text>
 	</string>
 	<string id="ammo-gauss">
-		<text>Munici n Gauss</text>
+		<text>Municiуn Gauss</text>
 	</string>
 	<string id="ammo-gauss_s">
 		<text>Gauss</text>
@@ -148,256 +148,256 @@
 		<text>VOG-25R</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-11.43x23-fmj">
-		<text>Munici n est ndar para las pistolas Kora-919 y SIP-t M200. Compuesta por balas blindadas de n cleo est ndar.</text>
+		<text>Municiуn estбndar para las pistolas Kora-919 y SIP-t M200. Compuesta por balas blindadas de nъcleo estбndar.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-11.43x23-hydro">
-		<text>Munici n Hydro-Shock con caracter sticas mejoradas para las pistolas Kora-919 y SIP-t M200. Compuesta por balas de punta hueca con buen efecto de parada. </text>
+		<text>Municiуn Hydro-Shock con caracterнsticas mejoradas para las pistolas Kora-919 y SIP-t M200. Compuesta por balas de punta hueca con buen efecto de parada. </text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-12x70-buck">
-		<text>Cartucho est ndar de calibre 12 y perdigones de 6 mm. Tiene un enorme efecto letal en distancias cortas. Est  dise ada para escopetas BM 17, Chaser 13 y SPSA14. Es m s efectiva en distancias inferiores a 30 m. </text>
+		<text>Cartucho estбndar de calibre 12 y perdigones de 6 mm. Tiene un enorme efecto letal en distancias cortas. Estб diseсado para escopetas BM 17, Chaser 13 y SPSA14. Es mбs efectivo en distancias inferiores a 30 m. </text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-12x76-dart">
-		<text>Bala con aletas helicoidales. Se estabiliza durante el vuelo, lo que aumenta su precisi n. Est  dise ada para escopetas TOS 34, BM 17, Chaser 13 y SPSA14. Tiene efecto antiblindaje y un alcance superior. Es efectiva en distancias de hasta 150 m.</text>
+		<text>Bala con aletas helicoidales. Se estabiliza durante el vuelo, lo que aumenta su precisiуn. Estб diseсada para escopetas TOS 34, BM 17, Chaser 13 y SPSA14. Tiene efecto antiblindaje y un alcance superior. Es efectiva en distancias de hasta 150 m.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-12x76-zhekan">
-		<text>Munici n compuesta por balas pesadas no blindadas. Normalmente se utiliza para la caza mayor, pero puede emplearse para otros fines. Sus balas pesadas no perforan, pero deforman los chalecos antibalas. Est  dise ada para escopetas TOS 34, BM 17, Chaser 13 y SPSA14. Es efectiva en distancias de hasta 100 m. </text>
+		<text>Municiуn compuesta por balas pesadas no blindadas. Normalmente se utiliza para la caza mayor, pero puede emplearse para otros fines. Sus balas pesadas no perforan, pero deforman los chalecos antibalas. Estб diseсada para escopetas TOS 34, BM 17, Chaser 13 y SPSA14. Es efectiva en distancias de hasta 100 m. </text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-5.45x39-ap">
-		<text>Munici n antiblindaje para los fusiles de asalto Akm 74/2, Akm 74/2U y ON-94. Tiene un efecto antiblindaje mejorado, pero menor efecto de parada. </text>
+		<text>Municiуn antiblindaje para los fusiles de asalto Akm 74/2, Akm 74/2U y ON-94. Tiene un efecto antiblindaje mejorado, pero menor efecto de parada. </text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-5.45x39-fmj">
-		<text>Munici n est ndar para los fusiles de asalto Akm 74/2, Akm 74/2U y Obokan. Compuesta por balas blindadas de n cleo est ndar.</text>
+		<text>Municiуn estбndar para los fusiles de asalto Akm 74/2, Akm 74/2U y Obokan. Compuesta por balas blindadas de nъcleo estбndar.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-5.56x45-ap">
-		<text>Munici n compuesta por balas antiblindaje para los fusiles de asalto IL 86, TRs 301, SGI 5k, GP 37 y FT 200M.</text>
+		<text>Municiуn compuesta por balas antiblindaje para los fusiles de asalto IL 86, TRs 301, SGI 5k, GP 37 y FT 200M.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-5.56x45-ss190">
-		<text>Munici n est ndar de la OTAN, conocida por su  ndice belga de SS109. Se utiliza con los fusiles de asalto IL 86, TRs 301, SGI 5k, GP 37 y FT 200M.</text>
+		<text>Municiуn estбndar de la OTAN, conocida por su нndice belga de SS109. Se utiliza con los fusiles de asalto IL 86, TRs 301, SGI 5k, GP 37 y FT 200M.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-7.62x54-7h1">
-		<text>Modificaci n barata de la munici n de francotirador para fusiles SVDm 2, SVUmk2.</text>
+		<text>Modificaciуn barata de la municiуn de francotirador para fusiles SVDm 2, SVUmk2.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-7.62x54-7h14">
-		<text>Munici n de francotirador para los fusiles SVDm 2 y SVUmk2. De mayor precisi n y alcance.</text>
+		<text>Municiуn de francotirador para los fusiles SVDm 2 y SVUmk2. De mayor precisiуn y alcance.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-7.62x54-ap">
-		<text>Munici n compuesta por balas antiblindaje para los fusiles de francotirador SVDm 2 y SVUmk2.</text>
+		<text>Municiуn compuesta por balas antiblindaje para los fusiles de francotirador SVDm 2 y SVUmk2.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-fmj">
-		<text>Munici n est ndar para las pistolas PMm, PB1s y Fort-12Mк2. Compuesta por balas blindadas de n cleo est ndar. Cuenta con un ligero efecto antiblindaje.</text>
+		<text>Municiуn estбndar para las pistolas PMm, PB1s y Fort-12M?2. Compuesta por balas blindadas de nъcleo estбndar. Cuenta con un ligero efecto antiblindaje.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-pmm">
-		<text>Munici n con propiedades bal sticas mejoradas para las pistolas PMm, PB1s y Fort-12Mк2. Debido a la gran velocidad inicial del proyectil, es mucho m s efectiva que la munici n convencional. Tienen un mayor efecto antiblindaje.</text>
+		<text>Municiуn con propiedades balнsticas mejoradas para las pistolas PMm, PB1s y Fort-12M?2. Debido a la gran velocidad inicial del proyectil, es mucho mбs efectiva que la municiуn convencional. Tienen un mayor efecto antiblindaje.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x19-fmj">
-		<text>Munici n est ndar para la pistola Walker y el subfusil Viper 5. Compuesta por balas blindadas con un ligero efecto antiblindaje.</text>
+		<text>Municiуn estбndar para la pistola Walker y el subfusil Viper 5. Compuesta por balas blindadas con un ligero efecto antiblindaje.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x19-pbp">
-		<text>Munici n mejorada para la pistola Walker P9m y el subfusil Viper 5. Munici n de gran potencia compuesta por balas de punta hueca y n cleo antiblindaje.</text>
+		<text>Municiуn mejorada para la pistola Walker P9m y el subfusil Viper 5. Municiуn de gran potencia compuesta por balas de punta hueca y nъcleo antiblindaje.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x39-ap">
-		<text>Munici n antiblindaje para los fusiles de asalto Tunder S14 y VLA, y el fusil especial de francotirador Vintar. Compuesta por balas subs nicas que, gracias a su dise o especial, pueden perforar la mayor a de los chalecos antibalas a una distancia de hasta 400 metros.</text>
+		<text>Municiуn antiblindaje para los fusiles de asalto Tunder S14 y VLA, y el fusil especial de francotirador Vintar. Compuesta por balas subsуnicas que, gracias a su diseсo especial, pueden perforar la mayorнa de los chalecos antibalas a una distancia de hasta 400 metros.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x39-pab9">
-		<text>Munici n para los fusiles de asalto Tunder S14 y VLA, y el fusil especial de francotirador Vintar. Es la modificaci n m s reciente y barata de la munici n antiblindaje. Compuesta por balas subs nicas que, gracias a su dise o especial, pueden perforar la mayor a de los chalecos antibalas a una distancia de hasta 300 metros.</text>
+		<text>Municiуn para los fusiles de asalto Tunder S14 y VLA, y el fusil especial de francotirador Vintar. Es la modificaciуn mбs reciente y barata de la municiуn antiblindaje. Compuesta por balas subsуnicas que, gracias a su diseсo especial, pueden perforar la mayorнa de los chalecos antibalas a una distancia de hasta 300 metros.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x39-sp5">
-		<text>Munici n de francotirador para los fusiles de asalto Tunder S14 y VLA, y el fusil especial de francotirador Vintar. Compuesta por balas subs nicas que, gracias a su considerable peso y a su dise o especial, pueden perforar la mayor a de los chalecos antibalas a una distancia de hasta 400 metros.</text>
+		<text>Municiуn de francotirador para los fusiles de asalto Tunder S14 y VLA, y el fusil especial de francotirador Vintar. Compuesta por balas subsуnicas que, gracias a su considerable peso y a su diseсo especial, pueden perforar la mayorнa de los chalecos antibalas a una distancia de hasta 400 metros.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-gauss">
-		<text>C lulas de energ a preparadas con elementos letales en el cargador de un fusil Gauss. La fuente de energ a es un fragmento encapsulado del artefacto Destello.</text>
+		<text>Cйlulas de energнa preparadas con elementos letales en el cargador de un fusil Gauss. La fuente de energнa es un fragmento encapsulado del artefacto Destello.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-m209">
-		<text>Granada para el lanzagranadas М203 (para los fusiles TRs 301, GP 37 y SGI 5k, IL 86) y el lanzagranadas integrado del FT 200M.</text>
+		<text>Granada para el lanzagranadas ?203 (para los fusiles TRs 301, GP 37 y SGI 5k, IL 86) y el lanzagranadas integrado del FT 200M.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-og-7b">
-		<text>Granada altamente explosiva para el RPG-7u. Igualmente efectiva contra tropas y veh culos blindados ligeros.</text>
+		<text>Granada altamente explosiva para el RPG-7u. Igualmente efectiva contra tropas y vehнculos blindados ligeros.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-vog-25">
-		<text>Granada para el lanzagranadas Kostyer GP-25, el lanzagranadas integrado del Tunder y el lanzagranadas rev lver Bulldog 6.</text>
+		<text>Granada para el lanzagranadas Kostyer GP-25, el lanzagranadas integrado del Tunder y el lanzagranadas revуlver Bulldog 6.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-vog-25p">
-		<text>Granada para el lanzagranadas Kostyer GP-25, lanzagranadas integrado Tunder S14 y lanzagranadas rev lver Bulldog 6. Antes de explotar, la granada recorre aproximadamente un metro, incrementando as  su efecto letal.</text>
+		<text>Granada para el lanzagranadas Kostyer GP-25, lanzagranadas integrado Tunder S14 y lanzagranadas revуlver Bulldog 6. Antes de explotar, la granada recorre aproximadamente un metro, incrementando asн su efecto letal.</text>
 	</string>
 	<string id="enc_weapons1_grenade-f1">
-		<text>Granada de mano defensiva con un gran radio de acci n. Se recomienda lanzarla una vez a cubierto.</text>
+		<text>Granada de mano defensiva con un gran radio de acciуn. Se recomienda lanzarla estando a cubierto.</text>
 	</string>
 	<string id="enc_weapons1_grenade-gd05">
 		<text>Granada de humo. Crea una pantalla de humo que dura 10 segundos.</text>
 	</string>
 	<string id="enc_weapons1_grenade-rgd5">
-		<text>Granada de mano ofensiva con un peque o radio de acci n.</text>
+		<text>Granada de mano ofensiva con un pequeсo radio de acciуn.</text>
 	</string>
 	<string id="enc_weapons1_wpn-abakan">
-		<text>Arma utilizada por las tropas de elite del ej rcito ruso. Dise ada para sustituir al antiguo Akm 74/2. Los mecanismos internos del Obokan se pueden extraer, as  como el receptor y el ca  n, lo cual disminuye el retroceso y aumenta su precisi n.\n Munici n:\n 5.45x39 mm est ndar,\n BP 5.45x39 mm perforante.</text>
+		<text>Arma utilizada por las tropas de elite del ejйrcito ruso. Diseсada para sustituir al antiguo Akm 74/2. Los mecanismos internos del Obokan se pueden extraer, asн como el receptor y el caсуn, lo cual disminuye el retroceso y aumenta su precisiуn.\n Municiуn:\n 5.45x39 mm estбndar,\n BP 5.45x39 mm perforante.</text>
 	</string>
 	<string id="enc_weapons1_wpn-abakan_m1">
-		<text>Ametralladora con mira telesc pica modificada para disparar a distancia con precisi n. La mira est  integrada en el cuerpo del arma y tiene mayor resoluci n que la del modelo est ndar.</text>
+		<text>Ametralladora con mira telescуpica modificada para disparar a distancia con precisiуn. La mira estб integrada en el cuerpo del arma y tiene mayor resoluciуn que la del modelo estбndar.</text>
 	</string>
 	<string id="enc_weapons1_wpn-abakan_m2">
-		<text>Esta ametralladora tiene un lanzagranadas integral colocado bajo el ca  n, lo que la hace un arma a n m s universal.</text>
+		<text>Esta ametralladora tiene un lanzagranadas integral colocado bajo el caсуn, lo que la hace un arma aъn mбs universal.</text>
 	</string>
 	<string id="enc_weapons1_wpn-addon-grenade-launcher">
-		<text>Lanzagranadas para el Akm-74/2 y el Akm 74/2U.\n Munici n: granada VOG-25 \n y granada VOG-25R.</text>
+		<text>Lanzagranadas para el Akm-74/2 y el Akm 74/2U.\n Municiуn: granada VOG-25 \n y granada VOG-25R.</text>
 	</string>
 	<string id="enc_weapons1_wpn-addon-grenade-launcher-m203">
-		<text>Lanzagranadas para SGI 5k, TRs 301, GP 37 y IL 86.\n Munici n: granadas M209.</text>
+		<text>Lanzagranadas para SGI 5k, TRs 301, GP 37 y IL 86.\n Municiуn: granadas M209.</text>
 	</string>
 	<string id="enc_weapons1_wpn-addon-scope">
-		<text>Una mira telesc pica sovi tica muy utilizada. La mira telesc pica se puede a adir a un arma ensambl ndola a cola de milano, sistema utilizado en los pa ses del Pacto de Varsovia.</text>
+		<text>Una mira telescуpica soviйtica muy utilizada. La mira telescуpica se puede aсadir a un arma ensamblбndola a cola de milano, sistema utilizado en los paнses del Pacto de Varsovia.</text>
 	</string>
 	<string id="enc_weapons1_wpn-addon-scope-susat">
-		<text>Mira telesc pica 4-x fabricada en los pa ses de la OTAN. Se puede a adir a una montura est ndar de la OTAN, tambi n llamada carril Picatinni.</text>
+		<text>Mira telescуpica 4-x fabricada en los paнses de la OTAN. Se puede aсadir a una montura estбndar de la OTAN, tambiйn llamada carril Picatinni.</text>
 	</string>
 	<string id="enc_weapons1_wpn-addon-silencer">
 		<text>Efectivo silenciador fabricado por los armeros de la Zona. El kit contiene un conjunto de adaptadores para armas de cualquier calibre.</text>
 	</string>
 	<string id="enc_weapons1_wpn-ak74">
-		<text>Rifle de asalto con culata plegable, modelo de 1974, y con munici n de 5.45x39 mm. Es un arma sencilla y fiable, aunque su bajo coste de producci n afecta a la ergonom a y la precisi n. En la Zona, es el principal arma de los stalkers militares y de muchos jugadores individuales.\n Munici n:\n 5.45x39 mm est ndar,\n 5,45x39 mm BP perforante.</text>
+		<text>Rifle de asalto con culata plegable, modelo de 1974, y con municiуn de 5.45x39 mm. Es un arma sencilla y fiable, aunque su bajo coste de producciуn afecta a la ergonomнa y la precisiуn. En la Zona, es el principal arma de los stalkers militares y de muchos jugadores individuales.\n Municiуn:\n 5.45x39 mm estбndar,\n 5,45x39 mm BP perforante.</text>
 	</string>
 	<string id="enc_weapons1_wpn-ak74_m1">
 		<text>El sistema de cierre modificado aumenta la velocidad de disparo.</text>
 	</string>
 	<string id="enc_weapons1_wpn-ak74u">
-		<text>El peso y tama o del Akm-74/2U es similar a los del fusil, pero su modo de operaci n y la munici n que utiliza lo sit an dentro de la categor a de los rifles de asalto. Las ventajas son sus dimensiones peque as, que lo hace muy  til para luchas dentro de edificios o en bosque cerrado, y su capacidad de perforaci n relativamente alta. Sus desventajas son una precisi n limitada y un r pido sobrecalentamiento al disparar r fagas.\n Munici n:\n 5.45x39 mm est ndar,\n 5.45x39 mm BP perforante.</text>
+		<text>El peso y tamaсo del Akm-74/2U es similar a los del fusil, pero su modo de operaciуn y la municiуn que utiliza lo sitъan dentro de la categorнa de los rifles de asalto. Las ventajas son sus dimensiones pequeсas, que lo hace muy ъtil para luchas dentro de edificios o en bosque cerrado, y su capacidad de perforaciуn relativamente alta. Sus desventajas son una precisiуn limitada y un rбpido sobrecalentamiento al disparar rбfagas.\n Municiуn:\n 5.45x39 mm estбndar,\n 5.45x39 mm BP perforante.</text>
 	</string>
 	<string id="enc_weapons1_wpn-ak74u_m1">
 		<text>Ametralladora mejorada. Viene con un silenciador no reemplazable. </text>
 	</string>
 	<string id="enc_weapons1_wpn-beretta">
-		<text>Utilizada por el ej rcito estadounidense y por la polic a, as  como por muchas unidades de polic a y militares de todo el mundo. Muy popular entre los criminales debido a sus cartuchos de gran potencia y su cargador de gran capacidad.\n Munici n:\n FMJ est ndar de 9x19 mm,\n PB1s mejorada de 9x19 mm.</text>
+		<text>Utilizada por el ejйrcito estadounidense y por la policнa, asн como por muchas unidades de policнa y militares de todo el mundo. Muy popular entre los criminales debido a sus cartuchos de gran potencia y su cargador de gran capacidad.\n Municiуn:\n FMJ estбndar de 9x19 mm,\n PB1s mejorada de 9x19 mm.</text>
 	</string>
 	<string id="enc_weapons1_wpn-bm16">
-		<text>Fusil recortado BM-17. M s ligero y compacto que el fusil de dos ca ones original. Efectivo solo en distancias cortas. Una de las armas m s utilizadas por los principiantes.\n Munici n:\n perdig n de 12x70,\n posta de 12x76,\n bala en punta de 12x76.</text>
+		<text>Fusil recortado BM-17. Mбs ligero y compacto que el fusil de dos caсones original. Efectivo solo en distancias cortas. Una de las armas mбs utilizadas por los principiantes.\n Municiуn:\n perdigуn de 12x70,\n posta de 12x76,\n bala en punta de 12x76.</text>
 	</string>
 	<string id="enc_weapons1_wpn-colt_m1">
 		<text>Armas de asesinos a sueldo. La vieja y fiable Kora. Viene con silenciador no reemplazable. </text>
 	</string>
 	<string id="enc_weapons1_wpn-colt1911">
-		<text>Cl sica Colt aut matica, presente en todos los conflictos del siglo XX. Entr  en el nuevo siglo con confianza. Su peque a rec mara se ve compensada por la utilizaci n de munici n de gran potencia. \n Munici n:\n .45 ACP est ndar,\n Hydro-Shock .45 ACP mejorada.</text>
+		<text>Clбsica Colt autуmatica, presente en todos los conflictos del siglo XX. Entrу en el nuevo siglo con confianza. Su pequeсa recбmara se ve compensada por la utilizaciуn de municiуn de gran potencia. \n Municiуn:\n .45 ACP estбndar,\n Hydro-Shock .45 ACP mejorada.</text>
 	</string>
 	<string id="enc_weapons1_wpn-desert-eagle">
-		<text>Un arma magn fica para los aut nticos h roes. Grande, pesada y muy destructiva. No es muy popular en la Zona debido a su precio y su tama o. A fin de cuentas,  no se sale a cazar elefantes todos los d as!\n Munici n:\n .45 ACP est ndar,\n Hydro-Shock .45 ACP mejorada.</text>
+		<text>Un arma magnнfica para los autйnticos hйroes. Grande, pesada y muy destructiva. No es muy popular en la Zona debido a su precio y su tamaсo. A fin de cuentas, Ўno se sale a cazar elefantes todos los dнas!\n Municiуn:\n .45 ACP estбndar,\n Hydro-Shock .45 ACP mejorada.</text>
 	</string>
 	<string id="enc_weapons1_wpn-eagle_m1">
-		<text>Un arma de por s  potente, redise ada para poder utilizar balas de fusil. Una verdadera m quina de matar para combates en distancias cortas.</text>
+		<text>Un arma de por sн potente, rediseсada para poder utilizar balas de fusil. Una verdadera mбquina de matar para combates en distancias cortas.</text>
 	</string>
 	<string id="enc_weapons1_wpn-fn2000">
-		<text>Fusil de asalto combinado con lanzagranadas. Equipado con un m dulo electr nico de control del disparo y un lanzagranadas de 40 mm.\n Munici n:\n SS109 est ndar de 5,56x45,\n BP 5,56x45 mm perforante.</text>
+		<text>Fusil de asalto combinado con lanzagranadas. Equipado con un mуdulo electrуnico de control del disparo y un lanzagranadas de 40 mm.\n Municiуn:\n SS109 estбndar de 5,56x45,\n BP 5,56x45 mm perforante.</text>
 	</string>
 	<string id="enc_weapons1_wpn-fort">
-		<text>Pistola de polic a de producci n ucraniana que ha reemplazado a la PMm. En comparaci n con la PMm, su precisi n es mejor, es m s ergon mica y tiene una rec mara mayor, aunque es menos fiable.\n Munici n:\n 9x18 mm est ndar,\n  +P+  de 9x18 mm mejorada.</text>
+		<text>Pistola de policнa de producciуn ucraniana que ha reemplazado a la PMm. En comparaciуn con la PMm, su precisiуn es mejor, es mбs ergonуmica y tiene una recбmara mayor, aunque es menos fiable.\n Municiуn:\n 9x18 mm estбndar,\n  +P+  de 9x18 mm mejorada.</text>
 	</string>
 	<string id="enc_weapons1_wpn-fort_m1">
 		<text>Prototipo experimental del Fort.</text>
 	</string>
 	<string id="enc_weapons1_wpn-g36">
-		<text>Fusil de asalto alem n. Es un arma moderna de primera clase: ligera, fiable y ergon mica.\n Munici n:\n SS109 est ndar de 5,56x45 mm,\n BP 5,56x45 mm perforante.</text>
+		<text>Fusil de asalto alemбn. Es un arma moderna de primera clase: ligera, fiable y ergonуmica.\n Municiуn:\n SS109 estбndar de 5,56x45 mm,\n BP 5,56x45 mm perforante.</text>
 	</string>
 	<string id="enc_weapons1_wpn-gauss">
-		<text>Arma s per precisa fabricada por los cient ficos de la Zona. No hace apenas ruido; en lugar de p lvora, utiliza la energ a de un artefacto para disparar sin emitir gases. A pesar de la tremenda potencia de disparo de la Gauss, el retroceso es insignificante. La precisi n y la potencia letal de esta arma excede a las de otras armas peque as.\n Munici n: munici n Gauss de 2 mm.</text>
+		<text>Arma sъper precisa fabricada por los cientнficos de la Zona. No hace apenas ruido; en lugar de pуlvora, utiliza la energнa de un artefacto para disparar sin emitir gases. A pesar de la tremenda potencia de disparo de la Gauss, el retroceso es insignificante. La precisiуn y la potencia letal de esta arma excede a las de otras armas pequeсas.\n Municiуn: municiуn Gauss de 2 mm.</text>
 	</string>
 	<string id="enc_weapons1_wpn-groza">
-		<text>Fusil de asalto combinado con lanzagranadas. Estupendo modelo de fusil de asalto para las condiciones de la Zona: compacto, fiable, universal y potente. El Tunder S14 es uno de los fusiles favoritos de los stalkers militares.\n Munici n:\n PAB-9 est ndar de 9x39 mm,\n SP-6 perforante de 9x39 mm,\n SP-5 de francotirador de 9x39 mm,\n granadas VOG-25 y VOG-25R para lanzagranadas.</text>
+		<text>Fusil de asalto combinado con lanzagranadas. Estupendo modelo de fusil de asalto para las condiciones de la Zona: compacto, fiable, universal y potente. El Tunder S14 es uno de los fusiles favoritos de los stalkers militares.\n Municiуn:\n PAB-9 estбndar de 9x39 mm,\n SP-6 perforante de 9x39 mm,\n SP-5 de francotirador de 9x39 mm,\n granadas VOG-25 y VOG-25R para lanzagranadas.</text>
 	</string>
 	<string id="enc_weapons1_wpn-groza_m1">
-		<text>El ca  n es el excelente trabajo de un fabricante stalker que consigui  construir un fusil apto para las balas m s comunes de 5,45 mm.</text>
+		<text>El caсуn es el excelente trabajo de un fabricante stalker que consiguiу construir un fusil apto para las balas mбs comunes de 5,45 mm.</text>
 	</string>
 	<string id="enc_weapons1_wpn-hpsa">
-		<text>La pistola merece ser considerada como una de las mejores pistolas del siglo XX. Es fiable y potente, y poca dispersi n del disparo. La rec mara puede almacenar hasta 13 cartuchos.\n Munici n:\n FMJ est ndar de 9x19 mm,\n PB1s de 9x19 mm mejorada.</text>
+		<text>La pistola merece ser considerada como una de las mejores pistolas del siglo XX. Es fiable y potente, y poca dispersiуn del disparo. La recбmara puede almacenar hasta 13 cartuchos.\n Municiуn:\n FMJ estбndar de 9x19 mm,\n PB1s de 9x19 mm mejorada.</text>
 	</string>
 	<string id="enc_weapons1_wpn-knife">
 		<text>Cuchillo de caza</text>
 	</string>
 	<string id="enc_weapons1_wpn-l85">
-		<text>Despu s de que el ej rcito brit nico cambiara este fusil por el GP 37, de fabricaci n alemana, empez  a verse mucho esta arma, primero en el mercado negro y m s tarde en la Zona. Las principales ventajas del IL 86 son su mira telesc pica 4-x y la gran precisi n del primer disparo. En modo r faga, la precisi n disminuye considerablemente, y los principales mecanismos del fusil no son suficientemente fiables.\n Munici n:\n SS109 est ndar de 5.56x45 mm,\n 5.56x45 mm BP perforante.</text>
+		<text>Despuйs de que el ejйrcito britбnico cambiara este fusil por el GP 37, de fabricaciуn alemana, empezу a verse mucho esta arma, primero en el mercado negro y mбs tarde en la Zona. Las principales ventajas del IL 86 son su mira telescуpica 4-x y la gran precisiуn del primer disparo. En modo rбfaga, la precisiуn disminuye considerablemente, y los principales mecanismos del fusil no son suficientemente fiables.\n Municiуn:\n SS109 estбndar de 5.56x45 mm,\n 5.56x45 mm BP perforante.</text>
 	</string>
 	<string id="enc_weapons1_wpn-l85_m1">
-		<text>Con algunas modificaciones, se ha podido disminuir el retroceso del ca  n.</text>
+		<text>Con algunas modificaciones, se ha podido disminuir el retroceso del caсуn.</text>
 	</string>
 	<string id="enc_weapons1_wpn-l85_m2">
-		<text>Esta arma viene con un silenciador integrado. Muchas piezas se pueden cambiar por otras m s ligeras, lo que la hace mucho menos pesada.</text>
+		<text>Esta arma viene con un silenciador integrado. Muchas piezas se pueden cambiar por otras mбs ligeras, lo que la hace mucho menos pesada.</text>
 	</string>
 	<string id="enc_weapons1_wpn-lr300">
-		<text>Un fusil ligero con un alcance de disparo efectivo de hasta 300 metros. Debido a su facilidad de disparo, su ergonom a y su ligereza, el arma es muy precisa. Sin embargo, es demasiado sensible a la suciedad y no siempre es  til en circunstancias adversas.\n Munici n:\n SS109 est ndar de 5.56x45 mm,\n 5.56x45 mm BP perforante.</text>
+		<text>Un fusil ligero con un alcance de disparo efectivo de hasta 300 metros. Debido a su facilidad de disparo, su ergonomнa y su ligereza, el arma es muy precisa. Sin embargo, es demasiado sensible a la suciedad y no siempre es ъtil en circunstancias adversas.\n Municiуn:\n SS109 estбndar de 5.56x45 mm,\n 5.56x45 mm BP perforante.</text>
 	</string>
 	<string id="enc_weapons1_wpn-lr300_m1">
-		<text>Una variante de las armas para disparar un solo tiro. Se dise   como variante m s econ mica del fusil de francotirador.</text>
+		<text>Una variante de las armas para disparar un solo tiro. Se diseсу como variante mбs econуmica del fusil de francotirador.</text>
 	</string>
 	<string id="enc_weapons1_wpn-mp5">
-		<text>Una de las mejores armas dentro de la clase de los subfusiles. En las  ltimas d cadas del siglo XX fue adoptada por el ej rcito y por las unidades especiales de la polic a en muchos pa ses. Cuando se fue sustituyendo por modelos m s actuales, apareci  primero en el mercado negro y m s tarde en la Zona.\n Munici n:\n FMJ est ndar de 9x19 mm,\n 9x19 mm PB1sP mejorada.</text>
+		<text>Una de las mejores armas dentro de la clase de los subfusiles. En las ъltimas dйcadas del siglo XX fue adoptada por el ejйrcito y por las unidades especiales de la policнa en muchos paнses. Cuando se fue sustituyendo por modelos mбs actuales, apareciу primero en el mercado negro y mбs tarde en la Zona.\n Municiуn:\n FMJ estбndar de 9x19 mm,\n 9x19 mm PB1sP mejorada.</text>
 	</string>
 	<string id="enc_weapons1_wpn-mp5_m1">
-		<text>Ligera, compacta y redise ada para disponer de un calibre m s com n, esta ametralladora es esencial para los principiantes. </text>
+		<text>Ligera, compacta y rediseсada para disponer de un calibre mбs comъn, esta ametralladora es esencial para los principiantes. </text>
 	</string>
 	<string id="enc_weapons1_wpn-mp5_m2">
-		<text>Una variaci n del modelo b sico. Viene con silenciador no reemplazable.</text>
+		<text>Una variaciуn del modelo bбsico. Viene con silenciador no reemplazable.</text>
 	</string>
 	<string id="enc_weapons1_wpn-pb">
-		<text>Una pistola con silenciador integrado, utilizada por las fuerzas especiales sovi ticas. Aunque hoy en d a est  obsoleta, puede llegar a ser muy efectiva en manos h biles.\n Munici n:\n 9x18 mm est ndar,\n +P+ de 9x18 mm mejorada.</text>
+		<text>Una pistola con silenciador integrado, utilizada por las fuerzas especiales soviйticas. Aunque hoy en dнa estб obsoleta, puede llegar a ser muy efectiva en manos hбbiles.\n Municiуn:\n 9x18 mm estбndar,\n +P+ de 9x18 mm mejorada.</text>
 	</string>
 	<string id="enc_weapons1_wpn-pm">
-		<text>La pistola m s com n de la Zona. Es un legado de la era sovi tica. Es relativamente fiable y barata, tiene poca capacidad en rec mara, poca potencia, y la dispersi n de disparo es alta. Es la principal arma de un stalker principiante.\n Munici n:\n 9x18 mm est ndar, \n +P+ de 9x18 mm mejorada.</text>
+		<text>La pistola mбs comъn de la Zona. Es un legado de la era soviйtica. Es relativamente fiable y barata, tiene poca capacidad en recбmara, poca potencia, y la dispersiуn de disparo es alta. Es la principal arma de un stalker principiante.\n Municiуn:\n 9x18 mm estбndar, \n +P+ de 9x18 mm mejorada.</text>
 	</string>
 	<string id="enc_weapons1_wpn-rg-6">
-		<text>Lanzagranadas tipo rev lver. En ocasiones resulta indispensable, especialmente al enfrentarse a un gran n mero de mutantes, al disparar a objetos est ticos bien protegidos o al luchar con criaturas particularmente dif ciles.\n Munici n: granada VOG-25,\n granada VOG-25R.</text>
+		<text>Lanzagranadas tipo revуlver. En ocasiones resulta indispensable, especialmente al enfrentarse a un gran nъmero de mutantes, al disparar a objetos estбticos bien protegidos o al luchar con criaturas particularmente difнciles.\n Municiуn: granada VOG-25,\n granada VOG-25R.</text>
 	</string>
 	<string id="enc_weapons1_wpn-rg6_m1">
-		<text>Una variaci n del lanzagranadas tipo rev lver. Est  fabricado especialmente para el uso de granadas de modelo occidental.</text>
+		<text>Una variaciуn del lanzagranadas tipo revуlver. Estб fabricado especialmente para el uso de granadas de modelo occidental.</text>
 	</string>
 	<string id="enc_weapons1_wpn-rpg7">
-		<text>Lanzagranadas fabricado en los a os 60. Estos lanzagranadas est n almacenados en grandes cantidades en muchos dep sitos del ej rcito. Desde all  los llevan a la Zona. Los stalkers no usan mucho estas armas: sus grandes dimensiones y su peso las hacen impopulares, aunque resultan indispensables en algunas misiones.\n Munici n: OG-7V.</text>
+		<text>Lanzagranadas fabricado en los aсos 60. Estos lanzagranadas estбn almacenados en grandes cantidades en muchos depуsitos del ejйrcito. Desde allн los llevan a la Zona. Los stalkers no usan mucho estas armas: sus grandes dimensiones y su peso las hacen impopulares, aunque resultan indispensables en algunas misiones.\n Municiуn: OG-7V.</text>
 	</string>
 	<string id="enc_weapons1_wpn-sig_m1">
-		<text>Esta arma se fabric  para la guerra en la ciudad. Para disminuir su peso, se le quitaron o reemplazaron algunas piezas. El resultado es que no se pueden montar ni miras ni lanzagranadas bajo el ca  n. Pero al menos pesa la mitad que antes.</text>
+		<text>Esta arma se fabricу para la guerra en la ciudad. Para disminuir su peso, se le quitaron o reemplazaron algunas piezas. El resultado es que no se pueden montar ni miras ni lanzagranadas bajo el caсуn. Pero al menos pesa la mitad que antes.</text>
 	</string>
 	<string id="enc_weapons1_wpn-sig_m2">
-		<text>Modificada para disparar a distancia con precisi n. Equipada con una mira telesc pica no extra ble de gran focalizaci n.</text>
+		<text>Modificada para disparar a distancia con precisiуn. Equipada con una mira telescуpica no extraнble de gran focalizaciуn.</text>
 	</string>
 	<string id="enc_weapons1_wpn-sig220">
-		<text>Modelo desarrollado en 1975 y que sigue siendo muy popular en todo el mundo. Su rec mara tiene poca capacidad, pero el mecanismo es completamente fiable. La segunda ventaja es que utiliza cartuchos Kora de gran potencia.\n Munici n:\n .45 ACP est ndar,\n Hydro-shock .45 ACP mejorada.</text>
+		<text>Modelo desarrollado en 1975 y que sigue siendo muy popular en todo el mundo. Su recбmara tiene poca capacidad, pero el mecanismo es completamente fiable. La segunda ventaja es que utiliza cartuchos Kora de gran potencia.\n Municiуn:\n .45 ACP estбndar,\n Hydro-shock .45 ACP mejorada.</text>
 	</string>
 	<string id="enc_weapons1_wpn-sig550">
-		<text>Fusil de asalto relativamente nuevo para cartuchos SS109 de 5.56x45 mm. Esta arma es muy popular debido a su precisi n, su ligero retroceso y su gran fiabilidad.\n Munici n:\n SS109 est ndar de 5.56x45 mm,\n 5.56x45 mm BP perforante.</text>
+		<text>Fusil de asalto relativamente nuevo para cartuchos SS109 de 5.56x45 mm. Esta arma es muy popular debido a su precisiуn, su ligero retroceso y su gran fiabilidad.\n Municiуn:\n SS109 estбndar de 5.56x45 mm,\n 5.56x45 mm BP perforante.</text>
 	</string>
 	<string id="enc_weapons1_wpn-spas12">
-		<text>El fusil SPSA 14 de ca  n liso se cre  a finales de los a os 70. Esta arma es muy fiable y flexible. Sin embargo, es relativamente grande y cara, y su mecanismo es demasiado complejo. Se trata quiz  de la mejor arma para distancias cortas de la Zona.\n Munici n:\n perdig n de 12x70,\n posta de 12x76,\n dardo de 12x76.</text>
+		<text>El fusil SPSA 14 de caсуn liso se creу a finales de los aсos 70. Esta arma es muy fiable y flexible. Sin embargo, es relativamente grande y cara, y su mecanismo es demasiado complejo. Se trata quizб de la mejor arma para distancias cortas de la Zona.\n Municiуn:\n perdigуn de 12x70,\n posta de 12x76,\n dardo de 12x76.</text>
 	</string>
 	<string id="enc_weapons1_wpn-spas12_m1">
-		<text>ARMA EXCLUSIVA. Este modelo de escopeta tiene un ca  n de fusil que aumenta considerablemente la precisi n al disparar balas en punta o postas. Sin embargo, con perdigones resulta m s dif cil.\n Munici n:\n perdig n de 12x70,\n posta de 12x76,\n bala en punta de 12x76.</text>
+		<text>ARMA EXCLUSIVA. Este modelo de escopeta tiene un caсуn de fusil que aumenta considerablemente la precisiуn al disparar balas en punta o postas. Sin embargo, con perdigones resulta mбs difнcil.\n Municiуn:\n perdigуn de 12x70,\n posta de 12x76,\n bala en punta de 12x76.</text>
 	</string>
 	<string id="enc_weapons1_wpn-svd">
-		<text>Este fusil se utiliz  mucho en todas las operaciones de los ej rcitos sovi ticos y rusos desde 1960. Demostr  ser un arma excepcionalmente fiable y  til. En la Zona la prefieren los stalkers expertos de Deber para cazar mutantes.\n Munici n:\n 7N1 est ndar de 7,62x54 mm,\n BP 7,62x54 mm perforante,\n 7N14 de francotirador de 7,62x54 mm.</text>
+		<text>Este fusil se utilizу mucho en todas las operaciones de los ejйrcitos soviйticos y rusos desde 1960. Demostrу ser un arma excepcionalmente fiable y ъtil. En la Zona la prefieren los stalkers expertos de Deber para cazar mutantes.\n Municiуn:\n 7N1 estбndar de 7,62x54 mm,\n BP 7,62x54 mm perforante,\n 7N14 de francotirador de 7,62x54 mm.</text>
 	</string>
 	<string id="enc_weapons1_wpn-svd_m1">
-		<text> ptica mejorada que ha aumentado la resoluci n de la imagen. El equilibrio del arma es mayor y, como resultado, el retroceso disminuye.</text>
+		<text>Уptica mejorada que ha aumentado la resoluciуn de la imagen. El equilibrio del arma es mayor y, como resultado, el retroceso disminuye.</text>
 	</string>
 	<string id="enc_weapons1_wpn-svu">
-		<text>Una versi n m s moderna del fusil de francotirador. Un modelo bullpup compacto. Excelente para largos viajes en la Zona.\n Munici n:\n 7N1 est ndar de 7.62x54 mm,\n 7.62x54 mm BP perforante,\n 7N14 de francotirador de 7.62x54 mm.</text>
+		<text>Una versiуn mбs moderna del fusil de francotirador. Un modelo bullpup compacto. Excelente para largos viajes en la Zona.\n Municiуn:\n 7N1 estбndar de 7.62x54 mm,\n 7.62x54 mm BP perforante,\n 7N14 de francotirador de 7.62x54 mm.</text>
 	</string>
 	<string id="enc_weapons1_wpn-toz34">
-		<text>Este fusil de caza es popular, pero no tiene mucho que destacar.\n Munici n:\n perdig n de 12x70,\n posta de 12x76,\n bala en punta de 12x76.</text>
+		<text>Este fusil de caza es popular, pero no tiene mucho que destacar.\n Municiуn:\n perdigуn de 12x70,\n posta de 12x76,\n bala en punta de 12x76.</text>
 	</string>
 	<string id="enc_weapons1_wpn-usp">
-		<text>Un arma fiable. Es muy popular entre los veteranos de la Zona como arma compacta de calidad para distancias cortas.\n Munici n:\n .45 ACP est ndar,\n Hydro-shock .45 ACP mejorada.</text>
+		<text>Un arma fiable. Es muy popular entre los veteranos de la Zona como arma compacta de calidad para distancias cortas.\n Municiуn:\n .45 ACP estбndar,\n Hydro-shock .45 ACP mejorada.</text>
 	</string>
 	<string id="enc_weapons1_wpn-val">
-		<text>Esta arma se ha basado en el Vintar, un fusil de francotirador que no hace ruido. Tiene la culata plegable, puede disparar r fagas y tiene una rec mara mayor. Se dise   originalmente para fuerzas especiales que operan en condiciones donde se precisan disparos silenciosos e invisibles.\n Munici n:\n PAB-9 est ndar de 9x39 mm,\n SP-6 de 9x39 mm perforante,\n SP-5 de francotirador de 9x39 mm.</text>
+		<text>Esta arma se ha basado en el Vintar, un fusil de francotirador que no hace ruido. Tiene la culata plegable, puede disparar rбfagas y tiene una recбmara mayor. Se diseсу originalmente para fuerzas especiales que operan en condiciones donde se precisan disparos silenciosos e invisibles.\n Municiуn:\n PAB-9 estбndar de 9x39 mm,\n SP-6 de 9x39 mm perforante,\n SP-5 de francotirador de 9x39 mm.</text>
 	</string>
 	<string id="enc_weapons1_wpn-val_m1">
-		<text>Se diferencia del modelo b sico en la capacidad de a adir una mira telesc pica PSO-1. </text>
+		<text>Se diferencia del modelo bбsico en la capacidad de aсadir una mira telescуpica PSO-1. </text>
 	</string>
 	<string id="enc_weapons1_wpn-vintorez">
-		<text>Fusil especial de francotirador dise ado para operaciones en las que se precisan disparos silenciosos e invisibles, y equipado con un silenciador integrado. Puede perforar cualquier chaleco antibalas a una distancia de 400 metros. Es un arma bastante apreciada por los stalkers de cualquier nivel.\n Munici n:\n PAB-9 est ndar de 9x39 mm,\n SP-6 de 9x39 mm perforante,\n SP-5 de francotirador de 9x39 mm.</text>
+		<text>Fusil especial de francotirador diseсado para operaciones en las que se precisan disparos silenciosos e invisibles, y equipado con un silenciador integrado. Puede perforar cualquier chaleco antibalas a una distancia de 400 metros. Es un arma bastante apreciada por los stalkers de cualquier nivel.\n Municiуn:\n PAB-9 estбndar de 9x39 mm,\n SP-6 de 9x39 mm perforante,\n SP-5 de francotirador de 9x39 mm.</text>
 	</string>
 	<string id="enc_weapons1_wpn-walther">
-		<text>Excelente pistola. Muy fiable, con gran capacidad de rec mara y buena precisi n, especialmente en el caso del modelo dise ado para los cartuchos de FMJ de 9 mm.\n Munici n:\n FMJ est ndar de 9x19 mm,\n PB1s de 9x19 mm mejorada.</text>
+		<text>Excelente pistola. Muy fiable, con gran capacidad de recбmara y buena precisiуn, especialmente en el caso del modelo diseсado para los cartuchos de FMJ de 9 mm.\n Municiуn:\n FMJ estбndar de 9x19 mm,\n PB1s de 9x19 mm mejorada.</text>
 	</string>
 	<string id="enc_weapons1_wpn-walther_m1">
-		<text>Variaci n con capacidad para utilizar balas de calibre 9x18 mm.</text>
+		<text>Variaciуn con capacidad para utilizar balas de calibre 9x18 mm.</text>
 	</string>
 	<string id="enc_weapons1_wpn-wincheaster1300">
-		<text>Fusil de ca  n liso fabricado para su uso en los entornos m s hostiles. Muy fiable. Todas las piezas est n cubiertas de una capa anticorrosiva.\n Munici n:\n proyectil de 12x70,\n balas de 12x76,\n dardos de 12x76.</text>
+		<text>Fusil de caсуn liso fabricado para su uso en los entornos mбs hostiles. Muy fiable. Todas las piezas estбn cubiertas de una capa anticorrosiva.\n Municiуn:\n proyectil de 12x70,\n balas de 12x76,\n dardos de 12x76.</text>
 	</string>
 	<string id="grenade-f1">
 		<text>Granada F1</text>
@@ -427,7 +427,7 @@
 		<text>Obokan francotirador</text>
 	</string>
 	<string id="wpn-abakan_m2">
-		<text>Obokan r faga</text>
+		<text>Obokan rбfaga</text>
 	</string>
 	<string id="wpn-addon-grenade-launcher">
 		<text>Kostyer GP-25</text>
@@ -475,7 +475,7 @@
 		<text>FT 200M</text>
 	</string>
 	<string id="wpn-fort">
-		<text>Fort-12Mк2</text>
+		<text>Fort-12M?2</text>
 	</string>
 	<string id="wpn-fort_m">
 		<text>Fort-15</text>
@@ -532,7 +532,7 @@
 		<text>RPG-7u</text>
 	</string>
 	<string id="wpn-sig_m1">
-		<text>SIP r faga</text>
+		<text>SIP rбfaga</text>
 	</string>
 	<string id="wpn-sig_m2">
 		<text>SGI francotirador</text>

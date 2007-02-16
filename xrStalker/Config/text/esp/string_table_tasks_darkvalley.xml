@@ -1,8 +1,8 @@
 	<string id="bar_darklab_documents">
-		<text>Encuentra los documentos en el laboratorio subterr neo</text>
+		<text>Encuentra los documentos en el laboratorio subterráneo</text>
 	</string>
 	<string id="bar_darklab_documents_1">
-		<text>Obt n de Borov la clave para entrar en el laboratorio</text>
+		<text>Obtén de Borov la clave para entrar en el laboratorio</text>
 	</string>
 	<string id="bar_darklab_documents_2">
 		<text>Sal de la base de los bandidos</text>
@@ -23,22 +23,22 @@
 		<text>Lleva los documentos al tabernero</text>
 	</string>
 	<string id="dar_codedoor_1">
-		<text>Encuentra la puerta bloqueada con un c digo</text>
+		<text>Encuentra la puerta bloqueada con un código</text>
 	</string>
 	<string id="dar_codedoor_1_1">
-		<text>Descubre el c digo que abre la puerta</text>
+		<text>Descubre el código que abre la puerta</text>
 	</string>
 	<string id="dar_codedoor_1_2">
-		<text>Usa el c digo para abrir la puerta</text>
+		<text>Usa el código para abrir la puerta</text>
 	</string>
 	<string id="dar_codedoor_2">
 		<text>Abre la puerta que conduce al centro de control</text>
 	</string>
 	<string id="dar_codedoor_2_1">
-		<text>Averigua el c digo que abre la puerta</text>
+		<text>Averigua el código que abre la puerta</text>
 	</string>
 	<string id="dar_codedoor_2_2">
-		<text>Usa el c digo para abrir la puerta</text>
+		<text>Usa el código para abrir la puerta</text>
 	</string>
 	<string id="val_captive_help">
 		<text>Libera al miembro de Deber.</text>
@@ -59,14 +59,14 @@
 		<text>Sal del Valle Oscuro</text>
 	</string>
 	<string id="val_come_to_trader_2">
-		<text>Ense a los documentos al comerciante</text>
+		<text>Enseña los documentos al comerciante</text>
 	</string>
 	<string id="val_prisoner_help">
 		<text>Libera al miembro de Deber de su cautiverio</text>
 	</string>
 	<string id="val_prisoner_help_0">
-		<text>Saca al miembro de Deber de la prisi n de los bandidos</text>
+		<text>Saca al miembro de Deber de la prisión de los bandidos</text>
 	</string>
 	<string id="val_prisoner_help_main">
-		<text>Libera al miembro de Deber de la prisi n de los bandidos</text>
+		<text>Libera al miembro de Deber de la prisión de los bandidos</text>
 	</string>

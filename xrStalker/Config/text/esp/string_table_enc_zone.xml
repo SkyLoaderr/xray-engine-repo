@@ -22,7 +22,7 @@
 		<text>Gotas</text>
 	</string>
 	<string id="af-dummy-battery">
-		<text>Bater a</text>
+		<text>Batería</text>
 	</string>
 	<string id="af-dummy-dummy">
 		<text>Concha</text>
@@ -31,7 +31,7 @@
 		<text>Abalorios de madre</text>
 	</string>
 	<string id="af-dummy-pellicle">
-		<text>Pel cula</text>
+		<text>Película</text>
 	</string>
 	<string id="af-dummy-spring">
 		<text>Muelle</text>
@@ -88,13 +88,13 @@
 		<text>Ponche de frutas</text>
 	</string>
 	<string id="Anomalies">
-		<text>Anomal as</text>
+		<text>Anomalías</text>
 	</string>
 	<string id="Artifacts">
 		<text>Artefactos</text>
 	</string>
 	<string id="Bald">
-		<text>Trampol n</text>
+		<text>Trampolín</text>
 	</string>
 	<string id="Bar">
 		<text>Bar</text>
@@ -109,163 +109,163 @@
 		<text>Electro</text>
 	</string>
 	<string id="enc_weapons1_wpn-winchester_m1">
-		<text>Variaci n del Chaser. Se incluy  en el ca  n un peque o fragmento del artefacto Gravi, posicionado de tal forma que permite aumentar la velocidad de la trayectoria de la bala. </text>
+		<text>Variación del Chaser. Se incluyó en el cañón un pequeño fragmento del artefacto Gravi, posicionado de tal forma que permite aumentar la velocidad de la trayectoria de la bala. </text>
 	</string>
 	<string id="enc_zone_anomalies_ameba">
-		<text>Una anomal a de naturaleza desconocida. Al contacto, produce lesiones similares a los efectos de los  cidos m s potentes. Forma tres tipos de artefactos: Cieno, Babosa y Mica.</text>
+		<text>Una anomalía de naturaleza desconocida. Al contacto, produce lesiones similares a los efectos de los ácidos más potentes. Forma tres tipos de artefactos: Cieno, Babosa y Mica.</text>
 	</string>
 	<string id="enc_zone_anomalies_bald">
-		<text>Una de las primeras anomal as registradas: un campo de gravitaci n inestable que efect a descargas sobre cualquiera que se encuentre dentro de su radio de acci n. Permanece activa durante una semana de media. La cantidad de da o sufrido var a a lo largo de su periodo de actividad, produciendo desde heridas superficiales y graves hasta la muerte instant nea. Es f cil de localizar de d a. Adem s de una fluctuaci n del aire por encima de la anomal a, hay hojas que bailan y manchas carmes  en el suelo. Adem s de que lo localizan todos los tipos de detectores, el Trampol n aparece ante la vista si se lanzan objetos contra  l. Forma tres tipos de artefactos: Medusa, Flor de piedra y Estrella nocturna.</text>
+		<text>Una de las primeras anomalías registradas: un campo de gravitación inestable que efectúa descargas sobre cualquiera que se encuentre dentro de su radio de acción. Permanece activa durante una semana de media. La cantidad de daño sufrido varía a lo largo de su periodo de actividad, produciendo desde heridas superficiales y graves hasta la muerte instantánea. Es fácil de localizar de día. Además de una fluctuación del aire por encima de la anomalía, hay hojas que bailan y manchas carmesí en el suelo. Además de que lo localizan todos los tipos de detectores, el Trampolín aparece ante la vista si se lanzan objetos contra él. Forma tres tipos de artefactos: Medusa, Flor de piedra y Estrella nocturna.</text>
 	</string>
 	<string id="enc_zone_anomalies_electra">
-		<text>Formaci n an mala, de unos 10 metros de di metro, que acumula grandes cantidades de electricidad est tica. Cuando se activa esta anomal a, estalla en decenas de rayos en miniatura que causan una descarga el ctrica casi siempre letal para cualquier ser vivo. Se reconoce por la niebla azulada que flota sobre ella durante el d a. Por la noche, la anomal a Electro puede localizarse con cualquier detector o lanzando objetos met licos contra ella. Forma tres tipos de artefactos: Bengala, Destello y Claro de luna.</text>
+		<text>Formación anómala, de unos 10 metros de diámetro, que acumula grandes cantidades de electricidad estática. Cuando se activa esta anomalía, estalla en decenas de rayos en miniatura que causan una descarga eléctrica casi siempre letal para cualquier ser vivo. Se reconoce por la niebla azulada que flota sobre ella durante el día. Por la noche, la anomalía Electro puede localizarse con cualquier detector o lanzando objetos metálicos contra ella. Forma tres tipos de artefactos: Bengala, Destello y Claro de luna.</text>
 	</string>
 	<string id="enc_zone_anomalies_fuzz">
-		<text>Es uno de los ejemplos de vegetaci n mutada de la Zona. Reacciona al acercamiento r pido de seres vivos descargando una lluvia de proyectiles que causa heridas en la piel sin protecci n o con protecci n ligera. No reacciona contra objetivos lentos. tipos de artefacto (posiblemente sus semillas): Espina, Espina de cristal y Palomilla.</text>
+		<text>Es uno de los ejemplos de vegetación mutada de la Zona. Reacciona al acercamiento rápido de seres vivos descargando una lluvia de proyectiles que causa heridas en la piel sin protección o con protección ligera. No reacciona contra objetivos lentos. tipos de artefacto (posiblemente sus semillas): Espina, Espina de cristal y Palomilla.</text>
 	</string>
 	<string id="enc_zone_anomalies_gravi">
-		<text>En teor a es una anomal a de naturaleza gravitatoria. Cuando se activa, la gran potencia del V rtice arrastra hacia el centro todo lo que hay en un radio de 10 a 15 metros.  Las v ctimas arrastradas hacia el n cleo no tienen posibilidades de sobrevivir: sus cuerpos se reducen r pidamente a una masa dura, y estallan poco despu s tras recibir una descarga de energ a muy potente. La anomal a permanece est tica a lo largo de su periodo de actividad (una semana de media). Se reconoce f cilmente por el d a porque el aire fluct a sobre ella, hay hojas que bailan, fragmentos de cad veres desmembrados, y una caracter stica mancha oscura en el centro. Es muy peligrosa por la noche, ya que solo se puede localizar con un detector o lanzando objetos met licos contra ella. Forma tres tipos de artefactos: Torcedor, Gravi y Pez de colores. </text>
+		<text>En teoría es una anomalía de naturaleza gravitatoria. Cuando se activa, la gran potencia del Vórtice arrastra hacia el centro todo lo que hay en un radio de 10 a 15 metros.  Las víctimas arrastradas hacia el núcleo no tienen posibilidades de sobrevivir: sus cuerpos se reducen rápidamente a una masa dura, y estallan poco después tras recibir una descarga de energía muy potente. La anomalía permanece estática a lo largo de su periodo de actividad (una semana de media). Se reconoce fácilmente por el día porque el aire fluctúa sobre ella, hay hojas que bailan, fragmentos de cadáveres desmembrados, y una característica mancha oscura en el centro. Es muy peligrosa por la noche, ya que solo se puede localizar con un detector o lanzando objetos metálicos contra ella. Forma tres tipos de artefactos: Torcedor, Gravi y Pez de colores. </text>
 	</string>
 	<string id="enc_zone_anomalies_lift">
-		<text>Anomal a inocua que anula temporalmente la gravedad normal. Se manifiesta como un  rea, normalmente de varios metros de di metro, donde la fuerza de gravitaci n terrestre se reduce considerablemente. Forma el artefacto Pel cula.</text>
+		<text>Anomalía inocua que anula temporalmente la gravedad normal. Se manifiesta como un área, normalmente de varios metros de diámetro, donde la fuerza de gravitación terrestre se reduce considerablemente. Forma el artefacto Película.</text>
 	</string>
 	<string id="enc_zone_anomalies_meat">
-		<text>Esta anomal a agarra a sus v ctimas y les da vueltas por los aires a una velocidad de v rtigo. La naturaleza exacta del Remolino se desconoce a n. Esta anomal a se puede reconocer por un ligero torbellino de polvo en la parte superior y por los fragmentos de cuerpos diseminados de los alrededores. Las v ctimas atrapadas en su zona m s externa pueden escapar del Remolino sufriendo solo heridas superficiales si est n suficientemente lejos del centro. Forma tres tipos de artefactos: Sangre petrificada, Bola de carne y Alma.</text>
+		<text>Esta anomalía agarra a sus víctimas y les da vueltas por los aires a una velocidad de vértigo. La naturaleza exacta del Remolino se desconoce aún. Esta anomalía se puede reconocer por un ligero torbellino de polvo en la parte superior y por los fragmentos de cuerpos diseminados de los alrededores. Las víctimas atrapadas en su zona más externa pueden escapar del Remolino sufriendo solo heridas superficiales si están suficientemente lejos del centro. Forma tres tipos de artefactos: Sangre petrificada, Bola de carne y Alma.</text>
 	</string>
 	<string id="enc_zone_anomalies_radioactive">
-		<text> rea de gran radiaci n: m s de 50 mR/h. No se recomienda permanecer en una zona con radiaci n durante largos periodos de tiempo.</text>
+		<text>Área de gran radiación: más de 50 mR/h. No se recomienda permanecer en una zona con radiación durante largos periodos de tiempo.</text>
 	</string>
 	<string id="enc_zone_anomalies_time">
-		<text>Un verdadero milagro de anomal a: se trata de un  rea de varios metros de di metro donde el tiempo pasa mucho m s despacio de lo normal. Parece no tener efectos negativos en la salud humana. Sin embargo, puede resultar muy dif cil salir de la M quina del tiempo. Curiosamente, extraer los Abalorios de madre (artefacto que normalmente se encuentra en el centro de la anomal a) hace que la M quina del tiempo desaparezca.</text>
+		<text>Un verdadero milagro de anomalía: se trata de un área de varios metros de diámetro donde el tiempo pasa mucho más despacio de lo normal. Parece no tener efectos negativos en la salud humana. Sin embargo, puede resultar muy difícil salir de la Máquina del tiempo. Curiosamente, extraer los Abalorios de madre (artefacto que normalmente se encuentra en el centro de la anomalía) hace que la Máquina del tiempo desaparezca.</text>
 	</string>
 	<string id="enc_zone_anomalies_zharka">
-		<text>Mientras permanece inactiva, la anomal a se manifiesta como una nube de aire caliente apenas visible. Cuando se activa mediante un objeto o un ser vivo, comienza a calentarse al instante hasta alcanzar temperaturas cercanas a los 1500 K. Por la noche se puede localizar con detectores potentes y lanzando objetos met licos a su zona de activaci n. Forma tres tipos de artefactos: Gotas, Bola de fuego y Cristal.</text>
+		<text>Mientras permanece inactiva, la anomalía se manifiesta como una nube de aire caliente apenas visible. Cuando se activa mediante un objeto o un ser vivo, comienza a calentarse al instante hasta alcanzar temperaturas cercanas a los 1500 K. Por la noche se puede localizar con detectores potentes y lanzando objetos metálicos a su zona de activación. Forma tres tipos de artefactos: Gotas, Bola de fuego y Cristal.</text>
 	</string>
 	<string id="enc_zone_artifact_af-ameba-mica">
-		<text>La anomal a Ponche de frutas es capaz de crear artefactos en las condiciones f sicas m s raras y extremas. El resultado es un objeto duro y semitransparente. Un artefacto caro y poco com n.</text>
+		<text>La anomalía Ponche de frutas es capaz de crear artefactos en las condiciones físicas más raras y extremas. El resultado es un objeto duro y semitransparente. Un artefacto caro y poco común.</text>
 	</string>
 	<string id="enc_zone_artifact_af-ameba-slime">
-		<text>Sin duda este artefacto lo ha creado la anomal a llamada Ponche de frutas. Cuando se utiliza correctamente, las heridas sangran menos, aunque el cuerpo del portador es m s vulnerable a distintas quemaduras.</text>
+		<text>Sin duda este artefacto lo ha creado la anomalía llamada Ponche de frutas. Cuando se utiliza correctamente, las heridas sangran menos, aunque el cuerpo del portador es más vulnerable a distintas quemaduras.</text>
 	</string>
 	<string id="enc_zone_artifact_af-ameba-slug">
-		<text>Formado por la anomal a Ponche de frutas. Las cualidades negativas de este artefacto se compensan con el hecho de que aumenta la calidad de coagulaci n de la sangre. Uno no se encuentra tan a menudo con este tipo de artefactos que se pagan tan bien.</text>
+		<text>Formado por la anomalía Ponche de frutas. Las cualidades negativas de este artefacto se compensan con el hecho de que aumenta la calidad de coagulación de la sangre. Uno no se encuentra tan a menudo con este tipo de artefactos que se pagan tan bien.</text>
 	</string>
 	<string id="enc_zone_artifact_af-blood">
-		<text>Puedes encontrar este artefacto cerca de la anomal a Remolino. Se trata de un objeto rojizo bastante desagradable compuesto de restos polimerizados de plantas, tierra y huesos prensados. Es bastante com n y no muy efectivo.</text>
+		<text>Puedes encontrar este artefacto cerca de la anomalía Remolino. Se trata de un objeto rojizo bastante desagradable compuesto de restos polimerizados de plantas, tierra y huesos prensados. Es bastante común y no muy efectivo.</text>
 	</string>
 	<string id="enc_zone_artifact_af-cristall">
-		<text>Se crea cuando caen metales pesados dentro de la anomal a Cauterizador. Este artefacto elimina totalmente la radiaci n. Los stalkers lo valoran mucho y es dif cil de encontrar.</text>
+		<text>Se crea cuando caen metales pesados dentro de la anomalía Cauterizador. Este artefacto elimina totalmente la radiación. Los stalkers lo valoran mucho y es difícil de encontrar.</text>
 	</string>
 	<string id="enc_zone_artifact_af-cristall-flower">
-		<text>Creado en la anomal a Trampol n. Este artefacto se encuentra en muy pocas  reas de la Zona. Los componentes met licos crean un bonito juego de luces. Es muy relajante estudiar este artefacto por la noche, cerca del fuego. </text>
+		<text>Creado en la anomalía Trampolín. Este artefacto se encuentra en muy pocas áreas de la Zona. Los componentes metálicos crean un bonito juego de luces. Es muy relajante estudiar este artefacto por la noche, cerca del fuego. </text>
 	</string>
 	<string id="enc_zone_artifact_af-drops">
-		<text>Formado en la anomal a Cauterizador a altas temperaturas. Desde el exterior parece una sombra con forma de l grima y una superficie brillante llena de grietas.</text>
+		<text>Formado en la anomalía Cauterizador a altas temperaturas. Desde el exterior parece una sombra con forma de lágrima y una superficie brillante llena de grietas.</text>
 	</string>
 	<string id="enc_zone_artifact_af-dummy-battery">
-		<text>El origen de este objeto es un misterio para la ciencia. No hay duda de que est  formado en parte por elementos diel ctricos, pero se desconocen las condiciones f sicas en que se form .</text>
+		<text>El origen de este objeto es un misterio para la ciencia. No hay duda de que está formado en parte por elementos dieléctricos, pero se desconocen las condiciones físicas en que se formó.</text>
 	</string>
 	<string id="enc_zone_artifact_af-dummy-dummy">
-		<text>Al portar este artefacto, la desnaturalizaci n de las prote nas es m s lenta. Es decir, el cuerpo es capaz de soportar temperaturas m s altas y de quemarse menos. Es un objeto caro y poco com n.</text>
+		<text>Al portar este artefacto, la desnaturalización de las proteínas es más lenta. Es decir, el cuerpo es capaz de soportar temperaturas más altas y de quemarse menos. Es un objeto caro y poco común.</text>
 	</string>
 	<string id="enc_zone_artifact_af-dummy-glassbeads">
-		<text>Un artefacto magn fico. Cons rvalo bien. Es muy bueno porque solo cuenta con cualidades positivas. Los cient ficos no saben c mo crear un artefacto como este en los laboratorios.</text>
+		<text>Un artefacto magnífico. Consérvalo bien. Es muy bueno porque solo cuenta con cualidades positivas. Los científicos no saben cómo crear un artefacto como este en los laboratorios.</text>
 	</string>
 	<string id="enc_zone_artifact_af-dummy-pellicle">
-		<text>Este artefacto es tan poco com n que muchos investigadores no imaginan siquiera que una sustancia as  pueda existir en un entorno natural. Emite componentes qu micos  cidos.</text>
+		<text>Este artefacto es tan poco común que muchos investigadores no imaginan siquiera que una sustancia así pueda existir en un entorno natural. Emite componentes químicos ácidos.</text>
 	</string>
 	<string id="enc_zone_artifact_af-dummy-spring">
-		<text>Seg n la opini n de algunos te ricos e investigadores, este artefacto es un h brido entre las Bater as y las C scaras.</text>
+		<text>Según la opinión de algunos teóricos e investigadores, este artefacto es un híbrido entre las Baterías y las Cáscaras.</text>
 	</string>
 	<string id="enc_zone_artifact_af-electra-flash">
-		<text>Este artefacto se forma a veces en la anomal a Electro. Los stalkers lo utilizan de buena gana por sus buenas cualidades. Es un artefacto codiciado por los coleccionistas debido a su atractivo aspecto y a su precio asequible.</text>
+		<text>Este artefacto se forma a veces en la anomalía Electro. Los stalkers lo utilizan de buena gana por sus buenas cualidades. Es un artefacto codiciado por los coleccionistas debido a su atractivo aspecto y a su precio asequible.</text>
 	</string>
 	<string id="enc_zone_artifact_af-electra-moonlight">
-		<text>Producto degenerado de la actividad de la anomal a Electro. Parece que su forma, asombrosamente redonda, se produce cuando la anomal a est  sometida a influencias t rmicas. Es un artefacto caro.</text>
+		<text>Producto degenerado de la actividad de la anomalía Electro. Parece que su forma, asombrosamente redonda, se produce cuando la anomalía está sometida a influencias térmicas. Es un artefacto caro.</text>
 	</string>
 	<string id="enc_zone_artifact_af-electra-sparkler">
-		<text>Puede encontrarse en las proximidades de la anomal a Electro. Es un artefacto muy com n y barato. Sin embargo, sus cualidades son muy apreciadas por los investigadores de la Zona.</text>
+		<text>Puede encontrarse en las proximidades de la anomalía Electro. Es un artefacto muy común y barato. Sin embargo, sus cualidades son muy apreciadas por los investigadores de la Zona.</text>
 	</string>
 	<string id="enc_zone_artifact_af-fireball">
-		<text>Cristaliza en la anomal a Cauterizador. Es eficaz contra la radiactividad, aunque la elevada tasa de intercambio de energ a desgasta los m sculos del aparato motor. No podr s correr durante mucho tiempo. El artefacto emite calor.</text>
+		<text>Cristaliza en la anomalía Cauterizador. Es eficaz contra la radiactividad, aunque la elevada tasa de intercambio de energía desgasta los músculos del aparato motor. No podrás correr durante mucho tiempo. El artefacto emite calor.</text>
 	</string>
 	<string id="enc_zone_artifact_af-fuzz-kolobok">
-		<text>Cuando sostienes en tus manos este misterio de la Zona, tu piel se vuelve m s dura y menos sensible. Contin as siendo vulnerable a los disparos, pero son menos perforantes.</text>
+		<text>Cuando sostienes en tus manos este misterio de la Zona, tu piel se vuelve más dura y menos sensible. Continúas siendo vulnerable a los disparos, pero son menos perforantes.</text>
 	</string>
 	<string id="enc_zone_artifact_af-gold-fish">
-		<text>Es un artefacto que se forma en la anomal a V rtice. Se activa con el calor del cuerpo. Decide qu  es peor: la radiaci n o las heridas de cuchillo, y elige el menor de los males. En cualquier caso, puedes vender el artefacto y sacar buenos beneficios.</text>
+		<text>Es un artefacto que se forma en la anomalía Vórtice. Se activa con el calor del cuerpo. Decide qué es peor: la radiación o las heridas de cuchillo, y elige el menor de los males. En cualquier caso, puedes vender el artefacto y sacar buenos beneficios.</text>
 	</string>
 	<string id="enc_zone_artifact_af-gravi">
-		<text>Puede encontrarse cerca de anomal as como V rtice o en manos de otros stalker. Mientras lo llevas, se almacena cierta cantidad de radiaci n en el cuerpo y el resto se dispersa hacia el exterior. Tiene un precio razonable.</text>
+		<text>Puede encontrarse cerca de anomalías como Vórtice o en manos de otros stalker. Mientras lo llevas, se almacena cierta cantidad de radiación en el cuerpo y el resto se dispersa hacia el exterior. Tiene un precio razonable.</text>
 	</string>
 	<string id="enc_zone_artifact_af-medusa">
-		<text>Se forma en la anomal a Trampol n. Genera un d bil campo protector y, como efecto secundario, una peque a radiaci n. Este artefacto es muy abundante y tiene poco valor.</text>
+		<text>Se forma en la anomalía Trampolín. Genera un débil campo protector y, como efecto secundario, una pequeña radiación. Este artefacto es muy abundante y tiene poco valor.</text>
 	</string>
 	<string id="enc_zone_artifact_af-mincer-meat">
-		<text>Se crea en la anomal a Remolino. Acelera la regeneraci n celular. Sin embargo, las nuevas c lulas son mucho m s vulnerables a los efectos del uranio f sico. Este artefacto no se encuentra f cilmente, pero tampoco es excepcional.</text>
+		<text>Se crea en la anomalía Remolino. Acelera la regeneración celular. Sin embargo, las nuevas células son mucho más vulnerables a los efectos del uranio físico. Este artefacto no se encuentra fácilmente, pero tampoco es excepcional.</text>
 	</string>
 	<string id="enc_zone_artifact_af-night-star">
-		<text>Este asombroso artefacto se forma en la anomal a Trampol n. Para su uso hay que neutralizar las radiaciones letales. Es caro y poco com n, y de gran inter s para las expediciones cient ficas y otras actividades de investigaci n en la Zona.</text>
+		<text>Este asombroso artefacto se forma en la anomalía Trampolín. Para su uso hay que neutralizar las radiaciones letales. Es caro y poco común, y de gran interés para las expediciones científicas y otras actividades de investigación en la Zona.</text>
 	</string>
 	<string id="enc_zone_artifact_af-rusty-kristall">
-		<text>Cristaliza en la anomal a Pelusa quemada. Elimina la radiaci n del organismo de forma natural. Es decir, a trav s de los o dos y acompa  ndose de cierta p rdida de sangre. Tambi n pueden sangrar otros orificios. Es bastante com n y muy efectivo, por lo que su precio es estable en el mercado de los artefactos.</text>
+		<text>Cristaliza en la anomalía Pelusa quemada. Elimina la radiación del organismo de forma natural. Es decir, a través de los oídos y acompañándose de cierta pérdida de sangre. También pueden sangrar otros orificios. Es bastante común y muy efectivo, por lo que su precio es estable en el mercado de los artefactos.</text>
 	</string>
 	<string id="enc_zone_artifact_af-rusty-sea-urchin">
-		<text>Es muy poco frecuente que la anomal a Pelusa quemada origine este artefacto. Aumenta la presi n sangu nea, y el cuerpo se deshace de grandes cantidades de c lulas rojas. Pero, junto con ellas, tambi n se elimina del cuerpo la radiaci n almacenada. Sakharov, en su imprescindible obra "Ionizaci n y polarizaci n de los componentes de artefactos poco comunes", explica que el contenido de esta formaci n tiene una estabilidad cr tica, y que har n falta 10 a os para que este tipo de artefacto pueda crearse en un laboratorio.</text>
+		<text>Es muy poco frecuente que la anomalía Pelusa quemada origine este artefacto. Aumenta la presión sanguínea, y el cuerpo se deshace de grandes cantidades de células rojas. Pero, junto con ellas, también se elimina del cuerpo la radiación almacenada. Sakharov, en su imprescindible obra "Ionización y polarización de los componentes de artefactos poco comunes", explica que el contenido de esta formación tiene una estabilidad crítica, y que harán falta 10 años para que este tipo de artefacto pueda crearse en un laboratorio.</text>
 	</string>
 	<string id="enc_zone_artifact_af-rusty-thorn">
-		<text>Es el resultado de la interacci n entre la anomal a Pelusa quemada y el cuerpo de alg n stalker incauto. El artefacto Espina agujerea el cuerpo de su propietario indiscriminadamente. Pero tambi n ayuda a limpiarlo de radionucleidos. Es muy com n y barato.</text>
+		<text>Es el resultado de la interacción entre la anomalía Pelusa quemada y el cuerpo de algún stalker incauto. El artefacto Espina agujerea el cuerpo de su propietario indiscriminadamente. Pero también ayuda a limpiarlo de radionucleidos. Es muy común y barato.</text>
 	</string>
 	<string id="enc_zone_artifact_af-soul">
-		<text>Es un artefacto muy poco frecuente que se encuentra en las proximidades de la anomal a Remolino. Solo unos pocos han logrado encontrar este artefacto, y muy poca gente ha llegado a verlo. Tiene una forma agradable y un precio razonable.</text>
+		<text>Es un artefacto muy poco frecuente que se encuentra en las proximidades de la anomalía Remolino. Solo unos pocos han logrado encontrar este artefacto, y muy poca gente ha llegado a verlo. Tiene una forma agradable y un precio razonable.</text>
 	</string>
 	<string id="enc_zone_artifact_af-vyvert">
-		<text>Se encuentra en la anomal a llamada V rtice. Al tocar el cuerpo disemina la radiaci n directa protegi ndolo de las heridas o rasgu os infligidos por las armas. No es dif cil dar con este artefacto, por lo que no se suele pagar demasiado por  l.</text>
+		<text>Se encuentra en la anomalía llamada Vórtice. Al tocar el cuerpo disemina la radiación directa protegiéndolo de las heridas o rasguños infligidos por las armas. No es difícil dar con este artefacto, por lo que no se suele pagar demasiado por él.</text>
 	</string>
 	<string id="enc_zone_locations_agroprom">
-		<text>Es un  rea extra a y altamente contaminada. Si alguna vez te adentras en ella, ver s un lago poco profundo repleto de equipamiento abandonado y otros restos. Tambi n puedes inspeccionar el Instituto abandonado y la f brica, aunque el ej rcito ha estado merodeando por ah  recientemente.</text>
+		<text>Es un área extraña y altamente contaminada. Si alguna vez te adentras en ella, verás un lago poco profundo repleto de equipamiento abandonado y otros restos. También puedes inspeccionar el Instituto abandonado y la fábrica, aunque el ejército ha estado merodeando por ahí recientemente.</text>
 	</string>
 	<string id="enc_zone_locations_bar">
-		<text>La facci n Deber ha establecido un campamento en el margen de la llanura, y siempre acogen a los stalkers que van buscando un sitio para descansar. Una especie de oasis en el desierto: un lugar completamente limpio de mutantes y anomal as. No te olvides de pasarte por el bar subterr neo Los 100 rads: es un punto de encuentro de los stalkers de toda la zona. El bar est  regentado por el comerciante del sector, as  que, si adem s de la charla, est s interesado en comprar o vender mercanc as, este es tu sitio. Al norte del bar se encuentra la base militar; y el vertedero, al sur.</text>
+		<text>La facción Deber ha establecido un campamento en el margen de la llanura, y siempre acogen a los stalkers que van buscando un sitio para descansar. Una especie de oasis en el desierto: un lugar completamente limpio de mutantes y anomalías. No te olvides de pasarte por el bar subterráneo Los 100 rads: es un punto de encuentro de los stalkers de toda la zona. El bar está regentado por el comerciante del sector, así que, si además de la charla, estás interesado en comprar o vender mercancías, este es tu sitio. Al norte del bar se encuentra la base militar; y el vertedero, al sur.</text>
 	</string>
 	<string id="enc_zone_locations_darkdolina">
-		<text>Es un lugar tenebroso y l gubre, y siempre est  lloviendo. Los stalkers que se adentran en el Valle Oscuro tienen muchas posibilidades de encontrar artefactos de gran valor o una muerte fulminante, o ambas cosas. Este lugar lo frecuentan algunos de los veteranos m s experimentados, aunque tambi n es posible que te encuentres con bandidos comunes. En teor a debe de haber un laboratorio subterr neo en alg n lugar del valle, as  que no ser a mala idea ir buscando una entrada secreta por el camino. Nadie ha vuelto de all  con vida, y nadie sabe con certeza qu  sorpresas desagradables te aguardan.</text>
+		<text>Es un lugar tenebroso y lúgubre, y siempre está lloviendo. Los stalkers que se adentran en el Valle Oscuro tienen muchas posibilidades de encontrar artefactos de gran valor o una muerte fulminante, o ambas cosas. Este lugar lo frecuentan algunos de los veteranos más experimentados, aunque también es posible que te encuentres con bandidos comunes. En teoría debe de haber un laboratorio subterráneo en algún lugar del valle, así que no sería mala idea ir buscando una entrada secreta por el camino. Nadie ha vuelto de allí con vida, y nadie sabe con certeza qué sorpresas desagradables te aguardan.</text>
 	</string>
 	<string id="enc_zone_locations_escape">
-		<text>Es una especie de antec mara de la Zona: un buen lugar para que los novatos tomen contacto con los misterios del lugar. Encontrar s a un comerciante en los subterr neos que hay detr s del pueblo, junto a la avanzadilla militar. No pierdas la oportunidad de hablar con  l. Sin embargo, trata de esquivar a los militares. Es mejor que no te vean; la mayor a de ellos disparan primero y preguntan despu s. Aun as , como siempre, algunos aceptan sobornos cuando nadie los est  mirando. Lo mejor es no atacar a los soldados, a no ser que supongan una amenaza directa.</text>
+		<text>Es una especie de antecámara de la Zona: un buen lugar para que los novatos tomen contacto con los misterios del lugar. Encontrarás a un comerciante en los subterráneos que hay detrás del pueblo, junto a la avanzadilla militar. No pierdas la oportunidad de hablar con él. Sin embargo, trata de esquivar a los militares. Es mejor que no te vean; la mayoría de ellos disparan primero y preguntan después. Aun así, como siempre, algunos aceptan sobornos cuando nadie los está mirando. Lo mejor es no atacar a los soldados, a no ser que supongan una amenaza directa.</text>
 	</string>
 	<string id="enc_zone_locations_garbage">
-		<text>Es un enorme cementerio de maquinaria. Despu s del primer accidente, se trajeron aqu  grandes cantidades de desechos radiactivos. Est  lleno de ruinas de viejos edificios infestados de mutantes. Al igual que las afueras de la Zona, este lugar est  a rebosar de stalkers novatos; tambi n encontrar s bandidos merodeando, siempre en busca de gangas. Hay algunos artefactos, pero la mayor a de ellos no merecen la pena. Lo mejor es que busques en otra parte. Si te diriges al norte, llegar s al Territorio salvaje, hacia el oeste encontrar s la entrada al Valle Oscuro, y al este la carretera que va al Instituto Agroprom.</text>
+		<text>Es un enorme cementerio de maquinaria. Después del primer accidente, se trajeron aquí grandes cantidades de desechos radiactivos. Está lleno de ruinas de viejos edificios infestados de mutantes. Al igual que las afueras de la Zona, este lugar está a rebosar de stalkers novatos; también encontrarás bandidos merodeando, siempre en busca de gangas. Hay algunos artefactos, pero la mayoría de ellos no merecen la pena. Lo mejor es que busques en otra parte. Si te diriges al norte, llegarás al Territorio salvaje, hacia el oeste encontrarás la entrada al Valle Oscuro, y al este la carretera que va al Instituto Agroprom.</text>
 	</string>
 	<string id="enc_zone_locations_military-loc">
-		<text>Es una base militar desierta pr xima a una aldea ruinosa y a un peque o pantano. El pueblo es un lugar espeluznante, plagado de mutantes: los chupasangres son uno de los grupos m s numerosos. Los stalkers intentan por todos los medios no pasar por aqu , aunque para ello tengan que dar un rodeo de varios kil metros. Los anarquistas de la facci n Libertad se han establecido en la base militar. La carretera que conecta la base con la Zona est  protegida por el Cauterizador cerebral, que bloquea el acceso a Pripyat y a la planta nuclear de Chern bil. </text>
+		<text>Es una base militar desierta próxima a una aldea ruinosa y a un pequeño pantano. El pueblo es un lugar espeluznante, plagado de mutantes: los chupasangres son uno de los grupos más numerosos. Los stalkers intentan por todos los medios no pasar por aquí, aunque para ello tengan que dar un rodeo de varios kilómetros. Los anarquistas de la facción Libertad se han establecido en la base militar. La carretera que conecta la base con la Zona está protegida por el Cauterizador cerebral, que bloquea el acceso a Pripyat y a la planta nuclear de Chernóbil. </text>
 	</string>
 	<string id="enc_zone_locations_pripiat">
-		<text>Antes era una ciudad donde viv an los ingenieros que trabajaban en la planta nuclear de Chern bil. Lo que fue un lugar pr spero, es ahora un zona fantasma, habitada  nicamente por mutantes y zombis. Parece imposible hallar una forma de entrar: el Cauterizador cerebral bloquea el paso. </text>
+		<text>Antes era una ciudad donde vivían los ingenieros que trabajaban en la planta nuclear de Chernóbil. Lo que fue un lugar próspero, es ahora un zona fantasma, habitada únicamente por mutantes y zombis. Parece imposible hallar una forma de entrar: el Cauterizador cerebral bloquea el paso. </text>
 	</string>
 	<string id="enc_zone_locations_radar">
-		<text>Es un lugar espantoso. Cualquier intruso se desvanece sin dejar rastro, hasta los que siempre tienen suerte. Todo el que se acerca al Cauterizador cerebral se vuelve loco inmediatamente, pasa a ser un zombi y comienza a deambular sin rumbo fijo por la Zona. No es ya m s que un pedazo de carne. Nadie ha vuelto a recuperarse del trance de ser un zombi. </text>
+		<text>Es un lugar espantoso. Cualquier intruso se desvanece sin dejar rastro, hasta los que siempre tienen suerte. Todo el que se acerca al Cauterizador cerebral se vuelve loco inmediatamente, pasa a ser un zombi y comienza a deambular sin rumbo fijo por la Zona. No es ya más que un pedazo de carne. Nadie ha vuelto a recuperarse del trance de ser un zombi. </text>
 	</string>
 	<string id="enc_zone_locations_rostok">
-		<text>En el Territorio salvaje hab a una gran planta industrial que actualmente est  en ruinas. Muchos stalkers han hallado aqu  la muerte: el lugar est  plagado de todo tipo de monstruos. Hasta  l siguen llegando bestias procedentes de toda la Zona. Dicen que hay algo muy importante escondido en este sitio, as  que siempre hay alg n temerario intentando probar suerte. </text>
+		<text>En el Territorio salvaje había una gran planta industrial que actualmente está en ruinas. Muchos stalkers han hallado aquí la muerte: el lugar está plagado de todo tipo de monstruos. Hasta él siguen llegando bestias procedentes de toda la Zona. Dicen que hay algo muy importante escondido en este sitio, así que siempre hay algún temerario intentando probar suerte. </text>
 	</string>
 	<string id="enc_zone_locations_stancia">
-		<text>Lugar donde se encuentra la mundialmente famosa planta nuclear. Es el coraz n de la Zona. Si crees en las leyendas, tambi n es el lugar donde est  ubicado el Monolito, un misterioso objeto capaz de conceder deseos. </text>
+		<text>Lugar donde se encuentra la mundialmente famosa planta nuclear. Es el corazón de la Zona. Si crees en las leyendas, también es el lugar donde está ubicado el Monolito, un misterioso objeto capaz de conceder deseos. </text>
 	</string>
 	<string id="enc_zone_locations_yantar">
-		<text>El legendario lago que hab a en el sector del mismo nombre se sec  hace mucho tiempo, y lo que queda en su lugar es un pantano poco profundo. Es un entorno m rbido, apestado de muerte. All  aguardan grandes peligros a las almas aventureras y temerarias que osen acercarse. Todo el que llega demasiado lejos se vuelve loco. Se escuchan por todo el sector los sonidos mon tonos de los zombis aguardando nuevas v ctimas. Si rodeas el lago y logras atravesar el  rea de los zombis, llegar s al campamento de los cient ficos; los cerebritos, transportados hasta all  en helic ptero, estar n realizando alguna investigaci n. Puedes charlar con ellos; te comprar n artefactos e incluso puede que te env en a alguna misi n.</text>
+		<text>El legendario lago que había en el sector del mismo nombre se secó hace mucho tiempo, y lo que queda en su lugar es un pantano poco profundo. Es un entorno mórbido, apestado de muerte. Allí aguardan grandes peligros a las almas aventureras y temerarias que osen acercarse. Todo el que llega demasiado lejos se vuelve loco. Se escuchan por todo el sector los sonidos monótonos de los zombis aguardando nuevas víctimas. Si rodeas el lago y logras atravesar el área de los zombis, llegarás al campamento de los científicos; los cerebritos, transportados hasta allí en helicóptero, estarán realizando alguna investigación. Puedes charlar con ellos; te comprarán artefactos e incluso puede que te envíen a alguna misión.</text>
 	</string>
 	<string id="enc_zone_zone-story_story-2006">
-		<text>La zona contaminada brillaba con la luz m s resplandeciente; era casi insoportable para el ojo humano. Pr cticamente se pod a ver c mo se transformaban en vapor las nubes del cielo. Tras un momento de silencio mortal, lleg  el sonido atronador, y despu s la tierra tembl . La gente cay  al suelo cerrando los ojos y tap ndose los ojos. Los que quedaron en pie corrieron para tratar de salvar sus vidas. Parec a como si hubiese explotado de repente todo el combustible nuclear enterrado bajo el Sarc fago. Al d a siguiente, el ej rcito acordon  la nueva Zona. Los sat lites ayudaron a determinar que el epicentro de la explosi n no estaba en las proximidades de los reactores de la central nuclear, sino aproximadamente a medio kil metro de all . Se cree que muri  todo el personal de la central, aunque mucha gente sobrevivi  dentro del  rea acordonada. La operaci n de rescate pronto se revel  como una tentativa in til, ya que mor an y se estropeaban todas las personas y las m quinas que se enviaban dentro del  rea. Poco despu s del desastre, el di metro de la Zona se ampli  varios kil metros. Perecieron en el acto la mayor a de las tropas estatales que vigilaban el l mite y los equipos de investigaci n instalados all . Presa del p nico, la gente huy  del lugar. Los habitantes de las ciudades y pueblos vecinos fueron evacuados r pidamente. Un gran peligro amenaza al mundo y no podemos ni imaginarnos su magnitud real.</text>
+		<text>La zona contaminada brillaba con la luz más resplandeciente; era casi insoportable para el ojo humano. Prácticamente se podía ver cómo se transformaban en vapor las nubes del cielo. Tras un momento de silencio mortal, llegó el sonido atronador, y después la tierra tembló. La gente cayó al suelo cerrando los ojos y tapándose los ojos. Los que quedaron en pie corrieron para tratar de salvar sus vidas. Parecía como si hubiese explotado de repente todo el combustible nuclear enterrado bajo el Sarcófago. Al día siguiente, el ejército acordonó la nueva Zona. Los satélites ayudaron a determinar que el epicentro de la explosión no estaba en las proximidades de los reactores de la central nuclear, sino aproximadamente a medio kilómetro de allí. Se cree que murió todo el personal de la central, aunque mucha gente sobrevivió dentro del área acordonada. La operación de rescate pronto se reveló como una tentativa inútil, ya que morían y se estropeaban todas las personas y las máquinas que se enviaban dentro del área. Poco después del desastre, el diámetro de la Zona se amplió varios kilómetros. Perecieron en el acto la mayoría de las tropas estatales que vigilaban el límite y los equipos de investigación instalados allí. Presa del pánico, la gente huyó del lugar. Los habitantes de las ciudades y pueblos vecinos fueron evacuados rápidamente. Un gran peligro amenaza al mundo y no podemos ni imaginarnos su magnitud real.</text>
 	</string>
 	<string id="enc_zone_zone-story_story-2008">
-		<text>Han pasado dos a os desde el desastre de la planta nuclear de Chern bil. Un cifra astron mica de v ctimas, cuantiosos desaparecidos, reses muertas, edificios en ruinas, bosques mutilados... A d a de hoy, los cient ficos no tienen ninguna explicaci n sobre lo que ocurri  en Chern bil. Mientras tanto, se han encontrado anomal as inconcebibles en el  rea y la Zona contin a expandi ndose. En las escasas expediciones realizadas se han encontrado especies de animales mutadas que muestran habilidades incre bles.</text>
+		<text>Han pasado dos años desde el desastre de la planta nuclear de Chernóbil. Un cifra astronómica de víctimas, cuantiosos desaparecidos, reses muertas, edificios en ruinas, bosques mutilados... A día de hoy, los científicos no tienen ninguna explicación sobre lo que ocurrió en Chernóbil. Mientras tanto, se han encontrado anomalías inconcebibles en el área y la Zona continúa expandiéndose. En las escasas expediciones realizadas se han encontrado especies de animales mutadas que muestran habilidades increíbles.</text>
 	</string>
 	<string id="enc_zone_zone-story_story-2010">
-		<text>Siguiendo los pasos de esos individualistas temerarios que se autodenominan stalkers, se est n realizando de nuevo expediciones de investigaci n para estudiar en profundidad la Zona. Sin embargo, el per metro protegido por el ej rcito tiene otros habitantes peligrosos, desde cazadores furtivos a bandidos de la peor clase. La mayor a de los stalkers recorren la Zona en busca de anomal as y de los llamados artefactos, por los que obtienen considerables beneficios.</text>
+		<text>Siguiendo los pasos de esos individualistas temerarios que se autodenominan stalkers, se están realizando de nuevo expediciones de investigación para estudiar en profundidad la Zona. Sin embargo, el perímetro protegido por el ejército tiene otros habitantes peligrosos, desde cazadores furtivos a bandidos de la peor clase. La mayoría de los stalkers recorren la Zona en busca de anomalías y de los llamados artefactos, por los que obtienen considerables beneficios.</text>
 	</string>
 	<string id="enc_zone_zone-story_story-raid">
-		<text>El ej rcito y fuerzas especiales dirigidas por destacamentos de stalkers paramilitares se lanzaron a una incursi n masiva en la Zona. Su objetivo era llegar a la planta de Chern bil y eliminar la causa de las anomal as o, al menos, obtener informaci n de primera mano sobre el estado actual de la situaci n. Esta tentativa, apoyada por miles de efectivos y maquinaria pesada, fue un completo fracaso. Los grupos aislados de supervivientes se vieron forzados a establecerse dentro de la Zona con escasas esperanzas de ser rescatados.</text>
+		<text>El ejército y fuerzas especiales dirigidas por destacamentos de stalkers paramilitares se lanzaron a una incursión masiva en la Zona. Su objetivo era llegar a la planta de Chernóbil y eliminar la causa de las anomalías o, al menos, obtener información de primera mano sobre el estado actual de la situación. Esta tentativa, apoyada por miles de efectivos y maquinaria pesada, fue un completo fracaso. Los grupos aislados de supervivientes se vieron forzados a establecerse dentro de la Zona con escasas esperanzas de ser rescatados.</text>
 	</string>
 	<string id="Escape">
 		<text>Avanzadilla</text>
@@ -277,7 +277,7 @@
 		<text>Vertedero</text>
 	</string>
 	<string id="Gravi">
-		<text>V rtice</text>
+		<text>Vórtice</text>
 	</string>
 	<string id="Lift">
 		<text>Ascensor</text>
@@ -289,7 +289,7 @@
 		<text>Remolino</text>
 	</string>
 	<string id="Military-loc">
-		<text>Base del ej rcito</text>
+		<text>Base del ejército</text>
 	</string>
 	<string id="Pripiat">
 		<text>Pripyat</text>
@@ -304,22 +304,22 @@
 		<text>Territorio salvaje</text>
 	</string>
 	<string id="Stancia">
-		<text>Central nuclear de Chern bil</text>
+		<text>Central nuclear de Chernóbil</text>
 	</string>
 	<string id="Story-2006">
 		<text>12 de abril de 2008, 14:33</text>
 	</string>
 	<string id="Story-2008">
-		<text>A o 2010</text>
+		<text>Año 2010</text>
 	</string>
 	<string id="Story-2010">
-		<text>A o 2011</text>
+		<text>Año 2011</text>
 	</string>
 	<string id="Story-raid">
-		<text>Incursi n del ej rcito en la Zona. 2011</text>
+		<text>Incursión del ejército en la Zona. 2011</text>
 	</string>
 	<string id="Time_machine">
-		<text>M quina del tiempo</text>
+		<text>Máquina del tiempo</text>
 	</string>
 	<string id="Yantar">
 		<text>Yantar</text>

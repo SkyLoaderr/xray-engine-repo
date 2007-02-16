@@ -19,7 +19,7 @@
 		<text>Selezione arma</text>
 	</string>
 	<string id="hide_weapon_tutorial">
-		<text>Alcuni stalker si rifiutano di parlarti se rivolgi l'arma contro di loro. Per nasconderla, basta selezionare un bullone (($$ACTION_wpn_6$$).</text>
+		<text>Alcuni stalker si rifiutano di parlarti se rivolgi l'arma contro di loro. Per nasconderla, basta selezionare un bullone ($$ACTION_wpn_6$$).</text>
 	</string>
 	<string id="jump">
 		<text>Salto</text>
@@ -46,7 +46,7 @@
 		<text>Atteggiamento</text>
 	</string>
 	<string id="relation_tutorial">
-		<text>Prestando aiuto agli altri personaggi, migliorerà il loro atteggiamento nei tuoi confronti e la tua reputazione. Questi due fattori sono importanti, poiché facilitano l'interazione con i personaggi che incontri. Questi, infatti, saranno più propensi a fornirti informazioni aggiuntive e venderti i loro oggetti a prezzi inferiori. Al contrario, se farai fuoco contro qualcuno, la sua reazione, e quella dei suoi amici, sarà immediatamente negativa, e non esiterà ad attaccarti.</text>
+		<text>Prestando aiuto agli altri personaggi, migliorerai il loro atteggiamento nei tuoi confronti e la tua reputazione. Questi due fattori sono importanti, poiché facilitano l'interazione con i personaggi che incontri. Questi, infatti, saranno più propensi a fornirti informazioni aggiuntive e venderti i loro oggetti a prezzi inferiori. Al contrario, se farai fuoco contro qualcuno la sua reazione e quella dei suoi amici saranno immediatamente negative, e non esiteranno ad attaccarti.</text>
 	</string>
 	<string id="sleep_tutorial">
 		<text>Questo è un buon posto per farsi un pisolino. Qui puoi farti una bella dormita, aspettare che passi la notte o semplicemente ammazzare il tempo. Per andare a dormire, apri l'inventario, imposta la durata del sonno e premi il pulsante Riposa. Il tuo personaggio si sveglierà all'ora prestabilita. A volte farà dei sogni.</text>
@@ -55,7 +55,7 @@
 		<text>Scatto</text>
 	</string>
 	<string id="sprint_tutorial">
-		<text>Tavolta è necessario correre più rapidamente del solito. Per farlo, premi ($$ACTION_sprint_toggle$$) mentre stai correndo. Il personaggio che scatta è più veloce e riesce a saltare più in alto, ma si stanca più in fretta e non può sparare.</text>
+		<text>Tavolta è necessario correre più rapidamente del solito. Per farlo, premi ($$ACTION_sprint_toggle$$) mentre stai correndo. Il personaggio scatta è più veloce e riesce a saltare più in alto, ma si stanca più in fretta e non può sparare.</text>
 	</string>
 	<string id="starvation_tutorial">
 		<text>Se il personaggio non mangia per troppo tempo, comincia ad avere fame. A meno che non trovi qualcosa da mangiare, la sua salute andrà gradualmente peggiorando. Per evitare che ciò accada, è necessario mangiare regolarmente. Una fetta di pane, cibo in scatola o una salsiccia risolvono il problema facilmente, almeno per un po'.</text>

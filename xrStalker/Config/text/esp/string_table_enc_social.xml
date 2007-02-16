@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="Army">
-		<text>Ej rcito</text>
+		<text>Ejйrcito</text>
 	</string>
 	<string id="Bandits">
 		<text>Bandidos</text>
 	</string>
 	<string id="Duty">
-		<text>Facci n Deber</text>
+		<text>Facciуn Deber</text>
 	</string>
 	<string id="enc_social_military_army">
-		<text>Soldados rasos del ej rcito. Protegen todas las carreteras que se adentran en la Zona, patrullan su per metro, matan a los mutantes y dan caza a los saqueadores. \nSpetsnaz: tropas de elite del ej rcito que normalmente se adentran en la Zona para llevar a cabo operaciones de rescate arriesgadas y otras misiones especiales.</text>
+		<text>Soldados rasos del ejйrcito. Protegen todas las carreteras que se adentran en la Zona, patrullan su perнmetro, matan a los mutantes y dan caza a los saqueadores. \nSpetsnaz: tropas de elite del ejйrcito que normalmente se adentran en la Zona para llevar a cabo operaciones de rescate arriesgadas y otras misiones especiales.</text>
 	</string>
 	<string id="enc_social_military_milstalkers">
-		<text>Soldados que se sometieron a un entrenamiento especial tras estar de servicio en la Zona, o stalkers que firmaron voluntariamente un contrato con el ej rcito. Normalmente est n bien armados y equipados con distintos materiales de apoyo. Su misi n principal es estudiar las causas y los efectos de la cat strofe y elaborar mapas de la Zona. Pueden trabajar solos o en peque os destacamentos de hasta cinco personas. Los stalkers militares no permiten que los stalkers civiles se aproximen, y abren fuego en cuanto los ven.</text>
+		<text>Soldados que se sometieron a un entrenamiento especial tras estar de servicio en la Zona, o stalkers que firmaron voluntariamente un contrato con el ejйrcito. Normalmente estбn bien armados y equipados con distintos materiales de apoyo. Su misiуn principal es estudiar las causas y los efectos de la catбstrofe y elaborar mapas de la Zona. Pueden trabajar solos o en pequeсos destacamentos de hasta cinco personas. Los stalkers militares no permiten que los stalkers civiles se aproximen, y abren fuego en cuanto los ven.</text>
 	</string>
 	<string id="enc_social_scientists_mobile-groups">
 		<text>Borrado</text>
 	</string>
 	<string id="enc_social_scientists_mobile-labs">
-		<text>Un laboratorio m vil es como un peque o b nker blindado, con diminutas ventanas de cristal tintado. Tiene gran resistencia frente a los ataques y, gracias a sus sistemas de supervivencia, puede funcionar de manera aut noma durante varios meses. El b nker se transporta hasta la Zona en un helic ptero. El personal del laboratorio nunca permite que los visitantes pasen m s all  de la c mara de aire externa, por lo que ning n stalker ha estado en su interior jam s.</text>
+		<text>Un laboratorio mуvil es como un pequeсo bъnker blindado, con diminutas ventanas de cristal tintado. Tiene gran resistencia frente a los ataques y, gracias a sus sistemas de supervivencia, puede funcionar de manera autуnoma durante varios meses. El bъnker se transporta hasta la Zona en un helicуptero. El personal del laboratorio nunca permite que los visitantes pasen mбs allб de la cбmara de aire externa, por lo que ningъn stalker ha estado en su interior jamбs.</text>
 	</string>
 	<string id="enc_social_stalker-clans_bandits">
-		<text>Miembros del hampa que llegaron a la Zona por distintos motivos: para ganar dinero con la venta de artefactos, huir de la ley o comerciar con armas. La Zona est  plagada de bandidos, desde simples delincuentes a peligrosos criminales, y la mayor a de ellos pertenecen a alguna banda. Aunque los bandidos de la Zona normalmente est n enfrentados entre s , el elemento criminal contin a siendo un grave problema para los stalkers normales.</text>
+		<text>Miembros del hampa que llegaron a la Zona por distintos motivos: para ganar dinero con la venta de artefactos, huir de la ley o comerciar con armas. La Zona estб plagada de bandidos, desde simples delincuentes a peligrosos criminales, y la mayorнa de ellos pertenecen a alguna banda. Aunque los bandidos de la Zona normalmente estбn enfrentados entre sн, el elemento criminal continъa siendo un grave problema para los stalkers normales.</text>
 	</string>
 	<string id="enc_social_stalker-clans_duty">
-		<text>Es un grupo paramilitar conocido por su gran disciplina, y cuyos miembros se rigen por un estricto c digo. Los miembros de Deber son el  nico grupo que se niega a comerciar con los extraordinarios objetos de la Zona en el mundo exterior. Al parecer, entregan todos los artefactos que encuentran a los cient ficos. El objetivo principal de sus miembros es proteger el mundo exterior de las peligros de la Zona. La mayor a de las operaciones del grupo est n relacionadas con la eliminaci n de monstruos; por eso las incursiones de Deber no representan ning n peligro para los stalkers normales. Esta facci n siempre ha estado enfrentada con la de Libertad.</text>
+		<text>Es un grupo paramilitar conocido por su gran disciplina, y cuyos miembros se rigen por un estricto cуdigo. Los miembros de Deber son el ъnico grupo que se niega a comerciar con los extraordinarios objetos de la Zona en el mundo exterior. Al parecer, entregan todos los artefactos que encuentran a los cientнficos. El objetivo principal de sus miembros es proteger el mundo exterior de los peligros de la Zona. La mayorнa de las operaciones del grupo estбn relacionadas con la eliminaciуn de monstruos; por eso las incursiones de Deber no representan ningъn peligro para los stalkers normales. Esta facciуn siempre ha estado enfrentada con la de Libertad.</text>
 	</string>
 	<string id="enc_social_stalker-clans_freedom">
-		<text>Anarquistas y temerarios que luchan por el acceso libre a la Zona y, como consecuencia, est n constantemente en conflicto con el ej rcito, los stalkers militares y la facci n Deber. Estos guerreros de la libertad, como se les llama, quieren compartir con el resto del mundo toda la informaci n relativa a la Zona, y critican el monopolio del Estado sobre sus secretos y prodigios.</text>
+		<text>Anarquistas y temerarios que luchan por el acceso libre a la Zona y, como consecuencia, estбn constantemente en conflicto con el ejйrcito, los stalkers militares y la facciуn Deber. Estos guerreros de la libertad, como se les llama, quieren compartir con el resto del mundo toda la informaciуn relativa a la Zona, y critican el monopolio del Estado sobre sus secretos y prodigios.</text>
 	</string>
 	<string id="enc_social_stalker-clans_killers">
-		<text>La facci n m s clandestina y secreta de la Zona; algunos ni siquiera conocen su existencia. Hay quien utiliza con regularidad los servicios de los mercenarios, verdaderos profesionales capaces de acabar r pidamente con cualquier stalker e incluso aniquilar a un peque o grupo de oponentes. Sus servicios no son baratos; los mercenarios piden grandes recompensas por sus servicios, bien sea en dinero o artefactos. Nadie conoce la ubicaci n de su base, lo que inclina a pensar que debe de estar escondida en las entra as de la Zona.</text>
+		<text>La facciуn mбs clandestina y secreta de la Zona; algunos ni siquiera conocen su existencia. Hay quien utiliza con regularidad los servicios de los mercenarios, verdaderos profesionales capaces de acabar rбpidamente con cualquier stalker e incluso aniquilar a un pequeсo grupo de oponentes. Sus servicios no son baratos; los mercenarios piden grandes recompensas por sus servicios, bien sea en dinero o artefactos. Nadie conoce la ubicaciуn de su base, lo que inclina a pensar que debe de estar escondida en las entraсas de la Zona.</text>
 	</string>
 	<string id="enc_social_stalker-clans_loners">
-		<text>Stalkers que exploran la Zona por su cuenta. La mayor a de los stalkers trabajan de este modo, ya que ser miembro de un grupo ocupa un tiempo precioso, adem s de que hay que compartir el bot n. Hay otros que simplemente prefieren la soledad y la independencia.</text>
+		<text>Stalkers que exploran la Zona por su cuenta. La mayorнa de los stalkers trabajan de este modo, ya que ser miembro de un grupo ocupa un tiempo precioso, ademбs de que hay que compartir el botнn. Hay otros que simplemente prefieren la soledad y la independencia.</text>
 	</string>
 	<string id="enc_social_stalker-clans_monolith">
-		<text>Este grupo es muy parecido a una secta religiosa. Sus miembros creen en la existencia de un complejo cristal de otra dimensi n, el Monolito, ubicado en alg n lugar del centro de la Zona. La mayor a de los stalkers tratan con desprecio a los adeptos al Monolito, y los consideran unos lun ticos. Desde sus comienzos, este grupo centra sus esfuerzos en bloquear el acceso al centro de la Zona para proteger el Monolito de los stalkers. Se rumorea que la base principal del grupo se encuentra en las entra as de la Zona, pero solo sus miembros conocen la ubicaci n exacta.</text>
+		<text>Este grupo es muy parecido a una secta religiosa. Sus miembros creen en la existencia de un complejo cristal de otra dimensiуn, el Monolito, ubicado en algъn lugar del centro de la Zona. La mayorнa de los stalkers tratan con desprecio a los adeptos al Monolito, y los consideran unos lunбticos. Desde sus comienzos, este grupo centra sus esfuerzos en bloquear el acceso al centro de la Zona para proteger el Monolito de los stalkers. Se rumorea que la base principal del grupo se encuentra en las entraсas de la Zona, pero solo sus miembros conocen la ubicaciуn exacta.</text>
 	</string>
 	<string id="enc_social_stalker-clans_zomstalkers">
-		<text>Pobres almas sometidas a una prolongada exposici n a altos niveles de radiaci n en Yantar y en otros sectores. Incautos stalkers que se volvieron locos y se convirtieron en cad veres andantes. Muchos de estos cad veres deambulan por la Zona, y algunos llegan incluso hasta el per metro. No se les puede ayudar, porque el proceso destructivo es irreversible. Los stalkers zombis son capaces de utilizar sus armas, pero carecen de inteligencia, y se les puede o r mascullar frases inacabadas y sin sentido. Gradualmente van perdiendo todas sus habilidades hasta convertirse en aut nticos zombis. Normalmente son muy agresivos, y, en grandes grupos, pueden resultar una seria amenaza.</text>
+		<text>Pobres almas sometidas a una prolongada exposiciуn a altos niveles de radiaciуn en Yantar y en otros sectores. Incautos stalkers que se volvieron locos y se convirtieron en cadбveres andantes. Muchos de estos cadбveres deambulan por la Zona, y algunos llegan incluso hasta el perнmetro. No se les puede ayudar, porque el proceso destructivo es irreversible. Los stalkers zombis son capaces de utilizar sus armas, pero carecen de inteligencia, y se les puede oнr mascullar frases inacabadas y sin sentido. Gradualmente van perdiendo todas sus habilidades hasta convertirse en autйnticos zombis. Normalmente son muy agresivos, y, en grandes grupos, pueden resultar una seria amenaza.</text>
 	</string>
 	<string id="Freedom">
-		<text>Facci n Libertad</text>
+		<text>Facciуn Libertad</text>
 	</string>
 	<string id="Killers">
 		<text>Mercenarios</text>
@@ -58,16 +58,16 @@
 		<text>Stalkers militares</text>
 	</string>
 	<string id="Mobile-groups">
-		<text>Grupos de investigaci n</text>
+		<text>Grupos de investigaciуn</text>
 	</string>
 	<string id="Mobile-labs">
-		<text>Laboratorio cient fico m vil</text>
+		<text>Laboratorio cientнfico mуvil</text>
 	</string>
 	<string id="Monolith">
-		<text>Facci n Monolith</text>
+		<text>Facciуn Monolith</text>
 	</string>
 	<string id="Scientists">
-		<text>Cient ficos</text>
+		<text>Cientнficos</text>
 	</string>
 	<string id="Social">
 		<text>Facciones</text>

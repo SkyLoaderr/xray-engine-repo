@@ -1,26 +1,26 @@
 	<string id="blokpost_case">
-		<text>Malet n documentos</text>
+		<text>Maletín documentos</text>
 	</string>
 	<string id="esc_fox">
 		<text>Fox herido</text>
 	</string>
 	<string id="esc_mill">
-		<text>F brica abandonada. Aqu  vieron al hermano herido por  ltima vez.</text>
+		<text>Fábrica abandonada. Aquí vieron al hermano herido por última vez.</text>
 	</string>
 	<string id="escape_trader">
 		<text>Comerciante</text>
 	</string>
 	<string id="factory_bandits">
-		<text>Bandidos de la f brica</text>
+		<text>Bandidos de la fábrica</text>
 	</string>
 	<string id="killers_team">
 		<text>Grupo de mercenarios desconocido</text>
 	</string>
 	<string id="novice_leader">
-		<text>L der del campamento de los novatos</text>
+		<text>Líder del campamento de los novatos</text>
 	</string>
 	<string id="soldiers_bridge">
-		<text>Punto de control del ej rcito en el puente destruido. Se sabe que los soldados aceptan sobornos por dejar pasar.</text>
+		<text>Punto de control del ejército en el puente destruido. Se sabe que los soldados aceptan sobornos por dejar pasar.</text>
 	</string>
 	<string id="tutorial_artefact">
 		<text>Artefacto</text>
@@ -41,7 +41,7 @@
 		<text>Nimble, un prisionero.</text>
 	</string>
 	<string id="volk">
-		<text>Wolf, l der del campamento de los novatos.</text>
+		<text>Wolf, líder del campamento de los novatos.</text>
 	</string>
 	<string id="wolfs_rangers">
 		<text>Exploradores de Wolf.</text>

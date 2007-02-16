@@ -7,28 +7,28 @@
 		<text>Esta es otra secuencia de prueba de un OBJETO</text>
 	</string>
 	<string id="item_case_esc_desc">
-		<text>Malet n ign fugo con documentos. </text>
+		<text>Maletín ignífugo con documentos. </text>
 	</string>
 	<string id="item_decoder_desc">
-		<text>Ganz a electr nica. Bastante rara, no parece la herramienta multiuso de un ladr n. M s bien parece haber sido construida para abrir una cerradura electr nica en concreto y no puede usarse para abrir nada m s. </text>
+		<text>Ganzúa electrónica. Bastante rara, no parece la herramienta multiuso de un ladrón. Más bien parece haber sido construida para abrir una cerradura electrónica en concreto y no puede usarse para abrir nada más. </text>
 	</string>
 	<string id="item_decoder_name">
 		<text>Descodificador</text>
 	</string>
 	<string id="item_detector_yantar_desc">
-		<text>Detector de emisiones ps quicas</text>
+		<text>Detector de emisiones psíquicas</text>
 	</string>
 	<string id="item_detector_yantar_name">
 		<text>Sensor PP-4a</text>
 	</string>
 	<string id="item_doc_x16_desc">
-		<text>Documento de pl stico. Necesitar as una licenciatura en Biolog a para entender lo que dice.</text>
+		<text>Documento de plástico. Necesitarías una licenciatura en Biología para entender lo que dice.</text>
 	</string>
 	<string id="item_doc_x16_name">
 		<text>Papeles del Lab. X16</text>
 	</string>
 	<string id="item_doc_x18_desc">
-		<text>Una pila enorme de documentos cient ficos. T rminos, f rmulas y una serie de diagramas.</text>
+		<text>Una pila enorme de documentos científicos. Términos, fórmulas y una serie de diagramas.</text>
 	</string>
 	<string id="item_doc_x18p1_name">
 		<text>Papeles del Lab. X18, parte 1</text>
@@ -46,7 +46,7 @@
 		<text>Papeles del Lab. X18, parte 5</text>
 	</string>
 	<string id="item_docs_hiden_pri_desc">
-		<text>Manuscrito gastado encuadernado en piel. Escrito por el propio Strelok. A juzgar solo por el t tulo, puede que explique algunos de los secretos de la Zona.</text>
+		<text>Manuscrito gastado encuadernado en piel. Escrito por el propio Strelok. A juzgar solo por el título, puede que explique algunos de los secretos de la Zona.</text>
 	</string>
 	<string id="item_docs_hiden_pri_name">
 		<text>Papeles del compartimento de Pripyat </text>
@@ -58,31 +58,31 @@
 		<text>Caja de explosivos</text>
 	</string>
 	<string id="item_flash_crazy_mil_desc">
-		<text>Unidad de informaci n:  til para almacenar y transferir informaci n.</text>
+		<text>Unidad de información: útil para almacenar y transferir información.</text>
 	</string>
 	<string id="item_flash_crazy_mil_name">
 		<text>Unidad del stalker loco</text>
 	</string>
 	<string id="item_flash_eco_rost_desc">
-		<text>Unidad de informaci n:  til para almacenar y transferir informaci n.</text>
+		<text>Unidad de información: útil para almacenar y transferir información.</text>
 	</string>
 	<string id="item_flash_eco_rost_name">
 		<text>Unidad del profesor Kruglov</text>
 	</string>
 	<string id="item_flash_esc_desc">
-		<text>Unidad de informaci n:  til para almacenar y transferir informaci n.</text>
+		<text>Unidad de información: útil para almacenar y transferir información.</text>
 	</string>
 	<string id="item_flash_esc_name">
 		<text>Unidad del stalker prisionero</text>
 	</string>
 	<string id="item_flash_gslinger_agro_desc">
-		<text>Unidad de informaci n:  til para almacenar y transferir informaci n.</text>
+		<text>Unidad de información: útil para almacenar y transferir información.</text>
 	</string>
 	<string id="item_flash_gslinger_agro_name">
 		<text>Unidad de Strelok</text>
 	</string>
 	<string id="item_key_x18_desc">
-		<text>Llave electr nica del laboratorio subterr neo X18.</text>
+		<text>Llave electrónica del laboratorio subterráneo X18.</text>
 	</string>
 	<string id="item_key_x18_name">
 		<text>Llave de Borov</text>
@@ -103,22 +103,22 @@
 		<text>PDA de Tirano</text>
 	</string>
 	<string id="item_quest_case_02_desc">
-		<text>Malet n ign fugo con documentos. </text>
+		<text>Maletín ignífugo con documentos. </text>
 	</string>
 	<string id="item_quest_case_02_name">
 		<text>Documentos del Instituto Agroprom </text>
 	</string>
-	<string id="item_ñase_esc_name">
+	<string id="item_?ase_esc_name">
 		<text>Papeles de la avanzadilla</text>
 	</string>
 	<string id="yan_bad_psy_helmet_desc">
-		<text>Prototipo desarrollado por los cient ficos para proteger a la gente de emisiones ps quicas. No calibrado.</text>
+		<text>Prototipo desarrollado por los científicos para proteger a la gente de emisiones psíquicas. No calibrado.</text>
 	</string>
 	<string id="yan_bad_psy_helmet_name">
 		<text>Psicocasco no calibrado.</text>
 	</string>
 	<string id="yan_good_psy_helmet_desc">
-		<text>Prototipo funcional desarrollado por los cient ficos para proteger a la gente de emisiones ps quicas.</text>
+		<text>Prototipo funcional desarrollado por los científicos para proteger a la gente de emisiones psíquicas.</text>
 	</string>
 	<string id="yan_good_psy_helmet_name">
 		<text>Psicocasco funcional</text>

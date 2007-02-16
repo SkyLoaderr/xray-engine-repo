@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="dm_general_action_info">
-		<text> Qu  est  pasando aqu ?</text>
+		<text>їQuй estб pasando aquн?</text>
 	</string>
 	<string id="dm_general_cool_info">
-		<text> Puedes contarme algo interesante?</text>
+		<text>їPuedes contarme algo interesante?</text>
 	</string>
 	<string id="dm_general_cool_info_no_more">
-		<text>No s  nada m s.</text>
+		<text>No sй nada mбs.</text>
 	</string>
 	<string id="dm_general_help_bandage">
 		<text>Las vendas.</text>
 	</string>
 	<string id="dm_general_help_medkit">
-		<text>El botiqu n.</text>
+		<text>El botiquнn.</text>
 	</string>
 	<string id="dm_general_trade_info">
-		<text>Interesado en informaci n. Por dinero.</text>
+		<text>Interesado en informaciуn. Por dinero.</text>
 	</string>
 	<string id="dm_general_trade_info_caption">
 		<text>Puedo ofrecer lo siguiente.</text>
@@ -25,6 +25,6 @@
 		<text>No tengo nada que ofrecer.</text>
 	</string>
 	<string id="dm_general_trade_info_nothing">
-		<text>En otra ocasi n.</text>
+		<text>En otra ocasiуn.</text>
 	</string>
 </string_table>

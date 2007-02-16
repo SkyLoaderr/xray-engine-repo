@@ -29,7 +29,7 @@
 		<text>OK, I'll meet with Ghost's man. I will be waiting for him in Strelok's hiding place. If he's one of our own, he will know where to look for me. Doctor.</text>
 	</string>
 	<string id="esc_flash_task_descr">
-		<text>Trader: "…my guys were coming back from an assignment and disappeared. One of them - called Nimble - was bringing me some info…And they all disappeared really close by because they missed the bridge. Don't know what to think. Anyway: find Nimble, dead or alive, just as long as he has the flash-drive. Bring it to me. Nimble was one of Wolf's men - and Wolf is here in the camp. Ask him, he probably knows something. He'll help you with weapons and gear."</text>
+		<text>Trader: "...my guys were coming back from an assignment and disappeared. One of them - called Nimble - was bringing me some info...And they all disappeared really close by because they missed the bridge. Don't know what to think. Anyway: find Nimble, dead or alive, just as long as he has the flash drive. Bring it to me. Nimble was one of Wolf's men - and Wolf is here in the camp. Ask him, he probably knows something. He'll help you with weapons and gear."</text>
 	</string>
 	<string id="esc_fox_info">
 		<text>Seriy to Fox: a friend wants me to give a helping hand to a bunch of stalkers that dug out Strelok's stash. I'm off to the hangar at the Garbage with my boys. That's where you can find me.</text>
@@ -47,7 +47,7 @@
 		<text>Dead stalker's PDA</text>
 	</string>
 	<string id="gunslinger_clan_cache">
-		<text>…came to in the den of some dude, can't remember anything. Just have a PDA on me with a picture of some other dude. There's just one message in the PDA - kill Strelok.</text>
+		<text>...came to in the den of some dude, can't remember anything. Just have a PDA on me with a picture of some other dude. There's just one message in the PDA - kill Strelok.</text>
 	</string>
 	<string id="help_to_fox">
 		<text>Trader: Fox has come back from his raid and is asking for help. Perhaps he knows something about Strelok.</text>

@@ -58,7 +58,7 @@
 		<text>Tutti contro tutti</text>
 	</string>
 	<string id="st_rank_experienced">
-		<text>esperto</text>
+		<text>Esperto</text>
 	</string>
 	<string id="st_rank_legend">
 		<text>leggenda</text>
@@ -70,7 +70,7 @@
 		<text>professionista</text>
 	</string>
 	<string id="st_rank_veteran">
-		<text>veterano</text>
+		<text>Veterano</text>
 	</string>
 	<string id="st_team_deathmatch">
 		<text>Partita a squadre</text>
@@ -118,7 +118,7 @@
 		<text>Filtro anisotropico</text>
 	</string>
 	<string id="ui_mm_apply">
-		<text>Usa</text>
+		<text>Applica</text>
 	</string>
 	<string id="ui_mm_back">
 		<text>Indietro</text>
@@ -163,7 +163,7 @@
 		<text>EAX</text>
 	</string>
 	<string id="ui_mm_fullscreen">
-		<text>Schermo interno</text>
+		<text>Schermo intero</text>
 	</string>
 	<string id="ui_mm_gameplay">
 		<text>Game</text>

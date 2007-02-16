@@ -7,13 +7,13 @@
 		<text>Devoir</text>
 	</string>
 	<string id="actor_freedom">
-		<text>Libert </text>
+		<text>Liberté</text>
 	</string>
 	<string id="arena_enemy">
 		<text>Mercenaire</text>
 	</string>
 	<string id="bad">
-		<text>n gative</text>
+		<text>négative</text>
 	</string>
 	<string id="bandit">
 		<text>Bandit</text>
@@ -22,7 +22,7 @@
 		<text>Devoir</text>
 	</string>
 	<string id="ecolog">
-		<text> cologiste</text>
+		<text>Écologiste</text>
 	</string>
 	<string id="enemy">
 		<text>ennemi(e)</text>
@@ -34,13 +34,13 @@
 		<text>Exosquelette PNB-4UZ</text>
 	</string>
 	<string id="experienced">
-		<text>exp riment (e)</text>
+		<text>Expérimenté(e)</text>
 	</string>
 	<string id="Found_PDA">
-		<text>PDA d couvert(s)</text>
+		<text>PDA découvert(s)</text>
 	</string>
 	<string id="freedom">
-		<text>Libert </text>
+		<text>Liberté</text>
 	</string>
 	<string id="friendly">
 		<text>ami(e)</text>
@@ -58,28 +58,28 @@
 		<text>Cordon</text>
 	</string>
 	<string id="l02_garbage">
-		<text>D charge</text>
+		<text>Décharge</text>
 	</string>
 	<string id="l03_agroprom">
 		<text>Institut de Recherche Agroprom</text>
 	</string>
 	<string id="l04_darkvalley">
-		<text>La Vall e obscure</text>
+		<text>La Vallée obscure</text>
 	</string>
 	<string id="l05_bar">
 		<text>Bar</text>
 	</string>
 	<string id="l06_rostok">
-		<text>Les Terres abandonn es</text>
+		<text>Les Terres abandonnées</text>
 	</string>
 	<string id="l07_military">
-		<text>Entrep ts militaires</text>
+		<text>Entrepôts militaires</text>
 	</string>
 	<string id="l08_yantar">
 		<text>Yantar</text>
 	</string>
 	<string id="l10_radar">
-		<text>La For t rouge</text>
+		<text>La Forêt rouge</text>
 	</string>
 	<string id="l11_pripyat">
 		<text>Pripyat</text>
@@ -103,7 +103,7 @@
 		<text>neutre</text>
 	</string>
 	<string id="novice">
-		<text>nouveau</text>
+		<text>Nouveau</text>
 	</string>
 	<string id="st_no_active_task">
 		<text>Aucune mission en cours</text>
@@ -133,19 +133,19 @@
 		<text>attitude</text>
 	</string>
 	<string id="ui_st_reputation">
-		<text>r putation</text>
+		<text>réputation</text>
 	</string>
 	<string id="very_bad">
-		<text>tr s n gative</text>
+		<text>très négative</text>
 	</string>
 	<string id="very_good">
-		<text>tr s positive</text>
+		<text>très posit.</text>
 	</string>
 	<string id="veteran">
-		<text>v t ran</text>
+		<text>vétéran</text>
 	</string>
 	<string id="zombied">
-		<text>Zombifi </text>
+		<text>Zombifié</text>
 	</string>
 	<string id="Btn_Cancel">
 		<text>Annuler</text>
@@ -166,10 +166,10 @@
 		<text>Sauvegarde automatique</text>
 	</string>
 	<string id="st_game_over">
-		<text>Partie termin e.</text>
+		<text>Partie terminée.</text>
 	</string>
 	<string id="st_item_used">
-		<text>Utilis </text>
+		<text>Utilisé</text>
 	</string>
 	<string id="st_not_enough_money">
 		<text>Pas assez d'argent</text>
@@ -178,22 +178,22 @@
 		<text>le PNJ n'a pas assez d'argent</text>
 	</string>
 	<string id="ui_st_opponent_items">
-		<text>Sac   dos de l'adversaire</text>
+		<text>Sac à dos PNJ</text>
 	</string>
 	<string id="st_search_treasure">
-		<text>Cherchez la planque ($$ACTION_USE$$)</text>
+		<text>Chercher la planque ($$ACTION_USE$$)</text>
 	</string>
 	<string id="inventory_item_use">
 		<text>Prenez l'objet ($$ACTION_USE$$)</text>
 	</string>
 	<string id="ui_mm_check_updates">
-		<text>V rification des mises   jour</text>
+		<text>Vérification des mises à jour</text>
 	</string>
 	<string id="ui_mm_alternative">
 		<text>Alternative</text>
 	</string>
 	<string id="ui_inv_health">
-		<text>Sant </text>
+		<text>Santé</text>
 	</string>
 	<string id="ui_inv_radiation">
 		<text>Radiation</text>
@@ -208,10 +208,10 @@
 		<text>Saignement</text>
 	</string>
 	<string id="st_mp_say_to_all">
-		<text>  tous</text>
+		<text>À tous</text>
 	</string>
 	<string id="st_mp_say_to_team">
-		<text>  l' quipe</text>
+		<text>À l'équipe</text>
 	</string>
 	<string id="st_knife">
 		<text>Couteau</text>
@@ -223,12 +223,30 @@
 		<text>Aucun vote actif.</text>
 	</string>
 	<string id="st_mp_ready">
-		<text>pr t</text>
+		<text>prêt</text>
 	</string>
 	<string id="st_mp_voting_succeed">
-		<text>Vote r ussi !</text>
+		<text>Vote réussi !</text>
 	</string>
 	<string id="st_mp_voting_failed">
-		<text> chec du vote !</text>
+		<text>Échec du vote !</text>
+	</string>
+	<string id="l03u_agr_underground">
+		<text>Sous-terrain Agroprom</text>
+	</string>
+	<string id="l04u_labx18">
+		<text>Labo. X-18</text>
+	</string>
+	<string id="l08u_brainlab">
+		<text>Labo. X-16</text>
+	</string>
+	<string id="l10u_bunker">
+		<text>Labo. X-10</text>
+	</string>
+	<string id="l12u_sarcofag">
+		<text>Sarcophage</text>
+	</string>
+	<string id="l12u_control_monolith">
+		<text>Unité de contrôle du Monolithe</text>
 	</string>
 </string_table>

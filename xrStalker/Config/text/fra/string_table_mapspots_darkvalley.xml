@@ -5,7 +5,7 @@
 		<text>Tunnel</text>
 	</string>
 	<string id="bar_darklab_documents_3_hint">
-		<text>Entr e du labo</text>
+		<text>Entrée du labo</text>
 	</string>
 	<string id="bar_darklab_documents_4_hint">
 		<text>Tuyau</text>
@@ -32,7 +32,7 @@
 		<text>Membre du Devoir captif</text>
 	</string>
 	<string id="val_sos_help_main_hint">
-		<text>Stalker bless </text>
+		<text>Stalker blessé</text>
 	</string>
 	<string id="val_zone_bandits_hint">
 		<text>Camp des bandits</text>
@@ -44,10 +44,10 @@
 		<text>Ancienne usine</text>
 	</string>
 	<string id="val_zone_pipe_hint">
-		<text>Canalisation d' gout</text>
+		<text>Canalisation d'égout</text>
 	</string>
 	<string id="val_zone_robbers_hint">
-		<text> levage de porcs abandonn </text>
+		<text>Élevage de porcs abandonné</text>
 	</string>
 	<string id="val_zone_south_gate_hint">
 		<text>Portes</text>

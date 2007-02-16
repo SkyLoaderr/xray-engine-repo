@@ -171,4 +171,34 @@
 	<string id="st_loading_sectors_portals">
 		<text>Sektoren & Portale werden geladen</text>
 	</string>
+	<string id="ui_st_conn_version_differs">
+		<text>Verbindungsfehler: Unterschiedliche Version.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_invalid">
+		<text>Verbindungsfehler: Ungültiger CD-Schlüssel</text>
+	</string>
+	<string id="ui_st_conn_cdkey_in_use">
+		<text>Verbindungsfehler: CD-Schlüssel wird schon genutzt.</text>
+	</string>
+	<string id="ui_st_conn_cdkey_disabled">
+		<text>Verbindungsfehler: CD-Schlüssel ist deaktiviert. Bitte Kundendienst kontaktieren.</text>
+	</string>
+	<string id="ui_st_conn_new_patch">
+		<text>Neuer Patch verfügbar.\n Version: %s\n Ort: %s\nJetzt herunterladen?</text>
+	</string>
+	<string id="ui_st_conn_no_new_patch">
+		<text>Keine neuen Patches verfügbar</text>
+	</string>
+	<string id="ui_mm_delete_existing_file_q">
+		<text>Spielstand löschen?</text>
+	</string>
+	<string id="st_game_paused">
+		<text>Pause</text>
+	</string>
+	<string id="st_bolt">
+		<text>Bolzen</text>
+	</string>
+	<string id="st_items">
+		<text>Gegenstände</text>
+	</string>
 </string_table>

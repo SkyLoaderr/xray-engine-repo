@@ -4,7 +4,7 @@
 		<text>TYPE DE PARTIE</text>
 	</string>
 	<string id="icon">
-		<text>IC NES</text>
+		<text>ICÔNES</text>
 	</string>
 	<string id="map">
 		<text>CARTE</text>
@@ -13,7 +13,7 @@
 		<text>Droit de vote</text>
 	</string>
 	<string id="mm_mp_anomalytime">
-		<text>Dur e des anomalies (min)</text>
+		<text>Durée des anomalies (min)</text>
 	</string>
 	<string id="mm_mp_artefactcapture">
 		<text>Capture de l'artefact</text>
@@ -25,13 +25,13 @@
 		<text>Nombre d'artefacts</text>
 	</string>
 	<string id="mm_mp_artefstay">
-		<text>Dur e des artefacts (min)</text>
+		<text>Durée des artefacts (min)</text>
 	</string>
 	<string id="mm_mp_autoteambalance">
-		<text> quilibrage automatique de l' quipe</text>
+		<text>Équilibrage automatique de l'équipe</text>
 	</string>
 	<string id="mm_mp_autoteamswap">
-		<text>Changement automatique d' quipe</text>
+		<text>Changement automatique d'équipe</text>
 	</string>
 	<string id="mm_mp_avail_maps">
 		<text>CARTES DISPONIBLES</text>
@@ -46,19 +46,19 @@
 		<text>Client</text>
 	</string>
 	<string id="mm_mp_create">
-		<text>Cr er</text>
+		<text>Créer</text>
 	</string>
 	<string id="mm_mp_damageblock">
-		<text>Invuln rabilit </text>
+		<text>Invulnérabilité</text>
 	</string>
 	<string id="mm_mp_damageblockindicator">
-		<text>Indicateur d'invuln rabilit </text>
+		<text>Indicateur d'invulnérabilité</text>
 	</string>
 	<string id="mm_mp_deaths">
 		<text>Morts</text>
 	</string>
 	<string id="mm_mp_dedicated">
-		<text>D di </text>
+		<text>Dédié</text>
 	</string>
 	<string id="mm_mp_empty">
 		<text>Vide</text>
@@ -67,7 +67,7 @@
 		<text>Filtres</text>
 	</string>
 	<string id="mm_mp_forcerespawn">
-		<text>Renaissance forc e (sec)</text>
+		<text>Renaissance forcée (sec)</text>
 	</string>
 	<string id="mm_mp_fraglimit">
 		<text>Limite de frags</text>
@@ -76,13 +76,13 @@
 		<text>Frags</text>
 	</string>
 	<string id="mm_mp_freezetime">
-		<text>Dur e d'immobilisation</text>
+		<text>Durée d'immobilisation</text>
 	</string>
 	<string id="mm_mp_friendlyfire">
 		<text>Tir amical</text>
 	</string>
 	<string id="mm_mp_friendlyindicators">
-		<text>Indicateur des alli s</text>
+		<text>Indicateur des alliés</text>
 	</string>
 	<string id="mm_mp_friendlynames">
 		<text>Noms des amis</text>
@@ -94,7 +94,7 @@
 		<text>Mode</text>
 	</string>
 	<string id="mm_mp_host_port">
-		<text>IP/h te:port</text>
+		<text>IP/hôte:port</text>
 	</string>
 	<string id="mm_mp_internet">
 		<text>Internet</text>
@@ -103,10 +103,10 @@
 		<text>Rejoindre</text>
 	</string>
 	<string id="mm_mp_lan">
-		<text>R seau local</text>
+		<text>Réseau local</text>
 	</string>
 	<string id="mm_mp_listenservers">
-		<text>Vide</text>
+		<text>Actif</text>
 	</string>
 	<string id="mm_mp_mapratation">
 		<text>Liste de cartes</text>
@@ -115,7 +115,7 @@
 		<text>Maximum de joueurs</text>
 	</string>
 	<string id="mm_mp_network_connection">
-		<text>Connexion au r seau</text>
+		<text>Connexion au réseau</text>
 	</string>
 	<string id="mm_mp_noanomalies">
 		<text>Sans anomalie</text>
@@ -136,22 +136,22 @@
 		<text>Serveur public</text>
 	</string>
 	<string id="mm_mp_quickrefresh">
-		<text>Rafra chissement rapide</text>
+		<text>Rafraîchissement rapide</text>
 	</string>
 	<string id="mm_mp_rateofchange">
 		<text>Coefficient de changement</text>
 	</string>
 	<string id="mm_mp_refresh">
-		<text>Rafra chir tout</text>
+		<text>Rafraîchir tout</text>
 	</string>
 	<string id="mm_mp_reinforcement">
 		<text>Renforcement (sec)</text>
 	</string>
 	<string id="mm_mp_respawnoptions">
-		<text>Options r g n ration</text>
+		<text>Options régénération</text>
 	</string>
 	<string id="mm_mp_sel_maps">
-		<text>CARTES S LECTIONN ES</text>
+		<text>CARTES SÉLECTIONNÉES</text>
 	</string>
 	<string id="mm_mp_server">
 		<text>Serveur</text>
@@ -160,7 +160,7 @@
 		<text>Liste des serveurs</text>
 	</string>
 	<string id="mm_mp_server_prop">
-		<text>Propri t s du serveur</text>
+		<text>Propriétés du serveur</text>
 	</string>
 	<string id="mm_mp_serverinfo">
 		<text>Informations du serveur</text>
@@ -172,40 +172,40 @@
 		<text>Nom de serveur</text>
 	</string>
 	<string id="mm_mp_serversettings">
-		<text>Param tres du serveur</text>
+		<text>Paramètres du serveur</text>
 	</string>
 	<string id="mm_mp_spectator">
 		<text>Spectateur</text>
 	</string>
 	<string id="mm_mp_spectator_firsteye">
-		<text>Premi re personne</text>
+		<text>Première personne</text>
 	</string>
 	<string id="mm_mp_spectator_freefly">
-		<text>Cam ra libre</text>
+		<text>Caméra libre</text>
 	</string>
 	<string id="mm_mp_spectator_freelook">
-		<text>Troisi me personne libre</text>
+		<text>Troisième personne libre</text>
 	</string>
 	<string id="mm_mp_spectator_lookat">
-		<text>Troisi me personne</text>
+		<text>Troisième personne</text>
 	</string>
 	<string id="mm_mp_spectator_options">
-		<text>Param tres spectateur</text>
+		<text>Paramètres spectateur</text>
 	</string>
 	<string id="mm_mp_spectator_teamonly">
-		<text> quipe seulement</text>
+		<text>Équipe seulement</text>
 	</string>
 	<string id="mm_mp_startweather">
-		<text>M t o initiale</text>
+		<text>Météo initiale</text>
 	</string>
 	<string id="mm_mp_timelimit">
 		<text>Chrono (min)</text>
 	</string>
 	<string id="mm_mp_warmuptime">
-		<text> chauffement (sec)</text>
+		<text>Échauffement (sec)</text>
 	</string>
 	<string id="mm_mp_weatheroptions">
-		<text>Options m t o</text>
+		<text>Options météo</text>
 	</string>
 	<string id="mm_mp_withoutfriendlyfire">
 		<text>Aucun tir amical</text>
@@ -220,7 +220,7 @@
 		<text>Utiliser un mot de passe</text>
 	</string>
 	<string id="mp_vote_hint">
-		<text>Voix POUR : [$$ACTION_VOTE_YES$$]\nVoix CONTRE : [$$ACTION_VOTE_NO$$]\nR sultats : [$$ACTION_VOTE$$]</text>
+		<text>Voix POUR : [$$ACTION_VOTE_YES$$]\nVoix CONTRE : [$$ACTION_VOTE_NO$$]\nRésultats : [$$ACTION_VOTE$$]</text>
 	</string>
 	<string id="ping">
 		<text>PING</text>
@@ -230,5 +230,11 @@
 	</string>
 	<string id="server name">
 		<text>NOM DE SERVEUR</text>
+	</string>
+	<string id="version">
+		<text>Version</text>
+	</string>
+	<string id="st_mp_gsfilter">
+		<text>Filtre :</text>
 	</string>
 </string_table>

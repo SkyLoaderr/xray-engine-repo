@@ -28,7 +28,7 @@
 		<text>Die Banditen ausschalten, die sich an der Müllhalde niedergelassen haben. Die Operation muss schnell und effektiv sein ...</text>
 	</string>
 	<string id="barmen_eliminate_camp_1_text">
-		<text>Ein Job, was? Mal sehen, was wir haben ... Aha, hier haben wir was: Kannst du dieses Banditenpack an der Müllhalde ausschalten? Die Wächter kriegen es trotz all ihrer Reden über Recht und Gesetz nicht hin. Das ist ein bloß Abschaum, sie werden nicht lange durchhalten. Aber der Erste, der sie kriegt, räumt richtig ab. Und der Schnaps geht natürlich auf mich!</text>
+		<text>Ein Job, was? Mal sehen, was wir haben ... Aha, hier haben wir was: Kannst du dieses Banditenpack an der Müllhalde ausschalten? Die Wächter kriegen es trotz all ihrer Reden über Recht und Gesetz nicht hin. Das ist bloß Abschaum, sie werden nicht lange durchhalten. Aber der Erste, der sie kriegt, räumt richtig ab. Und der Schnaps geht natürlich auf mich!</text>
 	</string>
 	<string id="barmen_eliminate_camp_2">
 		<text>Die Söldner und Banditen in Rostok ausschalten.</text>
@@ -271,7 +271,7 @@
 		<text>Die Banditenbasis im Dunklen Tal braucht Schutz.</text>
 	</string>
 	<string id="dolg_eliminate_lager_13_text">
-		<text>Es ist von größter Wichtigkeit, die Hauptbasis der Banditen zu überfallen und so viele Gegner wie möglich zu vernichten. Sie liegt im Dunklen Tal, dort, wo auch das unfertige Wissenschaftszentrum liegt. Der Feind zählt zurzeit dreißig Kämpfer mit leichten Automatikwaffen, Schusswaffen und Schrotflinten. Alles klar?</text>
+		<text>Es ist von größter Wichtigkeit, die Hauptbasis der Banditen zu überfallen und so viele Gegner wie möglich zu vernichten. Sie liegt im Dunklen Tal, dort, wo auch das unfertige Wissenschaftszentrum liegt. Der Feind zählt zur Zeit dreißig Kämpfer mit leichten Automatikwaffen, Schusswaffen und Schrotflinten. Alles klar?</text>
 	</string>
 	<string id="dolg_eliminate_lager_14">
 		<text>Die Schnorks vernichten.</text>
@@ -380,7 +380,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Der Wächter möchte seine Waffe haben, die er auf Erkundung irgendwo im Dunklen Tal verloren hat.</text>
 	</string>
 	<string id="drunk_dolg_find_item_text">
-		<text>Ich hätte nicht so ausrasten sollen. Die Zone pfuscht einem ins Hirn. Ich dachte, ich hätte gute Nerven, vor nichts Angst, und jetzt das. Dieses Heulen in den Ohren. Alles war wie sonst. Ein Erkundungsauftrag ins Dunkle Tal, wir sind mit Kriwoi in den Graben runter, um den Rest der Gruppe zu decken, und dann auf einmal dieses Heulen. Ich hatte Panik. Verdammt, ich weiß nicht mal mehr, wie ich zu den Koordinaten bin. Als ich zu Basis zurück bin, hat Woronin mich fast auf der Stelle erschossen: er hatte mir gerade eine verbesserte Kanone gegeben, so als Belohnung. Und ich ... habe Panik bekommen, bin abgehauen und habe die Kanone da vergessen. Könntest du sie mir holen, denn wo sollte ich ohne eine ordentliche Waffe hin?</text>
+		<text>Ich hätte nicht so ausrasten sollen. Die Zone pfuscht einem ins Hirn. Ich dachte, ich hätte gute Nerven, vor nichts Angst, und jetzt das. Dieses Heulen in den Ohren. Alles war wie sonst. Ein Erkundungsauftrag ins Dunkle Tal, wir sind mit Kriwoi in den Graben runter, um den Rest der Gruppe zu decken, und dann auf einmal dieses Heulen. Ich hatte Panik. Verdammt, ich weiß nicht mal mehr, wie ich zu den Koordinaten bin. Als ich zur Basis zurück bin, hat Woronin mich fast auf der Stelle erschossen: er hatte mir gerade eine verbesserte Kanone gegeben, so als Belohnung. Und ich ... habe Panik bekommen, bin abgehauen und habe die Kanone da vergessen. Könntest du sie mir holen, denn wo sollte ich ohne eine ordentliche Waffe hin?</text>
 	</string>
 	<string id="ecolog_eliminate_lager_1">
 		<text>Das Lager der Schnorks ausräuchern.</text>
@@ -416,7 +416,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Das Artefakt "Gravit" muss in die Hände der Wissenschaftler gelangen.</text>
 	</string>
 	<string id="ecolog_find_artefact_2_text">
-		<text>Wir stehen kurz davor, die Natur der Schwerkraft zu begreifen, und bald können wir einen neue Generation von Maschinen erschaffen, die auf Anti-Schwerkraft beruhen und uns höchstwahrscheinlich zu den Sternen führen werden. Daher brauchen wir das Artefakt "Gravit", und das schnell.</text>
+		<text>Wir stehen kurz davor, die Natur der Schwerkraft zu begreifen, und bald können wir eine neue Generation von Maschinen erschaffen, die auf Anti-Schwerkraft beruhen und uns höchstwahrscheinlich zu den Sternen führen werden. Daher brauchen wir das Artefakt "Gravit", und das schnell.</text>
 	</string>
 	<string id="ecolog_find_artefact_3">
 		<text>Das Artefakt "Qualle" finden.</text>
@@ -461,7 +461,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Es ist ein Kinderspiel, in dieser Gegend ein Stück Schnork zu kriegen.</text>
 	</string>
 	<string id="ecolog_monster_part_1_text">
-		<text>Oh, junger Mann! Weißt du, wir benötigen den Körperteil einer bestimmten Kreatur. Deine Kollegen nennen sie Zombie, und ich muss sagen, dieser Name ist sehr unpassend für einen Körper, der sich selbst derart modifiziert hat und ... egal, wir brauchen einen Arm. Du sollst wissen: Unser Team arbeitet daran, die Gliedmaßen von ... äh ... Zombies auf Leute zu übertragen, die einen Arm oder ein Bein verloren haben. Des Weiteren wollen wir die Organe nutzen; im Moment ist das alles jedoch noch pure Theorie. Also, der Arm! Hättest du Interesse, junger Mann?</text>
+		<text>Wir haben Semenow in der Universität kennen gelernt. Ich habe dort Genetik unterrichtet, und er war mein Student. So wurde ich sein wissenschaftlicher Leiter. Zu der Zeit fingen wir gerade erst an, dem Geheimnis der Genommodifikation auf die Spur zu kommen. Also, wo war ich gerade? Ach ja. Für unsere Genexperimente brauchen wir frische Muskelzellen eines Schnorks. Sie werden im Moor nach diesem Genmaterial suchen müssen. Eine Hypothese besagt, dass Schnorks die nächste Stufe der Humanevolution darstellen. Um das zu prüfen, brauchen wir einen DNS-Test.</text>
 	</string>
 	<string id="ecolog_monster_part_2">
 		<text>Ein Fleisch-Auge beschaffen.</text>
@@ -491,13 +491,13 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Willkommen, äh ... Reisender! Ich bin so froh, dich zu sehen - wir brauchen jemanden für ein sehr wichtiges Experiment. Mein Kollege Brenter will versuchen, aus der örtlichen Fauna eine Mahlzeit zuzubereiten, als praktisches Experiment, um den Einfluss mutierten Proteins auf den menschlichen Körper zu studieren. Wir hätten gern Wildschwein. Das Bein eines Wildschweins, verstehst du? Und, wenn es geht, vom gesündesten Exemplar.</text>
 	</string>
 	<string id="ecolog_monster_part_5">
-		<text>Die Pfote eines Schnorks beschaffen.</text>
+		<text>Den Kiefer eines Blutsaugers beschaffen.</text>
 	</string>
 	<string id="ecolog_monster_part_5_descr">
-		<text>Die Schnorks heilen ... was für Eierköpfe! Na gut, wenigstens hüpfen die Monster dann nicht mehr herum.</text>
+		<text>Was die mit einem Blutsauger-Kiefer wollen, ist mir egal. Mich interessiert nur, wieviel ich für diese Seltenheit bekomme.</text>
 	</string>
 	<string id="ecolog_monster_part_5_text">
-		<text>Gute Nachrichten, lieber Stalker! Wir haben unser Gehirn über folgender Frage zermartert: Warum schweben Schnorks geradezu über dem Boden, krabbeln Wände hinauf, springen erstaunlich weit ... Die Lösung war sehr einfach, junger Mann! Schnorks leiden an Bodenangst! An Geophobie! Die Rezeptoren an den Enden ihrer Gliedmaßen senden einen starken Reiz aus, wenn sie mit dem Boden oder einer mehr oder weniger horizontalen Fläche in Kontakt sind. Wir brauchen eine Schnork-Pfote: wir wollen einen Impfstoff verabreichen, der die armen Wesen vielleicht heilen kann.</text>
+		<text>Schön, Sie zu sehen, Stalker! Hören Sie… Sie sind doch schon Blutsaugern begegnet, oder? Falls nicht, dann wollen wir, dass es geschieht. Bringen Sie uns den Unterkiefer eines Repräsentanten dieser Spezies, komplett mit Essbesteck, sozusagen. Leider kann ich Sie nicht in die Einzelheiten des Experiments einweihen. Das würde ohnehin negative Auswirkungen auf Ihre Psyche haben. Wir werden hier warten.</text>
 	</string>
 	<string id="eliminate_lager">
 		<text>Lager vernichten</text>
@@ -749,7 +749,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Und worüber willst du reden?</text>
 	</string>
 	<string id="tm_barman_job_complete">
-		<text>Gute Arbeit. Du hast dir die Belohung redlich verdient!</text>
+		<text>Gute Arbeit. Du hast dir die Belohnung redlich verdient!</text>
 	</string>
 	<string id="tm_barman_job_what">
 		<text>Was ist los?</text>
@@ -782,7 +782,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Hier sind die aktuellen Aufträge:</text>
 	</string>
 	<string id="tm_drunk_dolg_has_no_job">
-		<text>Zurzeit gibt es nichts.</text>
+		<text>Zur Zeit gibt es nichts.</text>
 	</string>
 	<string id="tm_drunk_dolg_job_ask">
 		<text>Über welchen Auftrag möchtest du reden?</text>
@@ -845,7 +845,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Die Gegend von Mutanten befreien.</text>
 	</string>
 	<string id="tm_eliminate_camp_4_text">
-		<text>Es gibt was, leichte Sache. Sie wollen einen ausländischen Touristen hierüber bringen. Er hat meinen Jungs etwas Geld geboten, um sich die Zone mal ansehen zu können. Und die Gegend, die sie ihm zeigen werden, müsste von Mutanten befreit werden. Kannst du dich darum kümmern?</text>
+		<text>Es gibt was, leichte Sache. Sie wollen einen ausländischen Touristen hierher bringen. Er hat meinen Jungs etwas Geld geboten, um sich die Zone mal ansehen zu können. Und die Gegend, die sie ihm zeigen werden, müsste von Mutanten befreit werden. Kannst du dich darum kümmern?</text>
 	</string>
 	<string id="tm_eliminate_camp_5">
 		<text>Die zwei Banditen bei der Müllhalde ausschalten.</text>
@@ -932,7 +932,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_hunter_job_complete">
-		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohnung!</text>
 	</string>
 	<string id="tm_hunter_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1007,7 +1007,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_lisiy_job_complete">
-		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohnung!</text>
 	</string>
 	<string id="tm_lisiy_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1022,7 +1022,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_mercenary_job_complete">
-		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohnung!</text>
 	</string>
 	<string id="tm_mercenary_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1055,7 +1055,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_petrenko_job_complete">
-		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohnung!</text>
 	</string>
 	<string id="tm_petrenko_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1079,13 +1079,13 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Ich brauch einen Auftrag. Hast du etwas für mich?</text>
 	</string>
 	<string id="tm_shustriy_has_no_job">
-		<text>Zurzeit gibt es keine Aufträge.</text>
+		<text>Zur Zeit gibt es keine Aufträge.</text>
 	</string>
 	<string id="tm_shustriy_job_ask">
 		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_shustriy_job_complete">
-		<text>Auftrag erfüllt. Hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt. Hier ist deine Belohnung!</text>
 	</string>
 	<string id="tm_shustriy_job_what">
 		<text>Was ist mit dem Auftrag?</text>
@@ -1100,7 +1100,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_trader_job_complete">
-		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohnung!</text>
 	</string>
 	<string id="tm_trader_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1115,7 +1115,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_wolf_job_complete">
-		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohnung!</text>
 	</string>
 	<string id="tm_wolf_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1130,7 +1130,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Über welchen Auftrag möchtest du reden?</text>
 	</string>
 	<string id="tm_zastava_commander_job_complete">
-		<text>Auftrag erfüllt - hier ist deine Belohung!</text>
+		<text>Auftrag erfüllt - hier ist deine Belohnung!</text>
 	</string>
 	<string id="tm_zastava_commander_job_what">
 		<text>Und was ist mit dem Auftrag?</text>
@@ -1160,7 +1160,7 @@ Telepathen sind sehr gefährlich, aber du wirst es schaffen.</text>
 		<text>Das Hundelager ausräuchern.</text>
 	</string>
 	<string id="zastava_commander_eliminate_lager_descr">
-		<text>Bei der Bar nahe des südlichen Postens hat sich ein Rudel Hunde angesiedelt. Der Leiter des Postens möchte, dass die Hunde beseitigt werden. Er verspricht eine Belohung.</text>
+		<text>Bei der Bar nahe des südlichen Postens hat sich ein Rudel Hunde angesiedelt. Der Leiter des Postens möchte, dass die Hunde beseitigt werden. Er verspricht eine Belohnung.</text>
 	</string>
 	<string id="zastava_commander_eliminate_lager_text">
 		<text>Trotz unserer Bemühungen schaffen es immer noch ein paar Monster von der Müllhalde bis hierher. Wahrscheinlich hast du selber schon das Hunderudel südlich von uns gesehen. Wenn du sie alle tötest, bekommst du eine Belohnung.</text>

@@ -10,13 +10,13 @@
 		<text>Contacts</text>
 	</string>
 	<string id="Encyclopedia">
-		<text>Encyclop die</text>
+		<text>Encyclopédie</text>
 	</string>
 	<string id="global_map_btn_hint">
 		<text>Vers la carte de la Zone</text>
 	</string>
 	<string id="level_changer_invitation">
-		<text>Passer au niveau suivant ?</text>
+		<text>Passer au secteur suivant ?</text>
 	</string>
 	<string id="Name">
 		<text>Nom</text>
@@ -46,16 +46,16 @@
 		<text>Afficher le journal du joueur</text>
 	</string>
 	<string id="pda_btn_encyclopedia">
-		<text>Encyclop die</text>
+		<text>Encyclopédie</text>
 	</string>
 	<string id="pda_btn_encyclopedia_hint">
-		<text>Afficher l'encyclop die de la Zone</text>
+		<text>Afficher l'encyclopédie de la Zone</text>
 	</string>
 	<string id="pda_btn_failed">
-		<text>Manqu es</text>
+		<text>Manquées</text>
 	</string>
 	<string id="pda_btn_failed_hint">
-		<text>Afficher les missions manqu es</text>
+		<text>Afficher les missions manquées</text>
 	</string>
 	<string id="pda_btn_info">
 		<text>Informations</text>
@@ -64,7 +64,7 @@
 		<text>Journal</text>
 	</string>
 	<string id="pda_btn_journal_hint">
-		<text>Afficher les entr es du joueur</text>
+		<text>Afficher les entrées du joueur</text>
 	</string>
 	<string id="pda_btn_map">
 		<text>Carte</text>
@@ -73,13 +73,13 @@
 		<text>Afficher la carte de la Zone</text>
 	</string>
 	<string id="pda_btn_news">
-		<text>Historique des messages</text>
+		<text>Messages</text>
 	</string>
 	<string id="pda_btn_news_hint">
 		<text>Afficher l'historique des messages</text>
 	</string>
 	<string id="pda_btn_off_hint">
-		<text>D sactiver</text>
+		<text>Désactiver</text>
 	</string>
 	<string id="pda_btn_own">
 		<text>Mes marqueurs</text>
@@ -91,16 +91,16 @@
 		<text>Missions</text>
 	</string>
 	<string id="pda_btn_quests_hint">
-		<text>Afficher des informations sur la qu te</text>
+		<text>Afficher des informations sur la quête</text>
 	</string>
 	<string id="pda_btn_ranking">
 		<text>Classement</text>
 	</string>
 	<string id="pda_btn_ranking_hint">
-		<text>Afficher les Stalkers les mieux class s</text>
+		<text>Afficher les Stalkers les mieux classés</text>
 	</string>
 	<string id="pda_btn_reputation">
-		<text>R putation</text>
+		<text>Réputation</text>
 	</string>
 	<string id="pda_btn_statistics">
 		<text>Statistiques</text>
@@ -133,19 +133,19 @@
 		<text>Supprimer le marqueur</text>
 	</string>
 	<string id="st_detail_list_for_artefacts">
-		<text>Artefacts gagn s</text>
+		<text>Artefacts gagnés</text>
 	</string>
 	<string id="st_detail_list_for_community_relations">
 		<text>Relations avec les factions</text>
 	</string>
 	<string id="st_detail_list_for_monsterkills">
-		<text>Mutants tu s</text>
+		<text>Mutants tués</text>
 	</string>
 	<string id="st_detail_list_for_quests">
-		<text>Qu tes accomplies</text>
+		<text>Quêtes accomplies</text>
 	</string>
 	<string id="st_detail_list_for_stalkerkills">
-		<text>Stalkers tu s</text>
+		<text>Stalkers tués</text>
 	</string>
 	<string id="st_map_actor">
 		<text>Vous</text>
@@ -157,28 +157,28 @@
 		<text>Artefacts </text>
 	</string>
 	<string id="st_pda_detail_info">
-		<text>Informations d taill es</text>
+		<text>Informations détaillées</text>
 	</string>
 	<string id="st_pda_monster_kills">
-		<text>Mutants tu s</text>
+		<text>Mutants tués</text>
 	</string>
 	<string id="st_pda_player_statistic">
 		<text>Statistiques du joueur</text>
 	</string>
 	<string id="st_pda_quest_complete">
-		<text>Qu tes accomplies</text>
+		<text>Quêtes accomplies</text>
 	</string>
 	<string id="st_pda_stalker_kills">
-		<text>Stalkers tu s</text>
+		<text>Stalkers tués</text>
 	</string>
 	<string id="st_pda_statistic_reputation">
-		<text>R putation :</text>
+		<text>Réputation :</text>
 	</string>
 	<string id="st_pda_statistic_score">
 		<text>Statistiques</text>
 	</string>
 	<string id="st_pda_task_detail_information">
-		<text>Informations d taill es sur les missions</text>
+		<text>Informations détaillées sur les missions</text>
 	</string>
 	<string id="st_pda_top20">
 		<text>20 meilleurs Stalkers</text>
@@ -190,18 +190,18 @@
 		<text>Message</text>
 	</string>
 	<string id="svoboda_outfit_description_m1">
-		<text>Un treillis m tallique int gr    la combinaison prot ge des champs  lectriques et magn tiques. Elle comprend  galement un instrument de vision nocturne.</text>
+		<text>Un treillis métallique intégré à la combinaison protège des champs électriques et magnétiques. Elle comprend également un instrument de vision nocturne.</text>
 	</string>
 	<string id="Tasks">
 		<text>Missions</text>
 	</string>
 	<string id="Time">
-		<text>Temps</text>
+		<text>Heure</text>
 	</string>
 	<string id="zoom_in_btn_hint">
-		<text>zoom avant</text>
+		<text>Zoom avant</text>
 	</string>
 	<string id="zoom_out_btn_hint">
-		<text>zoom arri re</text>
+		<text>Zoom arrière</text>
 	</string>
 </string_table>

@@ -16,10 +16,10 @@
 		<text>.45 Hydro</text>
 	</string>
 	<string id="ammo-12x70-buck">
-		<text>Car. 12?70 colpi</text>
+		<text>Car. 12x70 colpi</text>
 	</string>
 	<string id="ammo-12x70-buck_s">
-		<text>12?70 colpi</text>
+		<text>12x70 colpi</text>
 	</string>
 	<string id="ammo-12x76-dart">
 		<text>Caricat. 12x76 dardi</text>
@@ -76,22 +76,22 @@
 		<text>7.62 BP</text>
 	</string>
 	<string id="ammo-9x18-fmj">
-		<text>Caricatori 9?18 mm</text>
+		<text>Caricatori 9x18 mm</text>
 	</string>
 	<string id="ammo-9x18-fmj_s">
-		<text>9?18</text>
+		<text>9x18</text>
 	</string>
 	<string id="ammo-9x18-pmm">
-		<text>Car. 9?18 mm +P+</text>
+		<text>Car. 9x18 mm +P+</text>
 	</string>
 	<string id="ammo-9x18-pmm_s">
-		<text>9?18 +P+</text>
+		<text>9x18 +P+</text>
 	</string>
 	<string id="ammo-9x19-fmj">
-		<text>9?19 mm FMJ</text>
+		<text>9x19 mm FMJ</text>
 	</string>
 	<string id="ammo-9x19-fmj_s">
-		<text>9?19 FMJ</text>
+		<text>9x19 FMJ</text>
 	</string>
 	<string id="ammo-9x19-pbp">
 		<text>Car. 9x19 mm PB1s</text>
@@ -106,16 +106,16 @@
 		<text>9x39 SP-6</text>
 	</string>
 	<string id="ammo-9x39-pab9">
-		<text>Car. 9?39 mm PAB-9</text>
+		<text>Car. 9x39 mm PAB-9</text>
 	</string>
 	<string id="ammo-9x39-pab9_s">
-		<text>9?39 PAB9</text>
+		<text>9x39 PAB9</text>
 	</string>
 	<string id="ammo-9x39-sp5">
-		<text>Car. 9?39 mm SP-5</text>
+		<text>Car. 9x39 mm SP-5</text>
 	</string>
 	<string id="ammo-9x39-sp5_s">
-		<text>9?39 SP-5</text>
+		<text>9x39 SP-5</text>
 	</string>
 	<string id="ammo-gauss">
 		<text>Caricatore per Gauss</text>
@@ -304,7 +304,7 @@
 		<text>Il calcio in dotazione è opera di uno degli abilissimi stalker artigiani che sono riusciti a rielaborare il fucile, per poter utilizzare le più diffuse pallottole da 5.45 mm.</text>
 	</string>
 	<string id="enc_weapons1_wpn-hpsa">
-		<text>La pistole merita senz'altro di essere considerata una delle migliori pistole del XX secolo. È affidabile, potente e precisa. Il caricatore può alloggiare fino a 13 colpi.\n Munizioni:\n standard 9x19 mm FMJ,\n potenziate 9?19 mm PB1s.</text>
+		<text>La pistole merita senz'altro di essere considerata una delle migliori pistole del XX secolo. È affidabile, potente e precisa. Il caricatore può alloggiare fino a 13 colpi.\n Munizioni:\n standard 9x19 mm FMJ,\n potenziate 9x19 mm PB1s.</text>
 	</string>
 	<string id="enc_weapons1_wpn-knife">
 		<text>Coltello da caccia</text>
@@ -391,7 +391,7 @@
 		<text>Fucile da cecchino speciale, silenzioso e difficile da individuare grazie al silenziatore integrato e al soppressore di vampa di cui è dotato. Può perforare qualsiasi giubbotto antiproiettile da una distanza di 400 metri. È un'arma particolarmente apprezzata dagli stalker di tutti i livelli.\n Munizioni:\n standard 9x39 mm PAB-9,\n perforanti 9x39 mm SP-6,\n 9x39 mm SP-5 di precisione.</text>
 	</string>
 	<string id="enc_weapons1_wpn-walther">
-		<text>Ottima pistola. Molto affidabile, con un caricatore capiente e una buona precisione di tiro, specialmente nel caso del modello progettato per i proiettili 9 mm FMJ.\n Munizioni:\n standard 9x19 mm FMJ,\n potenziate 9?19 mm PB1s.</text>
+		<text>Ottima pistola. Molto affidabile, con un caricatore capiente e una buona precisione di tiro, specialmente nel caso del modello progettato per i proiettili 9 mm FMJ.\n Munizioni:\n standard 9x19 mm FMJ,\n potenziate 9x19 mm PB1s.</text>
 	</string>
 	<string id="enc_weapons1_wpn-walther_m1">
 		<text>Versione modificata della pistola, per l'utilizzo dei proiettili calibro 9x18 mm.</text>

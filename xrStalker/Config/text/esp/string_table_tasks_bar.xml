@@ -2,55 +2,55 @@
 		<text>Devuelve el fusil de familia al cazador</text>
 	</string>
 	<string id="bar_bring_pda_lucky">
-		<text>Lleva la PDA del l der al tabernero</text>
+		<text>Lleva la PDA del líder al tabernero</text>
 	</string>
 	<string id="bar_crazy_veterans_quest">
 		<text>Mata a los veteranos</text>
 	</string>
 	<string id="bar_dolg_base_rules">
-		<text>Reg strate ante el comandante de la guardia de Deber</text>
+		<text>Regístrate ante el comandante de la guardia de Deber</text>
 	</string>
 	<string id="bar_dolg_base_rules_fin">
 		<text>Vuelve a donde el tabernero</text>
 	</string>
 	<string id="bar_dolg_base_rules_talk">
-		<text>Encuentra al comandante de la guardia de Deber y reg strate</text>
+		<text>Encuentra al comandante de la guardia de Deber y regístrate</text>
 	</string>
 	<string id="bar_dolg_bring_rg6">
 		<text>Consigue un Bulldog 6 para el general Voronin</text>
 	</string>
 	<string id="bar_dolg_community_quest">
-		<text> nete a la facci n Deber</text>
+		<text>Únete a la facción Deber</text>
 	</string>
 	<string id="bar_dolg_community_quest_prisyaga">
 		<text>Presta juramento</text>
 	</string>
 	<string id="bar_dolg_community_quest_recomendation">
-		<text>Consigue un informe del capit n Ivantsov</text>
+		<text>Consigue un informe del capitán Ivantsov</text>
 	</string>
 	<string id="bar_dolg_community_quest_vernost">
 		<text>Demuestra tu lealtad a Deber</text>
 	</string>
 	<string id="bar_dolg_find_cook">
-		<text>G nate la confianza del cocinero de Libertad y averigua d nde est n los Bulldog 6</text>
+		<text>Gánate la confianza del cocinero de Libertad y averigua dónde están los Bulldog 6</text>
 	</string>
 	<string id="bar_dolg_find_rg6">
-		<text>Inf ltrate en la base de Libertad, y localiza y roba un Bulldog 6</text>
+		<text>Infíltrate en la base de Libertad, y localiza y roba un Bulldog 6</text>
 	</string>
 	<string id="bar_dolg_info_gain">
-		<text>Encuentra la informaci n interceptada sobre el laboratorio X18</text>
+		<text>Encuentra la información interceptada sobre el laboratorio X18</text>
 	</string>
 	<string id="bar_dolg_kill_tiran">
-		<text>Mata a Tirano, el l der del pelot n </text>
+		<text>Mata a Tirano, el líder del pelotón </text>
 	</string>
 	<string id="bar_dolg_return_info">
-		<text>Lleva la informaci n sobre el laboratorio X18 al general Voronin</text>
+		<text>Lleva la información sobre el laboratorio X18 al general Voronin</text>
 	</string>
 	<string id="bar_dolg_return_rg6">
 		<text>Lleva el Bulldog 6 al general Voronin</text>
 	</string>
 	<string id="bar_dolg_rg6_quest">
-		<text>Misi n necesaria para unirse a Deber</text>
+		<text>Misión necesaria para unirse a Deber</text>
 	</string>
 	<string id="bar_dolg_svoboda_ambush_quest">
 		<text>Elimina a los mercenarios</text>
@@ -71,10 +71,10 @@
 		<text>Encuentra el fusil de familia</text>
 	</string>
 	<string id="bar_kill_crazy_veterans">
-		<text>Mata al l der de los veteranos</text>
+		<text>Mata al líder de los veteranos</text>
 	</string>
 	<string id="bar_kill_crazy_veterans_pda">
-		<text>Hazte con la PDA de su l der</text>
+		<text>Hazte con la PDA de su líder</text>
 	</string>
 	<string id="bar_kill_veterans">
 		<text>Destruye el campamento de los veteranos locos</text>
@@ -83,7 +83,7 @@
 		<text>Desactiva el Cauterizador cerebral</text>
 	</string>
 	<string id="bar_resque_information">
-		<text>Re nete con Kruglov</text>
+		<text>Reúnete con Kruglov</text>
 	</string>
 	<string id="bar_resque_information_2">
 		<text>Lleva a Kruglov hasta Yantar</text>
@@ -110,16 +110,16 @@
 		<text>Lleva los documentos al tabernero</text>
 	</string>
 	<string id="deactivate_radar_now">
-		<text>Desactivar la m quina</text>
+		<text>Desactivar la máquina</text>
 	</string>
 	<string id="find_and_deactivate_radar">
-		<text>Encuentra la entrada al b nker de control</text>
+		<text>Encuentra la entrada al búnker de control</text>
 	</string>
 	<string id="get_to_antennas">
 		<text>Llega hasta las antenas.</text>
 	</string>
 	<string id="Kruglov_research">
-		<text>Investigaci n de Kruglov</text>
+		<text>Investigación de Kruglov</text>
 	</string>
 	<string id="look_for_x16_lab">
 		<text>Encuentra los documentos del X16</text>
@@ -128,5 +128,5 @@
 		<text>Chaser combate</text>
 	</string>
 	<string id="x16_yantar">
-		<text>Habla con los cient ficos</text>
+		<text>Habla con los científicos</text>
 	</string>
