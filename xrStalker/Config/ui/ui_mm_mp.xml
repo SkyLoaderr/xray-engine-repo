@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <window>
-	<_back_video x="0" y="0" width="1024" height="430">
+	<back_video x="0" y="0" width="1024" height="430">
 		<texture x="0" y="0" width="1024" height="430">ui\ui_mm_window_back_crop</texture>
-	</_back_video>
-	<back_video x="0" y="0" width="1024" height="512" stretch="1">
-		<texture>ui\ui_vid_back_03</texture>
 	</back_video>
+	<_back_video x="0" y="0" width="1024" height="512" stretch="1">
+		<texture>ui\ui_vid_back_03</texture>
+	</_back_video>
 	
 	<background x="0" y="0" width="1024" height="768">
 		<texture>ui\ui_mp_main</texture>
 	</background>
 	
-	<anim_00 x="109" y="77" width="80" height="60"
-			x_offset		= "544"
-			y_offset		= "784"
-			frames			= "24"
-			duration		= "2000"
-			columns			= "6"
-			frame_width		= "80"
-			frame_height	= "60"
-			cyclic			= "1"
-			autoplay		= "1">
+	<anim_00 x="109" y="77" width="80" height="60" x_offset="544" y_offset="784" frames="24" duration="2000" columns="6" frame_width="80" frame_height="60" cyclic="1" autoplay="1">
 		<texture>ui\ui_mp_main</texture>		
 	</anim_00>
 	

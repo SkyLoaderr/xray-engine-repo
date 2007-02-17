@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <window>	
-	<_back_video x="0" y="0" width="1024" height="430">
+	<back_video x="0" y="0" width="1024" height="430">
 		<texture x="0" y="0" width="1024" height="430">ui\ui_mm_window_back_crop</texture>
-	</_back_video>
-
-	<back_video x="0" y="0" width="1024" height="512" stretch="1">
-		<texture>ui\ui_vid_back_02</texture>
 	</back_video>
+
+	<_back_video x="0" y="0" width="1024" height="512" stretch="1">
+		<texture>ui\ui_vid_back_02</texture>
+	</_back_video>
 
 	<background x="0" y="0" width="1024" height="768">
 		<texture>ui\ui_static_mm_back_03</texture>
@@ -345,15 +345,15 @@
 		<key_binding x="10" y="120" width="451" height="199">
 			<!-- headers -->
 			<header_1 x="0" y="0" width="229" height="17">
-				<text font="arial_14" r="215" g="195" b="170" x="2" y="2">ui_mm_action</text>
+				<text font="letterica16" r="215" g="195" b="170" x="2">ui_mm_action</text>
 				<texture>ui_table_button_e</texture>
 			</header_1>
 			<header_2 x="229" y="0" width="102" height="17">
-				<text font="arial_14" r="215" g="195" b="170" x="2" y="2">ui_mm_key</text>
+				<text font="letterica16" r="215" g="195" b="170" x="2">ui_mm_key</text>
 				<texture>ui_table_button_e</texture>
 			</header_2>
 			<header_3 x="330" y="0" width="102" height="17">
-				<text font="arial_14" r="215" g="195" b="170" x="2" y="2">ui_mm_alternative</text>
+				<text font="letterica16" r="215" g="195" b="170" x="2">ui_mm_alternative</text>
 				<texture>ui_table_button_e</texture>
 			</header_3>
 			<!--frame-->

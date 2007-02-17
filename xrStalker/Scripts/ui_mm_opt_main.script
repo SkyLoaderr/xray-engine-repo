@@ -192,8 +192,10 @@ function options_dialog:OnBtnAccept()
 	opt:SaveValues("mm_opt_controls")
 	opt:OptionsPostAccept()	
 
-	self:GetHolder():start_stop_menu(self,true)
-	self.owner:Show(true)
+	self:GetHolder():start_stop_menu	(self.owner, true) --new(show main window)
+	self:GetHolder():start_stop_menu	(self,true)
+	self.owner:Show						(true)
+	
 end
 
 function options_dialog:OnBtnCancel()
@@ -204,8 +206,9 @@ function options_dialog:OnBtnCancel()
 	opt:UndoGroup("mm_opt_sound")
 	opt:OptionsPostAccept()
 	
-	self:GetHolder():start_stop_menu(self,true)
-	self.owner:Show(true)
+	self:GetHolder():start_stop_menu	(self.owner, true) --new(show main window)
+	self:GetHolder():start_stop_menu	(self,true)
+	self.owner:Show						(true)
 end
 
 function options_dialog:OnTabChange()
@@ -250,8 +253,9 @@ function options_dialog:OnKeyboard(dik, keyboard_action)
 					self.dlg_video_adv:Show	(false)
 					self.dlg_video:Show		(true)
 				else
-					self:GetHolder():start_stop_menu(self,true)
-					self.owner:Show(true)
+					self:GetHolder():start_stop_menu	(self.owner, true) --new(show main window)
+					self:GetHolder():start_stop_menu	(self,true)
+					self.owner:Show						(true)
 				end
 			end	
 		

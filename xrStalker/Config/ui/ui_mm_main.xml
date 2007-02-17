@@ -4,13 +4,13 @@
 		<texture>ui_menu_backgraund</texture>
 	</background>
 	
-	<_back_movie x="148" y="0" width="876" height="400">
+	<back_movie x="148" y="0" width="876" height="400">
 		<texture x="0" y="0" width="876" height="400">ui\ui_mm_main_back_crop</texture>
-	</_back_movie>
-
-	<back_movie x="0" y="0" width="1024" height="512" stretch="1">
-		<texture>ui\ui_vid_back_01</texture>
 	</back_movie>
+
+	<_back_movie x="0" y="0" width="1024" height="512" stretch="1">
+		<texture>ui\ui_vid_back_01</texture>
+	</_back_movie>
 	
 	<fire_movie x="525" y="459" width="128" height="256">
 		<texture>ui\ui_mm_fire</texture>

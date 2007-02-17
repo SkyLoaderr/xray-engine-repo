@@ -26,7 +26,7 @@ function save_item:__init() super()
 	self.fage				= CUIStatic	()
 	self.fage:SetAutoDelete	(true)
 	self:AttachChild		(self.fage)
-	self.fage:SetWndRect	(280,0,150,22)
+	self.fage:SetWndRect	(250,0,150,22)
 	self.fage:SetText		("fileage")
 	self.fage:SetFont		(GetFontLetterica16Russian())
 	self.fage:SetTextColor	(ca,cr,cg,cb)
@@ -126,8 +126,11 @@ end
 function save_dialog:OnMsgYes()
 	if self.mbox_mode == 1 then
 		self:SaveFile(self.new_save)
-		self:GetHolder():start_stop_menu(self, true)
-		self.owner:Show(true)
+		
+		self:GetHolder():start_stop_menu	(self.owner, true) --new
+		self:GetHolder():start_stop_menu	(self,true)
+		self.owner:Show						(true)
+		
 	elseif self.mbox_mode == 2 then
 		self:delete_selected_file()
 	end	
@@ -192,13 +195,16 @@ function save_dialog:OnButton_ok_clicked()
 	end
 	flist:Free()	
 	self:SaveFile(self.new_save)
-	self:GetHolder():start_stop_menu(self, true)
-	self.owner:Show(true)
+
+	self:GetHolder():start_stop_menu	(self.owner, true) --new
+	self:GetHolder():start_stop_menu	(self,true)
+	self.owner:Show						(true)
 end
 
 function save_dialog:OnButton_cancel_clicked()
-	self:GetHolder():start_stop_menu(self,true)	
-	self.owner:Show(true)
+	self:GetHolder():start_stop_menu	(self.owner, true) --new
+	self:GetHolder():start_stop_menu	(self,true)
+	self.owner:Show						(true)
 end
 
 function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function

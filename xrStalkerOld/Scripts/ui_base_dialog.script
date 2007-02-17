@@ -7,16 +7,6 @@
 --
 -- Copyright:   2004 GSC Game World
 
-function main()
-	local dlg = ui_base_dialog.base_dialog()
-	level.start_stop_menu(dlg,true)
-	dlg:InitControls("Base Dialog TEST")
-	while true do
-		wait(3000)
-	end
-end
-
-
 class "base_dialog" (CUIScriptWnd)
 
 function base_dialog:__init() super()
@@ -187,13 +177,11 @@ end
 function base_dialog:OnKeyboard(dik, keyboard_action)
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	
-	DIK_RETURN = 28
-	WINDOW_KEY_PRESSED = 6
-	
 	local bind = dik_to_bind(dik)
 	if bind == key_bindings.kQUIT then
-		self:GetHolder():start_stop_menu(self,true)
-		self.owner:Show(true)
+		self:GetHolder():start_stop_menu	(self.owner, true) --new(show main window)
+		self:GetHolder():start_stop_menu	(self,true)
+		self.owner:Show						(true)
 	end  
 
 	return true

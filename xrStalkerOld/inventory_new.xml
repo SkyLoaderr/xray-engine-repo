@@ -45,7 +45,7 @@
 
 
 	
-    <bag_static x="15" y="240" width="350" height="480">		
+    <bag_static x="15" y="240" width="350" height="480" complex_mode="1">		
         <text x="30" y="8" font="graffiti22" r="231" g="153" b="22">ui_inv_bag</text>
     </bag_static>
     
