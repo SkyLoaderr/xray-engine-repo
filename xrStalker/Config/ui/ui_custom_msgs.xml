@@ -1,24 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <header>
 
-<!--light_anim="warning_01"    stretch="1" 
-"header"
-"arial"
-"arial_14"
-
-"medium"
-"small"
-
-"graffiti19"
-"graffiti22"
-"graffiti32"
-"graffiti50"
-
-"letterica16"
-"letterica18"
-"letterica25"
--->
-
 	<hud_timer  x="852" y="15" width="157" height="67">
 		<text x="-15" y="23it" font="graffiti32" r="238" g="155" b="23" a="255" align="r"/>
 		<texture>ui_hud_frame_clock</texture>
@@ -45,47 +27,47 @@
 		<texture>controller\controller_blood_01</texture>
 	</monster_claws>
 	
-	<main_task  x="200" y="120" width="600" height="60">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c"/>
+	<main_task  x="200" y="120" width="600" height="60" complex_mode="1">
+		<text align="c" font="graffiti32"  r="240" g="217" b="182" a="255"/>
 	</main_task>
 
-	<cs_psy_danger  x="200" y="10" width="600" height="50">
-		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
+	<cs_psy_danger  x="200" y="10" width="600" height="50" complex_mode="1">
+		<text font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</cs_psy_danger>
-	<cs_radiation_danger  x="200" y="60" width="600" height="50">
-		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
+	<cs_radiation_danger  x="200" y="60" width="600" height="50" complex_mode="1">
+		<text font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</cs_radiation_danger>
 	
 	<game_saved  x="100" y="730" width="800" height="30">
-		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
+		<text font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</game_saved>
 
 	<autosave  x="100" y="700" width="800" height="30">
-		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">st_autosave</text>
+		<text font="graffiti22"  r="240" g="217" b="182" a="255" align="c">st_autosave</text>
 	</autosave>
 	
 	<item_used  x="100" y="730" width="800" height="30">
-		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
+		<text font="graffiti22"  r="240" g="217" b="182" a="255" align="c"/>
 	</item_used>
 
 	<gun_jammed x="200" y="70" width="600" height="50" ttl="3">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">gun_jammed</text>
+		<text font="graffiti32"  r="240" g="217" b="182" a="255" align="c">gun_jammed</text>
 	</gun_jammed>
 	
 	<cant_walk x="200" y="650" width="600" height="30" ttl="3">
-		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk</text>
+		<text font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk</text>
 	</cant_walk>
 	
 	<cant_walk_weight x="20" y="650" width="600" height="30" ttl="3">
-		<text x="0" y="0" font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk_weight</text>
+		<text font="graffiti22"  r="240" g="217" b="182" a="255" align="c">cant_walk_weight</text>
 	</cant_walk_weight>
 	
 	<not_enough_money_mine  x="100" y="100" width="800" height="60">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">st_not_enough_money</text>
+		<text font="graffiti32"  r="240" g="217" b="182" a="255" align="c">st_not_enough_money</text>
 	</not_enough_money_mine>
 
 	<not_enough_money_other  x="100" y="100" width="800" height="60">
-		<text x="0" y="0" font="graffiti32"  r="240" g="217" b="182" a="255" align="c">st_not_enough_money_npc</text>
+		<text font="graffiti32"  r="240" g="217" b="182" a="255" align="c">st_not_enough_money_npc</text>
 	</not_enough_money_other>
 		
 </header>

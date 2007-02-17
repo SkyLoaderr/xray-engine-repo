@@ -22,7 +22,7 @@
 	<timer_frame_line x="710" y="573" width="161" height="32">
 		<texture>ui_string_01</texture>		
 		<title x="10" y="7" width="140" height="18">
-			<text font="letterica18" r="255" g="255" b="255" complex_mode="0"></text>
+			<text font="letterica18" r="255" g="255" b="255" complex_mode="0"/>
 		</title>
 	</timer_frame_line>
                    
@@ -73,10 +73,7 @@
 		</button>
 	</tab>
 
-	<_updated_section_static alignment="c" x="0" y="0" width="16" height="8" stretch="0" light_anim="ui_too_slow_blinking" la_cyclic="1" la_texture="1" la_text="0" la_alpha="1">
-		<texture x="0" y="0" width="16" height="8">ui\ui_pda_contacts_offline</texture>
-	</_updated_section_static>
-	
+
 	<updated_section_static x="0" y="0" width="9" height="11">
 		<texture>ui_pda_m_noupdate</texture>
 	</updated_section_static>

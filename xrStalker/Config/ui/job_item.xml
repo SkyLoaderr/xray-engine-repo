@@ -4,7 +4,7 @@
 	<task_root_item x="0" y="0" width="320" height="40">
 		<image x="8" y="16" width="83" height="47"/>
 		
-		<caption x="93" y="16" width="180" height="18">
+		<caption x="93" y="16" width="180" height="18" complex_mode="1">
 			<text align="l" x="0" y="0" font="letterica18"/>
 		</caption>
 
@@ -28,7 +28,7 @@
 	<task_sub_item x="0" y="0" width="320" height="38">
 		<state_image x="8" y="10" width="11" height="11"/>
 
-		<description x="25" y="8" width="220" height="16">
+		<description x="25" y="8" width="220" height="16" complex_mode="1">
 			<text align="l" x="0" y="0" font="letterica16" r="255" g="255" b="255" a="255"/>
 			<text_colors>
 				<accomplished	r="150" g="150" b="180" a="255"/>

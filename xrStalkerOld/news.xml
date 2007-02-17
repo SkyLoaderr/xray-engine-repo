@@ -6,7 +6,7 @@
     </list>
     
 	<news_item  x="0" y="0" width="400" height="100">
-		<text_cont x="55" y="10" width="350" height="10">
+		<text_cont x="55" y="10" width="350" height="10" complex_mode="1">
 			<text align="l" font="letterica16" r="255" g="255" b="250"/>
 		</text_cont>
 		
@@ -18,7 +18,7 @@
 	</news_item>	
 
 	<talk_item  x="0" y="0" width="400" height="100">
-		<text_cont x="70" y="30" width="330" height="10">
+		<text_cont x="70" y="30" width="330" height="10" complex_mode="1">
 			<text align="l" font="letterica18" r="255" g="255" b="250"/>
 		</text_cont>
 		
