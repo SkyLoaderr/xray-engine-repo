@@ -21,7 +21,7 @@
 		
 		<map_info x="470" y="100" width="250" height="215" />
 		
-		<text_desc x="72" y="331" width="620" height="160" always_show_scroll="0"/>			
+		<text_desc x="72" y="331" width="620" height="160" always_show_scroll="0" complex_mode="1"/>			
 		
 		<btn_next x="394" y="504" width="157" height="48">
 			<texture>ui_button_main02</texture>

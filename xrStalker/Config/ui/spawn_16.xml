@@ -22,7 +22,7 @@
 		<image_1 x="293" y="69" width="220" height="219">			
 			<text font="graffiti32" align="r" vert_align="t">2</text>
 		</image_1>				
-		<text_desc x="54" y="331" width="465" height="160">
+		<text_desc x="54" y="331" width="465" height="160" complex_mode="1">
 			<text font="graffiti22" r="192" g="168" b="144">team_1_name</text>
 			<text>\n </text>
 			<text r="106" g="95" b="91">team_1_desc</text>
