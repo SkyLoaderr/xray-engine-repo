@@ -163,7 +163,7 @@
 	</time_static>
 
     <time_static_str x="115" y="7" width="107" height="30">        
-        <text font="mediumletterica16" r="240" g="217" b="182" a="255"/>
+        <text font="letterica16" r="240" g="217" b="182" a="255"/>
 	</time_static_str>
 
     <exit_button x="870" y="725" width="157" height="48">
