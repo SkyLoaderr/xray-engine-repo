@@ -42,7 +42,8 @@
 		</file_data>
 		
 		<list_frame x="36" y="202" width="449" height="200">
-			<texture>ui_frame_01</texture>
+			<texture>ui_tablist_textbox</texture>
+			
 		</list_frame>
 		
 		<list x="46" y="212" width="429" height="180" item_height="18">

@@ -26,12 +26,13 @@
 		</caption>
 		
 		<edit x="36" y="36" width="257" height="23">
-			<texture>ui_string_06</texture>
+			<texture>ui_linetext_e</texture>
+			
 			<text font="letterica18" r="240" g="217" b="182"/>
 		</edit>
 		
 		<list_frame x="36" y="77" width="449" height="307">
-			<texture>ui_frame_01</texture>
+			<texture>ui_tablist_textbox</texture>
 		</list_frame>
 		
 		<list x="46" y="87" width="429" height="287" item_height="18"/>
