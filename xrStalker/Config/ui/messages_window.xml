@@ -31,7 +31,7 @@
 	
 	<!-- GAME LOG -->
 	<mp_log_list x="20" y="410" width="344" height="230" always_show_scroll="0" inverse_dir="1">
-		<font font="medium" r="238" g="224" b="198"/>
+		<font font="letterica16" r="238" g="224" b="198"/>
 	</mp_log_list>
 	
 	<sp_log_list x="15" y="365" width="800" height="270" always_show_scroll="0" vert_interval="3" inverse_dir="1"/>

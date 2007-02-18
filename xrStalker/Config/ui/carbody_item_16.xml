@@ -2,15 +2,15 @@
 <w>
 	<auto>
 		<auto_static x="145" y="120" width="100" height="20">
-			<text  align="l" x="0" y="0" font="medium" r="240" g="217" b="182">st_weight</text>
+			<text  align="l" x="0" y="0" font="letterica16" r="240" g="217" b="182">st_weight</text>
 		</auto_static>
 		
 		<auto_static x="145" y="140" width="100" height="20">
-			<text  align="l" x="0" y="0" font="medium" r="240" g="217" b="182">st_base_cost</text>
+			<text  align="l" x="0" y="0" font="letterica16" r="240" g="217" b="182">st_base_cost</text>
 		</auto_static>
 
 		<auto_static x="145" y="160" width="100" height="20">
-			<text  align="l" x="0" y="0" font="medium" r="240" g="217" b="182">st_condition</text>
+			<text  align="l" x="0" y="0" font="letterica16" r="240" g="217" b="182">st_condition</text>
 		</auto_static>
 	</auto>
 
@@ -19,19 +19,19 @@
 	</static_name>
 
 	<static_weight x="170" y="120" width="90" height="18">
-		<text  align="r" x="0" y="0" font="medium" r="240" g="217" b="182" complex_mode="0"/>
+		<text  align="r" x="0" y="0" font="letterica16" r="240" g="217" b="182" complex_mode="0"/>
 	</static_weight>
 
 	<static_cost x="170" y="140" width="90" height="18">
-		<text  align="r" x="0" y="0" font="medium" r="240" g="217" b="182" complex_mode="0"/>
+		<text  align="r" x="0" y="0" font="letterica16" r="240" g="217" b="182" complex_mode="0"/>
 	</static_cost>
 
 	<static_condition x="170" y="160" width="90" height="18">
-		<text  align="r" x="0" y="0" font="medium" r="240" g="217" b="182" complex_mode="0"/>
+		<text  align="r" x="0" y="0" font="letterica16" r="240" g="217" b="182" complex_mode="0"/>
 	</static_condition>
 
 	<descr_list x="15" y="220" width="241" height="200" always_show_scroll="0" left_ident="16">
-		<font font="medium" r="240" g="217" b="182"/>
+		<font font="letterica16" r="240" g="217" b="182"/>
 	</descr_list>
 
 

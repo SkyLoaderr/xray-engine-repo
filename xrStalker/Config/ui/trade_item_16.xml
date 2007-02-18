@@ -24,7 +24,7 @@
 
 
 	<descr_list x="16" y="69" width="477" height="130"  left_ident="16" always_show_scroll="0">
-		<font font="medium" r="240" g="217" b="182"/>
+		<font font="letterica16" r="240" g="217" b="182"/>
 	</descr_list>
     
     <condition_progress x="383" y="50" width="110" height="8" horz="1" min="0" max="100" pos="100">
