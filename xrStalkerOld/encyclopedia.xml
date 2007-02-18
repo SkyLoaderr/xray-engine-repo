@@ -9,14 +9,14 @@
     <!-- INFO BACKGROUND HEADER -->
     <left_frame_line x="8" y="17" width="434" height="21">
         <title x="10" y="1" width="435" height="18">
-            <text font="letterica16" r="255" g="255" b="255"/>
+            <text font="letterica16" r="255" g="255" b="255" complex_mode="0"/>
         </title>
 		<texture>ui_string_03</texture>        
     </left_frame_line>
 
     <!-- CURRENT ARTICLE HEADER -->
 	<article_header_static x="22" y="48" width="298" height="22">
-		<text font="letterica25" r="225" g="225" b="250"/>
+		<text font="letterica25" r="225" g="225" b="250" complex_mode="0"/>
 	</article_header_static>
 
     <!-- LIST BACKGROUND -->
