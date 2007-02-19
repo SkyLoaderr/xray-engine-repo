@@ -189,6 +189,9 @@
 	<string id="ui_st_conn_no_new_patch">
 		<text>No new patches available now</text>
 	</string>
+	<string id="ui_st_err_gs_not_available">
+		<text>Online Services for S.T.A.L.K.E.R. are not available.</text>
+	</string>
 	<string id="ui_mm_delete_existing_file_q">
 		<text>You really want to delete file?</text>
 	</string>
