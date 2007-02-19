@@ -39,7 +39,7 @@ function aaa_main()
 end
 
 
--- run_string alife():create("vodka", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
+--run_string alife():create("wpn_binoc", db.actor:position(), db.actor:level_vertex_id(),db.actor:game_vertex_id())
 
 
 function main________________()

@@ -18,8 +18,9 @@
 	</newspaper_video>
 	
 	<form x="415" y="168" width="560" height="460">
-		<texture>ui\ui_options_menu_static</texture>
-		<texture_offset x="-29" y="-19"/>
+		<_texture>ui\ui_options_menu_static</_texture>
+		<_texture_offset x="-29" y="-19"/>
+		<texture>ui_menu_options_dlg</texture>
 		
 		<caption x="36" y="-9" width="500" height="25" complex_mode="0">
 			<text font="graffiti22" r="184" g="168" b="131">ui_mm_save_game</text>

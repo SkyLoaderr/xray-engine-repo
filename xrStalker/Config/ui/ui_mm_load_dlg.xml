@@ -10,7 +10,7 @@
 	</_back_video>
 
 	<background x="0" y="0" width="1024" height="768">
-		<texture>ui\ui_static_mm_back_04</texture>
+		<texture x="0" y="0" width="1024" height="768">ui\ui_static_mm_back_04</texture>
 	</background>
 
 	<newspaper_video x="137" y="512" width="256" height="256">
@@ -18,8 +18,10 @@
 	</newspaper_video>
 	
 	<form x="415" y="168" width="560" height="460">
-		<texture>ui\ui_options_menu_static</texture>
-		<texture_offset x="-29" y="-19"/>
+		<_texture>ui\ui_options_menu_static</_texture>
+		<_texture_offset x="-29" y="-19"/>
+		<texture>ui_menu_options_dlg</texture>
+		
 		
 		<caption x="36" y="-9" width="500" height="25" complex_mode="0">
 			<text font="graffiti22" r="184" g="168" b="131">ui_mm_load_game</text>
@@ -29,8 +31,9 @@
 			<texture>ui\ui_noise</texture>
 		</picture>
 		
-		<file_info	x="18" y="36" width="512" height="148">
-			<texture>ui\ui_static_loadgameinfo</texture>
+		<file_info	x="18" y="36" width="497" height="171">
+			<_texture>ui\ui_static_loadgameinfo</_texture>
+			<texture x="0" y="768" width="497" height="171">ui\ui_static_mm_back_04</texture>
 		</file_info>
 		
 		<file_caption x="270" y="90" width="512" height="20" complex_mode="1">

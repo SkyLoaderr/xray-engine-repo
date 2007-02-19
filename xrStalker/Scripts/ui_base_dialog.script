@@ -119,15 +119,6 @@ function base_dialog:InitControls(caption)
 	self.bkg:Init(0,0,1024,768)
 	self:AttachChild(self.bkg)
 	-- MAIN FRAME WINDOW
---[[	local static =  CUIStatic()
-	static:SetAutoDelete(true)
-	static:SetWindowName("static")
-	static:Init("ui\\ui_options_menu_static", self.main_rect.x + self.main_rect.x_ind, 
-											  self.main_rect.y + self.main_rect.y_ind,
-											  self.main_rect.width,
-											  self.main_rect.height)
-	self:AttachChild(static)
-	]]
 	self.main_frame = CUIStatic()
 	self.main_frame:SetAutoDelete(true)
 	self.main_frame:SetWindowName("main_frame")
