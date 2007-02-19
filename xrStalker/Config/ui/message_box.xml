@@ -7,7 +7,7 @@
 			<texture>ui_frame_error_sign_alarm</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">level_changer_invitation</text>
 		</message_text>
 		
@@ -28,7 +28,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_error</text>
 		</message_text>
 		
@@ -45,7 +45,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_file_name_is_empty</text>
 		</message_text>
 		
@@ -62,7 +62,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_mm_delete_existing_file_q</text>
 		</message_text>
 		
@@ -83,7 +83,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_file_exist_owerwrite_q</text>
 		</message_text>
 		
@@ -104,7 +104,7 @@
 			<texture>ui_frame_error_sign_info</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">You can buy a spawn for 1000 $. Press Yes to pay</text>
 		</message_text>
 		
@@ -193,7 +193,7 @@
 			<texture>ui_frame_error_sign_alarm</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_mm_quit_windows_message</text>
 		</message_text>
 		
@@ -213,7 +213,7 @@
 			<texture>ui_frame_error_sign_alarm</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_want_to_leave_game_q</text>
 		</message_text>
 		
@@ -234,7 +234,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_invalid_host</text>
 		</message_text>
 		
@@ -251,7 +251,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_invalid_pass</text>
 		</message_text>
 		
@@ -268,7 +268,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_sess_full</text>
 		</message_text>
 		
@@ -285,7 +285,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_rejected_server</text>
 		</message_text>
 		
@@ -302,7 +302,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_cdkey_invalid</text>
 		</message_text>
 		
@@ -319,7 +319,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_cdkey_in_use</text>
 		</message_text>
 		
@@ -336,7 +336,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_cdkey_disabled</text>
 		</message_text>
 		
@@ -353,7 +353,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_version_differs</text>
 		</message_text>
 		
@@ -370,7 +370,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_err_gs_not_available</text>
 		</message_text>
 		
@@ -387,7 +387,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_err_sb_master_server_conn_fail</text>
 		</message_text>
 		
@@ -404,7 +404,7 @@
 			<texture>ui_frame_error_sign_info</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_new_patch</text>
 		</message_text>
 				
@@ -425,7 +425,7 @@
 			<texture>ui_frame_error_sign_info</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_conn_no_new_patch</text>
 		</message_text>
 		
@@ -442,7 +442,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_voting_disabled</text>
 		</message_text>
 		
@@ -459,7 +459,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_select_one_map</text>
 		</message_text>
 		
@@ -476,7 +476,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_mm_need_restart</text>
 		</message_text>
 		
@@ -493,7 +493,7 @@
 			<texture>ui_frame_error_sign_red</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_cant_run_r2</text>
 		</message_text>
 		
@@ -510,7 +510,7 @@
 			<texture>ui_frame_error_sign_alarm</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_patch_download_error</text>
 		</message_text>
 		
@@ -527,7 +527,7 @@
 			<texture>ui_frame_error_sign_info</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_patch_download_success</text>
 		</message_text>
 		
