@@ -7,7 +7,7 @@
 		<text>Pourquoi ?</text>
 	</string>
 	<string id="gar_dolg_blokpost_1111">
-		<text>Parce que c'est notre territoire, le territoire du Devoir, et on ne laisse pas rentrer n'importe qui dans notre base. Tu passeras pas à moins d'avoir quelque chose d'important à dire à nos chefs.</text>
+		<text>Parce que c'est notre territoire, le territoire du Devoir, et on ne laisse pas rentrer n'importe qui dans notre base. Tu ne passeras pas à moins d'avoir quelque chose d'important à dire à nos chefs.</text>
 	</string>
 	<string id="gar_dolg_blokpost_11111">
 		<text>Je vois.</text>
@@ -205,7 +205,7 @@
 		<text>Je cherche des infos sur Strelok. Fox m'a parlé de toi, alors je suis venu discuter.</text>
 	</string>
 	<string id="gar_seriy_start_2211">
-		<text>OK, tu m'as aidé alors je vais te rendre la pareille. Un des types, un ancien "foreur" appelé la Taupe m'attend. Il a déniché la planque de Strelok mais je sais pas s'il y a trouvé quelque chose. Voilà les coordonnées de notre point de rencontre. Dis-lui que c'est moi qui t'envoie. Ils vont me chercher, alors je vais me faire discret. Tiens, ce fric t'aidera.</text>
+		<text>OK, tu m'as aidé alors je vais te rendre la pareille. Un des types, un ancien "foreur" appelé la Taupe m'attend. Il a déniché la planque de Strelok mais je ne sais pas s'il y a trouvé quelque chose. Voilà les coordonnées de notre point de rencontre. Dis-lui que c'est moi qui t'envoie. Ils vont me chercher, alors je vais me faire discret. Tiens, ce fric t'aidera.</text>
 	</string>
 	<string id="gar_seriy_start_2212">
 		<text>Merci pour le tuyau.</text>
@@ -250,6 +250,6 @@
 		<text>Ouais, écoute. Tout cet endroit n'est qu'une décharge puante. Après l'accident, en 1986, ils ont amené les déchets radioactifs, les grues et toute la quincaillerie foutue ici. Au final, c'est un tas de saloperies et quelques anomalies par-ci, par-là. On trouve même quelques artefacts mais rien d'exceptionnel alors il y a surtout des nouveaux ici. Et là où il y a des nouveaux, il y a des bandits donc mieux vaut pas trop traîner ici. Plus à l'est, il y a beaucoup de poches de radiation, impossible d'y aller sans protection. Si tu vas au sud, tu atteindras la frontière de la Zone. Au nord, tu trouveras l'usine de Rostok et le bar des Stalkers. À l'est, c'est la Vallée obscure, un endroit sombre et glauque. À l'ouest, l'Institut de Recherche Agroprom. Je vais indiquer les chemins sûrs sur ta carte.</text>
 	</string>
 	<string id="gar_hellcar_start_3111411121">
-		<text>Il y a un grand hangar dans le centre, c'est assez calme en général. Au pire, tu peux y passer la nuit. Si tu vas à l'Ouest, vers Agroprom, tu tomberas sur un camp de bandits. C'est de là que venaient les tarés qu'on a butés y a quelque temps. Mais j'ai l'impression qu'ils sont bien plus nombreux à cet endroit.</text>
+		<text>Il y a un grand hangar dans le centre, c'est assez calme en général. Au pire, tu peux y passer la nuit. Si tu vas à l'Ouest, vers Agroprom, tu tomberas sur un camp de bandits. C'est de là que venaient les tarés qu'on a butés il y a quelque temps. Mais j'ai l'impression qu'ils sont bien plus nombreux à cet endroit.</text>
 	</string>
 </string_table>

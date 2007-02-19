@@ -11,7 +11,7 @@
 		<text>Enregistrement sonore de Vasiliev.</text>
 	</string>
 	<string id="tips_labx16switcher_press">
-		<text>Pour éteindre la machine à miracles, appuyez sur ($$ACTION_USE$$)</text>
+		<text>Pour activer le levier, appuyez sur ($$ACTION_USE$$)</text>
 	</string>
 	<string id="yan_saharov_message">
 		<text>Bon sang, le Tatoué, vous avez réussi. Il est de la plus haute importance qu'on étudie la machine qui est dans le labo. Essayez de l'éteindre pour qu'on puisse y jeter un coup d'oeil.</text>

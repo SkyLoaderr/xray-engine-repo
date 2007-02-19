@@ -55,7 +55,7 @@
 		<text>Scatto</text>
 	</string>
 	<string id="sprint_tutorial">
-		<text>Tavolta è necessario correre più rapidamente del solito. Per farlo, premi ($$ACTION_sprint_toggle$$) mentre stai correndo. Il personaggio scatta è più veloce e riesce a saltare più in alto, ma si stanca più in fretta e non può sparare.</text>
+		<text>Tavolta è necessario correre più rapidamente del solito. Per farlo, premi ($$ACTION_sprint_toggle$$) mentre stai correndo. Il personaggio in scatto è più veloce e riesce a saltare più in alto, ma si stanca più in fretta e non può sparare.</text>
 	</string>
 	<string id="starvation_tutorial">
 		<text>Se il personaggio non mangia per troppo tempo, comincia ad avere fame. A meno che non trovi qualcosa da mangiare, la sua salute andrà gradualmente peggiorando. Per evitare che ciò accada, è necessario mangiare regolarmente. Una fetta di pane, cibo in scatola o una salsiccia risolvono il problema facilmente, almeno per un po'.</text>

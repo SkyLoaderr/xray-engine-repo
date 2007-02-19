@@ -231,22 +231,4 @@
 	<string id="st_mp_voting_failed">
 		<text>¡Votación fallida!</text>
 	</string>
-	<string id="l03u_agr_underground">
-		<text>Subterráneo Agroprom</text>
-	</string>
-	<string id="l04u_labx18">
-		<text>Lab. X18</text>
-	</string>
-	<string id="l08u_brainlab">
-		<text>Lab. X16</text>
-	</string>
-	<string id="l10u_bunker">
-		<text>Lab. X10</text>
-	</string>
-	<string id="l12u_sarcofag">
-		<text>Sarcófago</text>
-	</string>
-	<string id="l12u_control_monolith">
-		<text>Centro de control del Monolito</text>
-	</string>
 </string_table>

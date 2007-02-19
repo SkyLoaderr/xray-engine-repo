@@ -16,7 +16,7 @@
 		<text>El arma se ha atascado. Tienes que recargarla.</text>
 	</string>
 	<string id="inventory_box_use">
-		<text>Buscar la caja ($$ACTION_USE$$)</text>
+		<text>Registrar caja ($$ACTION_USE$$)</text>
 	</string>
 	<string id="Local Map">
 		<text>Mapa del sector</text>

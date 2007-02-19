@@ -61,7 +61,7 @@
 		<text>Discarica</text>
 	</string>
 	<string id="l03_agroprom">
-		<text>Istituto di Ricerca Agroprom</text>
+		<text>Istituto Agroprom</text>
 	</string>
 	<string id="l04_darkvalley">
 		<text>Valle Oscura</text>
@@ -85,10 +85,10 @@
 		<text>Pripjat</text>
 	</string>
 	<string id="l12_stancia">
-		<text>Centrale Nucleare di Chernobyl</text>
+		<text>Centrale di Chernobyl</text>
 	</string>
 	<string id="l12_stancia_2">
-		<text>Centrale Nucleare di Chernobyl</text>
+		<text>Centrale di Chernobyl</text>
 	</string>
 	<string id="master">
 		<text>esperto</text>
@@ -118,7 +118,7 @@
 		<text>terribile</text>
 	</string>
 	<string id="trader">
-		<text>Trafficante.</text>
+		<text>Trafficante</text>
 	</string>
 	<string id="ui_st_community">
 		<text>raggruppamento</text>
@@ -230,23 +230,5 @@
 	</string>
 	<string id="st_mp_voting_failed">
 		<text>Votazione fallita!</text>
-	</string>
-	<string id="l03u_agr_underground">
-		<text>Sotterranei Agroprom</text>
-	</string>
-	<string id="l04u_labx18">
-		<text>Lab. X18</text>
-	</string>
-	<string id="l08u_brainlab">
-		<text>Lab. X16</text>
-	</string>
-	<string id="l10u_bunker">
-		<text>Lab. X10</text>
-	</string>
-	<string id="l12u_sarcofag">
-		<text>Sarcofago</text>
-	</string>
-	<string id="l12u_control_monolith">
-		<text>Centro controllo Monolite</text>
 	</string>
 </string_table>

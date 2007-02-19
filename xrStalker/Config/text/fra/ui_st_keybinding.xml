@@ -31,7 +31,7 @@
 		<text>Contacts PDA</text>
 	</string>
 	<string id="kb_crouch">
-		<text>S'accroupir complètement</text>
+		<text>S'accroupir </text>
 	</string>
 	<string id="kb_crouch_toggle">
 		<text>Toujours s'accroupir</text>

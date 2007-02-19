@@ -59,7 +59,7 @@
 		<text>Zhorik</text>
 	</string>
 	<string id="bar_barmen_bio">
-		<text>Ce n'est pas un saint, mais il n'a rien d'une crapule. Le Barman a de l'expérience et tous les Stalkers le respectent. La rumeur dit qu'il s'est installé dans la Zone pour échapper à de sombres évènements de son passé. Il s'est mis à boiter légèrement après avoir vu une anomalie d'un peu trop près et a donc décidé de changer de métier. Il a ouvert un bar près de la faction du Devoir et l'endroit est vite devenu le rendez-vous des vétérans de la Zone. Le Barman connaît a beaucoup de monde, dans la Zone comme à l'extérieur.</text>
+		<text>Ce n'est pas un saint, mais il n'a rien d'une crapule. Le Barman a de l'expérience et tous les Stalkers le respectent. La rumeur dit qu'il s'est installé dans la Zone pour échapper à de sombres évènements de son passé. Il s'est mis à boiter légèrement après avoir vu une anomalie d'un peu trop près et a donc décidé de changer de métier. Il a ouvert un bar près de la faction du Devoir et l'endroit est vite devenu le rendez-vous des vétérans de la Zone. Le Barman connaît beaucoup de monde, dans la Zone comme à l'extérieur.</text>
 	</string>
 	<string id="bar_barmen_name">
 		<text>Le Barman</text>
@@ -407,7 +407,7 @@
 		<text>Stalker de la faction de la Liberté. Aucune information supplémentaire.</text>
 	</string>
 	<string id="mil_Svoboda_zombi_stalker_name">
-		<text>Stalker cinglé de la faction de la Liberté.</text>
+		<text>Stalker cinglé </text>
 	</string>
 	<string id="mil_Svoboda_zoneguard_bio">
 		<text>Militant de la faction de la Liberté. Bien équipé en général. Aucune information supplémentaire.</text>

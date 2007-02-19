@@ -4,10 +4,10 @@
 		<text>Comment il pourrait y avoir quelque chose de nouveau ici ? Faut voir ça comme un jardin d'enfants ou une maternelle. Enfin, si tu traînes pas dans le coin, tu te feras virer de la Zone en deux temps trois mouvements. Les plus malins restent là un petit bout de temps, et après ils vont Dieu sait où. Tu peux t'en sortir ici avec des munitions ou des armes, c'est pas un problème. Tout le monde le fait.</text>
 	</string>
 	<string id="dm_action_info_1">
-		<text>Tout ce que j'ai à faire, c'est attendre que ces branques en uniformes aillent manger... Y a rien d'intéressant dans le coin, mais moi je veux aller à l'extérieur et j'ai beau essayer, ils me laissent pas passer. Je suis pas le seul à vouloir sortir, mais on n'arrive pas à leur échapper.</text>
+		<text>Tout ce que j'ai à faire, c'est attendre que ces branques en uniformes aillent manger... Y'a rien d'intéressant dans le coin, mais moi je veux aller à l'extérieur et j'ai beau essayer, ils ne me laissent pas passer. Je ne suis pas le seul à vouloir sortir, mais on n'arrive pas à leur échapper.</text>
 	</string>
 	<string id="dm_action_info_10">
-		<text>Les types en uniformes cherchaient quelque chose pas loin d'ici. Ils venaient pas avant : y a plus rien à récupérer, même les câbles ont été arrachés ! Et là, on dirait qu'ils ont trouvé... J'ai même pas pu m'approcher du bâtiment : ils m'ont repéré illico et ils ont tiré. J'ai eu du bol de pas y rester.</text>
+		<text>Les types en uniformes cherchaient quelque chose pas loin d'ici. Ils ne venaient pas avant : y'a plus rien à récupérer, même les câbles ont été arrachés ! Et là, on dirait qu'ils ont trouvé... J'ai même pas pu m'approcher du bâtiment : ils m'ont repéré illico et ils ont tiré. J'ai eu du bol de ne pas y rester.</text>
 	</string>
 	<string id="dm_action_info_100">
 		<text>Rien. J'essaie juste de m'en sortir.</text>
@@ -46,10 +46,10 @@
 		<text>Pour l'instant Stalker, cet endroit est sûr, et on fait tout pour qu'il le reste. Il y a beaucoup de gens ici : ceux qui se sont installés et ne s'aventurent jamais bien loin, et ceux qui se préparent pour une autre expédition. C'est vraiment dommage qu'Irokez ne soit pas revenu. Il aimait bien convaincre les bleus comme toi de choisir la voie des justes.</text>
 	</string>
 	<string id="dm_action_info_21">
-		<text>Tu savais que le Devoir recrutait de nouveaux membres ? J'y ai pensé pendant une minute, et puis j'ai dit merde ! Ils sont pas près de m'avoir dans leurs rangs... j'ai pas besoin de ce genre de discipline. J'ai fait mes deux ans, ça m'a suffi...</text>
+		<text>Tu savais que le Devoir recrutait de nouveaux membres ? J'y ai pensé pendant une minute, et puis j'ai dit merde ! Ils ne sont pas près de m'avoir dans leurs rangs... je n'ai pas besoin de ce genre de discipline. J'ai fait mes deux ans, ça m'a suffi...</text>
 	</string>
 	<string id="dm_action_info_22">
-		<text>Au cas où tu ne le saurais pas encore, on recrute de nouveaux membres. Si tu as de l'expérience, viens, tu le regretteras pas. Demande Petrenko à la base.</text>
+		<text>Au cas où tu ne le saurais pas encore, on recrute de nouveaux membres. Si tu as de l'expérience, viens, tu ne le regretteras pas. Demande Petrenko à la base.</text>
 	</string>
 	<string id="dm_action_info_23">
 		<text>Tu es venu pour voir un match aussi ? Ça te dirait de parier ? Bon sang, tu connais rien à rien ! Il y a une arène dans le coin, tu sais même pas ça ? Écoute bien : les membres du Devoir attrapent des mutants, tu vois ? Quand ils reviennent, si les bêtes sont toujours vivantes, ils les lâchent dans l'Arène. Faut les voir ces monstres, y a vraiment de tout : y en a des bien ridicules, et d'autres carrément flippants.</text>
@@ -67,13 +67,13 @@
 		<text>Ben, je pensais aller à Yantar, mais je me suis ravisé. Les intellos sont en train d'y installer une véritable base scientifique au beau milieu de la Zone. Ils s'amusent à creuser pendant que des zombies se baladent tout autour du complexe. Un vrai paradis...</text>
 	</string>
 	<string id="dm_action_info_28">
-		<text>Ils ont purgé la zone de Yantar y a pas longtemps... Ouais, ils l'ont bien nettoyée ! Il y a des labos de recherche là-bas, mais aussi beaucoup de zombies. On y fait souvent des descentes pour aider les scientifiques.</text>
+		<text>Ils ont purgé la zone de Yantar y'a pas longtemps... Ouais, ils l'ont bien nettoyée ! Il y a des labos de recherche là-bas, mais aussi beaucoup de zombies. On y fait souvent des descentes pour aider les scientifiques.</text>
 	</string>
 	<string id="dm_action_info_29">
 		<text>Près des vieux entrepôts, tu sais, la base de la Liberté. C'est des mecs bien, réglos et tout. C'est vraiment un plaisir de bavarder avec eux autour d'une bouteille de rouge. Et puis le Devoir est pas tout le temps à nos basques, pas comme au bar.</text>
 	</string>
 	<string id="dm_action_info_3">
-		<text>Il y a une vieille usine pas loin. On arrête pas d'en chasser les bandits, mais à chaque fois ils reviennent ! Ça fait à peine un mois et les revoilà déjà. Sois prudent dans ce coin-là...</text>
+		<text>Il y a une vieille usine pas loin. On n'arrête pas d'en chasser les bandits, mais à chaque fois ils reviennent ! Ça fait à peine un mois et les revoilà déjà. Sois prudent dans ce coin-là...</text>
 	</string>
 	<string id="dm_action_info_30">
 		<text>Les types de la Liberté se planquent derrière les vieux entrepôts... Fais-leur la peau à ses tarés...</text>
@@ -106,7 +106,7 @@
 		<text>Tu sais pas ? Ils ont créé un nouveau chemin ici pour contourner la patrouille du Devoir et arriver directement dans le périmètre des artefacts. Viens jusqu'ici depuis Yantar puis prends les chemins détournés jusqu'à Agroprom, et tu y es !</text>
 	</string>
 	<string id="dm_action_info_4">
-		<text>Rien. Je suis au courant de rien. Je chope quelques informations par-ci par-là, j'essaie de gagner assez pour manger. C'est bien trop risqué d'aller au coeur de la Zone, y a pas moyen. Et y a pas de boulot chez moi, j'ai ma femme à charge, faut bien que je vive. Ici, dans la Décharge, en cherchant bien toute la journée, on peut rassembler des artefacts. Ça suffit pour acheter de quoi manger.</text>
+		<text>Rien. Je ne suis au courant de rien. Je chope quelques informations par-ci par-là, j'essaie de gagner assez pour manger. C'est bien trop risqué d'aller au coeur de la Zone, y'a pas moyen. Et y'a pas de boulot chez moi, j'ai ma femme à charge, faut bien que je vive. Ici, dans la Décharge, en cherchant bien toute la journée, on peut rassembler des artefacts. Ça suffit pour acheter de quoi manger.</text>
 	</string>
 	<string id="dm_action_info_40">
 		<text>Et qu'est-ce que tu fiches ici ? Tu veux aller à Yantar, ou tu essaies de cacher des artefacts à un frère ?</text>
@@ -172,7 +172,7 @@
 		<text>Ça fait déjà trois jours que je traîne dans le coin, à observer. Y a un labo ici, pas vrai ? Personne n'y a mis les pieds depuis le début. Les types du Devoir venaient éliminer un peu les zombies dans le secteur, mais c'est fini, hein ? Mais fallait que les scientifiques s'en mêlent. Ça veut dire qu'ils ont trouvé un moyen de se protéger, Dieu sait comment. Donc je me disais, pourquoi pas aller fouiner un peu par là. Je parie qu'on peut trouver des artefacts à la pelle.</text>
 	</string>
 	<string id="dm_action_info_6">
-		<text>Depuis quelques jours, des groupes d'animaux sortent de la vallée obscure. On ne sait pas ce qui les fait fuir, mais ils sont vraiment fous, comme s'il y avait le feu. Et dans le secteur est, les mutants se multiplient comme de la mauvaise herbe. Tout ce qu'on peut faire, c'est les abattre. Voilà les nouvelles.</text>
+		<text>Depuis quelques jours, des groupes d'animaux sortent de la vallée obscure. On ne sait pas ce qui les fait fuir, mais ils sont vraiment fous, comme s'il y avait le feu. Et dans le secteur Est, les mutants se multiplient comme de la mauvaise herbe. Tout ce qu'on peut faire, c'est les abattre. Voilà les nouvelles.</text>
 	</string>
 	<string id="dm_action_info_60">
 		<text>Qu'est-ce que tu cherches par ici ? Tu veux entrer dans le labo toi aussi ? Tu as entendu ce conte de fées sur des instruments magiques et une montagne d'artefacts ? Bon sang... Quand est-ce qu'ils vont comprendre ?</text>
@@ -190,7 +190,7 @@
 		<text>Tu n'es pas très amical envers la Liberté, hein ? OK, t'énerve pas ! Bientôt, on les chassera des entrepôts militaires. Ils sont ni organisés, ni disciplinés ; c'est un grand troupeau, une meute de bêtes qui ose contester notre autorité ! Que des jeunes naïfs de l'OTAN !</text>
 	</string>
 	<string id="dm_action_info_65">
-		<text>J'ai rencontré un membre du Devoir au moment du cessez-le-feu. On a discuté et je l'ai trouvé intelligent mais têtu comme une mule. Notre philosophie est complètement différente de la leur. Il faut qu'on apprenne à connaître la Zone pour réussir à nous y adapter, sans la détruire. On a donc besoin d'un libre accès à toutes les informations ; la vérité finit toujours par ressortir. Mais ils arrêtent pas de tout cloisonner, verrouiller... De vrais imbéciles ! Même si je peux comprendre qu'on n'ait pas la force de penser différemment quand l'imposante machine politique vous met la pression.</text>
+		<text>J'ai rencontré un membre du Devoir au moment du cessez-le-feu. On a discuté et je l'ai trouvé intelligent mais têtu comme une mule. Notre philosophie est complètement différente de la leur. Il faut qu'on apprenne à connaître la Zone pour réussir à nous y adapter, sans la détruire. On a donc besoin d'un libre accès à toutes les informations ; la vérité finit toujours par ressortir. Mais ils n'arrêtent pas de tout cloisonner, verrouiller... De vrais imbéciles ! Même si je peux comprendre qu'on n'ait pas la force de penser différemment quand l'imposante machine politique vous met la pression.</text>
 	</string>
 	<string id="dm_action_info_66">
 		<text>Il y a une petite maison là qui était calme autrefois, mais qui abrite aujourd'hui des créatures. Il vaut mieux la contourner et c'est ce que je fais, moi... Hé mec, je t'ai prévenu !</text>
@@ -205,7 +205,7 @@
 		<text>Je me tire d'ici ! Ça fait quatre semaines que je vadrouille à la frontière et ça suffit ! Les tarés partent du lobotomisateur pour sans cesse revenir par ici et chaque jour, il y en a de plus en plus...</text>
 	</string>
 	<string id="dm_action_info_7">
-		<text>Beaucoup d'hommes sont devenus des "éboueurs". Avant personne ne s'approchait des dépotoirs, car le taux de radiation est si élevé qu'en une demi-heure, t'es aussi cuit qu'un oeuf dur. Mais il est de plus en plus difficile de trouver des artefacts, alors ils vont quand même y jeter un oeil en se protégeant au maximum et en prenant des pilules. Et ils y trouvent plein de trucs sans trop de valeur.</text>
+		<text>Beaucoup d'hommes sont devenus des "éboueurs". Avant, personne ne s'approchait des dépotoirs, car le taux de radiation est si élevé qu'en une demi-heure, t'es aussi cuit qu'un oeuf dur. Mais il est de plus en plus difficile de trouver des artefacts, alors ils vont quand même y jeter un oeil en se protégeant au maximum et en prenant des pilules. Et ils y trouvent plein de trucs sans trop de valeur.</text>
 	</string>
 	<string id="dm_action_info_70">
 		<text>Si tu viens pour notre barrage, tu auras tout mon respect. Sinon, va mourir ! Il nous faut de vrais hommes et pas des mauviettes qui nous pompent l'air...</text>
@@ -286,13 +286,13 @@
 		<text>Du nouveau ? On s'en fiche des nouveautés quand les potins du passé sont aussi croustillants. Les bandits sont devenus fous, les salauds ! On se faufile entre les anomalies pour trouver des artefacts et il y a les voleurs qui nous les dérobent ! Alors fais gaffe et t'aventure pas à la Décharge, c'est le lieu de prédilection de ces salopards.</text>
 	</string>
 	<string id="dm_cool_info_1">
-		<text>Je suis coincé, pigé ? J'aimerais rentrer chez moi et je peux pas. Rien de neuf à part ça ! Les gars qui s'enfoncent dans la Zone, ceux qui y ont traîné, racontent des choses. Parfois, ils rapportent des objets de valeur qui rendent jaloux. Ils parlent de montagnes d'or qui demandent qu'à être ramassées. Toutefois, peu parviennent jusque-là et encore moins reviennent avec un pactole.</text>
+		<text>Je suis coincé, pigé ? J'aimerais rentrer chez moi et je ne peux pas. Rien de neuf à part ça ! Les gars qui s'enfoncent dans la Zone, ceux qui y ont traîné, racontent des choses. Parfois, ils rapportent des objets de valeur qui rendent jaloux. Ils parlent de montagnes d'or qui ne demandent qu'à être ramassées. Toutefois, peu parviennent jusque-là et encore moins reviennent avec un pactole.</text>
 	</string>
 	<string id="dm_cool_info_10">
 		<text>Il y a une semaine, le lobotomisateur a eu la Loutre. J'aurais compris si ça avait été un nouveau sans expérience, mais c'était un Stalker depuis de nombreuses années. Il paraît même qu'il faisait partie de l'équipe de Strelok. Et tout d'un coup... pouf !</text>
 	</string>
 	<string id="dm_cool_info_100">
-		<text>En fait, je suis pas au courant des toutes dernières nouvelles.</text>
+		<text>En fait, je ne suis pas au courant des toutes dernières nouvelles.</text>
 	</string>
 	<string id="dm_cool_info_11">
 		<text>Dis-moi, Stalker, pourquoi des solitaires comme toi perdent la boule parfois ? On vous a jamais appris les bases de la discipline ? La semaine dernière, un Stalker expérimenté a décidé de passer devant le lobotomisateur... Il existe tout de même un meilleur moyen de s'exploser la cervelle, non ?! Le canon dans la bouche et feu !</text>
@@ -313,13 +313,13 @@
 		<text>Ha ! Tout le monde est devenu dingue ici ! Le Confédéré et son groupe sont revenus d'un raid, avec un paquet d'artefacts, bon sang ! Bien sûr, le Confédéré garde le silence, comme d'habitude, et tous ses gars rigolent comme s'ils revenaient du Yukon les poches remplies d'or... les enfoirés !</text>
 	</string>
 	<string id="dm_cool_info_17">
-		<text>Ces derniers jours, plein de bêtes reviennent du lobotomisateur. Les gens près des anciens entrepôts militaires ont construit un barrage qui semble tenir pour l'instant. S'il commence à s'effondrer, il va falloir aller chercher des renforts. Il y a rien d'autre à faire...</text>
+		<text>Ces derniers jours, plein de bêtes reviennent du lobotomisateur. Les gens près des anciens entrepôts militaires ont construit un barrage qui semble tenir pour l'instant. S'il commence à s'effondrer, il va falloir aller chercher des renforts. Il n'y a rien d'autre à faire...</text>
 	</string>
 	<string id="dm_cool_info_18">
 		<text>T'as entendu les rumeurs qui parlent d'une extension de la Zone ? À mon avis, c'est vrai : j'ai aperçu un monstre humanoïde hyper effrayant dans le périmètre du centre de la Zone qui était interdit avant. Les choses se présentent mal, hein ?</text>
 	</string>
 	<string id="dm_cool_info_19">
-		<text>Il est fort probable qu'ils restent pas à proximité des sangsues et de la frontière de la Zone. Mais qu'est-ce que ça a à voir avec l'agrandissement de la Zone ? Un groupe a erré vers la frontière et l'a franchie. Parfois, on doit passer quelques jours à patrouiller et tout se passe bien. Au-delà du périmètre, personne ne crie : "À l'aide ! On est encerclés de mutants !".</text>
+		<text>Il est fort probable qu'ils ne restent pas à proximité des sangsues et de la frontière de la Zone. Mais qu'est-ce que ça a à voir avec l'agrandissement de la Zone ? Un groupe a erré vers la frontière et l'a franchie. Parfois, on doit passer quelques jours à patrouiller et tout se passe bien. Au-delà du périmètre, personne ne crie : "À l'aide ! On est encerclés de mutants !".</text>
 	</string>
 	<string id="dm_cool_info_2">
 		<text>Ouais, c'est triste tout ça. L'autre jour, j'ai appris la mort stupide de la Loutre. J'arrive pas à le croire... et t'as jamais entendu parler de la Loutre, toi ? Hé bien, il était presque digne d'être professeur. Ici depuis la première année, il connaissait la Zone comme sa poche... et puis comme ça, sans raison, il est mort ! Même avec la meilleure expérience qui soit, les Stalkers se font quand même tuer par la Zone. D'autres finissent par retourner à l'extérieur.</text>
@@ -370,7 +370,7 @@
 		<text>Les mutants arrêtent pas d'essayer de passer la Barrière. Ça devient compliqué ces dernier temps. Si les gens arrêtaient d'être aussi bornés, on en serait pas là !</text>
 	</string>
 	<string id="dm_cool_info_34">
-		<text>Le Devoir arrête pas de se vanter de ses actes héroïques à la Barrière. Si seulement quelqu'un les croyait... On a conclu un marché, mais on est les seuls à le tenir, et en plus, beaucoup de solitaires comme toi sont restés en retrait volontairement. Mais ces gars du Devoir... ces blaireaux... qu'ils aillent se faire voir !</text>
+		<text>Le Devoir n'arrête pas de se vanter de ses actes héroïques à la Barrière. Si seulement quelqu'un les croyait... On a conclu un marché, mais on est les seuls à le tenir, et en plus, beaucoup de solitaires comme toi sont restés en retrait volontairement. Mais ces gars du Devoir... ces blaireaux... qu'ils aillent se faire voir !</text>
 	</string>
 	<string id="dm_cool_info_35">
 		<text>On m'a dit que le Devoir avait plus de munitions. Ils continuent de dire un truc comme : "on est tous des volontaires et on veut rétablir l'ordre dans la Zone"... ouais, c'est ça, des volontaires ! Un commanditaire a donné à ces soi-disant volontaires tellement de munitions et d'armes que tu mourrais pour les avoir. Et après, ils ont plus de munitions...</text>
@@ -388,7 +388,7 @@
 		<text>Qu'est-ce qu'il y a eu de nouveau... pas grand chose, pas grand chose. Mutants, Liberté... même si récemment, les soldats ont commencé à utiliser leurs hélicos. Ils auraient au moins pu tirer sur une bestiole... mais non, même pas...</text>
 	</string>
 	<string id="dm_cool_info_4">
-		<text>Du nouveau ? Qui s'intéresse à ce qu'ils disent ? Faut pas croire tout ce qui se dit. Par exemple, on dit qu'un Stalker expérimenté est revenu des zones intérieures et a ramené quelque chose que personne n'a jamais vu et qu'il a impressionné des tonnes de gonzesses... Je peux en inventer des centaines d'histoires comme ça!</text>
+		<text>Du nouveau ? Qui s'intéresse à ce qu'ils disent ? Faut pas croire tout ce qui se dit. Par exemple, on dit qu'un Stalker expérimenté est revenu des zones intérieures et a ramené quelque chose que personne n'a jamais vu et qu'il a impressionné des tonnes de gonzesses... Je peux en inventer des centaines d'histoires comme ça !</text>
 	</string>
 	<string id="dm_cool_info_40">
 		<text>J'ai vu des hélicos militaires : imagine, ils sont passés au-dessus d'ici et ont survolé le lobotomisateur ! Bon, je me disais, ils vont s'écraser maintenant. Mais rien, ils ont juste continué. Ils ont attendu un peu, ont tourné en rond et ils sont repartis. Étonnant, hein ?</text>
@@ -421,7 +421,7 @@
 		<text>T'imagines, ils ont trouvé Mikluha ! Et les gars qui étaient avec lui ont aussi survécu. Ils ont réussi à échapper au lobotomisateur et ils ont passé un mois à tuer le temps, ils pouvaient pas revenir.</text>
 	</string>
 	<string id="dm_cool_info_5">
-		<text>Il y a quelque chose de louche qui se prépare. On dit que le chef du Devoir, le grand patron, n'a pas quitté la Zone que pour les affaires, mais qu'il a conclu un marché avec la Liberté. Enfin, ils auraient très bien pu le faire ici, parce que maintenant, c'est le bordel partout. Ça me dit rien qui vaille. D'un autre côté, les gars expérimentés disent qu'ils ont recommencé à se battre dans la journée, sans raison. J'espère juste que les mecs du gouvernement vont pas encore nous envoyer au casse-pipe.</text>
+		<text>Il y a quelque chose de louche qui se prépare. On dit que le chef du Devoir, le grand patron, n'a pas quitté la Zone que pour les affaires, mais qu'il a conclu un marché avec la Liberté. Enfin, ils auraient très bien pu le faire ici, parce que maintenant, c'est le bordel partout. Ça ne me dit rien qui vaille. D'un autre côté, les gars expérimentés disent qu'ils ont recommencé à se battre dans la journée, sans raison. J'espère juste que les mecs du gouvernement vont pas encore nous envoyer au casse-pipe.</text>
 	</string>
 	<string id="dm_cool_info_50">
 		<text>T'as entendu ?! Les troupes sont prêtes. Ils vont bientôt être là ! Ils ont découvert que le lobotomisateur fonctionnait plus et ont décidé de récupérer toutes les marchandises pour eux !</text>
@@ -451,7 +451,7 @@
 		<text>Les troupes sont en train de s'agiter, ils cherchent, ils creusent. Avant, les hélicos n'allaient que jusqu'à Yantar, les militaires protégeaient les scientifiques ou transportaient des marchandises et du matériel. Maintenant, c'est l'invasion, ils organisent des expéditions, ils patrouillent en char... Je les ai déjà vus près de l'Agroprom et de la vallée obscure. Je comprends pas.</text>
 	</string>
 	<string id="dm_cool_info_7">
-		<text>Il paraît que quelqu'un a encore essayé de passer le lobotomisateur. Bien sûr, il est jamais revenu... t'as jamais entendu parler du lobotomisateur ? C'est pas vrai ?! C'est le plus gros danger de toute cette zone ! Le seul problème, c'est que les horreurs qu'on en dit sont presque toutes vraies.</text>
+		<text>Il paraît que quelqu'un a encore essayé de passer le lobotomisateur. Bien sûr, il n'est jamais revenu... t'as jamais entendu parler du lobotomisateur ? C'est pas vrai ?! C'est le plus gros danger de toute cette zone ! Le seul problème, c'est que les horreurs qu'on en dit sont presque toutes vraies.</text>
 	</string>
 	<string id="dm_cool_info_8">
 		<text>Tiens, en plus des bandits, les militaires ont commencé à rôder dans le coin. Avant, on voyait un hélicoptère tous les cent ans, mais maintenant, ils survolent tout le temps la Zone. Ils ont perdu quelque chose ou quoi ?</text>
@@ -466,7 +466,7 @@
 		<text>Qu'est-ce que tu fais à te promener sans aucune protection ? T'en as marre de vivre, c'est ça ? Il y a une anomalie derrière chaque buisson, clac, et t'es foutu ! Ici, ils vont même pas pisser sans protection, tu vas te faire irradier en moins de deux.</text>
 	</string>
 	<string id="dm_intro_1">
-		<text>On dirait que tu sais pas bien où tu vas alors je vais te donner un conseil d'ami : te mêle pas des affaires des militaires. Si t'en vois un, dégage vite fait, c'est des vrais cinglés. D'abord, tu te prends une ou dix balles dans le bide et après ils vérifient tes papiers pour savoir ton nom.</text>
+		<text>On dirait que tu ne sais pas bien où tu vas alors je vais te donner un conseil d'ami : ne te mêle pas des affaires des militaires. Si t'en vois un, dégage vite fait, c'est des vrais cinglés. D'abord, tu te prends une ou dix balles dans le bide et après ils vérifient tes papiers pour savoir ton nom.</text>
 	</string>
 	<string id="dm_intro_10">
 		<text>Les mecs du Devoir font la loi ici. C'est un peu comme la police, un truc du genre. Garde ça à l'esprit pour éviter les ennuis.</text>
@@ -544,10 +544,10 @@
 		<text>Fais gaffe, si tu veux pas perdre la mémoire, va pas plus au nord.</text>
 	</string>
 	<string id="dm_intro_2">
-		<text>Sois prudent quand tu passes le pont, compris ? Il y a trop de chiens qui errent là-bas. Si tu fais pas attention, ils vont te bouffer en moins de deux.</text>
+		<text>Sois prudent quand tu passes le pont, compris ? Il y a trop de chiens qui errent là-bas. Si tu ne fais pas attention, ils vont te bouffer en moins de deux.</text>
 	</string>
 	<string id="dm_intro_20">
-		<text>Fais gaffe à toi ! Tu sais que le lobotomisateur est pas loin, si tu vas trop au nord, ça fera un mort de plus.</text>
+		<text>Fais gaffe à toi ! Tu sais que le lobotomisateur n'est pas loin, si tu vas trop au nord, ça fera un mort de plus.</text>
 	</string>
 	<string id="dm_intro_21">
 		<text>C'est comme de marcher sur un champ de mines, en pire. Dieu seul sait ce qui se passe ici, on peut même pas se reposer cinq minutes.</text>

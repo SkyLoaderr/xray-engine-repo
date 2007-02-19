@@ -5,7 +5,7 @@
 		<text>Note personnelle</text>
 	</string>
 	<string id="sl_beginning">
-		<text>Qui suis-je?</text>
+		<text>Qui suis-je ?</text>
 	</string>
 	<string id="sl_beginning_text">
 		<text>C'est pas vrai, tout est embrouillé... Je me souviens d'une voiture... Ils m'ont emmené quelque part, le trajet a duré un bon moment et j'avais mal partout... Il faisait nuit... Mais qu'est-ce qui s'est passé avant ça ? Je n'en ai pas la moindre idée... C'est si confus... Et maintenant, il y a ce gros qui me surnomme le Tatoué, sans doute à cause du tatouage que j'ai sur le bras. Et puis il y a cet étrange message sur mon PDA qui me dit de tuer un dénommé Strelok... D'ailleurs, est-ce qu'il est à moi ce PDA ? En regardant la photo de ce Strelok, je me demande si je le connais... Bon sang ! J'ai l'impression de faire un cauchemar dont je n'arrive pas à me réveiller ! Que faire ? Où aller ? Et pire encore : qui suis-je ? OK, OK, calme-toi, contrôle-toi. La première chose à faire, c'est d'accepter des petits boulots pour ce Sidorovich. Après tout, il dit qu'il m'a sauvé la vie... Ça ne devrait pas être si terrible. Je vais aller marcher un peu pour me calmer, ça m'aidera peut-être à y voir un peu plus clair.</text>
@@ -50,7 +50,7 @@
 		<text>Les informations utiles du marchand</text>
 	</string>
 	<string id="sl_usefull_info_text">
-		<text>Hmm... Le marchand ne m'a pas laissé tombé, je lui en suis reconnaissant. Il m'a aidé dans mes recherches sur Strelok. Apparemment, un Stalker dénommé Fox s'est pointé dans le coin pour demander de l'aide. Sidorovich pense qu'il connaît Strelok.</text>
+		<text>Hmm... Le marchand ne m'a pas laissé tomber, je lui en suis reconnaissant. Il m'a aidé dans mes recherches sur Strelok. Apparemment, un Stalker dénommé Fox s'est pointé dans le coin pour demander de l'aide. Sidorovich pense qu'il connaît Strelok.</text>
 	</string>
 	<string id="sl_wishmaster_legend">
 		<text>La légende de la machine à exaucer les voeux</text>

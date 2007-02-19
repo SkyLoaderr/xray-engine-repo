@@ -34,7 +34,7 @@
 		<text>Exosquelette PNB-4UZ</text>
 	</string>
 	<string id="experienced">
-		<text>Expérimenté(e)</text>
+		<text>Expériment.</text>
 	</string>
 	<string id="Found_PDA">
 		<text>PDA découvert(s)</text>
@@ -136,7 +136,7 @@
 		<text>réputation</text>
 	</string>
 	<string id="very_bad">
-		<text>très négative</text>
+		<text>très nég.</text>
 	</string>
 	<string id="very_good">
 		<text>très posit.</text>
@@ -187,7 +187,7 @@
 		<text>Prenez l'objet ($$ACTION_USE$$)</text>
 	</string>
 	<string id="ui_mm_check_updates">
-		<text>Vérification des mises à jour</text>
+		<text>Vérif.  m.à.j.</text>
 	</string>
 	<string id="ui_mm_alternative">
 		<text>Alternative</text>
@@ -230,23 +230,5 @@
 	</string>
 	<string id="st_mp_voting_failed">
 		<text>Échec du vote !</text>
-	</string>
-	<string id="l03u_agr_underground">
-		<text>Sous-terrain Agroprom</text>
-	</string>
-	<string id="l04u_labx18">
-		<text>Labo. X-18</text>
-	</string>
-	<string id="l08u_brainlab">
-		<text>Labo. X-16</text>
-	</string>
-	<string id="l10u_bunker">
-		<text>Labo. X-10</text>
-	</string>
-	<string id="l12u_sarcofag">
-		<text>Sarcophage</text>
-	</string>
-	<string id="l12u_control_monolith">
-		<text>Unité de contrôle du Monolithe</text>
 	</string>
 </string_table>

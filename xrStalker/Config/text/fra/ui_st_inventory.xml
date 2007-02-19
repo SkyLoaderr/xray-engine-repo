@@ -211,9 +211,57 @@
 		<text>Acheter l'ensemble précédent</text>
 	</string>
 	<string id="ui_inv_sell_items">
-		<text>Vendre tous les objets du sac à dos</text>
+		<text>Vendre tous les objets du sac à dos (X)</text>
 	</string>
 	<string id="ui_st_preset_stored_to">
 		<text>Ensemble acheté enregistré sous</text>
+	</string>
+	<string id="ui_inv_preset1(F1)">
+		<text>Préréglage 1 (F1)</text>
+	</string>
+	<string id="ui_inv_preset2(F2)">
+		<text>Préréglage 2 (F2)</text>
+	</string>
+	<string id="ui_inv_preset3(F3)">
+		<text>Préréglage 3 (F3)</text>
+	</string>
+	<string id="ui_inv_last_buy(F4)">
+		<text>Derniers objets (F4)</text>
+	</string>
+	<string id="ui_inv_default(F5)">
+		<text>Objets par défaut (F5)</text>
+	</string>
+	<string id="ui_st_preset_def">
+		<text>Objets par défaut</text>
+	</string>
+	<string id="ui_inv_reset_items">
+		<text>Réinitialiser objets (C)</text>
+	</string>
+	<string id="ui_inv_cant_buy_item">
+		<text>Impossible d'acheter l'objet</text>
+	</string>
+	<string id="ui_inv_rank_restr">
+		<text>Restriction de rang</text>
+	</string>
+	<string id="ui_inv_not_enought_money">
+		<text>Pas assez d'argent</text>
+	</string>
+	<string id="ui_inv_count_restr">
+		<text>Restriction d'argent</text>
+	</string>
+	<string id="ui_inv_has">
+		<text>maintenant</text>
+	</string>
+	<string id="ui_inv_need">
+		<text>requis</text>
+	</string>
+	<string id="ui_inv_you_already_have">
+		<text>Vous avez déjà</text>
+	</string>
+	<string id="ui_st_err_gs_not_available">
+		<text>Service en ligne pour S.T.A.L.K.E.R. indisponible</text>
+	</string>
+	<string id="ui_st_err_sb_master_server_conn_fail">
+		<text>Impossible de se connecter au serveur maître</text>
 	</string>
 </string_table>

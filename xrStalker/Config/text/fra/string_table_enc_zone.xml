@@ -49,7 +49,7 @@
 		<text>Bolide</text>
 	</string>
 	<string id="af-fuzz-kolobok">
-		<text>Soldat</text>
+		<text>“Le Gros”</text>
 	</string>
 	<string id="af-gold-fish">
 		<text>Garde du corps</text>
@@ -130,7 +130,7 @@
 		<text>Cette anomalie inoffensive annule temporairement les lois de la gravité. Il s'agit d'une zone, généralement de plusieurs mètres de diamètre, où les forces gravitationnelles de la Terre sont considérablement réduites. Elle forme l'artefact de "la pellicule".</text>
 	</string>
 	<string id="enc_zone_anomalies_meat">
-		<text>Le nom de cette anomalie provient du fait qu'elle attrape et élève tout être vivant dans les airs pour le faire tournoyer à une telle vitesse que son cou se brise. La nature exacte du "hachoir" reste indéterminée. L'anomalie se reconnaît au petit tourbillon de poussière et aux fragments de corps disséminés alentour. La victime peut s'en sortir avec des blessures légères si elle se trouve assez loin du noyau où l'effet est maximum. Cette anomalie est à l'origine de trois types d'artefacts : "le régénérateur de base", "le morceau de viande" et "le super régénérateur".</text>
+		<text>Le nom de cette anomalie provient du fait qu'elle attrape et projette tout être vivant dans les airs pour le faire tournoyer à une telle vitesse que son cou se brise. La nature exacte du "hachoir" reste indéterminée. L'anomalie se reconnaît au petit tourbillon de poussière et aux fragments de corps disséminés alentour. La victime peut s'en sortir avec des blessures légères si elle se trouve assez loin du noyau où l'effet est maximum. Cette anomalie est à l'origine de trois types d'artefacts : "le régénérateur de base", "le morceau de viande" et "le super régénérateur".</text>
 	</string>
 	<string id="enc_zone_anomalies_radioactive">
 		<text>Une zone à fort taux de radiation, plus de 50 mR/h. Il est vivement déconseillé de rester longtemps dans une zone irradiée.</text>
@@ -157,7 +157,7 @@
 		<text>Créé lorsque des métaux lourds se heurtent à l'anomalie "colonne de feu". Cet artefact neutralise à la perfection les radiations. Les Stalkers en raffolent et il est dur à trouver.</text>
 	</string>
 	<string id="enc_zone_artifact_af-cristall-flower">
-		<text>Issu de l'anomalie "tremplin", cet artefact se trouve à divers endroits de la Zone. Ses pièces de métal crée un magnifique jeu de lumière. Observer cet artefact de nuit, au coin du feu, est très reposant. </text>
+		<text>Issu de l'anomalie "tremplin", cet artefact se trouve à divers endroits de la Zone. Ses pièces de métal créent un magnifique jeu de lumière. Observer cet artefact de nuit, au coin du feu, est très reposant. </text>
 	</string>
 	<string id="enc_zone_artifact_af-drops">
 		<text>Formé par l'anomalie "colonne de feu" à haute température. A l'apperence d'une goutte d'eau à la surface luisante et fissurée.</text>
@@ -208,7 +208,7 @@
 		<text>Ce fantastique artefact est formé par l'anomalie "tremplin". Son utilisation implique la neutralisation des radiations. Coûteux et rare, cet artefact se révèle particulièrement intéressant lors des expéditions scientifiques et autres recherches menées dans la Zone.</text>
 	</string>
 	<string id="enc_zone_artifact_af-rusty-kristall">
-		<text>Cristallise l'anomalie "flore ardente". Élimine naturellement les radiations de l'organisme. À  savoir, par les oreilles avec quelques saignements. Répandu et relativement efficace, cet artefact affiche un prix stable sur le marché.</text>
+		<text>Formé dans l'anomalie "flore ardente". Élimine naturellement les radiations de l'organisme. Cause quelques saignements des oreilles. Répandu et relativement efficace, cet artefact affiche un prix stable sur le marché.</text>
 	</string>
 	<string id="enc_zone_artifact_af-rusty-sea-urchin">
 		<text>L'anomalie "flore ardente" donne rarement naissance à cet artefact. La tension artérielle augmente et le corps se débarrasse de nombreuses cellules rouges et ce faisant, des radiations. Dans son ouvrage, intitulé "Ionisation et polarisation des composants issus des artefacts rares ", Saharov a noté que cette formation se révèle particulièrement stable et que la création d'un tel artefact en laboratoire, au cours des dix prochaines années, n'est pas envisageable.</text>
@@ -226,7 +226,7 @@
 		<text>Zone hautement contaminée. Si vous vous y enfoncez, vous remarquerez un lac peu profond dont le rivage est jonché de matériel et débris abandonnés. Vous pouvez également jeter un coup d'oeil dans l'Institut abandonné et l'usine, mais l'armée y est récemment venue.</text>
 	</string>
 	<string id="enc_zone_locations_bar">
-		<text>La faction du Devoir a établi un camp aux abord de la plaine et les Stalkers qui souhaitent s'y reposer y sont les bienvenues. Une oasis désertique, un lieu dépourvu d'anomalies et de mutants. Ne manquez pas le 100 Rads, un bar situé dans les souterrains ; tous les Stalkers de la Zone s'y retrouvent. Ce bar est tenu par un marchand local et si vous souhaitez acheter ou vendre quelque chose, allez-y. Au nord de ce bar, se trouve la base militaire, et au sud, la Décharge.</text>
+		<text>La faction du Devoir a établi un camp aux abord de la plaine et les Stalkers qui souhaitent s'y reposer y sont les bienvenus. Une oasis désertique, un lieu dépourvu d'anomalies et de mutants. Ne manquez pas le 100 Rads, un bar situé dans les souterrains ; tous les Stalkers de la Zone s'y retrouvent. Ce bar est tenu par un marchand local et si vous souhaitez acheter ou vendre quelque chose, allez-y. Au nord de ce bar, se trouve la base militaire, et au sud, la Décharge.</text>
 	</string>
 	<string id="enc_zone_locations_darkdolina">
 		<text>Toujours lugubre, brumeuse et pluvieuse. Les Stalkers qui s'aventurent dans la Vallée obscure y trouvent souvent de précieux artefacts, la mort subite, voire les deux. Un endroit fréquenté par des durs à cuire, voire par quelques bandits. Il abriterait un labo souterrain, alors n'hésitez pas à y rechercher une entrée secrète. Personne n'en est jamais revenu vivant et personne ne peut dire ce qui vous y attend.</text>
@@ -253,7 +253,7 @@
 		<text>Site de la centrale nucléaire mondialement connue. Le coeur de la Zone. Si vous croyez aux légendes, c'est aussi le site du Monolithe, un chose teintée de mystère capable d'exaucer de tous les voeux. </text>
 	</string>
 	<string id="enc_zone_locations_yantar">
-		<text>Lac légendaire du secteur du même nom asséché depuis bien longtemps et remplacé par un marécage. Cet endroit est morbide et hanté par la mort. De grands dangers guettent tous les aventuriers qui s'en approchent. Tous ceux qui s'y enfoncent sombrent dans la folie. Des drones de zombies arpentent le secteur, avides de nouvelles victimes. Si vous contournez le lac et dépassé les zombies, vous tomberez sur le camp des scientifiques où des intellos transportés par hélicoptères y mènent des recherches. Vous pouvez discuter avec eux ; ils achètent des artefacts et peuvent vous confier des missions.</text>
+		<text>Lac légendaire du secteur du même nom asséché depuis bien longtemps et remplacé par un marécage. Cet endroit est morbide et hanté par la mort. De grands dangers guettent tous les aventuriers qui s'en approchent. Tous ceux qui s'y enfoncent sombrent dans la folie. De drôles de zombies arpentent le secteur, avides de nouvelles victimes. Si vous contournez le lac et dépassez les zombies, vous tomberez sur le camp des scientifiques où des intellos transportés par hélicoptères mènent des recherches. Vous pouvez discuter avec eux ; ils achètent des artefacts et peuvent vous confier des missions.</text>
 	</string>
 	<string id="enc_zone_zone-story_story-2006">
 		<text>La zone contaminée brillait de mille feux presque insupportables à regarder. On pouvait y voir les nuages se transformer en vapeur. Après un silence de mort, le tonnerre se mit à gronder, puis la terre à trembler. Les gens se mirent à terre, plissant et se couvrant les yeux. Ceux qui tenaient encore debout tentèrent de fuir. C'était comme si tout le combustible nucléaire enseveli sous le sarcophage avait soudainement explosé. Le lendemain, l'armée boucla la nouvelle Zone. Les satellites permirent d'établir que l'épicentre de l'explosion ne se trouvait pas aux environs des réacteurs de Tchernobyl, mais à un demi-kilomètre de là. Le personnel de la centrale est censé avoir trouvé la mort sur le coup, mais beaucoup de survivants se trouvaient encore dans la zone bouclée. L'opération de sauvetage se révéla très vite inutile, toutes les personnes présentes sur place étant condamnées à mourir. Un peu après la catastrophe, le périmètre de la Zone s'élargit de quelques kilomètres. La plupart des troupes du gouvernement gardant la frontière et les équipes de chercheurs moururent instantanément. Prise de panique, la population locale prit la fuite. Les habitants des villes et villages voisins furent évacués à la hâte. Un immense danger pèse sur le monde et on ne peut qu'augurer de son réel impact.</text>

@@ -201,4 +201,16 @@
 	<string id="st_items">
 		<text>Objetos</text>
 	</string>
+	<string id="st_video">
+		<text>Video</text>
+	</string>
+	<string id="st_audio">
+		<text>Sonido</text>
+	</string>
+	<string id="st_game">
+		<text>Juego</text>
+	</string>
+	<string id="st_controll">
+		<text>Controles</text>
+	</string>
 </string_table>

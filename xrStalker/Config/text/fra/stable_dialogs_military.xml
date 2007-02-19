@@ -49,7 +49,7 @@
 		<text>Euuuh... Ouais ! Hé hé...</text>
 	</string>
 	<string id="mil_cook_common1_110">
-		<text>Pour être franc, je me rappelle pas du tout de toi.</text>
+		<text>Pour être franc, je ne me rappelle pas du tout de toi.</text>
 	</string>
 	<string id="mil_cook_common1_111">
 		<text>Euh... OK, c'est pas grave.</text>
@@ -187,7 +187,7 @@
 		<text>Bon, une autre ?</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_1_5">
-		<text>Ahhh... incroyable ! Dommage qu'on ait déjà réglé son compte à la bouteille. Y en a encore ?</text>
+		<text>Ahhh... incroyable ! Dommage qu'on ait déjà réglé son compte à la bouteille. Y'en a encore ?</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_1_6">
 		<text>J'vais regarder.</text>
@@ -199,7 +199,7 @@
 		<text>Hé hé... joli ! Encore une qui sort de nulle part. T'en as une réserve entière ou quoi ?</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_2">
-		<text>Tu, hum... Vas-y, bois. Je me suis pas beaucoup entraîné ces derniers temps.</text>
+		<text>Tu, hum... Vas-y, bois. Je ne me suis pas beaucoup entraîné ces derniers temps.</text>
 	</string>
 	<string id="mil_cook_drink_for_rg6_2_3">
 		<text>À notre victoire ! Ouaaaiis... Ahh, le bon temps, le bon temps !</text>
@@ -253,13 +253,13 @@
 		<text>Quooii ?... Toi, hum... Va te... Ah... Faire voir ! Disais quoi déjà... J'ai oublié ! Tu voulais savoir quoi ?</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_2_2">
-		<text>Llll... Lâ... Lon... merde ! Le lance-grenades... J'aimerais... le voir !</text>
+		<text>Le... Lâ... Lon... merde ! Le lance-grenades... J'aimerais... le voir !</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_2_3">
 		<text>Naan... Tu peux pas... Tout ce que tu veux, mon pote, mais pas ça... Pas possible !</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_2_4">
-		<text>Humm, OK... je, hum... voulais pas de vesquer ! Pas grave...</text>
+		<text>Humm, OK... je, hum... voulais pas de vexer ! Pas grave...</text>
 	</string>
 	<string id="mil_cook_drunk_question_about_rg6_3_0">
 		<text>Hic ! Bulldog 6, hein ?</text>
@@ -739,7 +739,7 @@
 		<text>Mais pourquoi t'es pas resté à la Barrière ? Dégage et que je te revoie plus jamais près de ma base !</text>
 	</string>
 	<string id="mil_leader_start_dialog_1101">
-		<text>Merde, ces voyous se calmeront donc jamais ! Eh bien, il va falloir leur donner une bonne leçon. Hé, Stalker, tu nous aiderais s'il y avait une récompense à la clé ? Va parler à Max, notre chef. Vous deux, faites équipe et délogez ces enfoirés !</text>
+		<text>Merde, ces voyous ne se calmeront donc jamais ! Eh bien, il va falloir leur donner une bonne leçon. Hé, Stalker, tu nous aiderais s'il y avait une récompense à la clé ? Va parler à Max, notre chef. Vous deux, faites équipe et délogez ces enfoirés !</text>
 	</string>
 	<string id="mil_leader_start_dialog_11011">
 		<text>OK.</text>
@@ -754,19 +754,19 @@
 		<text>Alors t'as pas réussi à débusquer la taupe et t'as aussi foiré à la Barrière ? Fous le camp de ma base et te pointe plus jamais ici !</text>
 	</string>
 	<string id="mil_leader_start_dialog_1210">
-		<text>Vraiment ? Combien ils sont en tout ?</text>
+		<text>Vraiment ? Combien ils étaient en tout ?</text>
 	</string>
 	<string id="mil_leader_start_dialog_1221">
 		<text>Huit.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1222">
-		<text>T'es un rapide, Stalker... OK, ça te dérange pas de nous filer un coup de main pour un autre truc ? C'est dur à admettre, mais il y a un mouchard parmi nous. Il s'appelle Pavlik et il transmet des infos précieuses. On doit l'arrêter.</text>
+		<text>T'es un rapide, Stalker... OK, ça ne te dérange pas de nous filer un coup de main pour un autre truc ? C'est dur à admettre, mais il y a un mouchard parmi nous. Il s'appelle Pavlik et il transmet des infos précieuses. On doit l'arrêter.</text>
 	</string>
 	<string id="mil_leader_start_dialog_1223">
 		<text>Comment ?</text>
 	</string>
 	<string id="mil_leader_start_dialog_1300">
-		<text>Tu dois le suivre jusqu'à la ferme et découvrir de quel genre de taupe il s'agit. Il te connaît pas et il est pas au courant de notre conversation, alors...</text>
+		<text>Tu dois le suivre jusqu'à la ferme et découvrir de quel genre de taupe il s'agit. Il ne te connaît pas et il n'est pas au courant de notre conversation, alors...</text>
 	</string>
 	<string id="mil_leader_start_dialog_13001">
 		<text>Tu crois que j'ai une mission pour toi ?</text>
@@ -817,7 +817,7 @@
 		<text>Beau travail, le Tatoué ! Tiens, voilà... ta récompense pour t'être débarrassé du mouchard. Tu seras toujours le bienvenu si tu souhaites te reposer sur notre territoire et tu peux aussi compter sur notre aide. J'aurais encore un service à te demander. T'es pas trop fatigué ?</text>
 	</string>
 	<string id="mil_leader_start_dialog_5002">
-		<text>De quoi il s'agit ?</text>
+		<text>De quoi s'agit-il ?</text>
 	</string>
 	<string id="mil_leader_start_dialog_5003">
 		<text>Si tu t'en sens capable, va à l'avant-poste près de la sortie de la Forêt rouge. On nous a signalé que des mutants ou des Monolithes allaient de nouveau tenter de faire une percée par ici. On a besoin d'aide.</text>
@@ -931,7 +931,7 @@
 		<text>OK, peu importe.</text>
 	</string>
 	<string id="mil_max_dialog_40052">
-		<text>Voilà la lampe de poche que j'ai prise au fou.</text>
+		<text>Voilà la clé USB que j'ai prise au fou.</text>
 	</string>
 	<string id="mil_max_dialog_400521">
 		<text>Hé, merci, Stalker ! Prends ce flingue, tu l'as gagné !</text>
@@ -952,7 +952,7 @@
 		<text>Alors, qu'est-ce que t'as appris ? Qu'est-ce qui est arrivé à ce fou ?</text>
 	</string>
 	<string id="mil_max_dialog_5002">
-		<text>Voilà la lampe de poche que j'ai prise au fou.</text>
+		<text>Voilà la clé USB que j'ai prise au fou.</text>
 	</string>
 	<string id="mil_max_dialog_6001">
 		<text>Quoi, déjà ?</text>
@@ -1111,7 +1111,7 @@
 		<text>Pourquoi pas...</text>
 	</string>
 	<string id="mil_trader_dialog_3005">
-		<text>Je peux te donner un cristal si tu me rends un certain service. La situation devient de plus en plus problématique... Ces derniers temps, personne ramène d'artefacts du village ; ils ont trop peur. D'après eux, les sangsues campent là-bas. J'arrive pas à trouver une seule personne assez courageuse. Pour tout te dire, j'hésite même à demander de l'aide au Devoir !</text>
+		<text>Je peux te donner un cristal si tu me rends un certain service. La situation devient de plus en plus problématique... Ces derniers temps, personne ne ramène d'artefacts du village ; ils ont trop peur. D'après eux, les sangsues campent là-bas. J'arrive pas à trouver une seule personne assez courageuse. Pour tout te dire, j'hésite même à demander de l'aide au Devoir !</text>
 	</string>
 	<string id="mil_trader_dialog_3006">
 		<text>Continue.</text>

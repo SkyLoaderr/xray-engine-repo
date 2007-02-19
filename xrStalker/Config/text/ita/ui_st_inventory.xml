@@ -211,9 +211,57 @@
 		<text>Acquista set precedente.</text>
 	</string>
 	<string id="ui_inv_sell_items">
-		<text>Vendi tutti gli oggetti nello zaino</text>
+		<text>Vendi tutti gli oggetti nello zaino (X)</text>
 	</string>
 	<string id="ui_st_preset_stored_to">
 		<text>Acquista set salvato come</text>
+	</string>
+	<string id="ui_inv_preset1(F1)">
+		<text>Predefinita 1 (F1)</text>
+	</string>
+	<string id="ui_inv_preset2(F2)">
+		<text>Predefinita 2 (F2)</text>
+	</string>
+	<string id="ui_inv_preset3(F3)">
+		<text>Predefinita 3 (F3)</text>
+	</string>
+	<string id="ui_inv_last_buy(F4)">
+		<text>Ultimi oggetti (F4)</text>
+	</string>
+	<string id="ui_inv_default(F5)">
+		<text>Oggetti predefiniti (F5)</text>
+	</string>
+	<string id="ui_st_preset_def">
+		<text>Oggetti predef.</text>
+	</string>
+	<string id="ui_inv_reset_items">
+		<text>Rimuovi oggetti (C)</text>
+	</string>
+	<string id="ui_inv_cant_buy_item">
+		<text>Impossibile comprare</text>
+	</string>
+	<string id="ui_inv_rank_restr">
+		<text>Restrizioni rango</text>
+	</string>
+	<string id="ui_inv_not_enought_money">
+		<text>Denaro insufficiente</text>
+	</string>
+	<string id="ui_inv_count_restr">
+		<text>Restrizioni quantità</text>
+	</string>
+	<string id="ui_inv_has">
+		<text>Sei</text>
+	</string>
+	<string id="ui_inv_need">
+		<text>serve</text>
+	</string>
+	<string id="ui_inv_you_already_have">
+		<text>Hai già</text>
+	</string>
+	<string id="ui_st_err_gs_not_available">
+		<text>Servizi in linea per S.T.A.L.K.E.R. non disponibili.</text>
+	</string>
+	<string id="ui_st_err_sb_master_server_conn_fail">
+		<text>Impossibile connettersi al server centrale.</text>
 	</string>
 </string_table>

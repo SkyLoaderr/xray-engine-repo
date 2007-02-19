@@ -88,7 +88,7 @@
 		<text>Vers Yantar</text>
 	</string>
 	<string id="st_helmet_countdown">
-		<text>Protection terminée</text>
+		<text>Temps de Protection</text>
 	</string>
 	<string id="st_psy_danger">
 		<text>Niveau critique d'émissions psi. Quittez immédiatement la zone dangereuse.</text>

@@ -100,7 +100,7 @@
 		<text>Estación de ferrocarril</text>
 	</string>
 	<string id="testers_mp_rostok">
-		<text>Fábrica de Rostok</text>
+		<text>Territorio salvaje</text>
 	</string>
 	<string id="testers_mp_workshop">
 		<text>Fábrica desierta</text>
@@ -184,7 +184,7 @@
 		<text>Configuración del teclado</text>
 	</string>
 	<string id="ui_mm_last_save">
-		<text>Último guardado</text>
+		<text>Última guardada</text>
 	</string>
 	<string id="ui_mm_light_distance">
 		<text>Distancia de iluminación</text>
@@ -223,7 +223,7 @@
 		<text>Novato</text>
 	</string>
 	<string id="ui_mm_npc_torch">
-		<text>Linternas de PNJ</text>
+		<text>Linternas de PNJ (NPC)</text>
 	</string>
 	<string id="ui_mm_options">
 		<text>OPCIONES</text>
@@ -295,7 +295,7 @@
 		<text>Detalle de las texturas</text>
 	</string>
 	<string id="ui_mm_tips">
-		<text>Identificación de PNJ</text>
+		<text>Identificación de PNJ (NPC)</text>
 	</string>
 	<string id="ui_mm_veteran">
 		<text>Veterano</text>

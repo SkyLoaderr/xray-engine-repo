@@ -231,22 +231,4 @@
 	<string id="st_mp_voting_failed">
 		<text>Голосование провалено!</text>
 	</string>
-	<string id="l03u_agr_underground">
-		<text>Подземелье НИИ Агропром</text>
-	</string>
-	<string id="l04u_labx18">
-		<text>Лаборатория X-18</text>
-	</string>
-	<string id="l08u_brainlab">
-		<text>Лаборатория X-16</text>
-	</string>
-	<string id="l10u_bunker">
-		<text>Лаборатория X-10</text>
-	</string>
-	<string id="l12u_sarcofag">
-		<text>Саркофаг</text>
-	</string>
-	<string id="l12u_control_monolith">
-		<text>Управление Монолитом</text>
-	</string>
 </string_table>

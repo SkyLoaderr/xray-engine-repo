@@ -205,7 +205,7 @@
 		<text>Munition sniper pour les fusils d'assaut Tunder S14 et VLA ainsi que le fusil de sniper Vintar. Elle est dotée d'une balle subsonique qui, compte tenu de son poids et de sa conception, peut pénétrer la plupart des gilets pare-balles jusqu'à 400 mètres.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-gauss">
-		<text>Cellules énergétiques fabriquées avec des éléments létaux un chargeur de fusil Gauss. Sa source énergétique se compose d'un morceau encapsulé de l'artefact "flash".</text>
+		<text>Cellules énergétiques pour chargeur de fusil Gauss. Sa source énergétique se compose d'un morceau encapsulé de l'artefact "flash".</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-m209">
 		<text>Munition de lance-grenades ?203 (pour les fusils TRs 301, GP 37, SGI 5k, IL 86) et lance-grenades intégré du FT 200M.</text>
@@ -217,7 +217,7 @@
 		<text>Munition de lance-grenades GP-25 Kostyer, de lance-grenades intégré de Tunder et de Bulldog 6 à barillet.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-vog-25p">
-		<text>Munition de lance-grenades GP-25 Kostyer, de lance-grenades intégré de Thunder S14 et de Bulldog 6 à barillet. Avant l'explosion, la grenade s'élève d'environ un mètre pour accroître son effet fatal.</text>
+		<text>Munition de lance-grenades GP-25 Kostyer, de lance-grenades intégré de Groza et de Bulldog 6 à barillet. Avant l'explosion, la grenade s'élève d'environ un mètre pour accroître son effet létal.</text>
 	</string>
 	<string id="enc_weapons1_grenade-f1">
 		<text>Grenade défensive expédiant des éclats sur un rayon important. Il est recommandé de la lancer depuis un abri.</text>
@@ -295,10 +295,10 @@
 		<text>Fusil d'assaut allemand incarnant l'armement moderne : léger, fiable et ergonomique. \nMunitions : \n5,56x45 mm SS109 standard, \n5,56x45 mm ?? perforante.</text>
 	</string>
 	<string id="enc_weapons1_wpn-gauss">
-		<text>Arme remarquablement précise mise au point par les chercheurs de la Zone. Elle est virtuellement silencieuse car elle n'emploie pas la poudre, mais de l'énergie d'artefact. Malgré sa puissance de feu phénoménale, son recul est insignifiant. Sa précision et sa létalité dépassent celles de toutes les autres armes légères. \nMunitions : \nprojectiles Gauss de 2 mm.</text>
+		<text>Arme remarquablement précise mise au point par les chercheurs de la Zone. Elle est virtuellement silencieuse car elle n'emploie pas la poudre, mais de l'énergie d'artefact. Malgré sa puissance de feu phénoménale, son recul est insignifiant. Sa précision et les dégâts causés dépassent ceux de toutes les autres armes légères. \nMunitions : \nprojectiles Gauss de 2 mm.</text>
 	</string>
 	<string id="enc_weapons1_wpn-groza">
-		<text>Fusil d'assaut associé à un lance-grenades. Il est remarquablement adapté aux conditions de la Zone: compact, fiable, polyvalent et puissant. Le Tunder S14 est l'un des fusils préférés des Stalkers militaires. \nMunitions : \n9x39 mm PAB-9 standard, \n9x39 mm SP-6 perforante, \n9x39 mm SP-5 de sniper et grenades VOG-25 et VOG-25R pour le lance-grenades.</text>
+		<text>Fusil d'assaut associé à un lance-grenades. Il est remarquablement adapté aux conditions de la       Zone: compact, fiable, polyvalent et puissant. Le Tunder S14 est l'un des fusils préférés des Stalkers militaires. \nMunitions : \n9x39 mm PAB-9 standard, \n9x39 mm SP-6 perforante, \n9x39 mm SP-5 de sniper et grenades VOG-25 et VOG-25R pour le lance-grenades.</text>
 	</string>
 	<string id="enc_weapons1_wpn-groza_m1">
 		<text>Ce canon a été fabriqué par des armuriers Stalkers qui ont réussi à remodeler le fusil pour pouvoir le charger de balles 5.45 mm.</text>

@@ -118,7 +118,7 @@
 		<text>Filtrage des textures</text>
 	</string>
 	<string id="ui_mm_apply">
-		<text>Utiliser</text>
+		<text>Accepter</text>
 	</string>
 	<string id="ui_mm_back">
 		<text>Retour</text>
@@ -271,7 +271,7 @@
 		<text>Afficher l'arme</text>
 	</string>
 	<string id="ui_mm_simply">
-		<text>de base</text>
+		<text>Basiques</text>
 	</string>
 	<string id="ui_mm_sound">
 		<text>Audio</text>

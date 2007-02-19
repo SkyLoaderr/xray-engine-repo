@@ -8,7 +8,7 @@
 		<text>Le Putride</text>
 	</string>
 	<string id="lname_bandit_100">
-		<text>Le Chirurgien</text>
+		<text>Chirurgien</text>
 	</string>
 	<string id="lname_bandit_101">
 		<text>L'Espion</text>
@@ -98,7 +98,7 @@
 		<text>L'Atout</text>
 	</string>
 	<string id="lname_bandit_128">
-		<text>Le Poing U.S</text>
+		<text>Le Poing </text>
 	</string>
 	<string id="lname_bandit_129">
 		<text>Spliff</text>
@@ -113,7 +113,7 @@
 		<text>Le Crochet</text>
 	</string>
 	<string id="lname_bandit_132">
-		<text>La Chiffe Molle</text>
+		<text>Le Peureux</text>
 	</string>
 	<string id="lname_bandit_133">
 		<text>Pied-de-biche</text>
@@ -233,10 +233,10 @@
 		<text>L'Exclu</text>
 	</string>
 	<string id="lname_bandit_169">
-		<text>Le Poing U.S</text>
+		<text>Le Poing</text>
 	</string>
 	<string id="lname_bandit_17">
-		<text>La flore ardente</text>
+		<text>La Flore</text>
 	</string>
 	<string id="lname_bandit_170">
 		<text>L'Atout</text>
@@ -245,7 +245,7 @@
 		<text>Spliff</text>
 	</string>
 	<string id="lname_bandit_172">
-		<text>La Chiffe Molle</text>
+		<text>Le Peureux</text>
 	</string>
 	<string id="lname_bandit_173">
 		<text>Leshiy</text>
@@ -314,7 +314,7 @@
 		<text>Le Sauvage</text>
 	</string>
 	<string id="lname_bandit_3">
-		<text>La Fripouille</text>
+		<text>Fripouille</text>
 	</string>
 	<string id="lname_bandit_30">
 		<text>Le Natif</text>
@@ -377,7 +377,7 @@
 		<text>L'Écorné</text>
 	</string>
 	<string id="lname_bandit_49">
-		<text>Le Jocker</text>
+		<text>Le Joker</text>
 	</string>
 	<string id="lname_bandit_5">
 		<text>La Crapule</text>
@@ -407,7 +407,7 @@
 		<text>L'Artiste</text>
 	</string>
 	<string id="lname_bandit_58">
-		<text>Le Charlatan</text>
+		<text>Charlatan</text>
 	</string>
 	<string id="lname_bandit_59">
 		<text>Le Banquier</text>
@@ -434,10 +434,10 @@
 		<text>Le Vagabond</text>
 	</string>
 	<string id="lname_bandit_66">
-		<text>Le Bourbon</text>
+		<text>Bourbon</text>
 	</string>
 	<string id="lname_bandit_67">
-		<text>Le Bourgeois</text>
+		<text>Le Bourge</text>
 	</string>
 	<string id="lname_bandit_68">
 		<text>Le Convoyeur</text>
@@ -488,10 +488,10 @@
 		<text>Commandant</text>
 	</string>
 	<string id="lname_bandit_82">
-		<text>Le Maniaque</text>
+		<text>Maniaque</text>
 	</string>
 	<string id="lname_bandit_83">
-		<text>Le Fossoyeur</text>
+		<text>Fossoyeur</text>
 	</string>
 	<string id="lname_bandit_84">
 		<text>Le Boucher</text>
@@ -509,7 +509,7 @@
 		<text>Le Partisan</text>
 	</string>
 	<string id="lname_bandit_89">
-		<text>Le Pacifique</text>
+		<text>Pacifique</text>
 	</string>
 	<string id="lname_bandit_9">
 		<text>Le Bloc</text>
@@ -3086,7 +3086,7 @@
 		<text>Le Voûté</text>
 	</string>
 	<string id="lname_stalker_114">
-		<text>Le Déshydraté</text>
+		<text>Déshydraté</text>
 	</string>
 	<string id="lname_stalker_115">
 		<text>Le Chanceux</text>
@@ -3119,7 +3119,7 @@
 		<text>Le Bouffon</text>
 	</string>
 	<string id="lname_stalker_124">
-		<text>Le Jocker</text>
+		<text>Le Joker</text>
 	</string>
 	<string id="lname_stalker_125">
 		<text>L'Estropieur</text>
@@ -3128,7 +3128,7 @@
 		<text>L'Invétéré</text>
 	</string>
 	<string id="lname_stalker_127">
-		<text>Le Maigrichon</text>
+		<text>Maigre</text>
 	</string>
 	<string id="lname_stalker_128">
 		<text>Le Cynique</text>
@@ -3170,7 +3170,7 @@
 		<text>Dolittle</text>
 	</string>
 	<string id="lname_stalker_14">
-		<text>La Fripouille</text>
+		<text>Fripouille</text>
 	</string>
 	<string id="lname_stalker_140">
 		<text>L'Apôtre</text>
@@ -3182,7 +3182,7 @@
 		<text>L'Ermite</text>
 	</string>
 	<string id="lname_stalker_143">
-		<text>Le Charlatan</text>
+		<text>Charlatan</text>
 	</string>
 	<string id="lname_stalker_144">
 		<text>Le Banquier</text>
@@ -3218,10 +3218,10 @@
 		<text>Le Vagabond</text>
 	</string>
 	<string id="lname_stalker_154">
-		<text>Le Bourbon</text>
+		<text>Bourbon</text>
 	</string>
 	<string id="lname_stalker_155">
-		<text>Le Bourgeois</text>
+		<text>Le Bourge</text>
 	</string>
 	<string id="lname_stalker_156">
 		<text>Le Bureaucrate</text>
@@ -3410,7 +3410,7 @@
 		<text>Le Légion.</text>
 	</string>
 	<string id="lname_stalker_211">
-		<text>Le Guérisseur</text>
+		<text>Guérisseur</text>
 	</string>
 	<string id="lname_stalker_212">
 		<text>Le Forestier</text>
@@ -3425,7 +3425,7 @@
 		<text>Commandant</text>
 	</string>
 	<string id="lname_stalker_216">
-		<text>Le Maniaque</text>
+		<text>Maniaque</text>
 	</string>
 	<string id="lname_stalker_217">
 		<text>Le Martien</text>
@@ -3434,13 +3434,13 @@
 		<text>Le Maçon</text>
 	</string>
 	<string id="lname_stalker_219">
-		<text>Le Mécanicien</text>
+		<text>Le Mécano</text>
 	</string>
 	<string id="lname_stalker_22">
 		<text>L'Important</text>
 	</string>
 	<string id="lname_stalker_220">
-		<text>Le Fossoyeur</text>
+		<text>Fossoyeur</text>
 	</string>
 	<string id="lname_stalker_221">
 		<text>Le Modérateur</text>
@@ -3470,7 +3470,7 @@
 		<text>L'Armurier</text>
 	</string>
 	<string id="lname_stalker_23">
-		<text>Le L'Heureux</text>
+		<text>L'Heureux</text>
 	</string>
 	<string id="lname_stalker_230">
 		<text>Padishah</text>
@@ -3506,10 +3506,10 @@
 		<text>Le Veinard</text>
 	</string>
 	<string id="lname_stalker_240">
-		<text>Le Pacifique</text>
+		<text>Pacifique</text>
 	</string>
 	<string id="lname_stalker_241">
-		<text>Le Transporteur</text>
+		<text>Transporteur</text>
 	</string>
 	<string id="lname_stalker_242">
 		<text>Le Pianiste</text>
@@ -3539,7 +3539,7 @@
 		<text>L'Armoire</text>
 	</string>
 	<string id="lname_stalker_250">
-		<text>L'Explorateur polaire</text>
+		<text>L'Explorateur</text>
 	</string>
 	<string id="lname_stalker_251">
 		<text>Ambassadeur</text>
@@ -3575,7 +3575,7 @@
 		<text>Le Rabbin</text>
 	</string>
 	<string id="lname_stalker_261">
-		<text>Le Télégraph.</text>
+		<text>Télégraphe</text>
 	</string>
 	<string id="lname_stalker_262">
 		<text>Le Brigand</text>
@@ -3620,7 +3620,7 @@
 		<text>Skiff</text>
 	</string>
 	<string id="lname_stalker_275">
-		<text>Le Découvreur</text>
+		<text>Découvreur</text>
 	</string>
 	<string id="lname_stalker_276">
 		<text>Le Serrurier</text>
@@ -3671,7 +3671,7 @@
 		<text>Le Putride</text>
 	</string>
 	<string id="lname_stalker_290">
-		<text>Le Marchandeur</text>
+		<text>Le Marchand</text>
 	</string>
 	<string id="lname_stalker_291">
 		<text>Le Nettoyeur</text>
@@ -3692,7 +3692,7 @@
 		<text>Flamen</text>
 	</string>
 	<string id="lname_stalker_297">
-		<text>Le Footballeur</text>
+		<text>Le Footbeux</text>
 	</string>
 	<string id="lname_stalker_298">
 		<text>Le Sniper</text>
@@ -3707,7 +3707,7 @@
 		<text>La Pipelette</text>
 	</string>
 	<string id="lname_stalker_300">
-		<text>Le Chirurgien</text>
+		<text>Chirurgien</text>
 	</string>
 	<string id="lname_stalker_301">
 		<text>Le Peintre</text>
@@ -3836,7 +3836,7 @@
 		<text>La Bête</text>
 	</string>
 	<string id="lname_stalker_34">
-		<text>Le Formidable</text>
+		<text>Formidable</text>
 	</string>
 	<string id="lname_stalker_340">
 		<text>Le Serpent</text>
@@ -4133,7 +4133,7 @@
 		<text>Cosmos</text>
 	</string>
 	<string id="lname_stalker_429">
-		<text>Le Poing U.S</text>
+		<text>Le Poing </text>
 	</string>
 	<string id="lname_stalker_43">
 		<text>Servil</text>
@@ -4151,7 +4151,7 @@
 		<text>La Gâchette</text>
 	</string>
 	<string id="lname_stalker_434">
-		<text>La Chiffe Molle</text>
+		<text>Le Peureux</text>
 	</string>
 	<string id="lname_stalker_435">
 		<text>Pied-de-biche</text>
@@ -4175,7 +4175,7 @@
 		<text>Nocturne</text>
 	</string>
 	<string id="lname_stalker_441">
-		<text>Fusil à pompe</text>
+		<text>Fusil pompe</text>
 	</string>
 	<string id="lname_stalker_442">
 		<text>Panadol</text>
@@ -4235,7 +4235,7 @@
 		<text>Scoop</text>
 	</string>
 	<string id="lname_stalker_46">
-		<text>La flore ardente</text>
+		<text>La Flore</text>
 	</string>
 	<string id="lname_stalker_460">
 		<text>Bibine</text>
@@ -4256,7 +4256,7 @@
 		<text>Burin</text>
 	</string>
 	<string id="lname_stalker_466">
-		<text>La Barrique</text>
+		<text>Bidón</text>
 	</string>
 	<string id="lname_stalker_467">
 		<text>Le Coffre</text>
@@ -4397,7 +4397,7 @@
 		<text>Gorynich</text>
 	</string>
 	<string id="lname_stalker_508">
-		<text>Le Formidable</text>
+		<text>Formidable</text>
 	</string>
 	<string id="lname_stalker_509">
 		<text>La Joconde</text>
@@ -4535,7 +4535,7 @@
 		<text>Le Flambeur</text>
 	</string>
 	<string id="lname_stalker_55">
-		<text>Les Dents acérées</text>
+		<text>Les Crocs</text>
 	</string>
 	<string id="lname_stalker_550">
 		<text>La Gangrène</text>
@@ -4583,7 +4583,7 @@
 		<text>Carbure</text>
 	</string>
 	<string id="lname_stalker_564">
-		<text>Le Poing U.S</text>
+		<text>Le Poing</text>
 	</string>
 	<string id="lname_stalker_565">
 		<text>L'Atout</text>
@@ -4598,7 +4598,7 @@
 		<text>Spliff</text>
 	</string>
 	<string id="lname_stalker_569">
-		<text>La Chiffe Molle</text>
+		<text>Le Peureux</text>
 	</string>
 	<string id="lname_stalker_57">
 		<text>Le Monstre</text>
@@ -4706,7 +4706,7 @@
 		<text>Le Glacé</text>
 	</string>
 	<string id="lname_stalker_61">
-		<text>Le Comateux</text>
+		<text>Le Coma</text>
 	</string>
 	<string id="lname_stalker_62">
 		<text>Oeil de Lynx</text>
@@ -4775,7 +4775,7 @@
 		<text>Le Perdant</text>
 	</string>
 	<string id="lname_stalker_82">
-		<text>La Pommade</text>
+		<text>La Pomme</text>
 	</string>
 	<string id="lname_stalker_83">
 		<text>Le Zigoto</text>

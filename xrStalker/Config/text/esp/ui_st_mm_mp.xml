@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="game type">
-		<text>TIPO DE PARTIDA</text>
+		<text>TIPO PARTIDA</text>
 	</string>
 	<string id="icon">
 		<text>ICONOS</text>
@@ -31,7 +31,7 @@
 		<text>Equilibrar equipos automбticamente</text>
 	</string>
 	<string id="mm_mp_autoteamswap">
-		<text>Cambiar equipos automбticamente</text>
+		<text>Cambiar equip. automбt.</text>
 	</string>
 	<string id="mm_mp_avail_maps">
 		<text>MAPAS DISPONIBLES</text>
@@ -40,7 +40,7 @@
 		<text>Cancelar</text>
 	</string>
 	<string id="mm_mp_cd_key">
-		<text>Clave del CD</text>
+		<text>Clave CD</text>
 	</string>
 	<string id="mm_mp_client">
 		<text>Cliente</text>
@@ -106,7 +106,7 @@
 		<text>LAN</text>
 	</string>
 	<string id="mm_mp_listenservers">
-		<text>Activo</text>
+		<text>Vacнos</text>
 	</string>
 	<string id="mm_mp_mapratation">
 		<text>Lista de mapas</text>
@@ -127,7 +127,7 @@
 		<text>Contraseсa</text>
 	</string>
 	<string id="mm_mp_player_name">
-		<text>Nombre del jugador:</text>
+		<text>Nombre jugador:</text>
 	</string>
 	<string id="mm_mp_players">
 		<text>Jugadores</text>

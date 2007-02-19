@@ -19,7 +19,7 @@
 		<text>Sélection d'arme</text>
 	</string>
 	<string id="hide_weapon_tutorial">
-		<text>Certains Stalkers refuseront de vous parler s'ils voient votre arme. Pour la masquer, il vous suffit de sélectionner un boulon. ($$ACTION_wpn_6$$).</text>
+		<text>Certains Stalkers refuseront de vous parler s'ils voient votre arme. Pour la ranger, il vous suffit de sélectionner un boulon. ($$ACTION_wpn_6$$).</text>
 	</string>
 	<string id="jump">
 		<text>Saut</text>
@@ -55,7 +55,7 @@
 		<text>Accélération</text>
 	</string>
 	<string id="sprint_tutorial">
-		<text>Vous aurez parfois besoin de courir plus vite que la normale. Pour ce faire, appuyez sur ($$ACTION_sprint_toggle$$) pendant que vous courez. Un personnage accéléré court plus vite et saute plus loin, mais se fatigue plus rapidement et ne peut pas tirer.</text>
+		<text>Vous aurez parfois besoin de courir plus vite que la normale. Pour ce faire, appuyez sur ($$ACTION_sprint_toggle$$) pendant que vous courez. Un personnage qui accélère court plus vite et saute plus loin, mais se fatigue plus rapidement et ne peut pas tirer.</text>
 	</string>
 	<string id="starvation_tutorial">
 		<text>Votre personnage doit manger régulièrement, car s'il a faim, sa santé se dégrade. Du pain, une boîte de conserve ou une saucisse feront facilement l'affaire, du moins pour un temps.</text>

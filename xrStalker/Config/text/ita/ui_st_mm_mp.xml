@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="game type">
-		<text>TIPO DI PARTITA</text>
+		<text>TIPO PARTITA</text>
 	</string>
 	<string id="icon">
 		<text>ICONE</text>
@@ -40,7 +40,7 @@
 		<text>Annulla</text>
 	</string>
 	<string id="mm_mp_cd_key">
-		<text>Codice CD-Key</text>
+		<text>Codice CD</text>
 	</string>
 	<string id="mm_mp_client">
 		<text>Client</text>
@@ -106,7 +106,7 @@
 		<text>LAN</text>
 	</string>
 	<string id="mm_mp_listenservers">
-		<text>Ascolto</text>
+		<text>Vuoti</text>
 	</string>
 	<string id="mm_mp_mapratation">
 		<text>Elenco mappe</text>

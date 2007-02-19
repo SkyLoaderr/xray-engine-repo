@@ -73,7 +73,7 @@
 		<text>Élimine le groupe de bandits d'Agroprom.</text>
 	</string>
 	<string id="barmen_eliminate_camp_6_text">
-		<text>Je me souviens comment en 94, ces criminels me sont tombés dessus... comment ils m'ont fait casquer. À l'époque, on pouvait rien contre eux ! Et voilà que j'apprends que ces mêmes bandits opèrent à Agroprom et se font du fric avec les artefacts qu'ils y trouvent. Mais cette fois, ça ne va pas se passer comme ça. Je sais où ils se cachent. Rends-moi un service, va leur faire leur fête. </text>
+		<text>Je me souviens comment en 94, ces criminels me sont tombés dessus... Comment ils m'ont fait casquer... À l'époque, on ne pouvait rien contre eux ! Et voilà que j'apprends que ces mêmes bandits opèrent à Agroprom et se font du fric avec les artefacts qu'ils y trouvent. Mais cette fois, ça ne va pas se passer comme ça. Je sais où ils se cachent. Rends-moi un service, va leur faire leur fête. </text>
 	</string>
 	<string id="barmen_eliminate_camp_7">
 		<text>Détruire le repaire des Snorks dans la Vallée obscure</text>
@@ -106,7 +106,7 @@
 		<text>Trouver l'artefact "étoile phosphorescente"</text>
 	</string>
 	<string id="barmen_find_artefact_3_descr">
-		<text>Trouve l'artefact "étoile phosphorescente" pour participer à l'effort de recherche militaire national</text>
+		<text>Trouve l'artefact "étoile phosphorescente" pour participer à l'effort de recherche militaire national.</text>
 	</string>
 	<string id="barmen_find_artefact_3_text">
 		<text>Il me faut l'étoile phosphorescente. Elle ne fait pas de miracles, mais elle contribue à ta bonne santé. Les scientifiques mettent le prix. Ils s'en servernt pour des trucs militaires... Alors, qu'est-ce que tu en dis ?</text>
@@ -160,7 +160,7 @@
 		<text>Tuer le soldat</text>
 	</string>
 	<string id="barmen_kill_stalker_1_descr">
-		<text>Un soldat doit mordre la poussière. Cette mission est un jeu d'enfant, sauf que... c'est bizarre que la cible soit un homme en uniforme et le commanditaire soit si en colère.</text>
+		<text>Un soldat doit mordre la poussière. Cette mission est un jeu d'enfant, sauf que... c'est bizarre que la cible soit un homme en uniforme et que le commanditaire soit si en colère.</text>
 	</string>
 	<string id="barmen_kill_stalker_1_text">
 		<text>Il faut que tu tues ce soldat... Ne me demande pas qui c'est, je m'en fiche. Alors ? Je peux te faire confiance ?</text>
@@ -208,7 +208,7 @@
 		<text>Récupère l'oeil du croque-mort</text>
 	</string>
 	<string id="barmen_monster_part_1_text">
-		<text>On va bientôt faire une petite fête... Il y aura un dîner et quelques gourmets locaux, pleins d'entrain (nous ne citerons personne) seront certainement intéressés par ma recette spéciale d'yeux de "croque-mort" à la sauce au porc. À savoir dans son propre jus et avec de la mayonnaise. Pour faire court, j'ai besoin de ces yeux, et vite. </text>
+		<text>On va bientôt faire une petite fête... Il y aura un dîner et quelques gourmets locaux, pleins d'entrain seront certainement intéressés par ma recette spéciale d'yeux de "croque-mort" à la sauce au porc. À savoir dans son propre jus et avec de la mayonnaise. Pour faire court, j'ai besoin de ces yeux, et vite. </text>
 	</string>
 	<string id="barmen_monster_part_2">
 		<text>Apporter le sabot d'un sanglier</text>
@@ -253,7 +253,7 @@
 		<text>Détruis le camp de Stalkers d'Agroprom</text>
 	</string>
 	<string id="dolg_eliminate_lager_11_text">
-		<text>Il faut que je te parle d'une situation délicate dans laquelle nos hommes ne doivent pas être impliqués. La présence de neutre dans l'usine d'Agroprom n'est pas idéale pour nos alliés. Voilà la mission : débarrasse les environs des Stalkers peu importe le groupe auquel ils appartiennent. Pigé ?</text>
+		<text>Il faut que je te parle d'une situation délicate dans laquelle nos hommes ne doivent pas être impliqués. La présence de neutres dans l'usine d'Agroprom n'est pas idéale pour nos alliés. Voilà la mission : débarrasse les environs des Stalkers, peu importe le groupe auquel ils appartiennent. Pigé ?</text>
 	</string>
 	<string id="dolg_eliminate_lager_12">
 		<text>Éliminer le détachement de mercenaires</text>
@@ -307,7 +307,7 @@
 		<text>Détruis le poste de sécurité des Mercenaires près des entrepôts militaires.</text>
 	</string>
 	<string id="dolg_eliminate_lager_4_text">
-		<text>Récemment, les activités des groupes de Mercenaires se sont intensifiées ; ils ont attaqué des scientifiques et des chercheurs qui travaillaient dans les environs. On doit réagir et mener une petite opération punitive. L'objectif : le poste de sécurité des Mercenaires près des entrepôts militaires, derrière le village abandonné.</text>
+		<text>Récemment, les activités des groupes de Mercenaires se sont   intensifiées ; ils ont attaqué des scientifiques et des chercheurs qui travaillaient dans les environs. On doit réagir et mener une petite opération punitive. L'objectif : le poste de sécurité des Mercenaires près des entrepôts militaires, derrière le village abandonné.</text>
 	</string>
 	<string id="dolg_eliminate_lager_5">
 		<text>Éliminer les Mercenaires dans les Terres abandonnées</text>
@@ -316,7 +316,7 @@
 		<text>Élimine les Mercenaires dans les Terres abandonnées</text>
 	</string>
 	<string id="dolg_eliminate_lager_5_text">
-		<text>Des scientifiques envisagent d'étudier les Terres abandonnées. Mais cette région n'est pas très sûre et les Mercenaires y opèrent. Veillez à débarrasser ces Terres abandonnées de toute présence mercenaire. </text>
+		<text>Des scientifiques envisagent d'étudier les Terres abandonnées. Mais cette région n'est pas très sûre et les Mercenaires y opèrent. Veille à débarrasser ces Terres abandonnées de toute présence mercenaire. </text>
 	</string>
 	<string id="dolg_eliminate_lager_6">
 		<text>Tuer les bandits</text>
@@ -352,7 +352,7 @@
 		<text>Élimine les bandits de la Décharge.</text>
 	</string>
 	<string id="dolg_eliminate_lager_9_text">
-		<text>La situation actuelle n'est pas bonne ; les bandits se regroupent aux environs de la Décharge et de la Vallée obscure. Il convient donc d'y mener deux attaques préventives simultanée ! Nos combattants se chargeront de la vallée et toi, de la Décharge.</text>
+		<text>La situation actuelle n'est pas bonne ; les bandits se regroupent aux environs de la Décharge et de la Vallée obscure. Il convient donc d'y mener deux attaques préventives simultanées ! Nos combattants se chargeront de la vallée et toi, de la Décharge.</text>
 	</string>
 	<string id="dolg_find_item_1">
 		<text>Trouver le fusil amélioré</text>
@@ -361,7 +361,7 @@
 		<text>Trouve le fusil TRs 301 amélioré près des entrepôts militaires.</text>
 	</string>
 	<string id="dolg_find_item_1_text">
-		<text>Quelqu'un aide les Mercenaires. Récemment, ils se sont équipés de mitrailleuses et de fusils améliorés. Ce sont là des armes redoutables ? Eh bien, un tel fusil m'intéresse et si tu m'en rapportes un, tu auras toute ma reconnaissance, sois-en sûr.</text>
+		<text>Quelqu'un aide les Mercenaires. Récemment, ils se sont équipés de mitrailleuses et de fusils améliorés. Ce sont là des armes redoutables. Eh bien, un tel fusil m'intéresse et si tu m'en rapportes un, tu auras toute ma reconnaissance, sois-en sûr.</text>
 	</string>
 	<string id="dolg_kill_stalker_1">
 		<text>Neutraliser le bandit</text>
@@ -370,7 +370,7 @@
 		<text>Neutraliser le bandit Poker.</text>
 	</string>
 	<string id="dolg_kill_stalker_1_text">
-		<text>Surnom du sujet - Poker. Un des chefs des bandits les plus cruels...Évidemment, sa tête ne va pas bien ; il aurait attrapé une maladie rare dans la Zone. Maintenant, il souffre de trous de mémoire chronique et lorsqu'il reprend conscience, il ne sait plus qui il est ni où il est. Quoi qu'il en soit, il est toujours armé et très agressif. Emplacement présumé : la Vallée obscure. Tu acceptes cette mission ?</text>
+		<text>Surnom du sujet - Poker. Un des chefs des bandits les plus cruels... Évidemment, sa tête ne va pas bien ; il aurait attrapé une maladie rare dans la Zone. Maintenant, il souffre de trous de mémoire chroniques et lorsqu'il reprend conscience, il ne sait plus qui il est ni où il est. Quoi qu'il en soit, il est toujours armé et très agressif. Emplacement présumé : la Vallée obscure. Tu acceptes cette mission ?</text>
 	</string>
 	<string id="drunk_dolg_find_item">
 		<text>Trouver l'arme du membre du Devoir.</text>
@@ -406,7 +406,7 @@
 		<text>Apporte l'artefact "bolide" aux scientifiques pour qu'ils l'étudient</text>
 	</string>
 	<string id="ecolog_find_artefact_1_text">
-		<text>On a réussi à récupérer l'artefact ! Quelle découverte ! Le monde entier va entendre parler de cette découverte. Et on va sûrement décrocher le prix Nobel ! Cet artefact est unique. La qualité principale de cette "pellicule" offre une protection contre les brûlures chimiques. Vous voulez bien me la donner au nom de la science. Mais en échange, il me faut l'artefact "bolide", d'accord ? Les qualités thermiques uniques de sa surface ont doivent être examinées. </text>
+		<text>On a réussi à récupérer l'artefact ! Quelle découverte ! Le monde entier va entendre parler de cette découverte. Et on va sûrement décrocher le prix Nobel ! Cet artefact est unique. La qualité principale de cette "pellicule" offre une protection contre les brûlures chimiques. Je veux bien vous la donner au nom de la science. Mais en échange, il me faut l'artefact "bolide", d'accord ? Les qualités thermiques uniques de sa surface ont doivent être examinées. </text>
 	</string>
 	<string id="ecolog_find_artefact_2">
 		<text>Trouver l'artefact "gravi"</text>
@@ -433,7 +433,7 @@
 		<text>Fournis aux scientifiques de Yantar l'artefact "clair de lune"...</text>
 	</string>
 	<string id="ecolog_find_artefact_4_text">
-		<text>On a désespérément besoin de matériaux pour mener à bien nos recherches énergétiques. On apprend à générer de l'énergie moyennant des artefacts. D'accord, ça marche qu'à condition que le facteur d'efficacité soit suffisant. On a réussi à obtenir d'excellents résultats avec l'artefact "clair de lune". Apportez-nous-en un échantillon à des fins d'expérimentation.</text>
+		<text>On a désespérément besoin de matériaux pour mener à bien nos recherches énergétiques. On apprend à générer de l'énergie moyennant des artefacts. D'accord, ça ne marche qu'à condition que le facteur d'efficacité soit suffisant. On a réussi à obtenir d'excellents résultats avec l'artefact "clair de lune". Apportez-nous-en un échantillon à des fins d'expérimentation.</text>
 	</string>
 	<string id="ecolog_find_artefact_5">
 		<text>Trouver l'artefact "oursin"</text>
@@ -469,7 +469,7 @@
 		<text>Il vaut mieux que je me tienne à l'écart de ces cerveaux, au cas où ! Bon, je leur fournirai un oeil de croque-mort et ils feront ce qu'ils voudront de leurs volontaires.</text>
 	</string>
 	<string id="ecolog_monster_part_2_text">
-		<text>Bonne nouvelle, jeune homme : on a une mission des plus intéressantes pour vous ! Je pense que l'intellectuel que vous êtes appréciera les théories de mes collègues. Voilà, nos recherches portent sur les yeux des créatures appelées croque-morts et qui sont dotés de... vous me suivez ?... de récepteurs olfactifs ! Aussi, en plus de leur permettre de voir, leurs yeux leur permettent de sentir ! On se prépare pour une opération de transplantation de ces yeux miraculeux... sur un de nos assistants volontaires. Ça va être quelque chose ! À propos, accepteriez-vous de vous porter volontaire pour recevoir cet incroyable organe ?</text>
+		<text>Bonne nouvelle, jeune homme : on a une mission des plus intéressantes pour vous ! Je pense que l'intellectuel que vous êtes appréciera les théories de mes collègues. Voilà, nos recherches portent sur les yeux des créatures appelées croque-morts et qui sont dotés de... vous me suivez ? ... de récepteurs olfactifs ! Aussi, en plus de leur permettre de voir, leurs yeux leur permettent de sentir ! On se prépare pour une opération de transplantation de ces yeux miraculeux... sur un de nos assistants volontaires. Ça va être quelque chose ! À propos, accepteriez-vous de vous porter volontaire pour recevoir cet incroyable organe ?</text>
 	</string>
 	<string id="ecolog_monster_part_3">
 		<text>Rapporter la queue d'un chien aveugle</text>
@@ -487,7 +487,7 @@
 		<text>Les gourmets... D'accord, je vais leur rapporter du jambon.</text>
 	</string>
 	<string id="ecolog_monster_part_4_text">
-		<text>Bienvenu... Jeune homme ! Quel plaisir de vous voir ! On a besoin de quelqu'un pour participer à une expérience des plus importantes. Brenter, mon collègue, aimerait préparer un repas à partir de la faune locale dans le cadre d'une expérience visant à étudier l'influence des protéines mutantes sur le corps humain. Pour commencer, nous avons décidé de nous pencher sur les sangliers. On a besoin de jambon. D'une patte de sanglier, vous comprenez ? Et si vous acceptez, choisissez le spécimen qui vous semble le plus sain.</text>
+		<text>Bienvenue... Jeune homme ! Quel plaisir de vous voir ! On a besoin de quelqu'un pour participer à une expérience des plus importantes. Brenter, mon collègue, aimerait préparer un repas à partir de la faune locale dans le cadre d'une expérience visant à étudier l'influence des protéines mutantes sur le corps humain. Pour commencer, nous avons décidé de nous pencher sur les sangliers. On a besoin de jambon. D'une patte de sanglier, vous comprenez ? Et si vous acceptez, choisissez le spécimen qui vous semble le plus sain.</text>
 	</string>
 	<string id="ecolog_monster_part_5">
 		<text>Rapporter la mâchoire d'une sangsue</text>
@@ -1045,7 +1045,7 @@
 		<text>Rapporte la queue du pseudo-chien.</text>
 	</string>
 	<string id="tm_monster_part_2_text">
-		<text>L'hiver approche. Et qu'est-ce que les femmes aiment porter quand il fait froid ? Ouais, des fourrures. En ce moment, la mode est aux accessoires en queue de pseudo-chien. Spécial comme fourrure ! Conclusion, on m'a commandé une de ces queues. Tu t'en occupes?</text>
+		<text>L'hiver approche. Et qu'est-ce que les femmes aiment porter quand il fait froid ? Ouais, des fourrures. En ce moment, la mode est aux accessoires en queue de pseudo-chien. Spécial comme fourrure ! Conclusion, on m'a commandé une de ces queues. Tu t'en occupes ?</text>
 	</string>
 	<string id="tm_petrenko_has_no_job">
 		<text>Pour le moment, il n'y a rien.</text>

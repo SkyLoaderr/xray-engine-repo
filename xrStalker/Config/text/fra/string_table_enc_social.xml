@@ -13,7 +13,7 @@
 		<text>Les soldats de l'armée régulière protègent les alentours de la Zone, patrouillent dans le périmètre et tuent les mutants et les pillards. \n Les Spetsnaz sont des troupes d'élite, réparties dans la Zone pour mener des opérations de sauvetage et d'autres missions spéciales.</text>
 	</string>
 	<string id="enc_social_military_milstalkers">
-		<text>Soldats ayant suivi un entraînement spécial à après avoir servi dans la Zone ou Stalkers ayant volontairement signé un contrat avec l'armée. Généralement dotés de divers équipements et bien armés. Principalement utilisés pour étudier les causes et les effets de la catastrophe et de cartographier la zone. Ils peuvent travailler seuls ou en petits détachements de cinq individus maximum. Les Stalkers militaires refuse de se faire approcher des Stalkers normaux et tirent à vue.</text>
+		<text>Soldats ayant suivi un entraînement spécial après avoir servi dans la Zone ou Stalkers ayant volontairement signé un contrat avec l'armée. Généralement dotés de divers équipements et bien armés. Principalement utilisés pour étudier les causes et les effets de la catastrophe et cartographier la zone. Ils peuvent travailler seuls ou en petits détachements de cinq individus maximum. Les Stalkers militaires refusent de se faire approcher des Stalkers normaux et tirent à vue.</text>
 	</string>
 	<string id="enc_social_scientists_mobile-groups">
 		<text>Effacé</text>
@@ -31,7 +31,7 @@
 		<text>Ces anarchistes et casses-cou revendiquent un accès libre à la Zone et se retrouvent donc tout le temps en conflit avec l'armée, les Stalkers militaires et la faction du Devoir. Pour ces combattants de la Liberté, les informations sur la Zone ne doivent pas être cachées à l'humanité. Ils remettent en question le monopole de l'État sur les secrets et les merveilles dont recèle la Zone.</text>
 	</string>
 	<string id="enc_social_stalker-clans_killers">
-		<text>Ils représentent le groupe le plus clandestin de la Zone. Il est si secret que son existence n'est même pas prouvée ! Il paraît que certains utilisent leurs services de vrais professionnels pour sé débarasser de n'importe quel Stalker ou même éliminer un petit groupe. Ils seraient fabuleusement récompensés en cash ou en artefacts. L'emplacement de leur base reste inconnu, mais elle se trouve certainement en plein centre de la Zone.</text>
+		<text>Ils représentent le groupe le plus clandestin de la Zone. Il est si secret que son existence n'est même pas prouvée ! Il paraît que certains utilisent leurs services de vrais professionnels pour se débarasser de n'importe quel Stalker ou même éliminer un petit groupe. Ils seraient fabuleusement récompensés en cash ou en artefacts. L'emplacement de leur base reste inconnu, mais elle se trouve certainement en plein centre de la Zone.</text>
 	</string>
 	<string id="enc_social_stalker-clans_loners">
 		<text>Les Stalkers solitaires explorent la Zone tout seuls. La plupart des Stalkers travaillent ainsi, car devenir membre d'un groupe prend du temps et le temps est précieux. Et certains Stalkers apprécient simplement la solitude et l'indépendance.</text>

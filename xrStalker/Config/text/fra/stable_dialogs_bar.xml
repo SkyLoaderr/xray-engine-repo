@@ -4,7 +4,7 @@
 		<text>Continue...</text>
 	</string>
 	<string id="bar_arena_man_job_11">
-		<text>Alors, c'est ton premier combat ? Ton adversaire est qu'un tas de viande, comme toi. Il est là parce qu'il a des dettes et il a que deux options : venir se battre ou se retrouver face à l'anomalie la plus proche. Il va se battre comme un animal acculé. L'équipement pour aujourd'hui... Voyons voir... OK ! Pourquoi pas des PMMs... Deux chargeurs chacun, ça devrait suffire. Soit tu lui bottes le cul, soit tu sers de nourriture aux chiens, t'as pas trop le choix. C'est parti.</text>
+		<text>Alors, c'est ton premier combat ? Ton adversaire n'est qu'un tas de viande, comme toi. Il est là parce qu'il a des dettes et il a que deux options : venir se battre ou se retrouver face à l'anomalie la plus proche. Il va se battre comme un animal acculé. L'équipement pour aujourd'hui... Voyons voir... OK ! Pourquoi pas des PMMs... Deux chargeurs chacun, ça devrait suffire. Soit tu lui bottes le cul, soit tu sers de nourriture aux chiens, t'as pas trop le choix. C'est parti.</text>
 	</string>
 	<string id="bar_arena_man_job_111">
 		<text>Je suis prêt.</text>
@@ -13,7 +13,7 @@
 		<text>Je suis pas prêt.</text>
 	</string>
 	<string id="bar_arena_man_job_12">
-		<text>Ton dernier combat voulait rien dire. T'es toujours le même tas de viande qu'avant et personne va parier le moindre magazine sur toi. Si tu veux gagner de l'argent, va falloir venir plus souvent dans l'Arène. Ton nouvel adversaire a passé la première manche aussi et son combat était bien plus compliqué que le tien. Pour tout dire, je l'aime pas, il tue trop vite et le public aime pas ça. Alors, vas-y et montre-nous ce que tu sais faire ! Les paris vont augmenter après ce combat, tout ce que t'as à faire, c'est rester en vie. Allez !</text>
+		<text>Ton dernier combat ne voulait rien dire. T'es toujours le même tas de viande qu'avant et personne ne va parier le moindre magazine sur toi. Si tu veux gagner de l'argent, va falloir venir plus souvent dans l'Arène. Ton nouvel adversaire a passé la première manche aussi et son combat était bien plus compliqué que le tien. Pour tout dire, je ne l'aime pas, il tue trop vite et le public n'aime pas ça. Alors, vas-y et montre-nous ce que tu sais faire ! Les paris vont augmenter après ce combat, tout ce que t'as à faire, c'est rester en vie. Allez !</text>
 	</string>
 	<string id="bar_arena_man_job_121">
 		<text>Je suis prêt.</text>
@@ -415,7 +415,7 @@
 		<text>Non, j'ai pas encore les documents de l'Institut.</text>
 	</string>
 	<string id="bar_bar_barmen_start_211">
-		<text>C'est pas bon, le Tatoué, pas bon du tout... Tu te rends bien compte de leur importance ? On en a vraiment besoin, tu comprends ? Le lobotomisateur est juste sous notre nez et on sait même pas ce que c'est! Va chercher les documents, on discutera après.</text>
+		<text>C'est pas bon, le Tatoué, pas bon du tout... Tu te rends bien compte de leur importance ? On en a vraiment besoin, tu comprends ? Le lobotomisateur est juste sous notre nez et on ne sait même pas ce que    c'est ! Va chercher les documents, on discutera après.</text>
 	</string>
 	<string id="bar_bar_barmen_start_2111">
 		<text>Je vois ce que tu veux dire.</text>
@@ -631,7 +631,7 @@
 		<text>OK, je marche. Voilà 2000.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_3111">
-		<text>Strelok, Spectre et les Crocs sont allés au centre de la Zone. Ce qu'ils ont trouvé là-bas, personne le sait, mais Strelok a disparu et Spectre et les Crocs sont revenus complètement abattus et déprimés. Aux dernières nouvelles, Spectre serait allé au laboratoire mobile du lac de Yantar. Les coordonnées du camp des scientifiques sont jointes.</text>
+		<text>Strelok, Spectre et les Crocs sont allés au centre de la Zone. Ce qu'ils ont trouvé là-bas, personne ne le sait, mais Strelok a disparu et Spectre et les Crocs sont revenus complètement abattus et déprimés. Aux dernières nouvelles, Spectre serait allé au laboratoire mobile du lac de Yantar. Les coordonnées du camp des scientifiques sont jointes.</text>
 	</string>
 	<string id="bar_bar_osvedomitel_trade_info_312">
 		<text>Non, j'ai changé d'avis.</text>
@@ -712,7 +712,7 @@
 		<text>Tu peux me dire des trucs utiles pour un nouveau ?</text>
 	</string>
 	<string id="bar_bar_visitors_10_start_7111">
-		<text>Utiles pour un nouveau ? Bien, écoute. Au nord, pas loin du lobotomisateur, les gars de la Liberté ont installé leur QG dans une vieille base militaire. Ce sont des nihilistes, des anarchistes et des criminels notoires, tous des combattants de la liberté et des enfoirés de guérilleros. Tout ce qu'ils font, c'est perturber les groupes de recherche, attaquer les unités armées et chercher la merde avec ceux du Devoir. Ces échauffourées sont devenues une bataille à petite échelle pour la survie. Laisse-moi te donner un conseil : ne t'engage jamais avec eux. Ils t'accepteront que si t'es complètement cinglé ou si ta tête est mise à prix. Ha ha ha. Tu le crois ça ?</text>
+		<text>Utiles pour un nouveau ? Bien, écoute. Au nord, pas loin du lobotomisateur, les gars de la Liberté ont installé leur QG dans une vieille base militaire. Ce sont des nihilistes, des anarchistes et des criminels notoires, tous des combattants de la liberté et des enfoirés de guérilleros. Tout ce qu'ils font, c'est perturber les groupes de recherche, attaquer les unités armées et chercher la merde avec ceux du Devoir. Ces échauffourées sont devenues une bataille à petite échelle pour la survie. Laisse-moi te donner un conseil : ne t'engage jamais avec eux. Ils ne t'accepteront que si t'es complètement cinglé ou si ta tête est mise à prix. Ha ha ha. Tu le crois ça ?</text>
 	</string>
 	<string id="bar_bar_visitors_10_start_71111">
 		<text>Merci pour ton conseil.</text>
@@ -826,7 +826,7 @@
 		<text>Qu'est-ce que t'as entendu dire ?</text>
 	</string>
 	<string id="bar_bar_visitors_5_start_7111">
-		<text>Personne a réussi à aller dans la casse à cause du lobotomisateur. Certains racontent qu'ils ont vu un Stalker traverser la frontière invisible, tomber, puis se relever au bout d'un moment et se diriger vers le centre de la casse. On l'a pas revu depuis...</text>
+		<text>Personne n'a réussi à aller dans la casse à cause du lobotomisateur. Certains racontent qu'ils ont vu un Stalker traverser la frontière invisible, tomber, puis se relever au bout d'un moment et se diriger vers le centre de la casse. On l'a pas revu depuis...</text>
 	</string>
 	<string id="bar_bar_visitors_5_start_71111">
 		<text>Intéressant...</text>
@@ -862,7 +862,7 @@
 		<text>Qu'est-ce que t'as entendu ?</text>
 	</string>
 	<string id="bar_bar_visitors_8_start_7111">
-		<text>Les marchands racontent qu'il y a un véritable trésor rempli d'artefacts au centre de la Zone et que celui qui réussira à le récupérer aura assez d'argent pour vivre 200 ans. Moi, je crois que c'est bien plus que ça. Il est clair que les marchands ne pensent qu'à leurs intérêts, mais des rumeurs étranges circulent. Apparemment, quelque chose de plus précieux que les artefacts se trouve là-bas, quelque chose qui vient d'ailleurs, d'une autre planète ou d'une autre dimension ou les deux ! Ils appellent ça l'exauceur. Il paraît qu'un Stalker a déjà réussi à voir cette machine. À chaque fois que quelqu'un fait un voeu, la Zone s'étend : en fait, personne n'utilise son voeu pour faire disparaître la Zone. À mon avis, quand t'arrives devant cette machine, tu te fous de tout le reste.</text>
+		<text>Les marchands racontent qu'il y'a un véritable trésor rempli d'artefacts au centre de la Zone et que celui qui réussira à le récupérer aura assez d'argent pour vivre 200 ans. Moi, je crois que c'est bien plus que ça. Il est clair que les marchands ne pensent qu'à leurs intérêts, mais des rumeurs étranges circulent. Apparemment, quelque chose de plus précieux que les artefacts se trouve là-bas, quelque chose qui vient d'ailleurs, d'une autre planète ou d'une autre dimension ou les deux ! Ils appellent ça l'exauceur. Il paraît qu'un Stalker a déjà réussi à voir cette machine. À chaque fois que quelqu'un fait un voeu, la Zone s'étend : en fait, personne n'utilise son voeu pour faire disparaître la Zone. À mon avis, quand t'arrives devant cette machine, tu te fous de tout le reste.</text>
 	</string>
 	<string id="bar_bar_visitors_8_start_71111">
 		<text>C'est triste.</text>
@@ -919,7 +919,7 @@
 		<text>D'après le Barman, ton chef aurait une mission un peu spéciale pour moi.</text>
 	</string>
 	<string id="bar_dolg_base_guard_rules_1">
-		<text>En effet, on nous a parlé de toi, mais avant de te laisser passer, tu dois connaître nos règles. Règle numéro 1 : il est interdit de tirer sur notre territoire. SI tu enfreins cette règle deux fois, nos soldats te tireront dessus. Et même si tu t'enfuis, nos gardes veilleront bien à ce que tu remettes plus jamais les pieds ici. Alors reste bien calme et t'auras aucun problème.</text>
+		<text>En effet, on nous a parlé de toi, mais avant de te laisser passer, tu dois connaître nos règles. Règle numéro 1 : il est interdit de tirer sur notre territoire. SI tu enfreins cette règle deux fois, nos soldats te tireront dessus. Et même si tu t'enfuis, nos gardes veilleront bien à ce que tu ne remettes plus jamais les pieds ici. Alors reste bien calme et t'auras aucun problème.</text>
 	</string>
 	<string id="bar_dolg_base_guard_rules_2">
 		<text>Compris. C'est tout ?</text>
@@ -946,7 +946,7 @@
 		<text>Pourquoi ne pas autoriser les étrangers à entrer ?</text>
 	</string>
 	<string id="bar_dolg_base_guard_talk_1">
-		<text>D'où vous venez, petits naïfs ? On est en guerre, non ? On se bat contre les bandits de la Liberté ! On est souvent en conflit avec leurs hommes sur les Terres abandonnées...</text>
+		<text>D'où tu viens, petit naïf ? On est en guerre, non ? On se bat contre les bandits de la Liberté ! On est souvent en conflit avec leurs hommes sur les Terres abandonnées...</text>
 	</string>
 	<string id="bar_dolg_base_guard_talk_2">
 		<text>Une guerre contre ceux de la Liberté ? Pourquoi ?</text>
@@ -994,7 +994,7 @@
 		<text>OK, je vais tenter de dérober un Bulldog 6 dans la base de la Liberté.</text>
 	</string>
 	<string id="bar_dolg_leader_join_11111">
-		<text>Oh, un dernier détail. Le colonel Kran et ses hommes m'ont désobéi en décidant d'attaquer la base de la Liberté sans autorisation. Et ils récolteront ce qu'ils ont semé... ces enfoirés suicidaires. Participe pas à ce combat-là, OK ? Récupère le Bulldog 6, c'est tout ce qui compte !</text>
+		<text>Oh, un dernier détail. Le colonel Kran et ses hommes m'ont désobéi en décidant d'attaquer la base de la Liberté sans autorisation. Et ils récolteront ce qu'ils ont semé... ces enfoirés suicidaires. Ne participe pas à ce combat-là, OK ? Récupère le Bulldog 6, c'est tout ce qui compte !</text>
 	</string>
 	<string id="bar_dolg_leader_join_1112">
 		<text>Je suis pas encore prêt pour de tels exploits.</text>
@@ -1177,7 +1177,7 @@
 		<text>J'ai eu une petite "discussion" avec Tyran du groupe des Mercenaires. En bref, il a compris son erreur et il a promis de mieux se tenir à l'avenir. Je suis sûr qu'il tiendra parole, puisque les morts mentent pas.</text>
 	</string>
 	<string id="bar_dolg_zavskald_reward_121">
-		<text>Tyran était un emmerdeur de première pour nous ! C'est bien que tu l'aies liquidé. Voici ta récompense : un S14 Thunder, une arme de marque.</text>
+		<text>Tyran était un emmerdeur de première pour nous ! C'est bien que tu l'aies liquidé. Voici ta récompense : un OC-14 Groza, une arme de marque.</text>
 	</string>
 	<string id="bar_dolg_zavskald_reward_1211">
 		<text>Pas mal. Je vais continuer mes exploits ! À plus !</text>

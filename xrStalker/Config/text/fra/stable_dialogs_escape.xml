@@ -13,7 +13,7 @@
 		<text>Les voilà.</text>
 	</string>
 	<string id="esc_bridge_soldiers_start_15">
-		<text>Écoute bien. On prétendra qu'il y a rien de plus que des moustiques et des papillons par ici. Tout ce qui se passe au-delà de cette limite ne regarde que toi.</text>
+		<text>Écoute bien. On prétendra qu'il n'y a rien de plus que des moustiques et des papillons par ici. Tout ce qui se passe au-delà de cette limite ne regarde que toi.</text>
 	</string>
 	<string id="esc_bridge_soldiers_start_21">
 		<text>OK, avance ! Dégage de là avant qu'on change d'avis.</text>
@@ -34,7 +34,7 @@
 		<text>Salut ! Besoin de quelque chose ?</text>
 	</string>
 	<string id="esc_lager_no_talk_31">
-		<text>Notre chef voulait te voir. Mais crois pas pour autant que tu sois le bienvenu. Avance.</text>
+		<text>Notre chef voulait te voir. Mais ne crois pas pour autant que tu sois le bienvenu. Avance.</text>
 	</string>
 	<string id="esc_provodnik_start_11">
 		<text>Bonjour !</text>
@@ -118,7 +118,7 @@
 		<text>Qu'est-ce que tu peux me dire sur la Zone ?</text>
 	</string>
 	<string id="escape_fox_hello_dialog_21111">
-		<text>C'est tout ce que tu veux savoir ? Laisse-moi une semaine et reviens me voir. Écoute, mon temps est précieux et je suis occupé là. Je te raconte en bref et après tu te débrouilles tout seul.\nÀ environ trois kilomètres au nord, tu tomberas sur la Décharge. C'est l'endroit où ils avaient l'habitude de jeter tous les déchets radioactifs de la centrale. Les niveaux de radiation sont élevés et les anomalies sont partout ; du coup, on peut y trouver plein d'artefacts... mais sans grande valeur. Fais bien gaffe aux bandes et évite les patrouilles du Devoir. À l'ouest de la Décharge se situe l'ancien Institut de Recherche Agroprom. Il y a pas beaucoup d'artefacts là-bas ; c'est pas grave si t'y passes pas. Et à l'est, il y a la Vallée obscure. Très étrange... C'est un endroit vraiment bizarre. Cette vallée semble assez tranquille ; il n'y a que quelques gangsters qui vagabondent. Mais mon instinct me chuchote que je ne vois pas tout. Oh, et il y a l'usine de Rostok, juste derrière la Décharge. C'est le territoire des Stalkers. Tu y rencontreras plein de Stalkers très calés qui te raconteront tout ce qu'il reste à savoir sur la Zone.</text>
+		<text>C'est tout ce que tu veux savoir ? Laisse-moi une semaine et reviens me voir. Écoute, mon temps est précieux et je suis occupé là. Je te raconte en bref et après tu te débrouilles tout seul.\nÀ environ trois kilomètres au nord, tu tomberas sur la Décharge. C'est l'endroit où ils avaient l'habitude de jeter tous les déchets radioactifs de la centrale. Les niveaux de radiation sont élevés et les anomalies sont partout ; du coup, on peut y trouver plein d'artefacts... mais sans grande valeur. Fais bien gaffe aux bandes et évite les patrouilles du Devoir. À l'ouest de la Décharge se situe l'ancien Institut de Recherche Agroprom. Il n'y a pas beaucoup d'artefacts là-bas ; c'est pas grave si t'y passes pas. Et à l'est, il y a la Vallée obscure. Très étrange... C'est un endroit vraiment bizarre. Cette vallée semble assez tranquille ; il n'y a que quelques gangsters qui vagabondent. Mais mon instinct me chuchote que je ne vois pas tout. Oh, et il y a l'usine de Rostok, juste derrière la Décharge. C'est le territoire des Stalkers. Tu y rencontreras plein de Stalkers très calés qui te raconteront tout ce qu'il reste à savoir sur la Zone.</text>
 	</string>
 	<string id="escape_fox_hello_dialog_2113">
 		<text>J'ai changé d'avis. Merci.</text>
@@ -130,7 +130,7 @@
 		<text>D'après le marchand, il se pourrait que tu saches quelque chose sur Strelok.</text>
 	</string>
 	<string id="escape_fox_hello_dialog_311">
-		<text>Pourquoi tout le monde s'intéresse à lui en ce moment ? Bon, je peux pas dire que je l'aie connu intimement, mais on "communiquait". Mes gars lui ont tiré dessus une fois. Personne n'a été blessé. Il était clair qu'il attendait quelqu'un d'autre, alors on est parti sans faire de dégâts. Un ravin nous séparait, on s'est insultés, puis on a continué chacun de son côté. Seriy, mon frère, est dans le hangar à la Décharge. Je vais t'indiquer où il se trouve pour que tu puisses avoir une discussion avec lui. Il en sait plus sur Strelok. Attention en sortant, une petite bande rôde. Au fait, quelques monstres sont à ma poursuite et j'ai l'impression qu'ils ne vont pas me lâcher. Tu pourrais me filer un coup de main pour me débarrasser d'eux ? Un vrai jeu d'enfant, je t'assure !</text>
+		<text>Pourquoi tout le monde s'intéresse à lui en ce moment ? Bon, je ne peux pas dire que je l'aie connu intimement, mais on "communiquait". Mes gars lui ont tiré dessus une fois. Personne n'a été blessé. Il était clair qu'il attendait quelqu'un d'autre, alors on est parti sans faire de dégâts. Un ravin nous séparait, on s'est insultés, puis on a continué chacun de son côté. Seriy, mon frère, est dans le hangar à la Décharge. Je vais t'indiquer où il se trouve pour que tu puisses avoir une discussion avec lui. Il en sait plus sur Strelok. Attention en sortant, une petite bande rôde. Au fait, quelques monstres sont à ma poursuite et j'ai l'impression qu'ils ne vont pas me lâcher. Tu pourrais me filer un coup de main pour me débarrasser d'eux ? Un vrai jeu d'enfant, je t'assure !</text>
 	</string>
 	<string id="escape_fox_hello_dialog_3111">
 		<text>Merci pour l'info, j'apprécie.</text>
@@ -151,7 +151,7 @@
 		<text>Merci.</text>
 	</string>
 	<string id="escape_lager_guard_start_dialog_121">
-		<text>Notre chef voulait te voir. Mais crois pas pour autant que tu sois le bienvenu. Avance.</text>
+		<text>Notre chef voulait te voir. Mais ne crois pas pour autant que tu sois le bienvenu. Avance.</text>
 	</string>
 	<string id="escape_lager_guard_start_dialog_2">
 		<text>Attends, le Tatoué ! Personne au camp va vouloir te parler.</text>
@@ -301,10 +301,10 @@
 		<text>Allegro est dans le pétrin. Des bandits ont attaqué son groupe tout près d'ici. Tout ce qu'il a pu faire, c'était m'envoyer un message de détresse. Ses potes sont certainement morts. Mes hommes m'ont informé que ces enfoirés étaient maintenant au vieux parking, celui de l'autre côté de la route.</text>
 	</string>
 	<string id="escape_lager_volk_talk_11111">
-		<text>Tu sors pas tes propres gars de prison ? C'est pas très sympa, ça ! Ou est-ce que t'as trop peur pour le faire ?</text>
+		<text>Tu sors pas tes propres gars du pétrin ? C'est pas très sympa, ça ! Ou est-ce que t'as trop peur pour le faire ?</text>
 	</string>
 	<string id="escape_lager_volk_talk_111111">
-		<text>J'ai bien envie de te frapper, mais quel intérêt ? C'est pas si simple. Je dispose de trop peu d'hommes et ceux qui m'entourent sont pour la plupart des débutants. Je peux pas prendre un tel risque. Si on perd ce camp, la situation se dégradera pour les Stalkers. Et toi, qu'est-ce tu fais ? Allez, je vais mettre ma fierté de côté... Si ça te fait pas peur, je veux bien que tu me donnes un coup de main. Alors, tu m'aideras à régler leur compte à ces voyous ou pas ?</text>
+		<text>J'ai bien envie de te frapper, mais quel intérêt ? Ce n'est pas si simple. Je dispose de trop peu d'hommes et ceux qui m'entourent sont pour la plupart des débutants. Je ne peux pas prendre un tel risque. Si on perd ce camp, la situation se dégradera pour les Stalkers. Et toi, qu'est-ce tu fais ? Allez, je vais mettre ma fierté de côté... Si ça ne te fait pas peur, je veux bien que tu me donnes un coup de main. Alors, tu m'aideras à régler leur compte à ces voyous ou pas ?</text>
 	</string>
 	<string id="escape_lager_volk_talk_1111111">
 		<text>Tu penses que je pourrais y arriver seul ?</text>
@@ -373,7 +373,7 @@
 		<text>Eh bien, j'ai besoin de la clé USB que tu voulais fourguer au marchand. Tu l'as ?</text>
 	</string>
 	<string id="escape_shustryi_start_1111">
-		<text>Ouais, je l'ai... Ces crétins savent même pas faire une fouille au corps. Enfin, bref, prends-la ! Après tout, tu m'as sauvé la vie. Elle était bien cachée et ces voyous savent pas chercher à fond.</text>
+		<text>Ouais, je l'ai... Ces crétins ne savent même pas faire une fouille au corps. Enfin, bref, prends-la ! Après tout, tu m'as sauvé la vie. Elle était bien cachée et ces voyous savent pas chercher à fond.</text>
 	</string>
 	<string id="escape_shustryi_start_11111">
 		<text>Merci. Et tu l'avais cachée où alors ? Qui sait... ça pourrait me servir de connaître une bonne planque !</text>
@@ -445,7 +445,7 @@
 		<text>Continue.</text>
 	</string>
 	<string id="escape_trader_jobs_61111">
-		<text>Parfait, écoute... Tu veux faire affaire, je le vois bien... Et je... je veux dire, on a besoin de mecs comme toi. On fait une sorte d'enquête avec d'autres marchants. On veut ouvrir la voie du nord vers le centre de la Zone. Et près du centre, y a quelqu'un ou quelque chose qui essaie d'entraver notre progression... Comment ce Strelok a réussi à y pénétrer, j'en sais rien... Tu vois, il y a une zone où notre cerveau est en ébullition là-bas. Un endroit étrange... Peu importe, pour faire court, des gars ont espionné leurs troufions pour moi, pas loin d'ici. Apparemment, ceux de l'Institut de Recherche Agroprom ont dégoté quelque chose. Quelque chose d'important. Je suis sûr que ça a un rapport avec le centre de la Zone. Bref, quoi qu'ils aient trouvé, c'est en sécurité quelque part au deuxième étage de l'Institut. Et on en a vraiment besoin. Tu vois ce que je veux dire ?</text>
+		<text>Parfait, écoute... Tu veux faire affaire, je le vois bien... Et je... je veux dire, on a besoin de mecs comme toi. On fait une sorte d'enquête avec d'autres marchants. On veut ouvrir la voie du nord vers le centre de la Zone. Et près du centre, y'a quelqu'un ou quelque chose qui essaie d'entraver notre progression... Comment ce Strelok a réussi à y pénétrer, j'en sais rien... Tu vois, il y a une zone où notre cerveau est en ébullition là-bas. Un endroit étrange... Peu importe, pour faire court, des gars ont espionné leurs troufions pour moi, pas loin d'ici. Apparemment, ceux de l'Institut de Recherche Agroprom ont dégoté quelque chose. Quelque chose d'important. Je suis sûr que ça a un rapport avec le centre de la Zone. Bref, quoi qu'ils aient trouvé, c'est en sécurité quelque part au deuxième étage de l'Institut. Et on en a vraiment besoin. Tu vois ce que je veux dire ?</text>
 	</string>
 	<string id="escape_trader_jobs_611111">
 		<text>Je crois.</text>
@@ -469,7 +469,7 @@
 		<text>Hé, le Tatoué, quoi de neuf ?</text>
 	</string>
 	<string id="escape_trader_start_dialog_181">
-		<text>Le Tatoué, qu'est-ce que tu fous là? Je t'ai dit d'aller chercher Allegro !</text>
+		<text>Le Tatoué, qu'est-ce que tu fous là ? Je t'ai dit d'aller chercher Allegro !</text>
 	</string>
 	<string id="escape_trader_start_dialog_191">
 		<text>Alors, t'es allé au labo X18 ? T'as les documents ?</text>
@@ -505,7 +505,7 @@
 		<text>J'ai un boulot pour toi, le Tatoué... Je veux que tu trouves un Stalker appelé Allegro, il transportait des informations très importantes. Il a disparu quelque part près du pont. Trouve-le, mort ou vif, ça m'est égal, il me faut absolument la clé USB avec les infos. Va voir le Loup dans le camp d'à côté et demande-lui. Il sait sûrement où il peut se cacher.</text>
 	</string>
 	<string id="escape_trader_start_dialog_3211">
-		<text>Vas-y.</text>
+		<text>Continue…</text>
 	</string>
 	<string id="escape_trader_start_dialog_32111">
 		<text>C'est tout. Apporte-moi la clé USB et on dira que tu as payé une partie de ta dette.</text>
@@ -598,7 +598,7 @@
 		<text>Pourquoi cet "univers différent" est si dangereux ?</text>
 	</string>
 	<string id="escape_trader_talk_info_3111">
-		<text>Oh... pour rien, à part que tu peux crever à tout moment et tu ne sauras jamais ce qui t'a tué. Une balle de soldat est encore ce qui peut t'arriver de mieux, et des soldats y en a un paquet dans le coin. Se prendre une balle est la mort la plus douce qu'on puisse espérer dans la Zone. Les anomalies par contre, ça devrait t'intéresser... Être tué par une anomalie, ça c'est moche. Même les mutants en ont peur. D'ailleurs les mutants, les "enfants de la Zone", sont une autre menace, alors te balade jamais sans arme. Et si tu veux en savoir plus sur les autres dangers, demande aux autres Stalkers.</text>
+		<text>Oh... pour rien, à part que tu peux crever à tout moment et tu ne sauras jamais ce qui t'a tué. Une balle de soldat est encore ce qui peut t'arriver de mieux, et des soldats y'en a un paquet dans le coin. Se prendre une balle est la mort la plus douce qu'on puisse espérer dans la Zone. Les anomalies par contre, ça devrait t'intéresser... Être tué par une anomalie, ça c'est moche. Même les mutants en ont peur. D'ailleurs les mutants, les "enfants de la Zone", sont une autre menace, alors ne te balade jamais sans arme. Et si tu veux en savoir plus sur les autres dangers, demande aux autres Stalkers.</text>
 	</string>
 	<string id="escape_trader_talk_info_312">
 		<text>Comment on fait pour gagner de l'argent ?</text>
@@ -622,7 +622,7 @@
 		<text>Qui est Strelok ?</text>
 	</string>
 	<string id="escape_trader_talk_info_51">
-		<text>Ouais, j'ai entendu parler de ce Stalker. On dit que c'est l'un des rares à être allé au centre de la Zone et à en être revenu. Mais il y a tellement de légendes qui circulent sur des Stalkers héroïques, on peut jamais être sûr. De toute façon, on n'a jamais fait affaire ensemble. Apparemment, il a son propre réseau d'approvisionnement. Hésite pas à demander aux habitants de la Zone, ils t'en diront plus.</text>
+		<text>Ouais, j'ai entendu parler de ce Stalker. On dit que c'est l'un des rares à être allé au centre de la Zone et à en être revenu. Mais il y a tellement de légendes qui circulent sur des Stalkers héroïques, on ne peut jamais être sûr. De toute façon, on n'a jamais fait affaire ensemble. Apparemment, il a son propre réseau d'approvisionnement. N'hésite pas à demander aux habitants de la Zone, ils t'en diront plus.</text>
 	</string>
 	<string id="escape_trader_talk_info_6">
 		<text>Qui est le Stalker appelé Spectre ?</text>
@@ -640,7 +640,7 @@
 		<text>Dis-m'en plus sur l'avant-poste militaire.</text>
 	</string>
 	<string id="escape_trader_talk_info_99911">
-		<text>Les soldats en poste ont pour ordre de tirer à vue alors tu ferais mieux de pas trop traîner dans le coin et de rester discret. Si tu les énerves, ils risquent de faire venir les Spetsnaz de l'autre cordon. Ces mecs sont capables de foutre un tel bordel que j'aurai pas un client pendant un mois... Je connais un peu le commandant: il crache jamais sur un petit verre, comme nous tous. C'est grâce à lui que je suis là.</text>
+		<text>Les soldats en poste ont pour ordre de tirer à vue alors tu ferais mieux de pas trop traîner dans le coin et de rester discret. Si tu les énerves, ils risquent de faire venir les Spetsnaz de l'autre cordon. Ces mecs sont capables de foutre un tel bordel que j'aurai pas un client pendant un mois... Je connais un peu le commandant : il crache jamais sur un petit verre, comme nous tous. C'est grâce à lui que je suis là.</text>
 	</string>
 	<string id="escape_trader_talk_info_9992">
 		<text>J'aimerais en savoir plus sur le pont en ruine.</text>
@@ -679,7 +679,7 @@
 		<text>Dis-m'en plus sur l'avant-poste militaire.</text>
 	</string>
 	<string id="escape_trader_talk_level_21">
-		<text>Les soldats en poste ont pour ordre de tirer à vue alors tu ferais mieux de pas trop traîner dans le coin et de rester discret. Si tu les énerves, ils risquent de faire venir les Spetsnaz de l'autre cordon. Ces mecs sont capables de foutre un tel bordel que j'aurai pas un client pendant un mois... Je connais un peu le commandant: il crache jamais sur un petit verre, comme nous tous. C'est grâce à lui que je suis là.</text>
+		<text>Les soldats en poste ont pour ordre de tirer à vue alors tu ferais mieux de pas trop traîner dans le coin et de rester discret. Si tu les énerves, ils risquent de faire venir les Spetsnaz de l'autre cordon. Ces mecs sont capables de foutre un tel bordel que j'aurai pas un client pendant un mois... Je connais un peu le commandant : il crache jamais sur un petit verre, comme nous tous. C'est grâce à lui que je suis là.</text>
 	</string>
 	<string id="escape_trader_talk_level_3">
 		<text>J'aimerais en savoir plus sur le pont en ruine.</text>

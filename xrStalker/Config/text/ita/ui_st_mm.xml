@@ -139,7 +139,7 @@
 		<text>Controlli</text>
 	</string>
 	<string id="ui_mm_credits">
-		<text>Credits</text>
+		<text>Riconoscimenti</text>
 	</string>
 	<string id="ui_mm_crosshair_distance">
 		<text>Distanza mirino</text>
@@ -166,7 +166,7 @@
 		<text>Schermo intero</text>
 	</string>
 	<string id="ui_mm_gameplay">
-		<text>Game</text>
+		<text>Gioco</text>
 	</string>
 	<string id="ui_mm_gamma">
 		<text>Gamma</text>

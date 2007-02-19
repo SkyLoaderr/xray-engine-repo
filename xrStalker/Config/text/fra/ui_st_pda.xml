@@ -10,7 +10,7 @@
 		<text>Contacts</text>
 	</string>
 	<string id="Encyclopedia">
-		<text>Encyclopédie</text>
+		<text>Encycl.</text>
 	</string>
 	<string id="global_map_btn_hint">
 		<text>Vers la carte de la Zone</text>
@@ -46,7 +46,7 @@
 		<text>Afficher le journal du joueur</text>
 	</string>
 	<string id="pda_btn_encyclopedia">
-		<text>Encyclopédie</text>
+		<text>Encycl.</text>
 	</string>
 	<string id="pda_btn_encyclopedia_hint">
 		<text>Afficher l'encyclopédie de la Zone</text>
@@ -94,7 +94,7 @@
 		<text>Afficher des informations sur la quête</text>
 	</string>
 	<string id="pda_btn_ranking">
-		<text>Classement</text>
+		<text>Class.</text>
 	</string>
 	<string id="pda_btn_ranking_hint">
 		<text>Afficher les Stalkers les mieux classés</text>

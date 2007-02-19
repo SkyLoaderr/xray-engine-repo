@@ -11,7 +11,7 @@
 		<text>Marchand : rejoins l'avant-poste militaire et vole la mallette contenant le rapport relatif à l'expédition menée dans la partie nord de la Zone.</text>
 	</string>
 	<string id="Dead novice's flash">
-		<text>PDA du nouveau mort</text>
+		<text>PDA du Stalker mort</text>
 	</string>
 	<string id="defend_lager_text">
 		<text>Fanatique : Aide-nous à nous défendre des Mercenaires qui ont ordonné aux nouveaux de détruire le camp. Voilà le plan. Tout le monde se cache pour faire croire aux Mercenaires que le camp est désert. Et là, lorsque le capitaine en donne l'ordre, on attaque.</text>
@@ -23,7 +23,7 @@
 		<text>Rencontre avec le Doc</text>
 	</string>
 	<string id="doctor_meet_quest_text">
-		<text>Doc : J'attends un type qui revient de Strelok pour rejoindre la planque utilisée par Strelok et ses hommes. C'est notre homme, il connaîtra les lieux.</text>
+		<text>Doc : J'attends un type pour rejoindre la planque utilisée par Strelok et ses hommes. C'est notre homme, il connaîtra les lieux.</text>
 	</string>
 	<string id="doctor_meet_text">
 		<text>OK, je vais retrouver l'homme du Spectre. Je l'attendrai dans la planque de Strelok. S'il est un des nôtres, il saura où me trouver. Doc.</text>
@@ -53,7 +53,7 @@
 		<text>Marchand : Fox est revenu de son raid pour demander de l'aide. Il sait peut-être quelque chose à propos de Strelok.</text>
 	</string>
 	<string id="meet_seryi_text">
-		<text>Fox : le Grison se trouve dans le hangar de la Décharge, il en sait plus sur Strelok.</text>
+		<text>Fox : Seriy se trouve dans le hangar de la Décharge, il en sait plus sur Strelok.</text>
 	</string>
 	<string id="military_case_text">
 		<text>Marchand : vole le rapport de l'expédition à l'Institut de Recherche Agroprom, rapporte-le au 100 Rads et remets-le au Barman.</text>

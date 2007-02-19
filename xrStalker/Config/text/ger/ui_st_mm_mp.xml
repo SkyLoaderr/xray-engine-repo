@@ -106,7 +106,7 @@
 		<text>LAN</text>
 	</string>
 	<string id="mm_mp_listenservers">
-		<text>Aktiv</text>
+		<text>Leer</text>
 	</string>
 	<string id="mm_mp_mapratation">
 		<text>Kartenliste</text>
@@ -136,7 +136,7 @@
 		<text>Öffentlicher Server</text>
 	</string>
 	<string id="mm_mp_quickrefresh">
-		<text>Schnelle Aktualisierung</text>
+		<text>Schnelle Aktualis.</text>
 	</string>
 	<string id="mm_mp_rateofchange">
 		<text>Wetterwechsel-Koeffizient</text>
@@ -163,7 +163,7 @@
 		<text>Servereigenschaften</text>
 	</string>
 	<string id="mm_mp_serverinfo">
-		<text>Serverinformationen</text>
+		<text>Serverinformation</text>
 	</string>
 	<string id="mm_mp_serverlist">
 		<text>Server</text>
