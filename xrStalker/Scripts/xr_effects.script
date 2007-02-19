@@ -1190,7 +1190,7 @@ function mil_bomb_explode (actor, npc)
 end
 
 function mil_set_alarm (actor, npc)
-
+	printf("pl:millitary base is under attack!!!!!!!")
     actor:give_info_portion ("mil_freedom_under_attack")
     
     local skull = level_object_by_sid (708)
