@@ -220,10 +220,10 @@ function se_smart_terrain:preserve_exclusives()
 	local e = exclusives[self:name()]
 
 	if e then
---'		printf( "[smart_terrain %s] exclusives=%d", self:name(), e )
+--'	printf( "[smart_terrain %s] exclusives=%d", self:name(), e )
 
-		self.exclusives = e
---'		printf("[smart_terrain %s] preserve_exclusives [%s]", self:name(), tostring(self.gulag.capacity_non_exclusive))
+	self.exclusives = e
+--'	printf("[smart_terrain %s] preserve_exclusives [%s]", self:name(), tostring(self.gulag.capacity_non_exclusive))
 		self.gulag.capacity_non_exclusive = self.gulag.capacity_non_exclusive - e
 
 		exclusives[self:name()] = nil
@@ -428,7 +428,7 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 		return false
 	end
 
---'	if self:name() == "bar_zastava" then
+--'	if obj:name() == "esc_wolf" then
 --'		printf("before checking: pop = %s, cap = %s", tostring(self.gulag:get_non_exclusive_population()), tostring(self.gulag.capacity_non_exclusive))
 --'	end
 
@@ -441,7 +441,7 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
         local smart_level_group = self:get_level_name()
         local npc_level_group = alife():level_name(game_graph():vertex(obj.m_game_vertex_id):level_id())
 
---'		if self:name() == "bar_zastava" then
+--'		if obj:name() == "esc_wolf" then
 --'			printf("smart=%s stalker=%s", tostring(smart_level_group), tostring(npc_level_group))
 --'		end
 
@@ -450,15 +450,15 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
         end
     
 
---'		if self:name() == "bar_zastava" then
---'			printf( "comm=%s is_stalker=%s", community, tostring( is_stalker ) )
---'		end
+--'	if obj:name() == "esc_wolf" then
+--'		printf( "comm=%s is_stalker=%s", community, tostring( is_stalker ) )
+--'	end
 
 		if self.accepted_communities and not self.accepted_communities[community] then
 			return false
 		end
 
---'		if self:name() == "bar_zastava" then
+--'		if obj:name() == "esc_wolf" then
 --'			printf( "community=%s rank=%d reputation=%d", community, obj:rank(), obj:reputation() )
 --'		end
 	
@@ -466,7 +466,7 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 			return false
 		end
 
---'		if self:name() == "bar_zastava" then
+--'		if obj:name() == "esc_wolf" then
 --'			printf( "check_preset ok" )
 --'		end
 
@@ -474,9 +474,9 @@ function se_smart_terrain:smart_terrain_accepts_obj( obj, obj_agreement )
 			return false
 		end
 
---'		if self:name() == "bar_zastava" then
---'			printf( "checkNpc ok" )
---'		end
+--'	if obj:name() == "esc_wolf" then
+--'		printf( "checkNpc ok" )
+--'	end
 
 		return self.gulag:is_there_any_suitable_job( self:fill_npc_info( obj ), obj_agreement == agreed_exclusive )
 	else
@@ -507,7 +507,7 @@ function se_smart_terrain:obj_accepts_smart_terrain( obj )
 				if name == "none" then				
 					return disagreed
 			 	elseif name == self:name() then
---'					if obj:name() == "gar_bandit_agr_10" then
+--'					if obj:name() == "esc_wolf" then
 --'						printf("[%s] obj_accepts_smart_terrain[%s] = agreed_exclusive", self:name(), obj:name())
 --'					end
 					return agreed_exclusive
@@ -529,7 +529,7 @@ function se_smart_terrain:obj_accepts_smart_terrain( obj )
 --'		end
 	end
 
---'	if obj:name() == "gar_bandit_agr_10" then
+--'	if obj:name() == "esc_wolf" then
 --'		printf("[%s] obj_accepts_smart_terrain[%s] = agreed", self:name(), obj:name())
 --'	end
 
@@ -553,7 +553,7 @@ function se_smart_terrain:enabled(obj)
 		local b = self:obj_accepts_smart_terrain( obj )
 		local a = self:smart_terrain_accepts_obj( obj, b )
 
---'		if obj:name() == "esc_killer1" then
+--'		if obj:name() == "esc_wolf" then
 --'			if a == true then
 --'				printf("[smart_terrain %s] ENABLED obj=%s exclusive=%s", self:name(), obj:name(), tostring(b))
 --'			else
@@ -564,7 +564,7 @@ function se_smart_terrain:enabled(obj)
 		return a
 	else
 
---'		if obj:name() == "esc_killer1" then
+--'		if obj:name() == "esc_wolf" then
 --'			printf("[smart_terrain %s] DISABLED not_enabled", self:name())
 --'		end
 		return false
@@ -579,7 +579,7 @@ end
 --   2) иначе ближе - лучше
 -- TODO Оптимизировать
 function se_smart_terrain:suitable( obj )
---'	if obj:name() == "esc_killer1" then
+--'	if obj:name() == "esc_wolf" then
 --'		printf("[%s] suitable [%s]", self:name(), obj:name())
 --'	end
 
@@ -597,7 +597,7 @@ function se_smart_terrain:suitable( obj )
 		end
 	end
 
---'	if obj:name() == "esc_killer1" then
+--'	if obj:name() == "esc_wolf" then
 --'		printf( "[smart_terrain %s] obj=%s suitable=%d was_in_smart_terrain=%s",
 --'		        self:name(),
 --'		        obj:name(),
@@ -1104,31 +1104,23 @@ function se_smart_terrain:update()
 --'	self:initialize_if_needed()
 
 	if self:is_gulag_available() then
---'		if self.check_time < game.get_game_time() then
---'			self.check_time = game.get_game_time() + check_period
+		if self.check_time < game.get_game_time() then
+			self.check_time = game.get_game_time() + check_period
 
 			--' проверять, не собрался ли кто-то к этому времени уже уходить
---'			local sn   = 0
---'			local time = game.get_game_time()
+			for id, npc_info in pairs( self.npc_info ) do
+				if npc_info.cond and xr_logic.pick_section_from_condlist( db.actor_proxy, npc_info.se_obj, npc_info.cond ) == nil then
+					printf("[smart_terrain %s] leaving %s", self:name(), npc_info.name)
+					self:unregister_npc( npc_info.se_obj )
+				end
+			end
 
---'			for id, npc_info in pairs( self.npc_info ) do
---'				if npc_info.stay_end < time or
---'				   ( npc_info.cond and xr_logic.pick_section_from_condlist( db.actor_proxy, npc_info.se_obj, npc_info.cond ) == nil )
---'				then
---'					printf("[smart_terrain %s] leaving %s", self:name(), npc_info.name)
---'					self:unregister_npc( npc_info.se_obj )
---'				else
---'					sn = sn + 1
---'				end
---'			end
-
---'			if sn == 0 then
---'				self:remove_gulag()
---'			else
---'				self.gulag:update()
---'			end
---'		end
-		self.gulag:update()
+			if self.gulag:get_population() == 0 then
+				self:remove_gulag()
+			else
+				self.gulag:update()
+			end
+		end
 	else
 		self:remove_gulag()
 	end
