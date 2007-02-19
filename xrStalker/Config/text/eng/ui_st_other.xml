@@ -192,6 +192,9 @@
 	<string id="ui_st_err_gs_not_available">
 		<text>Online Services for S.T.A.L.K.E.R. are not available.</text>
 	</string>
+	<string id="ui_st_err_sb_master_server_conn_fail">
+		<text>Unable to connect to master server.</text>
+	</string>
 	<string id="ui_mm_delete_existing_file_q">
 		<text>You really want to delete file?</text>
 	</string>
