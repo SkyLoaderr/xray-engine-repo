@@ -115,6 +115,8 @@ end
 
 function save_dialog:OnListItemClicked()
 	local list_box		= self:GetListWnd("list_window")
+	if list_box:GetSize()==0 then return end
+
 	local edit_box		= self:GetEditBox("edit_filename")
 	local item_id		= list_box:GetFocusedItem()
 	local item			= list_box:GetItem(item_id)
@@ -139,6 +141,8 @@ end
 function save_dialog:OnButton_del_clicked()
 
 	local list		= self:GetListWnd		("list_window")	
+	if list:GetSize()==0 then return end
+
 	local index		= list:GetSelectedItem	()
 	
 	if index == -1 then return end
@@ -150,6 +154,7 @@ end
 
 function save_dialog:delete_selected_file()
 	local list		= self:GetListWnd		("list_window")	
+	if list:GetSize()==0 then return end
 	local index		= list:GetSelectedItem	()
 	
 	if index == -1 then return end

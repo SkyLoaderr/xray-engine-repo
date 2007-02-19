@@ -195,6 +195,9 @@ end
 
 function load_dialog:OnListItemClicked()
 	local list_box		= self:GetListWnd("list_window")
+	
+	if list_box:GetSize()==0 then return end
+	
 	local picture		= self:GetStatic("static_pict")	
 	
 	local itm_index		= list_box:GetSelectedItem()
@@ -249,6 +252,9 @@ end
 function load_dialog:OnButton_load_clicked()	
 	local console = get_console()
 	local list = self:GetListWnd("list_window")	
+
+	if list:GetSize()==0 then return end
+
 	local index = list:GetSelectedItem()
 	
 	if index == -1 then return end
@@ -272,6 +278,8 @@ end
 
 function load_dialog:OnButton_del_clicked()
 	local list = self:GetListWnd("list_window")	
+
+	if list:GetSize()==0 then return end
 	local index = list:GetSelectedItem()
 	
 	if index == -1 then return end
