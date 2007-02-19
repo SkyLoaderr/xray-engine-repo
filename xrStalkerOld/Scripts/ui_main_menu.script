@@ -216,7 +216,7 @@ function main_menu:OnButton_multiplayer_clicked()
 	local console			= get_console()
 	console:execute			("check_for_updates 0")
 	
---	self.mp_dlg:OnRadio_NetChanged()
+	self.mp_dlg:OnRadio_NetChanged()
 end
 
 function main_menu:OnMsgOk()
