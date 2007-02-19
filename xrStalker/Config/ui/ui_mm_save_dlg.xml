@@ -22,23 +22,23 @@
 		<_texture_offset x="-29" y="-19"/>
 		<texture>ui_menu_options_dlg</texture>
 		
-		<caption x="36" y="-9" width="500" height="25" complex_mode="0">
+		<caption x="65" y="10" width="500" height="25" complex_mode="0">
 			<text font="graffiti22" r="184" g="168" b="131">ui_mm_save_game</text>
 		</caption>
 		
-		<edit x="36" y="36" width="257" height="23">
+		<edit x="65" y="55" width="257" height="23">
 			<texture>ui_linetext_e</texture>
 			
 			<text font="letterica18" r="240" g="217" b="182"/>
 		</edit>
 		
-		<list_frame x="36" y="77" width="449" height="307">
+		<list_frame x="65" y="96" width="449" height="307">
 			<texture>ui_tablist_textbox</texture>
 		</list_frame>
 		
-		<list x="46" y="87" width="429" height="287" item_height="18"/>
+		<list x="75" y="106" width="429" height="287" item_height="18"/>
 				
-		<btn_save x="36" y="408" width="157" height="48">
+		<btn_save x="65" y="427" width="157" height="48">
 			<texture>ui_button_main01</texture>
 			<text font="graffiti22">ui_mm_save</text>
 			<text_color>
@@ -46,7 +46,7 @@
 			</text_color>
 		</btn_save>
 
-		<btn_delete x="192" y="408" width="157" height="48">
+		<btn_delete x="221" y="427" width="157" height="48">
 			<texture>ui_button_main01</texture>
 			<text font="graffiti22">ui_mm_delete</text>
 			<text_color>
@@ -54,7 +54,7 @@
 			</text_color>
 		</btn_delete>
 		
-		<btn_cancel x="348" y="408" width="157" height="48">
+		<btn_cancel x="377" y="427" width="157" height="48">
 			<texture>ui_button_main01</texture>			
 			<text font="graffiti22">ui_mm_cancel</text>
 			<text_color>

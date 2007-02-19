@@ -67,10 +67,7 @@ end
 function load_dialog:InitControls()
 	self:Init(0,0,1024,768)
 	
-	self.list_file_font = GetFontMedium()
-	self.list_date_font = GetFontMedium()
-	
-	local xml = CScriptXmlInit()
+	local xml			 = CScriptXmlInit()
 	local ctrl
 	xml:ParseFile("ui_mm_load_dlg.xml")
 	
