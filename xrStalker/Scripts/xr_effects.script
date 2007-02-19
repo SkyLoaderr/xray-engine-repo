@@ -1174,7 +1174,7 @@ function mil_bomb_explode (actor, npc)
     end
 
     if source == nil then
-       abort ("Bomb with story id MIL_BOMB not found")
+       --'abort ("Bomb with story id MIL_BOMB not found")
        return
     end
 
