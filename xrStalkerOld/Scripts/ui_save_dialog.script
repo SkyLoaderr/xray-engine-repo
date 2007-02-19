@@ -121,6 +121,8 @@ function save_dialog:OnListItemClicked()
 	local item_id		= list_box:GetFocusedItem()
 	local item			= list_box:GetItem(item_id)
 	
+	if item==nil then return end
+	
 	local item_text		= item.fn:GetText()
 	edit_box:SetText	(item_text)
 end
