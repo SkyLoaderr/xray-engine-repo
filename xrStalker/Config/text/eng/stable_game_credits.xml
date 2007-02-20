@@ -854,7 +854,31 @@
 	<string id="st_icenbice">
 		<text>Evan Icenbice</text>
 	</string>
-
+	<string id="st_senior_global_localization_manager">
+		<text>Senior Global Localization Manager</text>
+	</string>
+	<string id="st_small">
+		<text>Amy Small</text>
+	</string>
+	<string id="st_european_localization_director">
+		<text>European Localization Director</text>
+	</string>
+	<string id="st_dieck">
+		<text>Susanne Dieck</text>
+	</string>
+	<string id="st_european_localization_engineer">
+		<text>European Localization Engineer</text>
+	</string>
+	<string id="st_kurtz">
+		<text>Bernd Kurtz</text>
+	</string>
+	<string id="st_localization_technician">
+		<text>Localization Technician</text>
+	</string>
+	<string id="st_herbertz">
+		<text>Andreas Herbertz</text>
+	</string>	
+	
 	<string id="st_global_brand_management">
 		<text>GLOBAL BRAND MANAGEMENT</text>
 	</string>
@@ -883,12 +907,21 @@
 	<string id="st_pieri">
 		<text>Liz Pieri</text>
 	</string>
+	<string id="st_global_pr_manager">
+		<text>Global PR Manager</text>
+	</string>
+	<string id="st_cunis">
+		<text>Guy Cunis</text>
+	</string>
 	
 	<string id="st_media_relations_manager">
 		<text>Media Relations Manager</text>
 	</string>
 	<string id="st_cassel">
 		<text>Rob Cassel</text>
+	</string>
+	<string id="st_vanasin">
+		<text>Vanessa Vanasin</text>
 	</string>
 	<string id="st_media_relations_coordinator">
 		<text>Media Relations Coordinator</text>
@@ -1295,7 +1328,98 @@
 	<string id="st_adams">
 		<text>Ernest Adams</text>
 	</string>	
+	<string id="st_linguistic_testing_performed">
+		<text>Linguistic Testing performed</text>
+	</string>
+	<string id="st_by_babel_media">
+		<text>by Babel Media Ltd.</text>
+	</string>
+	<string id="st_cleve">
+		<text>Norbert Cleve</text>
+	</string>	
+	<string id="st_lungo">
+		<text>Igor Lungo</text>
+	</string>	
+	<string id="st_luu">
+		<text>Hoang-Minh Luu</text>
+	</string>	
+	<string id="st_diez">
+		<text>Bruno Diez</text>
+	</string>	
+	<string id="st_sound_designed">
+		<text>Sound Designed</text>
+	</string>
+	<string id="st_by_bob">
+		<text>by Bob and Barn Ltd.</text>
+	</string>
+	<string id="st_english_audio_recorded">
+		<text>English Audio recorded</text>
+	</string>
+	<string id="st_by_voiceworks_productions">
+		<text>by VoiceWorks Productions</text>
+	</string>
+	<string id="st_sound_supervisors">
+		<text>Sound Supervisors</text>
+	</string>
+	<string id="st_barnabas">
+		<text>Andrew Barnabas</text>
+	</string>
+	<string id="st_paul_arnold">
+		<text>Paul Arnold</text>
+	</string>
+	<string id="st_sound_designers">
+		<text>Sound Designers</text>
+	</string>
+	<string id="st_brock">
+		<text>Andrew Brock</text>
+	</string>
+	<string id="st_dave_sullivan">
+		<text>Dave Sullivan</text>
+	</string>
 	
+	<string id="st_weapons_recorded">
+		<text>Weapons Recorded at:</text>
+	</string>
+	<string id="st_crawford_private_range">
+		<text>Crawford Private Range, Roundrock, Texas </text>
+	</string>
+	<string id="st_texas_tactical">
+		<text>Texas Tactical Outdoor Range, Henley, Texas </text>
+	</string>
+	<string id="st_stevens">
+		<text>Stevens' Farm, Bay, Arkansas </text>
+	</string>
+	<string id="st_disused_pit">
+		<text>Disused Gravel Pit, Bono, Arkansas </text>
+	</string>
+
+	<string id="st_gun">
+		<text>Gun Wranglers:</text>
+	</string>
+	<string id="st_crawford">
+		<text>Clark Crawford</text>
+	</string>
+	<string id="st_marco">
+		<text>Aaron Marco</text>
+	</string>
+	<string id="st_ou">
+		<text>Steve Ou, for Spreadfire Arms</text>
+	</string>
+	<string id="st_steve_stevens">
+		<text>Steve Stevens</text>
+	</string>
+	<string id="st_meeker">
+		<text>Gary Meeker</text>
+	</string>	
+	<string id="st_recording_post">
+		<text>Recording and Post Production by Andrew Brock </text>
+	</string>
+	<string id="creature">
+		<text>Creature Vocal Performances by Paul Arnold and Andrew Brock</text>
+	</string>
+	<string id="foley">
+		<text>Foley Artists - Andrew Barnabas and Dave Sullivan</text>
+	</string>			
 	
 	<!-- PLASTIC WAX    -->	
 	
