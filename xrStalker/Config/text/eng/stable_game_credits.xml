@@ -481,7 +481,7 @@
 		<text>Addaraya</text>
 	</string>
 	<string id="st_localization_department">
-		<text>LOCALISATION DEPARTMENT</text>
+		<text>LOCALIZATION DEPARTMENT</text>
 	</string>
 	<string id="st_kuchma">
 		<text>Eugene ‘Smile’ Kuchma</text>
@@ -1161,7 +1161,7 @@
 	</string>
 	
 	<string id="st_cd_centre">
-		<text>CD PROJEKT LOCALISATION CENTRE</text>
+		<text>CD PROJEKT LOCALIZATION CENTRE</text>
 	</string>
 	<string id="st_pm">
 		<text>Project Manager</text>
