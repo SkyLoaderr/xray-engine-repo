@@ -1,6 +1,3 @@
-function printf()
-end
-
 local anima=0
 local tmp_table = {}
 local k,v = 0,0
@@ -169,8 +166,8 @@ function animation:__init(npc, mgr)
 end
 --' установка нового состояния
 function animation:set_state(id, reset)
-	printf("[%s] set new animation [%s], current_state [%s]", self.npc:name(), tostring(id), tostring(self.states.target_state))
-	
+--'	printf("[%s] set new animation [%s], current_state [%s]", self.npc:name(), tostring(id), tostring(self.states.target_state))
+
 	local nn = 0
 	local wpn_slot = self:weapon_slot()
 	--' выход из старого состояния
@@ -180,7 +177,7 @@ function animation:set_state(id, reset)
 		if self.mgr.emerg.animation_nout == true or
 		   self.mgr.emerg.animation == true
 		then
-			-- обнулить озвучку (только если он задан в анимации)
+			--' обнулить озвучку (только если он задан в анимации)
 			if self.npc:active_sound_count() > 0 then
 				if self.mgr.subanim > 0 then
 					for key = self.mgr.subanim, 0 do
@@ -193,7 +190,7 @@ function animation:set_state(id, reset)
 				end
 			end
 						
-			-- (2) экстренный выход, необходимо дропнуть приатаченные предметы
+			--' (2) экстренный выход, необходимо дропнуть приатаченные предметы
 			if state_mgr_animation_list.animations[self.states.target_state].out ~= nil then
 				anima = self:anim_for_slot(wpn_slot,state_mgr_animation_list.animations[self.states.target_state].out)
 				if anima then
@@ -202,7 +199,7 @@ function animation:set_state(id, reset)
 							if type(v) == "table" and v.d ~= nil then
 								local obj = self.npc:object(v.d)
 								if obj then
-									printf("extra detached [%s] for [%s]", obj:name(), self.npc:name())
+--'									printf("extra detached [%s] for [%s]", obj:name(), self.npc:name())
 									obj:enable_attachable_item(false)
 								end
 								self.states.attach_items[v.d].mode = "detach"
@@ -213,7 +210,7 @@ function animation:set_state(id, reset)
 				end	
 			end		
 		else
-			-- выход из поданимаций	
+			--' выход из поданимаций	
 			if self.mgr.subanim > 0 then
 				for key = self.mgr.subanim, 0 do
 					local a = state_mgr_animation_list.animations[self.states.target_state].subanim[key]
@@ -239,7 +236,6 @@ function animation:set_state(id, reset)
 					if type(anima) == "table" then
 						for k,v in pairs(anima) do
 							if type(v) == "table" then
-								printf("set_a_c out old")
 								self:set_anim_callback(v)
 							else
 								add_anim(self.npc, v, true)
@@ -253,6 +249,23 @@ function animation:set_state(id, reset)
 			end
 		end
 	end
+
+	--' Экстренные деаттач деаттачиваемых предметов, если новая анимация назначилась в момент деаттача.
+	if self.states.current_state == "_new" then
+--'		printf("[%s]", self.npc:name())
+--'		print_table(self.states.attach_items)
+		for k,v in pairs(self.states.attach_items) do
+			local t = self.npc:object(k)
+			if t then
+				if v.mode == "attach" then
+					t:enable_attachable_item(false)
+				end
+			end
+			v.mode = "detach"
+			v.done = true				
+		end
+	end
+
 	--' вход в новое состояние	
 	if state_mgr_animation_list.animations[id] ~= nil then
 		if state_mgr_animation_list.animations[id].into ~= nil then
@@ -260,7 +273,6 @@ function animation:set_state(id, reset)
 			if type(anima) == "table" then
 				for k,v in pairs(anima) do
 					if type(v) == "table" then
-						printf("set_a_c in new")
 						self:set_anim_callback(v)
 					else
 						add_anim(self.npc, v, true)
@@ -323,10 +335,10 @@ function animation:update()
 			if t then
 --				printf("item [%s] exist", tostring(k))
 				if v.mode == "attach" then
-					printf("item [%s] attached for [%s]", tostring(k), self.npc:name())
+--'					printf("item [%s] attached for [%s]", tostring(k), self.npc:name())
 					t:enable_attachable_item(true)
 				elseif v.mode == "detach" then
-					printf("item [%s] detached for [%s]", tostring(k), self.npc:name())
+--'					printf("item [%s] detached for [%s]", tostring(k), self.npc:name())
 					t:enable_attachable_item(false)
 				end
 			end
@@ -550,8 +562,8 @@ function animation:play_rnd(state, must_play)
 end
 -- Инициализация коллбека
 function animation:callback_init(recall)
-		printf("callback init anim[%s]", tostring(self.states.current_state))
-		printf("state_lib.states[self.mgr.target_state].animation == self.states.current_state [%s]", tostring(state_lib.states[self.mgr.target_state].animation == self.states.current_state))
+--'		printf("callback init anim[%s]", tostring(self.states.current_state))
+--'		printf("state_lib.states[self.mgr.target_state].animation == self.states.current_state [%s]", tostring(state_lib.states[self.mgr.target_state].animation == self.states.current_state))
 		
 		if self.mgr.callback ~= nil and
 		   self.mgr.callback.func ~= nil and
@@ -560,7 +572,7 @@ function animation:callback_init(recall)
 		   self.mgr.callback.begin == nil
 		then
 				self.mgr.callback.begin = time_global()
-				printf("		Callback initialized %s", time_global())				
+--'				printf("		Callback initialized %s", time_global())				
 		end
 end
 --' обработка колбека на время
@@ -571,10 +583,10 @@ function animation:callback_process()
 		   self.mgr.callback.func ~= nil and
 		   self.mgr.callback.begin ~= nil
 		then
-			printf("callback process")
-			printf("	%s - %s ? %s", time_global(), utils.to_str(self.mgr.callback.begin), utils.to_str(self.mgr.callback.timeout))
+--'			printf("callback process")
+--'			printf("	%s - %s ? %s", time_global(), utils.to_str(self.mgr.callback.begin), utils.to_str(self.mgr.callback.timeout))
 			if time_global() - self.mgr.callback.begin >= self.mgr.callback.timeout then
-				printf("		Callback called %s", time_global())
+--'				printf("		Callback called %s", time_global())
 				
 				local a = self.mgr.callback.func
 				local b = self.mgr.callback.obj
@@ -614,7 +626,7 @@ function animation:set_anim_callback(value)
 end
 --' коллбек на особые действия
 function animation:anim_callback()
-	printf("anim callback [%s]", self.npc:animation_count())
+--'	printf("anim callback [%s]", self.npc:animation_count())
 	--print_table(self.clb_settings)
 	-- Проходим по таблице, из 1 позиции вычитываем действий. Остальные просто сдвигаем
 	v = self.clb_settings[1]
@@ -631,14 +643,14 @@ function animation:anim_callback()
 	if v.a ~= nil and
 		self.states.attach_items[v.a] ~= nil 
 	then
-		printf("item [%s] attach", utils.to_str(v.a))
+--'		printf("item [%s] attach", utils.to_str(v.a))
 		self.states.attach_items[v.a].mode = "attach"
 		self.states.attach_items[v.a].done = false
 	end
 	if v.d ~= nil and
 		self.states.attach_items[v.d] ~= nil 
 	then
-		printf("item [%s] detach", utils.to_str(v.d))	
+--'		printf("item [%s] detach", utils.to_str(v.d))	
 		self.states.attach_items[v.d].mode = "detach"
 		self.states.attach_items[v.d].done = false
 	end
@@ -657,7 +669,7 @@ function animation:anim_callback()
 	end
 	if v.f ~= nil then
 		-- Запуск функции
-		printf("called function [%s]", tostring(v.f))
+--'		printf("called function [%s]", tostring(v.f))
 		v.f(self.npc)
 	end
 	table.remove(self.clb_settings, 1)
@@ -694,7 +706,7 @@ end
 
 
 function add_anim(npc, anim, bb)
-	printf("ANIMATION [%s] added [%s]", npc:name(), anim)
+--'	printf("ANIMATION [%s] added [%s]", npc:name(), anim)
 	npc:add_animation(anim, bb)
 end
 
