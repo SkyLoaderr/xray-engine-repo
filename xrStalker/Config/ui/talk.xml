@@ -39,7 +39,7 @@
 
 	<questions_list x="30" y="100" width="547" height="120" right_ident="5" always_show_scroll="0"/>
 
-	<answers_list	x="33" y="46" width="544" height="387" right_ident="0" always_show_scroll="0"/>
+	<answers_list	x="33" y="46" width="544" height="377" right_ident="0" always_show_scroll="0"/>
 
 
 	<question_item x="0" y="0" width="527" height="20" min_height="13">
