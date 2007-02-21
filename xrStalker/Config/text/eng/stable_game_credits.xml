@@ -550,6 +550,76 @@
 		<text>Victoria Boyko</text>
 	</string>
 
+	<string id="st_russian_voice">
+		<text>Voice Actors (Russian)</text>
+	</string>
+	<string id="st_vilkov">
+		<text>Aleksandr </text>
+	</string>
+	<string id="st_vilkov2">
+		<text>Vilkov</text>
+	</string>
+	<string id="st_bogush">
+		<text>Anatoliy</text>
+	</string>
+	<string id="st_bogush2">
+		<text> Bogush</text>
+	</string>
+	<string id="st_podubinskiy">
+		<text>Andrey </text>
+	</string>
+	<string id="st_podubinskiy2">
+		<text>Podubinskiy</text>
+	</string>
+	<string id="st_girich">
+		<text>Angelika </text>
+	</string>
+	<string id="st_girich2">
+		<text>Girich</text>
+	</string>
+	<string id="st_malukha">
+		<text>Evgeniy </text>
+	</string>
+	<string id="st_malukha2">
+		<text>Malukha</text>
+	</string>
+	<string id="st_german">
+		<text>Grigoriy </text>
+	</string>
+	<string id="st_german2">
+		<text>German</text>
+	</string>
+	<string id="st_rozin">
+		<text>Ivan </text>
+	</string>
+	<string id="st_rozin2">
+		<text>Rozin</text>
+	</string>
+	<string id="st_borisenok">
+		<text>Juriy </text>
+	</string>
+	<string id="st_borisenok2">
+		<text> Borisenok</text>
+	</string>
+	<string id="st_stalchuk">
+		<text>Oleg </text>
+	</string>
+	<string id="st_stalchuk2">
+		<text>Stalchuk</text>
+	</string>
+	<string id="st_gofurov">
+		<text>Ruslan </text>
+	</string>
+	<string id="st_gofurov2">
+		<text>Gofurov</text>
+	</string>
+	<string id="st_tereschuk">
+		<text>Vladimir </text>
+	</string>
+	<string id="st_tereschuk2">
+		<text>Tereschuk</text>
+	</string>	
+	
 
 	<!-- THQ  -->
 		
@@ -584,7 +654,7 @@
 		<text>David Sapienza</text>
 	</string>	
 	<string id="st_test_lead">
-		<text>Test Lead</text>
+		<text>Test Leads</text>
 	</string>	
 	<string id="st_wong">
 		<text>Warren Wong</text>
@@ -606,7 +676,7 @@
 		<text>Blais</text>
 	</string>	
 	<string id="st_bloch">
-		<text>Jonathan</text>
+		<text>Jonathan Bloch</text>
 	</string>
 	<string id="st_bloch2">
 		<text>Bloch</text>
@@ -624,7 +694,7 @@
 		<text>Gonzalez</text>
 	</string>	
 	<string id="st_leippi">
-		<text>Christopher</text>
+		<text>Christopher Leippi</text>
 	</string>
 	<string id="st_leippi2">
 		<text>Leippi</text>
@@ -1214,6 +1284,9 @@
 	<string id="st_wojtania">
 		<text>Zbigniew Wojtania</text>
 	</string>	
+	<string id="st_stranowski">
+		<text>Marcin Stranowski</text>
+	</string>	
 
 
 	<string id="st_cd_testers">
@@ -1231,7 +1304,6 @@
 	<string id="st_spolny2">
 		<text>Spolny</text>
 	</string>	
-
 	<string id="st_skoczek">
 		<text>Artur</text>
 	</string>
@@ -1322,6 +1394,100 @@
 	<string id="st_bucko2">
 		<text>Bucko</text>
 	</string>	
+	<string id="st_iwanow">
+		<text>Aleksandra</text>
+	</string>
+	<string id="st_iwanow2">
+		<text>Iwanow</text>
+	</string>
+	<string id="krol">
+		<text>Karol</text>
+	</string>	
+	<string id="krol2">
+		<text>Krol</text>
+	</string>	
+	<string id="st_roguski">
+		<text>Maciej </text>
+	</string>
+	<string id="st_roguski2">
+		<text>Roguski</text>
+	</string>
+	<string id="st_wonko">
+		<text>Piotr</text>
+	</string>
+	<string id="st_wonko2">
+		<text>Wonko</text>
+	</string>
+	<string id="st_jedrzejewski">
+		<text>Michal </text>
+	</string>	
+	<string id="st_jedrzejewski2">
+		<text>Jedrzejewski</text>
+	</string>	
+	<string id="st_kohorewicz">
+		<text>Grzegorz</text>
+	</string>
+	<string id="st_kohorewicz2">
+		<text>Kohorewicz</text>
+	</string>
+	<string id="st_polkowski">
+		<text>Damian</text>
+	</string>
+	<string id="st_polkowski2">
+		<text>Polkowski</text>
+	</string>
+	<string id="st_rzadca">
+		<text>Jacek</text>
+	</string>	
+	<string id="st_rzadca2">
+		<text>Rzadca</text>
+	</string>	
+	<string id="st_gorzkowski">
+		<text>Pawel</text>
+	</string>
+	<string id="st_gorzkowski2">
+		<text>Gorzkowski</text>
+	</string>
+	<string id="st_dobrodziej">
+		<text>Maciej </text>
+	</string>
+	<string id="st_dobrodziej2">
+		<text>Dobrodziej</text>
+	</string>
+	<string id="st_rzeznicki">
+		<text>Dominik </text>
+	</string>	
+	<string id="st_rzeznicki2">
+		<text>Rzeznicki</text>
+	</string>	
+	<string id="st_pawlowski">
+		<text>Arkadiusz</text>
+	</string>
+	<string id="st_pawlowski2">
+		<text>Pawlowski</text>
+	</string>
+	<string id="st_chotnicki">
+		<text>Lukasz </text>
+	</string>
+	<string id="st_chotnicki2">
+		<text>Chotnicki</text>
+	</string>
+	<string id="st_thanks_cd_projekt">
+		<text>Special thanks from CD Projekt to:</text>
+	</string>	
+	<string id="st_graj">
+		<text>Maciej Graj</text>
+	</string>
+	<string id="st_dabrowski">
+		<text>Jacek Dabrowski</text>
+	</string>
+	<string id="st_lewandowska">
+		<text>Dominika Szulc-Lewandowska </text>
+	</string>
+	<string id="st_centkowski">
+		<text>Dariusz Centkowski</text>
+	</string>
+	
 	<string id="st_additional_writing">
 		<text>Additional Writing</text>
 	</string>	
