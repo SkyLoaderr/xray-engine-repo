@@ -10,6 +10,9 @@
 		<text>Reden ($$ACTION_USE$$)</text>
 	</string>
 	<string id="dead_character_use">
+		<text>Körper durchsuchen ($$ACTION_USE$$)</text>
+	</string>
+	<string id="dead_character_use_or_drag">
 		<text>Körper durchsuchen ($$ACTION_USE$$) \n Körper schleifen (UMSCHALTEN+$$ACTION_USE$$)</text>
 	</string>
 	<string id="general_complete_task">

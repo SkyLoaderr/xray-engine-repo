@@ -199,7 +199,7 @@
 		<text>Master</text>
 	</string>
 	<string id="ui_mm_master_volume">
-		<text>Volume SFK</text>
+		<text>SFX Volume</text>
 	</string>
 	<string id="ui_mm_mouse_sense">
 		<text>Mouse sensitivity</text>

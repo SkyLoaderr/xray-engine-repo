@@ -13,7 +13,7 @@
 		<text>Panzerjacke</text>
 	</string>
 	<string id="dolg_outfit_description">
-		<text>Hergestellt von einem militärischen Forschungsinstitut in Kiew, eingesetzt von dem Wächtern. So schlicht und zuverlässig wie das Standardmodell PSZ-9, aber dank der neuen Materialien bietet die Weste guten ballistischen Schutz auch vor Feuerwaffen. Die Weste kann noch verbessert werden, da sie über keinen Atemschutz verfügt.</text>
+		<text>Hergestellt von einem militärischen Forschungsinstitut in Kiew, eingesetzt von den Wächtern. So schlicht und zuverlässig wie das Standardmodell PSZ-9, aber dank der neuen Materialien bietet die Weste guten ballistischen Schutz auch vor Feuerwaffen. Die Weste kann noch verbessert werden, da sie über keinen Atemschutz verfügt.</text>
 	</string>
 	<string id="dolg_outfit_description_m1">
 		<text>Panzeranzug der Wächter mit verbessertem Schutz gegen Bisse und Kratzer.</text>
@@ -145,7 +145,7 @@
 		<text>Der kugelsichere Kampfanzug wurde für Sturmangriffe entworfen. Er bietet hervorragenden Schutz gegen Kugeln und Splittergeschosse, ohne die Beweglichkeit des Soldaten herabzusetzen. Empfindlich gegen panzerbrechende Geschosse.</text>
 	</string>
 	<string id="mp_military_outfit_name">
-		<text>Kugelsichererer Kampfanzug.</text>
+		<text>Kugelsicherer Kampfanzug.</text>
 	</string>
 	<string id="mp_scientific_outfit_description">
 		<text>Dieser Anzug wurde für Forschungen innerhalb der Zone entwickelt. Er hat ein geschlossenes Atmungssystem und ein integriertes System zur Kompensation von Anomalien, durch die er hervorragenden Schutz bietet. Sehr empfindlich, da schwach geschützt. Eingebauter Behälter zum Transport von Artefakten.</text>

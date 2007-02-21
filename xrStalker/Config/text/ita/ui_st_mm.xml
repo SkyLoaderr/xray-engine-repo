@@ -199,7 +199,7 @@
 		<text>Maestro</text>
 	</string>
 	<string id="ui_mm_master_volume">
-		<text>Volume</text>
+		<text>Volume effetti</text>
 	</string>
 	<string id="ui_mm_mouse_sense">
 		<text>Sensibilità mouse</text>
@@ -310,16 +310,16 @@
 		<text>Sincronizzazione verticale</text>
 	</string>
 	<string id="ui_st_last_set">
-		<text>Ultima impostazione predefinita</text>
+		<text>Ultima predef.</text>
 	</string>
 	<string id="ui_st_preset1">
-		<text>Impostazione predef. 1</text>
+		<text>Imp. predef. 1</text>
 	</string>
 	<string id="ui_st_preset2">
-		<text>Impostazione predef. 2</text>
+		<text>Imp. predef. 2</text>
 	</string>
 	<string id="ui_st_preset3">
-		<text>Impostazione predef. 3</text>
+		<text>Imp. predef. 3</text>
 	</string>
 	<string id="ui_st_reset">
 		<text>Ripristina</text>

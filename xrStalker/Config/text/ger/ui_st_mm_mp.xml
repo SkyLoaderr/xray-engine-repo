@@ -19,13 +19,13 @@
 		<text>Artefakteroberung</text>
 	</string>
 	<string id="mm_mp_artefdelay">
-		<text>Artefaktverzögerung (s)</text>
+		<text>Artefaktverzög. (Sek.)</text>
 	</string>
 	<string id="mm_mp_artefnum">
 		<text>Anzahl der Artefakte</text>
 	</string>
 	<string id="mm_mp_artefstay">
-		<text>Lebensdauer der Artefakte (min)</text>
+		<text>Artefaktlebensd. (Min.)</text>
 	</string>
 	<string id="mm_mp_autoteambalance">
 		<text>Automatischer Teamausgleich</text>
@@ -67,7 +67,7 @@
 		<text>Filter</text>
 	</string>
 	<string id="mm_mp_forcerespawn">
-		<text>Erzwungener Neustart (s)</text>
+		<text>Erzwungene Neustarts (s)</text>
 	</string>
 	<string id="mm_mp_fraglimit">
 		<text>Kill-Limit</text>
@@ -145,7 +145,7 @@
 		<text>Alle aktualisieren</text>
 	</string>
 	<string id="mm_mp_reinforcement">
-		<text>Verstärkung (s)</text>
+		<text>Verstärkung (Sek)</text>
 	</string>
 	<string id="mm_mp_respawnoptions">
 		<text>Neustartoptionen</text>

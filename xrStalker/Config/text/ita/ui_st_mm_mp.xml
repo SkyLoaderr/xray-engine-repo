@@ -40,7 +40,7 @@
 		<text>Annulla</text>
 	</string>
 	<string id="mm_mp_cd_key">
-		<text>Codice CD</text>
+		<text>CD-Key</text>
 	</string>
 	<string id="mm_mp_client">
 		<text>Client</text>
@@ -67,7 +67,7 @@
 		<text>Filtri</text>
 	</string>
 	<string id="mm_mp_forcerespawn">
-		<text>Rigenerazione automatica (sec.)</text>
+		<text>Rigen. autom. (sec)</text>
 	</string>
 	<string id="mm_mp_fraglimit">
 		<text>Limite uccisioni</text>
@@ -196,7 +196,7 @@
 		<text>Solo squadra</text>
 	</string>
 	<string id="mm_mp_startweather">
-		<text>Condiz. atmosferiche</text>
+		<text>Condiz. atmosf.</text>
 	</string>
 	<string id="mm_mp_timelimit">
 		<text>Limite di tempo (min.)</text>

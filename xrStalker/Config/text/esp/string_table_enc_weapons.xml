@@ -184,10 +184,10 @@
 		<text>Munición compuesta por balas antiblindaje para los fusiles de francotirador SVDm 2 y SVUmk2.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-fmj">
-		<text>Munición estándar para las pistolas PMm, PB1s y Fort-12M?2. Compuesta por balas blindadas de núcleo estándar. Cuenta con un ligero efecto antiblindaje.</text>
+		<text>Munición estándar para las pistolas PMm, PB1s y Fort-12Mk2. Compuesta por balas blindadas de núcleo estándar. Cuenta con un ligero efecto antiblindaje.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-pmm">
-		<text>Munición con propiedades balísticas mejoradas para las pistolas PMm, PB1s y Fort-12M?2. Debido a la gran velocidad inicial del proyectil, es mucho más efectiva que la munición convencional. Tienen un mayor efecto antiblindaje.</text>
+		<text>Munición con propiedades balísticas mejoradas para las pistolas PMm, PB1s y Fort-12Mk2. Debido a la gran velocidad inicial del proyectil, es mucho más efectiva que la munición convencional. Tienen un mayor efecto antiblindaje.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x19-fmj">
 		<text>Munición estándar para la pistola Walker y el subfusil Viper 5. Compuesta por balas blindadas con un ligero efecto antiblindaje.</text>
@@ -475,7 +475,7 @@
 		<text>FT 200M</text>
 	</string>
 	<string id="wpn-fort">
-		<text>Fort-12M?2</text>
+		<text>Fort-12Mk2</text>
 	</string>
 	<string id="wpn-fort_m">
 		<text>Fort-15</text>

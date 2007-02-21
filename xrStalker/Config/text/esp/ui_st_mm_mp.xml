@@ -136,7 +136,7 @@
 		<text>Servidor público</text>
 	</string>
 	<string id="mm_mp_quickrefresh">
-		<text>Actualización rápida</text>
+		<text>Actualiz. Rápida</text>
 	</string>
 	<string id="mm_mp_rateofchange">
 		<text>Velocidad de cambio</text>
@@ -163,7 +163,7 @@
 		<text>Propiedades del servidor</text>
 	</string>
 	<string id="mm_mp_serverinfo">
-		<text>Información del servidor</text>
+		<text>Inform. servidor</text>
 	</string>
 	<string id="mm_mp_serverlist">
 		<text>Servidor</text>

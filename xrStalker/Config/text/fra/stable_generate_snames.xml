@@ -20,7 +20,7 @@
 		<text>Le Castor</text>
 	</string>
 	<string id="lname_bandit_104">
-		<text>Le Bouledogue</text>
+		<text>Bouledogue</text>
 	</string>
 	<string id="lname_bandit_105">
 		<text>Le Taureau</text>
@@ -3692,7 +3692,7 @@
 		<text>Flamen</text>
 	</string>
 	<string id="lname_stalker_297">
-		<text>Le Footbeux</text>
+		<text>Le Footeux</text>
 	</string>
 	<string id="lname_stalker_298">
 		<text>Le Sniper</text>
@@ -3773,7 +3773,7 @@
 		<text>Le Fier</text>
 	</string>
 	<string id="lname_stalker_320">
-		<text>Le Bouledogue</text>
+		<text>Bouledogue</text>
 	</string>
 	<string id="lname_stalker_321">
 		<text>Tamia</text>
@@ -4328,7 +4328,7 @@
 		<text>L'Appliqué</text>
 	</string>
 	<string id="lname_stalker_488">
-		<text>Le Piton</text>
+		<text>Le Python</text>
 	</string>
 	<string id="lname_stalker_489">
 		<text>La Chique</text>
@@ -4589,7 +4589,7 @@
 		<text>L'Atout</text>
 	</string>
 	<string id="lname_stalker_566">
-		<text>Le Commodore</text>
+		<text>Commodore</text>
 	</string>
 	<string id="lname_stalker_567">
 		<text>Le Roi</text>

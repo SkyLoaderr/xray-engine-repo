@@ -136,16 +136,16 @@
 		<text>Combi. Vent de lib.</text>
 	</string>
 	<string id="mp_exo_outfit_description">
-		<text>L'exosquelette protège extrêmement bien des balles et des éclats, mais réduit la mobilité. Il est vulnérable aux balles des armures.</text>
+		<text>L'exosquelette protège extrêmement bien des balles et des éclats, mais réduit la mobilité. Il est vulnérable aux balles des armes lourdes.</text>
 	</string>
 	<string id="mp_exo_outfit_name">
 		<text>Exosquelette PNB-4UZ</text>
 	</string>
 	<string id="mp_military_outfit_description">
-		<text>La combinaison pare-balles militaire a été conçue pour les opérations d'assaut. Elle offre une excellente protection contre les balles et les éclats sans réduire la mobilité du soldat. Elle est vulnérable aux balles des armures.</text>
+		<text>La combinaison pare-balles militaire a été conçue pour les opérations d'assaut. Elle offre une excellente protection contre les balles et les éclats sans réduire la mobilité du soldat. Elle est vulnérable aux balles des armes lourdes.</text>
 	</string>
 	<string id="mp_military_outfit_name">
-		<text>Combinaison pare-balles militaire.</text>
+		<text>Combinaison pare-balles militaire</text>
 	</string>
 	<string id="mp_scientific_outfit_description">
 		<text>Cette combinaison a été conçue pour les travaux de recherche dans la Zone. Elle est équipée d'un système de respiration en circuit fermé ainsi que d'un système intégré qui neutralise l'activité des champs anormaux et protège parfaitement des anomalies. Sa faible protection la rend très vulnérable. Elle est dotée d'une poche intégrée permettant de transporter des artefacts.</text>

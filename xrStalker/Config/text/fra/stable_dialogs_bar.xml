@@ -466,7 +466,7 @@
 		<text>Qu'est-ce que tu sais d'un Stalker qu'on appelle les Crocs ?</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_61">
-		<text>Il y avait un homme qui portait ce nom, il parlait en zozotant... Je lui ai parlé une fois ou deux, il était un peu bizarre, c'est sûr... mais ça allait. Ça fait une paye que je l'ai pas vu au bar.</text>
+		<text>Il y avait un homme qui portait ce nom, il parlait en zozotant... Je lui ai parlé une fois ou deux, il était un peu bizarre, c'est sûr... mais ça allait. Ça fait une paye que je ne l'ai pas vu au bar.</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_7">
 		<text>Parle-moi des laboratoires scientifiques mobiles.</text>
@@ -478,7 +478,7 @@
 		<text>Qu'est-ce que c'est l'exauceur ?</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_81">
-		<text>Oh ! C'est une bonne question... J'aurais bien aimé le savoir moi-même. Je peux te raconter la légende sur l'exauceur si tu veux, mais à toi de distinguer le vrai du faux. Tu veux l'entendre ?</text>
+		<text>Oh ! C'est une bonne question... J'aurais bien aimé le savoir moi-même. Je peux te raconter la légende sur l'exauceur si tu veux, mais à toi de distinguer le vrai du faux. Tu veux\nl'entendre ?</text>
 	</string>
 	<string id="bar_bar_barmen_talk_info_811">
 		<text>Eh bien, c'est très intéressant.</text>
@@ -1111,7 +1111,7 @@
 		<text>Hé, mec ! Cool, t'as pas encore été dévoré par des mutants !</text>
 	</string>
 	<string id="bar_dolg_zastava_about_zastava_0">
-		<text>Un massacre a eu lieu à l'avant-poste. Qu'est-ce qui s'est passé ?</text>
+		<text>Un massacre a eu lieu à l'avant-poste. Qu'est-ce qui s'est\npassé ?</text>
 	</string>
 	<string id="bar_dolg_zastava_about_zastava_1">
 		<text>C'est la dernière vague de mutants qui est arrivée avant le cataclysme. C'est tranquille pendant trois ou quatre jours et après, d'autres arrivent. Si on n'était pas là, il n'y aurait pas de bar, pas de Devoir. On est le dernier rempart face à ces mutants détraqués. Beaucoup de nos gars sont morts ici.</text>

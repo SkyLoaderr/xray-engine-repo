@@ -10,6 +10,9 @@
 		<text>Parla ($$ACTION_USE$$)</text>
 	</string>
 	<string id="dead_character_use">
+		<text>Perquisisci ($$ACTION_USE$$)</text>
+	</string>
+	<string id="dead_character_use_or_drag">
 		<text>Perquisisci ($$ACTION_USE$$) \n Trascina il corpo (SHIFT+$$ACTION_USE$$)</text>
 	</string>
 	<string id="general_complete_task">

@@ -310,7 +310,7 @@
 		<text>Tu penses que je pourrais y arriver seul ?</text>
 	</string>
 	<string id="escape_lager_volk_talk_11111111">
-		<text>Non, t'as aucune chance. Mes éclaireurs sont de bons soldats et en ce moment, ils sont juste derrière ces tarés. Ensemble, on peut y arriver. Qu'est-ce que t'en penses ? T'as assez de tripes ou pas ?</text>
+		<text>Non, t'as aucune chance. Mes éclaireurs sont de bons soldats et en ce moment, ils sont juste derrière ces tarés. Ensemble, vous pouvez y arriver. Qu'est-ce que t'en penses ? T'as assez de tripes ou pas ?</text>
 	</string>
 	<string id="escape_lager_volk_talk_111111111">
 		<text>Je suis partant.</text>
@@ -379,7 +379,7 @@
 		<text>Merci. Et tu l'avais cachée où alors ? Qui sait... ça pourrait me servir de connaître une bonne planque !</text>
 	</string>
 	<string id="escape_shustryi_start_111111">
-		<text>T'affole pas, je l'ai pas cachée là où tu penses. En travaillant pour le marchand, j'ai eu le temps d'apprendre à mettre des informations en sécurité ! J'ai raconté un joli bobard à ces voyous sur une planque remplie d'artefacts. Ils ont envoyé un homme là-bas pour vérifier. La planque existe vraiment, mais elle contient qu'un seul artefact ! Je peux te révéler son emplacement si tu veux.</text>
+		<text>T'affole pas, je l'ai pas cachée là où tu penses. En travaillant pour le marchand, j'ai eu le temps d'apprendre à mettre des informations en sécurité ! J'ai raconté un joli bobard à ces voyous sur une planque remplie d'artefacts. Ils ont envoyé un homme là-bas pour vérifier. La planque existe vraiment, mais elle ne contient qu'un seul artefact ! Je peux te révéler son emplacement si tu veux.</text>
 	</string>
 	<string id="escape_shustryi_start_21">
 		<text>Sois prudent, Stalker !</text>
@@ -388,7 +388,7 @@
 		<text>T'inquiète pas, merci.</text>
 	</string>
 	<string id="escape_shustryi_start_3111">
-		<text>Mais fais gaffe à tous les animaux sauvages qui rôdent là-bas et au bandit qu'ils ont envoyé, car il est bien armé. Alors prudence ! Merci, mec.</text>
+		<text>Mais fais gaffe à tous les animaux sauvages qui rôdent là-bas et au bandit qu'ils ont envoyé, car il est bien armé. Alors\nprudence ! Merci, mec.</text>
 	</string>
 	<string id="escape_shustryi_start_31111">
 		<text>Merci à toi.</text>
@@ -433,7 +433,7 @@
 		<text>Allez vieux, c'est pas si dur que ça en a l'air. Une poignée de bleus complètement bourrés et un seul gradé... C'est que... je comptais vraiment sur toi pour ce coup, le Tatoué...</text>
 	</string>
 	<string id="escape_trader_jobs_6">
-		<text>Écoute, le Tatoué... J'ai bien réfléchi, voilà ce que je te propose... En gros, ce qu'il te faut, c'est trouver Strelok, c'est ça ?</text>
+		<text>Écoute, le Tatoué... J'ai bien réfléchi, voilà ce que je te propose... En gros, ce qu'il te faut, c'est trouver Strelok, c'est\nça ?</text>
 	</string>
 	<string id="escape_trader_jobs_61">
 		<text>C'est l'idée ouais.</text>
@@ -592,7 +592,7 @@
 		<text>Parle-moi de la Zone.</text>
 	</string>
 	<string id="escape_trader_talk_info_31">
-		<text>La Zone... En fait, c'est pas qu'un simple périmètre de quelques kilomètres avec une centrale nucléaire au milieu. C'est bien plus étrange. Très étrange. Personne au monde ne pourrait te donner une réponse précise. J'ai l'impression que la Zone ne fait même pas partie de ce monde. C'est un univers différent, à part... Bizarre et dangereux... Mais tellement attirant. Et tu sais pourquoi ? Parce qu'avec un peu de chance, tu peux devenir riche du jour au lendemain. Et plus tu approches du centre de la Zone, plus il y a de fric à se faire.</text>
+		<text>La Zone... En fait, c'est pas qu'un simple périmètre de quelques kilomètres avec une centrale nucléaire au milieu. C'est bien plus étrange. Très étrange. Personne au monde ne pourrait te donner une réponse précise. J'ai l'impression que la Zone ne fait même pas partie de ce monde. C'est un univers différent, à part... Bizarre et dangereux... Mais tellement attirant. Et tu sais\npourquoi ? Parce qu'avec un peu de chance, tu peux devenir riche du jour au lendemain. Et plus tu approches du centre de la Zone, plus il y a de fric à se faire.</text>
 	</string>
 	<string id="escape_trader_talk_info_311">
 		<text>Pourquoi cet "univers différent" est si dangereux ?</text>
@@ -604,7 +604,7 @@
 		<text>Comment on fait pour gagner de l'argent ?</text>
 	</string>
 	<string id="escape_trader_talk_info_3121">
-		<text>Merde, vieux, tu crois quoi ? T'as oublié ? Les artefacts, c'est ça qui compte ici. Ces babioles étranges qu'on trouve dans la Zone valent une fortune à l'extérieur. Les artefacts sont plus précieux que l'or, les diamants ou le plutonium pur. Et pourquoi ? Parce qu'aucun bijou au monde ne te donnera les pouvoirs surnaturels qu'un artefact procure. Imagine un peu : tu peux accrocher à ta ceinture un gadget qui déviera les balles et les empêchera de te toucher ! Et c'est pas tout ! Tu peux trouver des fragments comme ça un peu partout, même ici. Mais pour les grosses pièces, faut se rapprocher du centre.</text>
+		<text>Merde, vieux, tu crois quoi ? T'as oublié ? Les artefacts, c'est ça qui compte ici. Ces babioles étranges qu'on trouve dans la Zone valent une fortune à l'extérieur. Les artefacts sont plus précieux que l'or, les diamants ou le plutonium pur. Et\npourquoi ? Parce qu'aucun bijou au monde ne te donnera les pouvoirs surnaturels qu'un artefact procure. Imagine un peu : tu peux accrocher à ta ceinture un gadget qui déviera les balles et les empêchera de te toucher ! Et c'est pas tout ! Tu peux trouver des fragments comme ça un peu partout, même ici. Mais pour les grosses pièces, faut se rapprocher du centre.</text>
 	</string>
 	<string id="escape_trader_talk_info_313">
 		<text>Quelqu'un sait ce qui se passe au centre de la Zone ?</text>

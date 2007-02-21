@@ -359,7 +359,7 @@
 		<text>Un mécanicien célèbre dans la Zone. Peut fabriquer un char à partir d'un tracteur d'après ce qu'on dit.</text>
 	</string>
 	<string id="mil_Svoboda_engineer_name">
-		<text>Le Piton</text>
+		<text>Le Python</text>
 	</string>
 	<string id="mil_Svoboda_leader_bio">
 		<text>Chef de la faction de la Liberté.</text>
@@ -605,7 +605,7 @@
 		<text>Le Boutonneux</text>
 	</string>
 	<string id="sar2_seryi_name">
-		<text>Le "Cendré"</text>
+		<text>"Seriy"</text>
 	</string>
 	<string id="sar2_svoboda_blockpost_leader_name">
 		<text>"Cap"</text>
@@ -617,7 +617,7 @@
 		<text>Le "Chef"</text>
 	</string>
 	<string id="sar2_svoboda_engeneer_name">
-		<text>Le Piton</text>
+		<text>Le Python</text>
 	</string>
 	<string id="sar2_svoboda_leader_name">
 		<text>"Lukash"</text>

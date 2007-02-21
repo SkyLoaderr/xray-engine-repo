@@ -184,10 +184,10 @@
 		<text>A round with an armor-piercing bullet for the SVDm 2 and the SVUmk2 sniper rifles.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-fmj">
-		<text>A standard round for the PMm, PB1s, Fort-12M?2 pistols. It has a standard core and a full-jacketed bullet. It has a weak armor-piercing effect.</text>
+		<text>A standard round for the PMm, PB1s, Fort-12Mk2 pistols. It has a standard core and a full-jacketed bullet. It has a weak armor-piercing effect.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-pmm">
-		<text>A round with improved ballistic characteristics for the PMm, the PB1s and the Fort-12M?2 pistols. Due to the high initial velocity of its bullet, it is much more effective then a standard round. It has a better armor-piercing effect.</text>
+		<text>A round with improved ballistic characteristics for the PMm, the PB1s and the Fort-12Mk2 pistols. Due to the high initial velocity of its bullet, it is much more effective then a standard round. It has a better armor-piercing effect.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x19-fmj">
 		<text>A standard round for the Walker P9m pistol and the Viper 5 submachine gun. It has a full-jacketed bullet with a weak armor-piercing effect.</text>
@@ -475,7 +475,7 @@
 		<text>FT 200M</text>
 	</string>
 	<string id="wpn-fort">
-		<text>Fort-12M?2</text>
+		<text>Fort-12Mk2</text>
 	</string>
 	<string id="wpn-fort_m">
 		<text>Fort-15</text>

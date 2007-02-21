@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="game type">
-		<text>TYPE DE PARTIE</text>
+		<text>TYPE PARTIE</text>
 	</string>
 	<string id="icon">
 		<text>ICФNES</text>
@@ -13,13 +13,13 @@
 		<text>Droit de vote</text>
 	</string>
 	<string id="mm_mp_anomalytime">
-		<text>Durйe des anomalies (min)</text>
+		<text>Durйe anomalies (min)</text>
 	</string>
 	<string id="mm_mp_artefactcapture">
 		<text>Capture de l'artefact</text>
 	</string>
 	<string id="mm_mp_artefdelay">
-		<text>Absence de l'artefact (sec)</text>
+		<text>Absence d'artefact (sec)</text>
 	</string>
 	<string id="mm_mp_artefnum">
 		<text>Nombre d'artefacts</text>
@@ -28,10 +28,10 @@
 		<text>Durйe des artefacts (min)</text>
 	</string>
 	<string id="mm_mp_autoteambalance">
-		<text>Йquilibrage automatique de l'йquipe</text>
+		<text>Йquilibrage auto. de l'йquipe</text>
 	</string>
 	<string id="mm_mp_autoteamswap">
-		<text>Changement automatique d'йquipe</text>
+		<text>Changement auto. d'йquipe</text>
 	</string>
 	<string id="mm_mp_avail_maps">
 		<text>CARTES DISPONIBLES</text>
@@ -67,7 +67,7 @@
 		<text>Filtres</text>
 	</string>
 	<string id="mm_mp_forcerespawn">
-		<text>Renaissance forcйe (sec)</text>
+		<text>Renaiss. forcйe (sec)</text>
 	</string>
 	<string id="mm_mp_fraglimit">
 		<text>Limite de frags</text>
@@ -139,7 +139,7 @@
 		<text>Rafraоchissement rapide</text>
 	</string>
 	<string id="mm_mp_rateofchange">
-		<text>Coefficient de changement</text>
+		<text>Coefficient de changemt</text>
 	</string>
 	<string id="mm_mp_refresh">
 		<text>Rafraоchir tout</text>

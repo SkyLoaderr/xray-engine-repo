@@ -199,7 +199,7 @@
 		<text>Maître</text>
 	</string>
 	<string id="ui_mm_master_volume">
-		<text>Volume</text>
+		<text>Volume effets</text>
 	</string>
 	<string id="ui_mm_mouse_sense">
 		<text>Sensibilité de la souris</text>
@@ -244,7 +244,7 @@
 		<text>Voulez-vous vraiment quitter le jeu ?</text>
 	</string>
 	<string id="ui_mm_quit_windows_message">
-		<text>Voulez-vous vraiment revenir à Windows ?</text>
+		<text>Voulez-vous vraiment revenir à\nWindows ?</text>
 	</string>
 	<string id="ui_mm_quit2windows">
 		<text>Retour à Windows</text>

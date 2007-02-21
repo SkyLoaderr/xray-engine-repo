@@ -184,10 +184,10 @@
 		<text>Munizioni perforanti per i fucili da cecchino SVDm 2 e SVUmk2.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-fmj">
-		<text>Munizioni standard per le pistole PMm, PB1s e Fort-12M?2. Il nucleo è standard e il proiettile è incamiciato. Effetto perforante limitato.</text>
+		<text>Munizioni standard per le pistole PMm, PB1s e Fort-12Mk2. Il nucleo è standard e il proiettile è incamiciato. Effetto perforante limitato.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-pmm">
-		<text>Munizioni con caratteristiche balistiche potenziate per le pistole PMm, PB1s e Fort-12M?2. L'elevata velocità iniziale di questa pallottola assicura una maggiore efficacia rispetto alle munizioni standard. Effetto perforante superiore.</text>
+		<text>Munizioni con caratteristiche balistiche potenziate per le pistole PMm, PB1s e Fort-12Mk2. L'elevata velocità iniziale di questa pallottola assicura una maggiore efficacia rispetto alle munizioni standard. Effetto perforante superiore.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x19-fmj">
 		<text>Munizioni standard per le pistole Walker P9m e la mitraglietta Viper 5. Le pallottole sono incamiciate e hanno un potere perforante limitato.</text>
@@ -475,7 +475,7 @@
 		<text>FT 200M</text>
 	</string>
 	<string id="wpn-fort">
-		<text>Fort-12M?2</text>
+		<text>Fort-12Mk2</text>
 	</string>
 	<string id="wpn-fort_m">
 		<text>Fort-15</text>

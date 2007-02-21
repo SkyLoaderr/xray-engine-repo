@@ -19,7 +19,7 @@
 		<text>Retour</text>
 	</string>
 	<string id="mp_ban">
-		<text>Interdire</text>
+		<text>Bannir</text>
 	</string>
 	<string id="mp_by_anomaly">
 		<text>par une anomalie</text>
@@ -91,7 +91,7 @@
 		<text>a rejoint</text>
 	</string>
 	<string id="mp_kick">
-		<text>Lâcher</text>
+		<text>Expulser</text>
 	</string>
 	<string id="mp_look_at">
 		<text>(Troisième personne libre)</text>
@@ -160,7 +160,7 @@
 		<text>un point marqué</text>
 	</string>
 	<string id="mp_select_ban">
-		<text>Sélectionnez le joueur à interdire en votant</text>
+		<text>Sélectionnez le joueur à bannir en votant</text>
 	</string>
 	<string id="mp_select_category">
 		<text>Sélectionnez la catégorie de vote</text>

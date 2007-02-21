@@ -10,6 +10,9 @@
 		<text>Hablar ($$ACTION_USE$$)</text>
 	</string>
 	<string id="dead_character_use">
+		<text>Registrar cuerpo ($$ACTION_USE$$)</text>
+	</string>
+	<string id="dead_character_use_or_drag">
 		<text>Registrar cuerpo ($$ACTION_USE$$) \n Arrastrar cuerpo (MAYÚS+$$ACTION_USE$$)</text>
 	</string>
 	<string id="general_complete_task">

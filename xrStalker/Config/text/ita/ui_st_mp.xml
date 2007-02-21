@@ -13,7 +13,7 @@
 		<text>Reperti</text>
 	</string>
 	<string id="mp_auto_select">
-		<text>Selezione automatica</text>
+		<text>Selez. automatica</text>
 	</string>
 	<string id="mp_back">
 		<text>Indietro</text>
@@ -139,7 +139,7 @@
 		<text>Premi Salto per rigenerare</text>
 	</string>
 	<string id="mp_press_jump2start">
-		<text>Premi Salvo per avviare</text>
+		<text>Premi Salto per avviare</text>
 	</string>
 	<string id="mp_press_to_buy">
 		<text>Premi ($$ACTION_BUY_MENU$$) per accedere a menu Compravendita</text>

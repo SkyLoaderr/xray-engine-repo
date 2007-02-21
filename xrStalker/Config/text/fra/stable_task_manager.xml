@@ -601,7 +601,7 @@
 		<text>Récupère le Chaser 13 auprès des scientifiques.</text>
 	</string>
 	<string id="freedom_find_item_2_text">
-		<text>J'ai entendu dire que les cerveaux avaient réussi à améliorer le Chaser en utilisant un artefact. Cet engin fait autant de dégâts qu'un obusier. Alors que dirais-tu d'aller leur rendre une petite visite pour essayer de te le procurer. Je prends tous les frais à ma charge !</text>
+		<text>J'ai entendu dire que les cerveaux avaient réussi à améliorer le fusil à pompe Chaser en utilisant un artefact. Cet engin fait autant de dégâts qu'un obusier. Alors que dirais-tu d'aller leur rendre une petite visite pour essayer de te le procurer. Je prends tous les frais à ma charge !</text>
 	</string>
 	<string id="freedom_find_item_3">
 		<text>Rapporter le gilet pare-balles</text>
@@ -664,7 +664,7 @@
 		<text>Élimine le Stalker appelé la Terreur</text>
 	</string>
 	<string id="freedom_kill_stalker_6_text">
-		<text>On élimine des monstres, sauf que pour nous, c'est une question de survie, pas de fric. Les populations de mutants ne sont pas si nombreuses. En plus, ce sont des êtres vivants et on ne peut pas tous les tuer comme ça. Y a des gens qui refusent de comprendre. Comme ce Terreur, par exemple. Ce n'est pas pour rien qu'il porte un tel surnom... Il vend des mutants empaillés. On l'a déjà prévenu, mais tu parles ! Alors, tu veux bien faire quelque chose pour Greenpeace ?</text>
+		<text>On élimine des monstres, sauf que pour nous, c'est une question de survie, pas de fric. Les populations de mutants ne sont pas si nombreuses. En plus, ce sont des êtres vivants et on ne peut pas tous les tuer comme ça. Y'a des gens qui refusent de comprendre. Comme ce "Terreur", par exemple. Ce n'est pas pour rien qu'il porte un tel surnom... Il vend des mutants empaillés. On l'a déjà prévenu, mais tu parles ! Alors, tu veux bien faire quelque chose pour Mère Nature ?</text>
 	</string>
 	<string id="freedom_kill_stalker_7">
 		<text>Tuer le Stalker appelé Barin. </text>
@@ -736,10 +736,10 @@
 		<text>Trouver la combinaison perfectionnée.</text>
 	</string>
 	<string id="shustriy_find_item_descr">
-		<text>Allegro m'a parlé de la planque où les bandits ont caché le pot de vin. Il veut que je lui rapporte la combinaison volée, en échange d'une récompense, bien sûr. </text>
+		<text>Allegro m'a parlé de la planque où les bandits ont caché le butin. Il veut que je lui rapporte la combinaison volée, en échange d'une récompense, bien sûr. </text>
 	</string>
 	<string id="shustriy_find_item_text">
-		<text>Quand j'étais en captivité, j'ai entendu les bandits parler de la planque secrète où ils cachent le pot de vin. Apparemment, ils y ont caché une super combinaison, mais un monstre est allé fourrer son nez dans la planque. Depuis, ils n'osent plus s'en approcher. Rends-moi service, rapporte-moi la combinaison et je te paierai généreusement.</text>
+		<text>Quand j'étais en captivité, j'ai entendu les bandits parler de la planque secrète où ils cachent le butin. Apparemment, ils y ont caché une super combinaison, mais un monstre est allé fourrer son nez dans la planque. Depuis, ils n'osent plus s'en approcher. Rends-moi service, rapporte-moi la combinaison et je te paierai généreusement.</text>
 	</string>
 	<string id="tm_barman_has_no_job">
 		<text>Je n'ai rien à offrir pour le moment.</text>
@@ -880,7 +880,7 @@
 		<text>Trouve l'artefact "fleur protectrice" formé dans l'anomalie "tremplin". Ça devrait rapporter gros.</text>
 	</string>
 	<string id="tm_find_artefact_2_text">
-		<text>On m'a réclamé la "fleur protectrice". La commande émane des joailliers, alors essayons de faire plaisir aux jolies femmes, hein ? Si tu la trouves, tu auras l'argent et une bouteille pour trinquer à leur santé...</text>
+		<text>On m'a réclamé la "fleur protectrice". La commande émane des joailliers, alors essayons de faire plaisir aux jolies femmes,\nhein ? Si tu la trouves, tu auras l'argent et une bouteille pour trinquer à leur santé...</text>
 	</string>
 	<string id="tm_find_artefact_3">
 		<text>Trouver l'artefact "étoile phosphorescente"</text>

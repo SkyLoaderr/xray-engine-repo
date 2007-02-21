@@ -10,6 +10,9 @@
 		<text>Parler ($$ACTION_USE$$)</text>
 	</string>
 	<string id="dead_character_use">
+		<text>Fouiller un corps ($$ACTION_USE$$)</text>
+	</string>
+	<string id="dead_character_use_or_drag">
 		<text>Fouiller un corps ($$ACTION_USE$$) \n Traîner un corps (MAJ. +$$ACTION_USE$$)</text>
 	</string>
 	<string id="general_complete_task">

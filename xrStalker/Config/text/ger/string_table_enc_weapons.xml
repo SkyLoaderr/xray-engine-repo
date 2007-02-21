@@ -184,10 +184,10 @@
 		<text>Panzerbrechende Munition für das SVDm 2- und das SVUmk2-Scharfschützengewehr.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-fmj">
-		<text>Standardmunition für die PMm-, PB1s- und Fort-12M?2-Pistolen mit Standardkern, vollummantelter Kugel und nur schwacher Panzerbrechung.</text>
+		<text>Standardmunition für die PMm-, PB1s- und Fort-12Mk2-Pistolen mit Standardkern, vollummantelter Kugel und nur schwacher Panzerbrechung.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-pmm">
-		<text>Munition mit verbesserten ballistischen Eigenschaften für die PMm-, die PB1s- und die Fort-12M?2-Pistolen. Durch ihre hohe Ausgangsgeschwindigkeit ist die Kugel wirkungsvoller als Standardmunition. Sie verfügt außerdem über bessere Panzerbrechung.</text>
+		<text>Munition mit verbesserten ballistischen Eigenschaften für die PMm-, die PB1s- und die Fort-12Mk2-Pistolen. Durch ihre hohe Ausgangsgeschwindigkeit ist die Kugel wirkungsvoller als Standardmunition. Sie verfügt außerdem über bessere Panzerbrechung.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x19-fmj">
 		<text>Standardmunition für die Walker P9m-Pistole sowie die Viper 5-Maschinenpistole mit Vollmantel und schwacher Panzerbrechung.</text>
@@ -268,7 +268,7 @@
 		<text>Nicht nur beim amerikanischen Militär und Polizeiapparat, auch im Rest der Welt kommt diese Waffe zum Einsatz. Sie ist wegen ihrer starken Geschosse und den hohen Kapazitäten des Magazins ebenso beliebt bei Kriminellen.\n Munition:\n standardmäßig 9x19 mm FMJ,\n verbessert 9x19 mm PB1s.</text>
 	</string>
 	<string id="enc_weapons1_wpn-bm16">
-		<text>Ein abgesägtes BM 17 Gewehr. Es ist leichter als das übliche doppelläufige Gewehr, doch effektiv ist es nur auf kurze Distanz. Eine der Waffen, zu der Anfänger meist greifen.\n Munition:\n 12x70 Schrot,\n 12x76 Gewehrkugel,\n 12x76 Spitzgeschoss.</text>
+		<text>Ein abgesägtes Gewehr des Typs BM 17. Es ist leichter als das übliche doppelläufige Gewehr, doch effektiv ist es nur auf kurze Distanz. Eine der Waffen, zu der Anfänger meist greifen.\n Munition:\n 12x70 Schrot,\n 12x76 Gewehrkugel,\n 12x76 Spitzgeschoss.</text>
 	</string>
 	<string id="enc_weapons1_wpn-colt_m1">
 		<text>Die Waffe von Auftragsmördern. Diese verlässliche Waffe ist mit einem nicht abnehmbaren Schalldämpfer versehen.</text>
@@ -358,10 +358,10 @@
 		<text>Ein Modell, dass 1975 entwickelt wurde und bis heute überall auf der Welt Popularität genießt. Das Magazin hat nur eine geringe Kapazität, doch der Mechanismus ist absolut zuverlässig. Auch von Vorteil sind die durchschlagskräftigen Geschosse.\n Munition:\n standardmäßig .45 ACP,\n verbessert .45 ACP Hydroschock.</text>
 	</string>
 	<string id="enc_weapons1_wpn-sig550">
-		<text>Ein relativ neues Sturmgewehr, das 5.56x45 mm SS109 Geschosse verwendet. Ihre Präzision, der sanfte Rückstoß und die hohe Zuverlässigkeit machen diese Waffe sehr beliebt.\n Munition:\n standardmäßig 5.56x45 mm SS109,\n panzerbrechend 5.56x45 mm ??.</text>
+		<text>Ein relativ neues Sturmgewehr, das 5.56x45 mm SS109-Geschosse verwendet. Ihre Präzision, der sanfte Rückstoß und die hohe Zuverlässigkeit machen diese Waffe sehr beliebt.\n Munition:\n standardmäßig 5.56x45 mm SS109,\n panzerbrechend 5.56x45 mm ??.</text>
 	</string>
 	<string id="enc_weapons1_wpn-spas12">
-		<text>Das SPSA 14 Gewehr, dessen Lauf innen keine Windung aufweist, wurde in den späten 1970ern entwickelt. Diese Waffe ist sehr zuverlässig und vielseitig einsetzbar. Sie ist jedoch recht groß, teuer und der Mechanismus ist zu kompliziert. Und doch handelt es sich um die vermutlich beste Nahkampfwaffe der Zone.\n Munition:\n 12x70 Schrot,\n 12x76 Gewehrkugel,\n 12x76 Spitzgeschoss.</text>
+		<text>Das Gewehr SPSA 14, dessen Lauf innen keine Windung aufweist, wurde in den späten 1970ern entwickelt. Diese Waffe ist sehr zuverlässig und vielseitig einsetzbar. Sie ist jedoch recht groß, teuer und der Mechanismus ist zu kompliziert. Und doch handelt es sich um die vermutlich beste Nahkampfwaffe der Zone.\n Munition:\n 12x70 Schrot,\n 12x76 Gewehrkugel,\n 12x76 Spitzgeschoss.</text>
 	</string>
 	<string id="enc_weapons1_wpn-spas12_m1">
 		<text>EINZIGARTIGE WAFFE. Dieses Schrotausführung hat einen gewundenen Lauf, der die Präzision entscheidend erhöht, wenn Spitzgeschosse oder Gewehrkugeln verschossen werden. Der Einsatz von Schrot ist hingegen ein wenig schwieriger.\n Munition:\n 12x70 Schrot,\n 12x76 Gewehrkugel,\n 12x76 Spitzgeschosse.</text>
@@ -373,7 +373,7 @@
 		<text>Eine verbesserte Optik, deren höhere Auflösung für ein besseres Bild sorgt. Die Waffe ist besser ausbalanciert, was den Rückstoß vermindert.</text>
 	</string>
 	<string id="enc_weapons1_wpn-svu">
-		<text>Ein Bullpup-Model, das eine aktuellere Version des Scharfschützengewehrs darstellt. Es eignet sich hervorragend für lange Touren durch die Zone.\n Munition:\n standardmäßig 7.62x54 mm 7N1,\n panzerbrechend 7.62x54 mm BP,\n Präzisionsgeschosse 7.62x54 mm 7N14.</text>
+		<text>Ein Bullpup-Modell, das eine aktuellere Version des Scharfschützengewehrs darstellt. Es eignet sich hervorragend für lange Touren durch die Zone.\n Munition:\n standardmäßig 7.62x54 mm 7N1,\n panzerbrechend 7.62x54 mm BP,\n Präzisionsgeschosse 7.62x54 mm 7N14.</text>
 	</string>
 	<string id="enc_weapons1_wpn-toz34">
 		<text>Dieses Jagdgewehr ist beliebt, es gibt jedoch nichts Nennenswertes darüber zu berichten.\n Munition:\n 12x70 Schrot,\n 12x76 Gewehrkugel,\n 12x76 Spitzgeschoss.</text>
@@ -475,7 +475,7 @@
 		<text>FT 200M</text>
 	</string>
 	<string id="wpn-fort">
-		<text>Fort-12M?2</text>
+		<text>Fort-12Mk2</text>
 	</string>
 	<string id="wpn-fort_m">
 		<text>Fort-15</text>

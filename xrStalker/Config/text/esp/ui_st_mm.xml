@@ -178,13 +178,13 @@
 		<text>Invertir ratón</text>
 	</string>
 	<string id="ui_mm_key">
-		<text>botón</text>
+		<text>tecla</text>
 	</string>
 	<string id="ui_mm_keyboard_setup">
 		<text>Configuración del teclado</text>
 	</string>
 	<string id="ui_mm_last_save">
-		<text>Última guardada</text>
+		<text>Última p. guardada</text>
 	</string>
 	<string id="ui_mm_light_distance">
 		<text>Distancia de iluminación</text>
@@ -199,7 +199,7 @@
 		<text>Maestro</text>
 	</string>
 	<string id="ui_mm_master_volume">
-		<text>Volumen</text>
+		<text>Volumen efectos</text>
 	</string>
 	<string id="ui_mm_mouse_sense">
 		<text>Sensibilidad del ratón</text>

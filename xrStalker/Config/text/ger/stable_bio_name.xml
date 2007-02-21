@@ -605,7 +605,7 @@
 		<text>Flecki</text>
 	</string>
 	<string id="sar2_seryi_name">
-		<text>"Grau"</text>
+		<text>"Serij"</text>
 	</string>
 	<string id="sar2_svoboda_blockpost_leader_name">
 		<text>"Cap"</text>
@@ -833,7 +833,7 @@
 		<text>Stalker der Wächterfraktion. Keine Details verfügbar. </text>
 	</string>
 	<string id="val_pulia_name">
-		<text>Kugel</text>
+		<text>Bullet</text>
 	</string>
 	<string id="val_soldier_regular_bio">
 		<text>Einfacher Soldat. Keine Details verfügbar. </text>
