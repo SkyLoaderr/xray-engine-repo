@@ -189,6 +189,10 @@
 	<string id="ui_st_conn_no_new_patch">
 		<text>No new patches available now</text>
 	</string>
+	<string id="ui_st_connecting_to_masterserver">
+		<text>Connecting to masterserver...</text>
+	</string>
+	
 	<string id="ui_mm_delete_existing_file_q">
 		<text>You really want to delete file?</text>
 	</string>

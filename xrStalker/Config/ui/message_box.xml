@@ -540,4 +540,16 @@
 			<texture>ui_button_ordinary</texture>
 		</button_no>
 	</msg_box_patch_download_success>
+	
+	<msg_box_connect_to_master_server type="info" x="200" y="250" width="510" height="206">
+		<texture>ui_frame_error</texture>
+		
+		<picture x="35" y="65" width="77" height="77">
+			<texture>ui_frame_error_sign_info</texture>
+		</picture>
+		
+		<message_text x="170" y="40" width="310" height="60">
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_connecting_to_masterserver</text>
+		</message_text>		
+	</msg_box_connect_to_master_server>
 </window>
