@@ -663,41 +663,113 @@
 	<string id="st_testers">
 		<text>Testers</text>
 	</string>
-	<string id="st_aguilar">
-		<text>Carlos</text>
-	</string>	
-	<string id="st_aguilar2">
-		<text>Aguilar</text>
-	</string>
 	<string id="st_blais">
 		<text>Adam</text>
 	</string>	
 	<string id="st_blais2">
 		<text>Blais</text>
 	</string>	
-	<string id="st_bloch">
-		<text>Jonathan Bloch</text>
+	<string id="st_lopez">
+		<text>Aaron</text>
 	</string>
-	<string id="st_bloch2">
-		<text>Bloch</text>
+	<string id="st_lopez2">
+		<text>Lopez</text>
+	</string>
+	<string id="st_aarsvold">
+		<text>Andrew </text>
 	</string>	
+	<string id="st_aarsvold2">
+		<text>Aarsvold</text>
+	</string>
+	<string id="st_aguilar">
+		<text>Carlos</text>
+	</string>	
+	<string id="st_aguilar2">
+		<text>Aguilar</text>
+	</string>
+	<string id="st_letwinch">
+		<text>Casey </text>
+	</string>	
+	<string id="st_letwinch2">
+		<text>Letwinch</text>
+	</string>
+	<string id="st_wiemer">
+		<text>Dustin  </text>
+	</string>	
+	<string id="st_wiemer2">
+		<text>Wiemer </text>
+	</string>
 	<string id="st_deerson">
 		<text>Eric</text>
 	</string>	
 	<string id="st_deerson2">
 		<text>Deerson</text>
-	</string>	
-	<string id="st_gonzalez">
-		<text>Ruben</text>
-	</string>	
-	<string id="st_gonzalez2">
-		<text>Gonzalez</text>
-	</string>	
-	<string id="st_leippi">
-		<text>Christopher Leippi</text>
 	</string>
-	<string id="st_leippi2">
-		<text>Leippi</text>
+	<string id="st_whitebread">
+		<text>Eric</text>
+	</string>
+	<string id="st_whitebread2">
+		<text>Whitebread</text>
+	</string>
+	<string id="st_swartz">
+		<text>Eric</text>
+	</string>
+	<string id="st_swartz2">
+		<text>Swartz</text>
+	</string>
+	<string id="st_fiorentine">
+		<text>Evin </text>
+	</string>
+	<string id="st_fiorentine2">
+		<text>Fiorentine</text>
+	</string>
+	<string id="st_rand">
+		<text>Herb </text>
+	</string>
+	<string id="st_rand2">
+		<text>Rand</text>
+	</string>
+	<string id="st_tharp">
+		<text>Ian</text>
+	</string>	
+	<string id="st_tharp2">
+		<text>Tharpe</text>
+	</string>	
+	<string id="st_padovan">
+		<text>John</text>
+	</string>
+	<string id="st_padovan2">
+		<text>Padovan</text>
+	</string>
+	<string id="st_castaneda">
+		<text>Jose </text>
+	</string>
+	<string id="st_castaneda2">
+		<text>Castaneda</text>
+	</string>
+	<string id="st_plianpho">
+		<text>Chalermchai "Kata"</text>
+	</string>
+	<string id="st_plianpho2">
+		<text>Plianpho</text>
+	</string>
+	<string id="st_moore">
+		<text>Kayron </text>
+	</string>
+	<string id="st_moore2">
+		<text>Moore</text>
+	</string>
+	<string id="st_heeter">
+		<text>Kevin </text>
+	</string>	
+	<string id="st_heeter2">
+		<text>Heeter</text>
+	</string>	
+	<string id="st_oldfield">
+		<text>Matt </text>
+	</string>
+	<string id="st_oldfield2">
+		<text>Oldfield</text>
 	</string>
 	<string id="st_mejia">
 		<text>Osvaldo</text>
@@ -705,36 +777,95 @@
 	<string id="st_mejia2">
 		<text>Mejia</text>
 	</string>
-	<string id="st_padovan">
-		<text>John</text>
+	<string id="st_donnell">
+		<text>Rory </text>
 	</string>
-	<string id="st_padovan2">
-		<text>Padovan</text>
-	</string>	
-	<string id="st_tharp">
-		<text>Ian</text>
-	</string>	
-	<string id="st_tharp2">
-		<text>Tharp</text>
-	</string>	
-	<string id="st_thurman">
-		<text>Timothy</text>
-	</string>	
-	<string id="st_thurman2">
-		<text>Thurman</text>
-	</string>	
-	<string id="st_whitebread">
-		<text>Eric</text>
+	<string id="st_donnell2">
+		<text>O'Donnell</text>
 	</string>
-	<string id="st_whitebread2">
-		<text>Whitebread</text>
+	<string id="st_escobar">
+		<text>Rudy  </text>
+	</string>
+	<string id="st_escobar2">
+		<text>Escobar</text>
+	</string>
+	<string id="st_johnson">
+		<text>Ryan  </text>
+	</string>	
+	<string id="st_johnson2">
+		<text>Johnson</text>
+	</string>	
+	<string id="st_allman">
+		<text>Scott  </text>
+	</string>
+	<string id="st_allman2">
+		<text>Allman</text>
+	</string>
+	<string id="st_tester">
+		<text>Scott </text>
+	</string>	
+	<string id="st_tester2">
+		<text>Tester </text>
 	</string>
 	<string id="st_wright">
 		<text>Selvin</text>
 	</string>
 	<string id="st_wright2">
 		<text>Wright</text>
+	</string>
+	<string id="st_malloy">
+		<text>Steven </text>
+	</string>
+	<string id="st_malloy2">
+		<text>Malloy </text>
+	</string>
+	<string id="st_thurman">
+		<text>Tim</text>
 	</string>	
+	<string id="st_thurman2">
+		<text>Thurman</text>
+	</string>
+	<string id="st_fong">
+		<text>Trevor  </text>
+	</string>
+	<string id="st_fong2">
+		<text>Fong </text>
+	</string>
+	<string id="st_sexton">
+		<text>Walter </text>
+	</string>
+	<string id="st_sexton2">
+		<text>Sexton</text>
+	</string>
+	<string id="st_kemp">
+		<text>Willis </text>
+	</string>	
+	<string id="st_kemp2">
+		<text>Kemp</text>
+	</string>
+	
+	<string id="st_pc_specialist">
+		<text>PC Specialist</text>
+	</string>	
+	<string id="st_gonzalez">
+		<text>Ruben Gonzalez</text>
+	</string>	
+			
+	<string id="st_bloch">
+		<text>Jonathan Bloch</text>
+	</string>
+	<string id="st_bloch2">
+		<text>Bloch</text>
+	</string>	
+	
+	<string id="st_leippi">
+		<text>Christopher Leippi</text>
+	</string>
+	<string id="st_leippi2">
+		<text>Leippi</text>
+	</string>
+	
+	
 	
 	<string id="st_pcsupervisor">
 		<text>PC Supervisor</text>
@@ -1264,7 +1395,7 @@
 	</string>
 	
 	<string id="st_cd_centre">
-		<text>CD PROJEKT LOCALIZATION CENTRE</text>
+		<text>CD PROJECT LOCALIZATION CENTRE</text>
 	</string>
 	<string id="st_pm">
 		<text>Project Manager</text>
