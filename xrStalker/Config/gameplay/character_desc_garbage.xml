@@ -147,7 +147,7 @@
 		<rank>199</rank>
 		<reputation>-145</reputation>
 		
-		<snd_config>characters_voice\human_02\bandit\</snd_config>
+		<snd_config>characters_voice\human_01\bandit\</snd_config>
 		<crouch_type>1</crouch_type>
 
 		<visual>actors\bandit\stalker_bandit_master</visual>
@@ -537,7 +537,7 @@
 		<rank>408</rank>
 		<reputation>-90</reputation>
 		
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_01\bandit\</snd_config>
 		<crouch_type>1</crouch_type>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
