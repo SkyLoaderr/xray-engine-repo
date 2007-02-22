@@ -84,6 +84,9 @@
 			Name="config"
 			Filter="">
 			<File
+				RelativePath=".\config\default_controls.ltx">
+			</File>
+			<File
 				RelativePath=".\config\defines.ltx">
 			</File>
 			<File
