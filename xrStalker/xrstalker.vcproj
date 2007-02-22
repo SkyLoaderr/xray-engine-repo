@@ -1523,85 +1523,43 @@
 						RelativePath=".\Config\text\map_desc\fog_net.ltx">
 					</File>
 					<File
-						RelativePath=".\Config\text\map_desc\fog_net.txt">
-					</File>
-					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_agroprom.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_agroprom.txt">
 					</File>
 					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_atp.ltx">
 					</File>
 					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_atp.txt">
-					</File>
-					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_bath.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_bath.txt">
 					</File>
 					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_factory.ltx">
 					</File>
 					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_factory.txt">
-					</File>
-					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_garbage.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_garbage.txt">
 					</File>
 					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_lost_village.ltx">
 					</File>
 					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_lost_village.txt">
-					</File>
-					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_military_1.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_military_1.txt">
 					</File>
 					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_military_2.ltx">
 					</File>
 					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_military_2.txt">
-					</File>
-					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_pool.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_pool.txt">
 					</File>
 					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_prypiat.ltx">
 					</File>
 					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_prypiat.txt">
-					</File>
-					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_railroad.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_railroad.txt">
 					</File>
 					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_rostok.ltx">
 					</File>
 					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_rostok.txt">
-					</File>
-					<File
 						RelativePath=".\Config\text\map_desc\testers_mp_workshop.ltx">
-					</File>
-					<File
-						RelativePath=".\Config\text\map_desc\testers_mp_workshop.txt">
 					</File>
 				</Filter>
 				<Filter
