@@ -40,7 +40,7 @@ function proceed()
 		v.proceed()
 	end
 
-	if db.actor:has_info("autojump_enabled") then
+	if db.actor:has_info("autojump_enabled") and render_device.precache_frame == 0 then
 		local jname = jump_level_by_name[level.name()]
 		if jname ~= nil then
 			get_console():execute("flush")
