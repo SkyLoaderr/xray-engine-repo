@@ -18,9 +18,6 @@
     </right_frame_window>
 
     <right_frame_line x="8" y="17" width="284" height="21">
-        <title x="10" y="2" width="545" height="440">
-            <text font="letterica16" r="225" g="225" b="250">ui_pda_details</text>
-        </title>
         <texture>ui_string_03</texture>        
     </right_frame_line>
 
