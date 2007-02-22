@@ -1012,7 +1012,7 @@
 		<reputation>0</reputation>
 		<money min="600" max="2000" infinitive="0"/>
 		
-		<snd_config>characters_voice\human_03\newbie\</snd_config>
+		<snd_config>characters_voice\human_03\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_1</visual>
