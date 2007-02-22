@@ -13,13 +13,13 @@
 		<text>Permitir votación</text>
 	</string>
 	<string id="mm_mp_anomalytime">
-		<text>Tiempo de anomalía (mín.)</text>
+		<text>Tiempo anomalía (min.)</text>
 	</string>
 	<string id="mm_mp_artefactcapture">
 		<text>Captura del artefacto</text>
 	</string>
 	<string id="mm_mp_artefdelay">
-		<text>Desfase del artefacto (seg.)</text>
+		<text>Desfase artefacto (seg.)</text>
 	</string>
 	<string id="mm_mp_artefnum">
 		<text>Número de artefactos</text>
@@ -28,7 +28,7 @@
 		<text>Vida del artefacto (mín.)</text>
 	</string>
 	<string id="mm_mp_autoteambalance">
-		<text>Equilibrar equipos automáticamente</text>
+		<text>Equilibrar equip. automát.</text>
 	</string>
 	<string id="mm_mp_autoteamswap">
 		<text>Cambiar equip. automát.</text>
@@ -40,7 +40,7 @@
 		<text>Cancelar</text>
 	</string>
 	<string id="mm_mp_cd_key">
-		<text>Clave CD</text>
+		<text>Clav.CD</text>
 	</string>
 	<string id="mm_mp_client">
 		<text>Cliente</text>
@@ -67,7 +67,7 @@
 		<text>Filtros</text>
 	</string>
 	<string id="mm_mp_forcerespawn">
-		<text>Forzar reaparición (seg.)</text>
+		<text>Forzar reapar. (seg.)</text>
 	</string>
 	<string id="mm_mp_fraglimit">
 		<text>Límite de frags</text>
@@ -202,7 +202,7 @@
 		<text>Límite de tiempo (min.)</text>
 	</string>
 	<string id="mm_mp_warmuptime">
-		<text>Tiempo de calentamiento (seg.)</text>
+		<text>T. calentamiento (seg.)</text>
 	</string>
 	<string id="mm_mp_weatheroptions">
 		<text>Opciones meteorológicas</text>

@@ -210,7 +210,7 @@
 	<string id="ui_inv_last_buy">
 		<text>Acquista set precedente.</text>
 	</string>
-	<string id="ui_inv_sell_items">
+	<string id="ui_inv_sell_items(X)">
 		<text>Vendi tutti gli oggetti nello zaino (X)</text>
 	</string>
 	<string id="ui_st_preset_stored_to">
@@ -234,7 +234,7 @@
 	<string id="ui_st_preset_def">
 		<text>Oggetti predef.</text>
 	</string>
-	<string id="ui_inv_reset_items">
+	<string id="ui_inv_reset_items(C)">
 		<text>Rimuovi oggetti (C)</text>
 	</string>
 	<string id="ui_inv_cant_buy_item">
@@ -250,10 +250,10 @@
 		<text>Restrizioni quantità</text>
 	</string>
 	<string id="ui_inv_has">
-		<text>sei</text>
+		<text>Attuale</text>
 	</string>
 	<string id="ui_inv_need">
-		<text>serve</text>
+		<text>Serve</text>
 	</string>
 	<string id="ui_inv_you_already_have">
 		<text>Hai già</text>

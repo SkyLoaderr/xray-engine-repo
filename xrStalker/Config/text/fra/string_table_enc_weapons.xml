@@ -184,10 +184,10 @@
 		<text>Munition avec balle perforante pour les fusils de sniper SVDm 2 et SVUmk2.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-fmj">
-		<text>Munition standard pour les pistolets PMm, PB1s et Fort-12Mk2. Elle est dotée d'un noyau standard et d'une balle chemisée. Son effet perforant est limité.</text>
+		<text>Munition standard pour les pistolets PMm, PB1s et Fort-12M?2. Elle est dotée d'un noyau standard et d'une balle chemisée. Son effet perforant est limité.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-pmm">
-		<text>Munition dotée de caractéristiques balistiques renforcées pour les pistolets PMm, PB1s et Fort-12Mk2. Avec sa balle ultra rapide, elle est plus efficace qu'une munition standard. Son effet perforant est renforcé.</text>
+		<text>Munition dotée de caractéristiques balistiques renforcées pour les pistolets PMm, PB1s et Fort-12M?2. Avec sa balle ultra rapide, elle est plus efficace qu'une munition standard. Son effet perforant est renforcé.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x19-fmj">
 		<text>Munition standard pour le pistolet Walker P9m ainsi que la mitraillette Viper 5. Elle est dotée d'une balle chemisée et d'un effet perforant limité.</text>
@@ -475,7 +475,7 @@
 		<text>FT 200M</text>
 	</string>
 	<string id="wpn-fort">
-		<text>Fort-12Mk2</text>
+		<text>Fort-12M?2</text>
 	</string>
 	<string id="wpn-fort_m">
 		<text>Fort-15</text>

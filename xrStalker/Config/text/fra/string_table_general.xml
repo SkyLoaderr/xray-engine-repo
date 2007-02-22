@@ -61,7 +61,7 @@
 		<text>Décharge</text>
 	</string>
 	<string id="l03_agroprom">
-		<text>Institut de Recherche Agroprom</text>
+		<text>Institut Rech. Agroprom</text>
 	</string>
 	<string id="l04_darkvalley">
 		<text>La Vallée obscure</text>
@@ -230,5 +230,23 @@
 	</string>
 	<string id="st_mp_voting_failed">
 		<text>Échec du vote !</text>
+	</string>
+	<string id="l03u_agr_underground">
+		<text>Sous-terrain Agroprom</text>
+	</string>
+	<string id="l04u_labx18">
+		<text>Labo X-18</text>
+	</string>
+	<string id="l08u_brainlab">
+		<text>Labo X-16</text>
+	</string>
+	<string id="l10u_bunker">
+		<text>Labo X-10</text>
+	</string>
+	<string id="l12u_sarcofag">
+		<text>Sarcophage</text>
+	</string>
+	<string id="l12u_control_monolith">
+		<text>Contrôle Monolithe</text>
 	</string>
 </string_table>

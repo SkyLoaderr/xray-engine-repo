@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
 	<string id="Clear">
-		<text>par temps clair</text>
+		<text>clair</text>
 	</string>
 	<string id="Cloudy">
-		<text>par temps nuageux</text>
+		<text>nuageux</text>
 	</string>
 	<string id="Default">
 		<text>intermйdiaire</text>
@@ -154,7 +154,7 @@
 		<text>Dйconnexion</text>
 	</string>
 	<string id="ui_mm_disconnect_message">
-		<text>Voulez-vous vraiment vous dйconnecter ?</text>
+		<text>Voulez-vous vraiment vous\ndйconnecter ?</text>
 	</string>
 	<string id="ui_mm_dyn_crosshair">
 		<text>Rйticule dynamique</text>
@@ -178,7 +178,7 @@
 		<text>Souris inversйe</text>
 	</string>
 	<string id="ui_mm_key">
-		<text>bouton</text>
+		<text>Touche</text>
 	</string>
 	<string id="ui_mm_keyboard_setup">
 		<text>Configuration du clavier</text>
@@ -310,16 +310,16 @@
 		<text>Synchronisation verticale</text>
 	</string>
 	<string id="ui_st_last_set">
-		<text>Derniers paramиtres prйdйfinis</text>
+		<text>Derniers param.</text>
 	</string>
 	<string id="ui_st_preset1">
-		<text>Paramиtres prйdйfinis 1</text>
+		<text>Param. prйdйf. 1</text>
 	</string>
 	<string id="ui_st_preset2">
-		<text>Paramиtres prйdйfinis 2</text>
+		<text>Param. prйdйf. 2</text>
 	</string>
 	<string id="ui_st_preset3">
-		<text>Paramиtres prйdйfinis 3</text>
+		<text>Param. prйdйf. 3</text>
 	</string>
 	<string id="ui_st_reset">
 		<text>Rйinitialiser</text>

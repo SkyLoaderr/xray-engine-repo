@@ -231,4 +231,22 @@
 	<string id="st_mp_voting_failed">
 		<text>Abstimmung gescheitert!</text>
 	</string>
+	<string id="l03u_agr_underground">
+		<text>Agroprom-Untergrund</text>
+	</string>
+	<string id="l04u_labx18">
+		<text>Labor X-18</text>
+	</string>
+	<string id="l08u_brainlab">
+		<text>Labor X-16</text>
+	</string>
+	<string id="l10u_bunker">
+		<text>Labor X-10</text>
+	</string>
+	<string id="l12u_sarcofag">
+		<text>Sarkophag</text>
+	</string>
+	<string id="l12u_control_monolith">
+		<text>Monolith-Steuerung</text>
+	</string>
 </string_table>

@@ -58,6 +58,6 @@
 		<text>Appuyez sur ($$ACTION_USE$$) pour ouvrir la porte.</text>
 	</string>
 	<string id="tip_monolith">
-		<text>FAITES UN VOEU ($$ACTION_USE$$)</text>
+		<text>FAIRE UN VOEU ($$ACTION_USE$$)</text>
 	</string>
 </string_table>

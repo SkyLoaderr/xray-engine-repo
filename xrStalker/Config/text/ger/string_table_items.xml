@@ -108,8 +108,8 @@
 	<string id="item_quest_case_02_name">
 		<text>Militärdokumente aus dem Agroprom-Institut</text>
 	</string>
-	<string id="item_case_esc_name">
-		<text>Militärdokumente</text>
+	<string id="item_?ase_esc_name">
+		<text>Dokumente vom Außenposten</text>
 	</string>
 	<string id="yan_bad_psy_helmet_desc">
 		<text>Prototyp, der von Wissenschaftlern entwickelt wurde, um Menschen vor PSI-Emissionen zu schützen. Nicht justiert.</text>

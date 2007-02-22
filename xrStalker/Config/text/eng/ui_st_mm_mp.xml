@@ -67,7 +67,7 @@
 		<text>Filters</text>
 	</string>
 	<string id="mm_mp_forcerespawn">
-		<text>Forced respawn (sec)</text>
+		<text>Forced respawn (s)</text>
 	</string>
 	<string id="mm_mp_fraglimit">
 		<text>Frag limit</text>
@@ -145,7 +145,7 @@
 		<text>Refresh all</text>
 	</string>
 	<string id="mm_mp_reinforcement">
-		<text>Reinforcements (sec)</text>
+		<text>Reinforcements (s)</text>
 	</string>
 	<string id="mm_mp_respawnoptions">
 		<text>Respawn options</text>

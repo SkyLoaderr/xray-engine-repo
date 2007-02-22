@@ -40,7 +40,7 @@
 		<text>Annuler</text>
 	</string>
 	<string id="mm_mp_cd_key">
-		<text>Code CD</text>
+		<text>Clé CD</text>
 	</string>
 	<string id="mm_mp_client">
 		<text>Client</text>
@@ -136,7 +136,7 @@
 		<text>Serveur public</text>
 	</string>
 	<string id="mm_mp_quickrefresh">
-		<text>Rafraîchissement rapide</text>
+		<text>Rafraîch. rapide</text>
 	</string>
 	<string id="mm_mp_rateofchange">
 		<text>Coefficient de changemt</text>
@@ -163,7 +163,7 @@
 		<text>Propriétés du serveur</text>
 	</string>
 	<string id="mm_mp_serverinfo">
-		<text>Informations du serveur</text>
+		<text>Infos du serveur</text>
 	</string>
 	<string id="mm_mp_serverlist">
 		<text>Serveur</text>
@@ -217,7 +217,7 @@
 		<text>Sans PunkBuster</text>
 	</string>
 	<string id="mm_mp_withpassword">
-		<text>Utiliser un mot de passe</text>
+		<text>Utiliser un m.d.p.</text>
 	</string>
 	<string id="mp_vote_hint">
 		<text>Voix POUR : [$$ACTION_VOTE_YES$$]\nVoix CONTRE : [$$ACTION_VOTE_NO$$]\nRésultats : [$$ACTION_VOTE$$]</text>

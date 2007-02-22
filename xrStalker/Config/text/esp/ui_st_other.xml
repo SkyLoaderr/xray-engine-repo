@@ -213,4 +213,7 @@
 	<string id="st_controll">
 		<text>Controles</text>
 	</string>
+	<string id="ui_st_connecting_to_masterserver">
+		<text>Conectando al servidor central</text>
+	</string>
 </string_table>

@@ -235,16 +235,16 @@
 		<text>Le vote a commencé !</text>
 	</string>
 	<string id="mp_weather_clear">
-		<text>Par temps clair</text>
+		<text>Clair</text>
 	</string>
 	<string id="mp_weather_cloudy">
-		<text>Par temps nuageux</text>
+		<text>Nuageux</text>
 	</string>
 	<string id="mp_weather_night">
-		<text>De nuit</text>
+		<text>Nuit</text>
 	</string>
 	<string id="mp_weather_rain">
-		<text>Par temps pluvieux</text>
+		<text>Pluvieux</text>
 	</string>
 	<string id="mp_with_backstab">
 		<text>Poignardé dans le dos !!!</text>

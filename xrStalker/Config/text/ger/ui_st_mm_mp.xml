@@ -13,7 +13,7 @@
 		<text>Abstimmungen erlauben</text>
 	</string>
 	<string id="mm_mp_anomalytime">
-		<text>Anomaliedauer (min)</text>
+		<text>Anomaliedauer (Min.)</text>
 	</string>
 	<string id="mm_mp_artefactcapture">
 		<text>Artefakteroberung</text>
@@ -67,7 +67,7 @@
 		<text>Filter</text>
 	</string>
 	<string id="mm_mp_forcerespawn">
-		<text>Erzwungene Neustarts (s)</text>
+		<text>Auto-Neustart (Sek.)</text>
 	</string>
 	<string id="mm_mp_fraglimit">
 		<text>Kill-Limit</text>
@@ -145,7 +145,7 @@
 		<text>Alle aktualisieren</text>
 	</string>
 	<string id="mm_mp_reinforcement">
-		<text>Verstärkung (Sek)</text>
+		<text>Verstärkung (Sek.)</text>
 	</string>
 	<string id="mm_mp_respawnoptions">
 		<text>Neustartoptionen</text>
@@ -199,10 +199,10 @@
 		<text>Anfangswetter</text>
 	</string>
 	<string id="mm_mp_timelimit">
-		<text>Zeitlimit (min)</text>
+		<text>Zeitlimit (Min.)</text>
 	</string>
 	<string id="mm_mp_warmuptime">
-		<text>Aufwärmen (s)</text>
+		<text>Aufwärmen (Sek.)</text>
 	</string>
 	<string id="mm_mp_weatheroptions">
 		<text>Wetteroptionen</text>

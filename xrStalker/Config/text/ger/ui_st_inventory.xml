@@ -210,7 +210,7 @@
 	<string id="ui_inv_last_buy">
 		<text>Vorheriges Set kaufen</text>
 	</string>
-	<string id="ui_inv_sell_items">
+	<string id="ui_inv_sell_items(X)">
 		<text>Alle Gegenstände im Rucksack verkaufen (X)</text>
 	</string>
 	<string id="ui_st_preset_stored_to">
@@ -232,9 +232,9 @@
 		<text>Vorgegebene Objekte (F5)</text>
 	</string>
 	<string id="ui_st_preset_def">
-		<text>Vorgegebene Objekte</text>
+		<text>Vorgegeben</text>
 	</string>
-	<string id="ui_inv_reset_items">
+	<string id="ui_inv_reset_items(C)">
 		<text>Objekte zurücksetzen</text>
 	</string>
 	<string id="ui_inv_cant_buy_item">

@@ -210,7 +210,7 @@
 	<string id="ui_inv_last_buy">
 		<text>Comprar set anterior</text>
 	</string>
-	<string id="ui_inv_sell_items">
+	<string id="ui_inv_sell_items(X)">
 		<text>Vender todos los objetos de la mochila (X)</text>
 	</string>
 	<string id="ui_st_preset_stored_to">
@@ -234,7 +234,7 @@
 	<string id="ui_st_preset_def">
 		<text>Objetos predet.</text>
 	</string>
-	<string id="ui_inv_reset_items">
+	<string id="ui_inv_reset_items(C)">
 		<text>Reinicializar obj. (C)</text>
 	</string>
 	<string id="ui_inv_cant_buy_item">
@@ -247,10 +247,10 @@
 		<text>Dinero insuficiente</text>
 	</string>
 	<string id="ui_inv_count_restr">
-		<text>Restricción de cantidad</text>
+		<text>Restricción cantidad</text>
 	</string>
 	<string id="ui_inv_has">
-		<text>Ahora está</text>
+		<text>Ahora</text>
 	</string>
 	<string id="ui_inv_need">
 		<text>Requerido</text>

@@ -406,7 +406,7 @@
 		<text>Apporte l'artefact "bolide" aux scientifiques pour qu'ils l'étudient</text>
 	</string>
 	<string id="ecolog_find_artefact_1_text">
-		<text>On a réussi à récupérer l'artefact ! Quelle découverte ! Le monde entier va entendre parler de cette découverte. Et on va sûrement décrocher le prix Nobel ! Cet artefact est unique. La qualité principale de cette "pellicule" offre une protection contre les brûlures chimiques. Je veux bien vous la donner au nom de la science. Mais en échange, il me faut l'artefact "bolide", d'accord ? Les qualités thermiques uniques de sa surface ont doivent être examinées. </text>
+		<text>On a réussi à récupérer l'artefact ! Quelle découverte ! Le monde entier va entendre parler de cette découverte. Et on va sûrement décrocher le prix Nobel ! Cet artefact est unique. La qualité principale de cette "pellicule" offre une protection contre les brûlures chimiques. Je veux bien vous la donner au nom de la science. Mais en échange, il me faut l'artefact "bolide",\nd'accord ? Les qualités thermiques uniques de sa surface ont doivent être examinées. </text>
 	</string>
 	<string id="ecolog_find_artefact_2">
 		<text>Trouver l'artefact "gravi"</text>
@@ -469,7 +469,7 @@
 		<text>Il vaut mieux que je me tienne à l'écart de ces cerveaux, au cas où ! Bon, je leur fournirai un oeil de croque-mort et ils feront ce qu'ils voudront de leurs volontaires.</text>
 	</string>
 	<string id="ecolog_monster_part_2_text">
-		<text>Bonne nouvelle, jeune homme : on a une mission des plus intéressantes pour vous ! Je pense que l'intellectuel que vous êtes appréciera les théories de mes collègues. Voilà, nos recherches portent sur les yeux des créatures appelées croque-morts et qui sont dotés de... vous me suivez ? ... de récepteurs olfactifs ! Aussi, en plus de leur permettre de voir, leurs yeux leur permettent de sentir ! On se prépare pour une opération de transplantation de ces yeux miraculeux... sur un de nos assistants volontaires. Ça va être quelque chose ! À propos, accepteriez-vous de vous porter volontaire pour recevoir cet incroyable organe ?</text>
+		<text>Bonne nouvelle, jeune homme : on a une mission des plus intéressantes pour vous ! Je pense que l'intellectuel que vous êtes appréciera les théories de mes collègues. Voilà, nos recherches portent sur les yeux des créatures appelées croque-morts et qui sont dotés de... vous me\nsuivez ? De récepteurs olfactifs ! Aussi, en plus de leur permettre de voir, leurs yeux leur permettent de sentir ! On se prépare pour une opération de transplantation de ces yeux miraculeux... sur un de nos assistants volontaires. Ça va être quelque chose ! À propos, accepteriez-vous de vous porter volontaire pour recevoir cet incroyable organe ?</text>
 	</string>
 	<string id="ecolog_monster_part_3">
 		<text>Rapporter la queue d'un chien aveugle</text>

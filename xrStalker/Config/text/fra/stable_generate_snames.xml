@@ -92,7 +92,7 @@
 		<text>La Mèche</text>
 	</string>
 	<string id="lname_bandit_126">
-		<text>La Dynamite</text>
+		<text>Dynamite</text>
 	</string>
 	<string id="lname_bandit_127">
 		<text>L'Atout</text>
@@ -3920,7 +3920,7 @@
 		<text>Piranha</text>
 	</string>
 	<string id="lname_stalker_365">
-		<text>Piton</text>
+		<text>Python</text>
 	</string>
 	<string id="lname_stalker_366">
 		<text>Le Lièvre</text>
@@ -4256,7 +4256,7 @@
 		<text>Burin</text>
 	</string>
 	<string id="lname_stalker_466">
-		<text>Bidón</text>
+		<text>Bidon</text>
 	</string>
 	<string id="lname_stalker_467">
 		<text>Le Coffre</text>

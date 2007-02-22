@@ -184,10 +184,10 @@
 		<text>Panzerbrechende Munition für das SVDm 2- und das SVUmk2-Scharfschützengewehr.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-fmj">
-		<text>Standardmunition für die PMm-, PB1s- und Fort-12Mk2-Pistolen mit Standardkern, vollummantelter Kugel und nur schwacher Panzerbrechung.</text>
+		<text>Standardmunition für die PMm-, PB1s- und Fort-12M?2-Pistolen mit Standardkern, vollummantelter Kugel und nur schwacher Panzerbrechung.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-pmm">
-		<text>Munition mit verbesserten ballistischen Eigenschaften für die PMm-, die PB1s- und die Fort-12Mk2-Pistolen. Durch ihre hohe Ausgangsgeschwindigkeit ist die Kugel wirkungsvoller als Standardmunition. Sie verfügt außerdem über bessere Panzerbrechung.</text>
+		<text>Munition mit verbesserten ballistischen Eigenschaften für die PMm-, die PB1s- und die Fort-12M?2-Pistolen. Durch ihre hohe Ausgangsgeschwindigkeit ist die Kugel wirkungsvoller als Standardmunition. Sie verfügt außerdem über bessere Panzerbrechung.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x19-fmj">
 		<text>Standardmunition für die Walker P9m-Pistole sowie die Viper 5-Maschinenpistole mit Vollmantel und schwacher Panzerbrechung.</text>
@@ -355,7 +355,7 @@
 		<text>Für den Einsatz als Scharfschützengewehr modifiziert und mit einer fest montierten Zielvorrichtung mit erhöhtem Fokus ausgestattet.</text>
 	</string>
 	<string id="enc_weapons1_wpn-sig220">
-		<text>Ein Modell, dass 1975 entwickelt wurde und bis heute überall auf der Welt Popularität genießt. Das Magazin hat nur eine geringe Kapazität, doch der Mechanismus ist absolut zuverlässig. Auch von Vorteil sind die durchschlagskräftigen Geschosse.\n Munition:\n standardmäßig .45 ACP,\n verbessert .45 ACP Hydroschock.</text>
+		<text>Ein Modell, das 1975 entwickelt wurde und bis heute überall auf der Welt Popularität genießt. Das Magazin hat nur eine geringe Kapazität, doch der Mechanismus ist absolut zuverlässig. Auch von Vorteil sind die durchschlagskräftigen Geschosse.\n Munition:\n standardmäßig .45 ACP,\n verbessert .45 ACP Hydroschock.</text>
 	</string>
 	<string id="enc_weapons1_wpn-sig550">
 		<text>Ein relativ neues Sturmgewehr, das 5.56x45 mm SS109-Geschosse verwendet. Ihre Präzision, der sanfte Rückstoß und die hohe Zuverlässigkeit machen diese Waffe sehr beliebt.\n Munition:\n standardmäßig 5.56x45 mm SS109,\n panzerbrechend 5.56x45 mm ??.</text>
@@ -475,7 +475,7 @@
 		<text>FT 200M</text>
 	</string>
 	<string id="wpn-fort">
-		<text>Fort-12Mk2</text>
+		<text>Fort-12M?2</text>
 	</string>
 	<string id="wpn-fort_m">
 		<text>Fort-15</text>

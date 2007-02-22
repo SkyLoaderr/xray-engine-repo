@@ -213,4 +213,7 @@
 	<string id="st_controll">
 		<text>Commandes</text>
 	</string>
+	<string id="ui_st_connecting_to_masterserver">
+		<text>Connexion au serveur maître en cours</text>
+	</string>
 </string_table>

@@ -213,4 +213,7 @@
 	<string id="st_controll">
 		<text>Управление</text>
 	</string>
+	<string id="ui_st_connecting_to_masterserver">
+		<text>Присоединение к мастер-серверу</text>
+	</string>
 </string_table>
