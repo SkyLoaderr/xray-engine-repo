@@ -1644,7 +1644,7 @@
 		<text>Bruno Diez</text>
 	</string>	
 	<string id="st_sound_designed">
-		<text>Sound Designed</text>
+		<text>Sound designed</text>
 	</string>
 	<string id="st_by_bob">
 		<text>by Bob and Barn Ltd.</text>
@@ -1675,7 +1675,7 @@
 	</string>
 	
 	<string id="st_weapons_recorded">
-		<text>Weapons Recorded at:</text>
+		<text>Weapons recorded at:</text>
 	</string>
 	<string id="st_crawford_private_range">
 		<text>Crawford Private Range, Roundrock, Texas </text>
