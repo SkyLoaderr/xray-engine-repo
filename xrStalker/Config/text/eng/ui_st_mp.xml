@@ -279,4 +279,127 @@
 	<string id="team_base_2">
 		<text>Mercs' base</text>
 	</string>
+	<string id="mp_si_no">
+		<text>No</text>
+	</string>
+	<string id="mp_si_yes">
+		<text>Yes</text>
+	</string>
+	<string id="mp_si_min">
+		<text>min</text>
+	</string>
+	<string id="mp_si_sec">
+		<text>sec</text>
+	</string>
+	<string id="mp_si_maprotation">
+		<text>Map Rotation</text>
+	</string>
+	<string id="mp_si_voting">
+		<text>Voting</text>
+	</string>
+	<string id="mp_si_enabled">
+		<text>Enabled</text>
+	</string>
+	<string id="mp_si_disabled">
+		<text>Disabled</text>
+	</string>
+	<string id="mp_si_spectatormodes">
+		<text>Spectator Modes:</text>
+	</string>
+	<string id="mp_si_servername">
+		<text>Server Name:</text>
+	</string>
+	<string id="mp_si_version">
+		<text>Version:</text>
+	</string>
+	<string id="mp_si_free_fly">
+		<text>- Free Fly</text>
+	</string>
+	<string id="mp_si_first_eye">
+		<text>- First Eye</text>
+	</string>
+	<string id="mp_si_look_at">
+		<text>- Look At</text>
+	</string>
+	<string id="mp_si_free_look">
+		<text>- Free Look</text>
+	</string>
+	<string id="mp_si_team_only">
+		<text>- Team Only</text>
+	</string>
+	<string id="mp_si_fraglimit">
+		<text>Frag Limit</text>
+	</string>
+	<string id="mp_si_time_limit">
+		<text>Time Limit</text>
+	</string>
+	<string id="mp_si_invinsibility_indicators">
+		<text>- Indicators</text>
+	</string>
+	<string id="mp_si_invinsibility_time">
+		<text>- Time</text>
+	</string>
+	<string id="mp_si_invinsibility">
+		<text>Invinsibility:</text>
+	</string>
+	<string id="mp_si_anomalies">
+		<text>Anomalies</text>
+	</string>
+	<string id="mp_si_anomalies_period">
+		<text>Anomalies period</text>
+	</string>
+	<string id="mp_si_infinite">
+		<text>Infinite</text>
+	</string>
+	<string id="mp_si_forcerespawn">
+		<text>Force Respawn</text>
+	</string>
+	<string id="mp_si_warmuptime">
+		<text>Warm Up</text>
+	</string>
+	<string id="mp_si_autoteam_balance">
+		<text>Auto Team Balance</text>
+	</string>
+	<string id="mp_si_autoteam_swap">
+		<text>Auto Team Swap</text>
+	</string>
+	<string id="mp_si_friendly_indicators">
+		<text>Friendly Indicators</text>
+	</string>
+	<string id="mp_si_friendly_names">
+		<text>Friendly Names</text>
+	</string>
+	<string id="mp_si_friendly_fire">
+		<text>Frienly Fire</text>
+	</string>
+	<string id="mp_si_artefacts">
+		<text>Artefacts:</text>
+	</string>
+	<string id="mp_si_afcount">
+		<text>-  Count</text>
+	</string>
+	<string id="mp_si_afstaytime">
+		<text>-  Stay Time</text>
+	</string>
+	<string id="mp_si_afrespawntime">
+		<text>-  Respawn Time</text>
+	</string>
+	<string id="mp_si_players_respawn">
+		<text>Players Respawned</text>
+	</string>
+	<string id="mp_si_artefact_captured">
+		<text>Artefact captured</text>
+	</string>
+	<string id="mp_si_any_time">
+		<text>Any time</text>
+	</string>
+	<string id="mp_si_shielded_bases">
+		<text>Shielded Bases</text>
+	</string>
+	<string id="mp_si_return_players">
+		<text>Players returned to bases</text>
+	</string>
+	<string id="mp_si_afbearer_cant_sprint">
+		<text>Af bearer can't sprint</text>
+	</string>
 </string_table>
