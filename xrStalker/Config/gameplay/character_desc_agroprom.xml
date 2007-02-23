@@ -20,7 +20,7 @@
 		<panic_threshold>0.0</panic_threshold>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_4</visual>
-		<snd_config>characters_voice\human_01\stalker\</snd_config>
+		<snd_config>characters_voice\human_02\stalker\</snd_config>
 		<crouch_type>-1</crouch_type>
 
 		<supplies>
