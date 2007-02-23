@@ -548,7 +548,7 @@
 			<texture>ui_frame_error_sign_info</texture>
 		</picture>
 		
-		<message_text x="170" y="40" width="310" height="60">
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_connecting_to_masterserver</text>
 		</message_text>		
 	</msg_box_connect_to_master_server>
