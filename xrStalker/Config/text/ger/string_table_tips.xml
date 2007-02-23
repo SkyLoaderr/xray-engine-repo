@@ -1,18 +1,3 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="car_use">
-		<text>Tьr цffnen ($$ACTION_USE$$)</text>
-	</string>
-	<string id="character_use">
-		<text>Reden ($$ACTION_USE$$)</text>
-	</string>
-	<string id="dead_character_use">
-		<text>Kцrper durchsuchen ($$ACTION_USE$$)</text>
-	</string>
-	<string id="inventory_item_use">
-		<text>Gegenstand aufnehmen ($$ACTION_USE$$)</text>
-	</string>
-	<string id="physic_shell_use">
-		<text>Gegenstand bewegen ()</text>
-	</string>
 </string_table>

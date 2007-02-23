@@ -1,18 +1,3 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <string_table>
-	<string id="car_use">
-		<text>Apri la porta ($$ACTION_USE$$)</text>
-	</string>
-	<string id="character_use">
-		<text>Parla ($$ACTION_USE$$)</text>
-	</string>
-	<string id="dead_character_use">
-		<text>Perquisisci($$ACTION_USE$$)</text>
-	</string>
-	<string id="inventory_item_use">
-		<text>Raccogli oggetto ($$ACTION_USE$$)</text>
-	</string>
-	<string id="physic_shell_use">
-		<text>Sposta oggetto ()</text>
-	</string>
 </string_table>
