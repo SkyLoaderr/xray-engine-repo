@@ -457,8 +457,8 @@ function gulag:update_beginning_jobs()
 		if self:can_obj_begin_job( obj_id, obj ) then
 
 			local job = self.Job[self.ObjectJob[obj_id]]
-			local jl = self:distance_to_job_location(obj_id, job)
-			printf("### [%s] %s < %s", alife():object(obj_id):name(), tostring(jl), tostring(job.position_threshold or job_position_threshold))
+--'			local jl = self:distance_to_job_location(obj_id, job)
+--'			printf("### [%s] %s < %s", alife():object(obj_id):name(), tostring(jl), tostring(job.position_threshold or job_position_threshold))
 
 			self:beginJob( obj_id )
 		end
@@ -476,7 +476,17 @@ function gulag:can_obj_begin_job( obj_id, obj )
 
 	if jobN and not self.Object_begin_job[obj_id] then
 		local job = self.Job[jobN]
-
+		
+		--' Спешл кейс, проверка только по вертексам графа
+		if job.position_threshold == "graph" then
+			local obj_gv, obj_pos = self:get_obj_game_vertex_and_position( obj_id )
+			local job_gv          = game_graph():vertex( job.game_vertex_id )
+			if obj_gv:level_vertex_id() == job_gv:level_vertex_id() then
+				return true
+			end
+			return false
+		end
+	
 		return self:distance_to_job_location(obj_id, job) < (job.position_threshold or job_position_threshold)
 	else
 		return false
