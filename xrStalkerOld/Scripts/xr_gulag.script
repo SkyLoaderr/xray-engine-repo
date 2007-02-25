@@ -624,7 +624,7 @@ function gulag:distance_to_job_location( obj_id, job )
 		return obj_pos:distance_to( job.position )
 	else
 		--'return obj_gv:game_point():distance_to( job_gv:game_point() )
-		return false
+		return 10000
 	end
 end
 
