@@ -623,7 +623,8 @@ function gulag:distance_to_job_location( obj_id, job )
 	if obj_gv:level_id() == job_gv:level_id() then
 		return obj_pos:distance_to( job.position )
 	else
-		return obj_gv:game_point():distance_to( job_gv:game_point() )
+		--'return obj_gv:game_point():distance_to( job_gv:game_point() )
+		return false
 	end
 end
 
