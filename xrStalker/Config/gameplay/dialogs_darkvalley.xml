@@ -1,61 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="val_rob_dialog">
-        <phrase_list>
-            <phrase id="2">
-                <text />
-                <has_info>val_rob_no_money</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <dont_has_info>val_rob_no_money</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>val_rob_dialog_11</text>
-                <next>111</next>
-                <next>112</next>
-                <next>113</next>
-            </phrase>
-            <phrase id="21">
-                <text>val_rob_dialog_21</text>
-                <next>111</next>
-                <next>112</next>
-                <next>113</next>
-            </phrase>
-            <phrase id="113">
-                <text>val_rob_dialog_113</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>val_rob_no_money</give_info>
-            </phrase>
-            <phrase id="112">
-                <text>val_rob_dialog_112</text>
-                <action>dialogs.break_dialog</action>
-                <give_info>val_rob_no_money</give_info>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-            </phrase>
-            <phrase id="3">
-                <text>val_rob_dialog_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="111">
-                <text>val_rob_dialog_111</text>
-                <precondition>dialogs_darkvalley.val_rob_actor_has_money</precondition>
-                <action>dialogs_darkvalley.val_rob_actor_reloc_money</action>
-                <give_info>val_rob_buying</give_info>
-                <next>3</next>
-            </phrase>
-            <phrase id="31">
-                <text>val_rob_dialog_31</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="val_escort_nap1_dialog">
         <phrase_list>
             <phrase id="2111">
@@ -429,17 +373,66 @@
                 <text>val_escort_captive_dialog_511</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>7</next>
-                <next>6</next>
-            </phrase>
             <phrase id="71">
                 <text></text>
                 <has_info>val_escort_captive_give_main_info</has_info>
                 <next>2</next>
                 <next>3</next>
                 <next>5</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>7</next>
+                <next>6</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="val_rob_dialog">
+        <phrase_list>
+            <phrase id="11">
+                <text>val_rob_dialog_11</text>
+                <next>111</next>
+                <next>113</next>
+            </phrase>
+            <phrase id="21">
+                <text>val_rob_dialog_21</text>
+                <next>111</next>
+                <next>113</next>
+            </phrase>
+            <phrase id="3">
+                <text>val_rob_dialog_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="31">
+                <text>val_rob_dialog_31</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="113">
+                <text>val_rob_dialog_113</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>val_rob_no_money</give_info>
+            </phrase>
+            <phrase id="111">
+                <text>val_rob_dialog_111</text>
+                <precondition>dialogs_darkvalley.val_rob_actor_has_money</precondition>
+                <action>dialogs_darkvalley.val_rob_actor_reloc_money</action>
+                <give_info>val_rob_buying</give_info>
+                <next>3</next>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <has_info>val_rob_no_money</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>val_rob_no_money</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
             </phrase>
         </phrase_list>
     </dialog>
