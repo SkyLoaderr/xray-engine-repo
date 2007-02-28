@@ -76,7 +76,7 @@
 		<btn name="btn_credits"		caption="ui_mm_credits" />
 		<btn name="btn_quit_to_mm"	caption="ui_mm_quit_game" />
 		<btn name="btn_quit"		caption="ui_mm_quit2windows" />
-	</menu_main_single>
+	</menu_main_single_dead>
 	
 	<menu_main_mm btn_height="30" font="graffiti22" a="255" r="0" g="0" b="0">
 		<btn name="btn_ret"			caption="ui_mm_return_game" />
