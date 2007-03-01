@@ -43,6 +43,10 @@ function se_zone_anom:STATE_Read( packet, size )
 		return
 	end
 	
+	if ((IsGameTypeSingle ~= nil) and (IsGameTypeSingle() == false)) then
+		return
+	end
+	
 	local flag = packet:r_u8()
 	if flag == 1 then
 		self.last_spawn_time = utils.r_CTime(packet)
