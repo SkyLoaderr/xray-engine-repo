@@ -4,17 +4,21 @@ local not_spawn_levels = {
 
 function is_single_player_game	()
 	if (alife() ~= nil) then
+		printf	("alife() ~= nil")
 		return	(true)
 	end
 	
 	if (IsGameTypeSingle ~= nil) then
+		printf	("IsGameTypeSingle ~= nil")
 		return	(true)
 	end
 
 	if (IsGameTypeSingle() == true) then
+		printf	("IsGameTypeSingle() == true")
 		return	(true)
 	end
 
+	printf		("return false")
 	return		(false)
 end
 
