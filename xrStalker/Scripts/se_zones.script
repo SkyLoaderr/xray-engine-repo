@@ -44,9 +44,13 @@ end
 function se_zone_anom:STATE_Write(packet)
 	cse_anomalous_zone.STATE_Write(self, packet)
 
+	printf				("se_zone_anom:STATE_Write before is_single_player_game")
+
 	if (is_single_player_game() == false) then
 		return
 	end
+
+	printf				("se_zone_anom:STATE_Write after is_single_player_game")
 	
 	if self.last_spawn_time == nil then
 		packet:w_u8(0)
@@ -63,9 +67,13 @@ function se_zone_anom:STATE_Read( packet, size )
 		return
 	end
 	
+	printf				("se_zone_anom:STATE_Read before is_single_player_game")
+
 	if (is_single_player_game() == false) then
 		return
 	end
+
+	printf				("se_zone_anom:STATE_Read after is_single_player_game")
 	
 	local flag = packet:r_u8()
 	if flag == 1 then
@@ -97,12 +105,17 @@ function se_zone_visual:update()
 		end
 	end	
 end
+
 function se_zone_visual:STATE_Write(packet)
 	cse_zone_visual.STATE_Write(self, packet)
+
+	printf				("se_zone_visual:STATE_Write before is_single_player_game")
 
 	if (is_single_player_game() == false) then
 		return
 	end
+
+	printf				("se_zone_visual:STATE_Write after is_single_player_game")
 	
 	if self.last_spawn_time == nil then
 		packet:w_u8(0)
@@ -119,9 +132,13 @@ function se_zone_visual:STATE_Read( packet, size )
 		return
 	end
 	
+	printf				("se_zone_visual:STATE_Read before is_single_player_game")
+
 	if (is_single_player_game() == false) then
 		return
 	end
+
+	printf				("se_zone_visual:STATE_Read after is_single_player_game")
 	
 	local flag = packet:r_u8()
 	if flag == 1 then
