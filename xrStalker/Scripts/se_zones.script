@@ -44,6 +44,10 @@ end
 function se_zone_anom:STATE_Write(packet)
 	cse_anomalous_zone.STATE_Write(self, packet)
 
+	if (is_single_player_game() == false) then
+		return
+	end
+	
 	if self.last_spawn_time == nil then
 		packet:w_u8(0)
 	else
@@ -96,6 +100,10 @@ end
 function se_zone_visual:STATE_Write(packet)
 	cse_zone_visual.STATE_Write(self, packet)
 
+	if (is_single_player_game() == false) then
+		return
+	end
+	
 	if self.last_spawn_time == nil then
 		packet:w_u8(0)
 	else
