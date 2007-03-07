@@ -49,6 +49,16 @@
 		<btn name="btn_quit"		caption="ui_mm_quit2windows" />
 	</menu_main>
 	
+	<menu_main_last_save btn_height="30" font="graffiti22" a="255" r="0" g="0" b="0">
+		<btn name="btn_new_game"	caption="ui_mm_newgame" />
+		<btn name="btn_load"		caption="ui_mm_load_game" />
+		<btn name="btn_lastsave"	caption="ui_mm_last_save" />
+		<btn name="btn_multiplayer"	caption="ui_mm_multiplayer_n" />
+		<btn name="btn_options"		caption="ui_mm_options_n" />
+		<btn name="btn_credits"		caption="ui_mm_credits" />
+		<btn name="btn_quit"		caption="ui_mm_quit2windows" />
+	</menu_main_last_save>
+	
 	<menu_new_game btn_height="30" font="graffiti22" a="255" r="0" g="0" b="0">
 		<btn name="btn_novice"		caption="ui_mm_novice" />
 		<btn name="btn_stalker"		caption="ui_mm_stalker" />
@@ -62,7 +72,6 @@
 		<btn name="btn_lastsave"	caption="ui_mm_last_save" />
 		<btn name="btn_load"		caption="ui_mm_load_game" />
 		<btn name="btn_save"		caption="ui_mm_save_game" />
-		<_btn name="btn_new_game"	caption="ui_mm_newgame" />
 		<btn name="btn_options"		caption="ui_mm_options_n" />
 		<btn name="btn_credits"		caption="ui_mm_credits" />
 		<btn name="btn_quit_to_mm"	caption="ui_mm_quit_game" />
@@ -70,7 +79,7 @@
 	</menu_main_single>
 	
 	<menu_main_single_dead btn_height="30" font="graffiti22" a="255" r="0" g="0" b="0">
-		<_btn name="btn_lastsave"	caption="ui_mm_last_save" />
+		<btn name="btn_lastsave"	caption="ui_mm_last_save" />
 		<btn name="btn_load"		caption="ui_mm_load_game" />
 		<btn name="btn_options"		caption="ui_mm_options_n" />
 		<btn name="btn_credits"		caption="ui_mm_credits" />

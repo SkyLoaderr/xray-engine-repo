@@ -284,8 +284,12 @@ function load_dialog:OnButton_load_clicked()
 	
 	if index == -1 then return end
 
-	self.msgbox_id = 2
+	if (alife() == nil) then
+		self:load_game_internal	()
+		return
+	end
 
+	self.msgbox_id = 2
 	self.message_box:Init("message_box_confirm_load_save")		
 	self:GetHolder():start_stop_menu(self.message_box, true)
 end

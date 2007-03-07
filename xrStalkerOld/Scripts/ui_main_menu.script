@@ -88,27 +88,19 @@ function main_menu:OnMsgNo()
 end
 
 function main_menu:LoadLastSave()
-	local f = getFS()
-	local flist = f:file_list_open_ex("$game_saves$",bit_or(FS.FS_ListFiles,FS.FS_RootOnly),"*.sav")
-	local f_cnt = flist:Size()
-	
-	if f_cnt == 0 then
-		return
-	end
-	
-	flist:Sort(FS.FS_sort_by_modif_down)
-	
-	local file		=	flist:GetAt(0)
-	local command = "load " .. string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - 4))
-	
-	local console = get_console()
-	console:execute("main_menu off")
-	console:execute(command)
+	local					console = get_console()
+	console:execute			("main_menu off")
+	console:execute			("load_last_save")
 end
 
 function main_menu:OnButton_last_save()
-	self.mbox_mode = 1
-	self.message_box:Init("message_box_confirm_load_save")
+	if (alife() == nil) then
+		self:LoadLastSave	();
+		return
+	end
+	
+	self.mbox_mode			= 1
+	self.message_box:Init	("message_box_confirm_load_save")
 	self:GetHolder():start_stop_menu(self.message_box, true)
 end
 
