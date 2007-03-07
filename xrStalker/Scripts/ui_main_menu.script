@@ -68,12 +68,10 @@ function main_menu:InitCallBacks()
 end
 function main_menu:OnMsgOk()
 	self.mbox_mode = 0
-	printf("OnMsgOk")
 end
 
 function main_menu:OnMsgCancel()
 	self.mbox_mode = 0
-	printf("OnMsgCancel")
 end
 
 function main_menu:OnMsgYes()
@@ -83,12 +81,10 @@ function main_menu:OnMsgYes()
 	end
 
 	self.mbox_mode = 0
-	printf("OnMsgYes")
 end
 
 function main_menu:OnMsgNo()
 	self.mbox_mode = 0
-	printf("OnMsgNo")
 end
 
 function main_menu:LoadLastSave()
@@ -114,8 +110,6 @@ function main_menu:OnButton_last_save()
 	self.mbox_mode = 1
 	self.message_box:Init("message_box_confirm_load_save")
 	self:GetHolder():start_stop_menu(self.message_box, true)
-	printf("OnButton_last_save")
-	
 end
 
 function main_menu:OnButton_credits_clicked()
