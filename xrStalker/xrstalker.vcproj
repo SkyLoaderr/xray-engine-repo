@@ -3907,6 +3907,12 @@
 						RelativePath=".\Config\models\objects\sarcofag_hologram.ltx">
 					</File>
 					<File
+						RelativePath=".\config\models\objects\wood_board_br_01.ltx">
+					</File>
+					<File
+						RelativePath=".\config\models\objects\wood_board_br_02.ltx">
+					</File>
+					<File
 						RelativePath=".\Config\models\objects\wood_board_br_03.ltx">
 					</File>
 					<File
