@@ -3,6 +3,10 @@ local not_spawn_levels = {
 }
 
 function is_single_player_game	()
+	if (alife == nil) then
+		return	(true)
+	end
+	
 	if (alife() ~= nil) then
 		return	(true)
 	end
