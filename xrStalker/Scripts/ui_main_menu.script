@@ -9,6 +9,7 @@
 class "main_menu" (CUIScriptWnd)
 
 function main_menu:__init() super()
+	self.mbox_mode = 0
    self:InitControls()
    self:InitCallBacks()
 end
@@ -58,15 +59,39 @@ function main_menu:InitCallBacks()
 	self:AddCallback("btn_lastsave",	ui_events.BUTTON_CLICKED,				self.OnButton_last_save,			self)
 	self:AddCallback("btn_credits",		ui_events.BUTTON_CLICKED,				self.OnButton_credits_clicked,		self)
 	-- message box																										
-	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_OK_CLICKED,		self.OnMsgOk,						self)
-	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_CANCEL_CLICKED,	self.OnMsgCancel,					self)
-	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_YES_CLICKED,		self.OnMsgYes,						self)
-	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_NO_CLICKED,		self.OnMsgNo,						self)
+	self:AddCallback("msg_box",     ui_events.MESSAGE_BOX_OK_CLICKED,		self.OnMsgOk,						self)
+	self:AddCallback("msg_box",     ui_events.MESSAGE_BOX_CANCEL_CLICKED,	self.OnMsgCancel,					self)
+	self:AddCallback("msg_box",     ui_events.MESSAGE_BOX_YES_CLICKED,		self.OnMsgYes,						self)
+	self:AddCallback("msg_box",     ui_events.MESSAGE_BOX_NO_CLICKED,		self.OnMsgNo,						self)
 	self:AddCallback("msg_box",			ui_events.MESSAGE_BOX_QUIT_GAME_CLICKED,self.OnMessageQuitGame,				self)
 	self:AddCallback("msg_box",			ui_events.MESSAGE_BOX_QUIT_WIN_CLICKED,	self.OnMessageQuitWin,				self)
 end
+function main_menu:OnMsgOk()
+	self.mbox_mode = 0
+	printf("OnMsgOk")
+end
 
-function main_menu:OnButton_last_save()
+function main_menu:OnMsgCancel()
+	self.mbox_mode = 0
+	printf("OnMsgCancel")
+end
+
+function main_menu:OnMsgYes()
+	
+	if 	self.mbox_mode == 1 then
+		self:LoadLastSave()	
+	end
+
+	self.mbox_mode = 0
+	printf("OnMsgYes")
+end
+
+function main_menu:OnMsgNo()
+	self.mbox_mode = 0
+	printf("OnMsgNo")
+end
+
+function main_menu:LoadLastSave()
 	local f = getFS()
 	local flist = f:file_list_open_ex("$game_saves$",bit_or(FS.FS_ListFiles,FS.FS_RootOnly),"*.sav")
 	local f_cnt = flist:Size()
@@ -85,6 +110,14 @@ function main_menu:OnButton_last_save()
 	console:execute(command)
 end
 
+function main_menu:OnButton_last_save()
+	self.mbox_mode = 1
+	self.message_box:Init("message_box_confirm_load_save")
+	self:GetHolder():start_stop_menu(self.message_box, true)
+	printf("OnButton_last_save")
+	
+end
+
 function main_menu:OnButton_credits_clicked()
 --	local console = get_console()
 --	console:execute("main_menu off")
@@ -95,6 +128,7 @@ function main_menu:OnButton_quit_clicked()
 	self.message_box:Init("message_box_quit_windows")
 	self:GetHolder():start_stop_menu(self.message_box, true)
 end
+
 
 function main_menu:OnButton_disconnect_clicked()
 	self.message_box:Init("message_box_quit_game")
@@ -162,6 +196,7 @@ function main_menu:OnButton_load_spawn()
 		self.spawn_dlg = ui_spawn_dialog.spawn_dialog()
 		self.spawn_dlg.owner = self
 	end
+	
 	self:GetHolder():start_stop_menu(self.spawn_dlg, true)
 	self:GetHolder():start_stop_menu(self, true) --new
 	self:Show(false)
@@ -219,26 +254,6 @@ function main_menu:OnButton_multiplayer_clicked()
 	self.mp_dlg:OnRadio_NetChanged()
 end
 
-function main_menu:OnMsgOk()
-	local msg_box = self:GetMessageBox("message_box")
-	msg_box:Hide()
-end
-
-function main_menu:OnMsgCancel()
-	local msg_box = self:GetMessageBox("message_box")
-	msg_box:Hide()
-end
-
-function main_menu:OnMsgYes()
-	local msg_box = self:GetMessageBox("message_box")
-	msg_box:Hide()
-end
-
-function main_menu:OnMsgNo()
-	local msg_box = self:GetMessageBox("message_box")
-	msg_box:Hide()
-end
-
 function main_menu:Dispatch(cmd, param)  --virtual function
 	if cmd == 2 then
 		self:OnButton_multiplayer_clicked()
@@ -258,12 +273,12 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 			end
 		end
 		
-		if dik == DIK_keys.DIK_S then
-			self:OnButton_load_spawn()
+--		if dik == DIK_keys.DIK_S then
+--			self:OnButton_load_spawn()
 			
-		elseif dik == DIK_keys.DIK_Q then
+--		else
+		if dik == DIK_keys.DIK_Q then
 			self:OnMessageQuitWin()
-
 		end
 	
 	end
