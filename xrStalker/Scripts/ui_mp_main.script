@@ -395,7 +395,7 @@ function mp_main:GatherServerData()
 
 	-- pda hunt -------------------------------------------------------------------------
 	if self.check_pda_hunt:GetCheck() then
-		cmdstr = cmdstr .. "/pdahunt=1" .. tmp
+		cmdstr = cmdstr .. "/pdahunt=1"
 	end	
 	
 	-- warm up time ---------------------------------------------------------------------
