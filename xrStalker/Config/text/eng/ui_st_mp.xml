@@ -316,10 +316,10 @@
 		<text>- Free Fly</text>
 	</string>
 	<string id="mp_si_first_eye">
-		<text>- First Eye</text>
+		<text>- First Person</text>
 	</string>
 	<string id="mp_si_look_at">
-		<text>- Look At</text>
+		<text>- Third Person</text>
 	</string>
 	<string id="mp_si_free_look">
 		<text>- Free Look</text>
@@ -352,7 +352,7 @@
 		<text>Infinite</text>
 	</string>
 	<string id="mp_si_forcerespawn">
-		<text>Force Respawn</text>
+		<text>Forced Respawn</text>
 	</string>
 	<string id="mp_si_warmuptime">
 		<text>Warm Up</text>
@@ -373,7 +373,7 @@
 		<text>Frienly Fire</text>
 	</string>
 	<string id="mp_si_artefacts">
-		<text>Artefacts:</text>
+		<text>Artifacts:</text>
 	</string>
 	<string id="mp_si_afcount">
 		<text>-  Count</text>
@@ -385,10 +385,10 @@
 		<text>-  Respawn Time</text>
 	</string>
 	<string id="mp_si_players_respawn">
-		<text>Players Respawned</text>
+		<text>Respawn</text>
 	</string>
 	<string id="mp_si_artefact_captured">
-		<text>Artefact captured</text>
+		<text>Artifact captured</text>
 	</string>
 	<string id="mp_si_any_time">
 		<text>Any time</text>
@@ -400,6 +400,6 @@
 		<text>Players returned to bases</text>
 	</string>
 	<string id="mp_si_afbearer_cant_sprint">
-		<text>Af bearer can't sprint</text>
+		<text>No sprint with artifact</text>
 	</string>
 </string_table>

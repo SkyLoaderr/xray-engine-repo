@@ -1,7 +1,7 @@
 	<string id="bar_bring_hunter_rifle">
 		<text>Return the hunter's family rifle</text>
 	</string>
-	<string id="bar_bring_pda_lucky">
+	<string id="bar_bring_PDA_lucky">
 		<text>Bring the leader's PDA to the Barkeep</text>
 	</string>
 	<string id="bar_crazy_veterans_quest">
@@ -58,7 +58,7 @@
 	<string id="bar_dolg_svoboda_ambush_return">
 		<text>Give the stripes to General Voronin</text>
 	</string>
-	<string id="bar_dolg_tiran_pda">
+	<string id="bar_dolg_tiran_PDA">
 		<text>Take Tyran's PDA</text>
 	</string>
 	<string id="bar_hunter_find_rifle">
@@ -73,7 +73,7 @@
 	<string id="bar_kill_crazy_veterans">
 		<text>Kill the leader of the veterans</text>
 	</string>
-	<string id="bar_kill_crazy_veterans_pda">
+	<string id="bar_kill_crazy_veterans_PDA">
 		<text>Take their leader's PDA</text>
 	</string>
 	<string id="bar_kill_veterans">

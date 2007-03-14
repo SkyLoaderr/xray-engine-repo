@@ -90,16 +90,16 @@
 	<string id="item_krot_flash">
 		<text>Mole's flash drive</text>
 	</string>
-	<string id="item_pda_lucky_desc">
+	<string id="item_PDA_lucky_desc">
 		<text>Personal digital assistant. Indispensable in the Zone.</text>
 	</string>
-	<string id="item_pda_lucky_name">
+	<string id="item_PDA_lucky_name">
 		<text>Lucky's PDA</text>
 	</string>
-	<string id="item_pda_tiran_desc">
+	<string id="item_PDA_tiran_desc">
 		<text>Personal digital assistant. Indispensable in the Zone.</text>
 	</string>
-	<string id="item_pda_tiran_name">
+	<string id="item_PDA_tiran_name">
 		<text>Tyran's PDA</text>
 	</string>
 	<string id="item_quest_case_02_desc">
@@ -108,7 +108,7 @@
 	<string id="item_quest_case_02_name">
 		<text>Military documents from the Agroprom Research Institute</text>
 	</string>
-	<string id="item_?ase_esc_name">
+	<string id="item_case_esc_name">
 		<text>Documents from the outpost</text>
 	</string>
 	<string id="yan_bad_psy_helmet_desc">

@@ -184,10 +184,10 @@
 		<text>A round with an armor-piercing bullet for the SVDm 2 and the SVUmk2 sniper rifles.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-fmj">
-		<text>A standard round for the PMm, PB1s, Fort-12M?2 pistols. It has a standard core and a full-jacketed bullet. It has a weak armor-piercing effect.</text>
+		<text>A standard round for the PMm, PB1s, Fort-12Mk2 pistols. It has a standard core and a full-jacketed bullet. It has a weak armor-piercing effect.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x18-pmm">
-		<text>A round with improved ballistic characteristics for the PMm, the PB1s and the Fort-12M?2 pistols. Due to the high initial velocity of its bullet, it is much more effective then a standard round. It has a better armor-piercing effect.</text>
+		<text>A round with improved ballistic characteristics for the PMm, the PB1s and the Fort-12Mk2 pistols. Due to the high initial velocity of its bullet, it is much more effective then a standard round. It has a better armor-piercing effect.</text>
 	</string>
 	<string id="enc_weapons1_ammo_ammo-9x19-fmj">
 		<text>A standard round for the Walker P9m pistol and the Viper 5 submachine gun. It has a full-jacketed bullet with a weak armor-piercing effect.</text>
@@ -283,7 +283,7 @@
 		<text>A gun that is already powerful, reworked to fit rifle bullets. Truly a killing machine for close-range combat.</text>
 	</string>
 	<string id="enc_weapons1_wpn-fn2000">
-		<text>An assault rifle combined with a grenade launcher. It is equipped with an electronic fire control module and a 40-mm grenade launcher.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm ??.</text>
+		<text>An assault rifle combined with a grenade launcher. It is equipped with an electronic fire control module and a 40-mm grenade launcher.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm AP.</text>
 	</string>
 	<string id="enc_weapons1_wpn-fort">
 		<text>A police pistol of Ukrainian production, replaced the PMm. In comparison with the other pistols, it has improved accuracy, ergonomics and a larger magazine, but it is less reliable.\n Ammunition:\n standard 9x18 mm,\n improved 9x18 mm +P+.</text>
@@ -292,7 +292,7 @@
 		<text>Experimental prototype of the Fort gun</text>
 	</string>
 	<string id="enc_weapons1_wpn-g36">
-		<text>A German assault rifle. It is a first-grade specimen of the modern weaponry: it is light, reliable, and ergonomic.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm ??.</text>
+		<text>A German assault rifle. It is a first-grade specimen of the modern weaponry: it is light, reliable, and ergonomic.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm AP.</text>
 	</string>
 	<string id="enc_weapons1_wpn-gauss">
 		<text>A super-accurate weapon made by the scientists in the Zone. It is almost noiseless, because instead of gunpowder, it uses the artifact's energy for firing rather than steam gases. In spite of the Gauss gun’s tremendous firepower, the recoil is insignificant. The accuracy and the killing power of this gun exceed those of all other small arms.\n Ammunition: 2-mm Gauss rounds.</text>
@@ -310,7 +310,7 @@
 		<text>Hunting knife</text>
 	</string>
 	<string id="enc_weapons1_wpn-l85">
-		<text>After the British army replaced this rifle with the German-made GP 37, it appeared in large quantities first on the black market and then in the Zone. The IL 86’s main advantages are a standard 4-x scope and the high accuracy of the first shot. In burst mode, its accuracy decreases greatly, and the main mechanisms of the rifle are not reliable enough.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm ??.</text>
+		<text>After the British army replaced this rifle with the German-made GP 37, it appeared in large quantities first on the black market and then in the Zone. The IL 86’s main advantages are a standard 4-x scope and the high accuracy of the first shot. In burst mode, its accuracy decreases greatly, and the main mechanisms of the rifle are not reliable enough.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm AP.</text>
 	</string>
 	<string id="enc_weapons1_wpn-l85_m1">
 		<text>With a few modifications the effect of the throwing up of the barrell was diminished</text>
@@ -319,7 +319,7 @@
 		<text>Weapon comes with an integrated muffler. Many parts are replaced with lighter analogues, which makes the weapon significantly lighter.</text>
 	</string>
 	<string id="enc_weapons1_wpn-lr300">
-		<text>A light rifle with an effective fire range of up to 300 meters. Due its to exceptionally easy triggering, high ergonomics and low weight, the weapon is highly accurate, though it is too sensitive to dirt and is not always suitable for use under difficult field conditions.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm ??.</text>
+		<text>A light rifle with an effective fire range of up to 300 meters. Due its to exceptionally easy triggering, high ergonomics and low weight, the weapon is highly accurate, though it is too sensitive to dirt and is not always suitable for use under difficult field conditions.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm AP.</text>
 	</string>
 	<string id="enc_weapons1_wpn-lr300_m1">
 		<text>Modification of storming weaponry for firing single shots. It was assumed that it was going to be used as a cheap analog to the sniper rifle.</text>
@@ -358,7 +358,7 @@
 		<text>A model developed back in 1975 but still popular all around the world. Its magazine has low capacity, but its mechanism is absolutely reliable. Its second advantage is the use of the high-powered Kora round.\n Ammunition:\n standard .45 ACP,\n improved .45 ACP Hydro-Shock.</text>
 	</string>
 	<string id="enc_weapons1_wpn-sig550">
-		<text>A relatively new assault rifle for the 5.56x45 mm SS109 round. This weapon is very popular due to its accuracy, soft recoil, and high reliability.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm ??.</text>
+		<text>A relatively new assault rifle for the 5.56x45 mm SS109 round. This weapon is very popular due to its accuracy, soft recoil, and high reliability.\n Ammunition:\n standard 5.56x45 mm SS109,\n armor-piercing 5.56x45 mm AP.</text>
 	</string>
 	<string id="enc_weapons1_wpn-spas12">
 		<text>The SPSA14 smooth-bore rifle was developed in the late 1970th. This weapon is very reliable and flexibly used. It is however relatively big, expensive and its mechanism is too complex. Probably, this is the best close range gun in the Zone.\n Ammunition:\n 12x70 shot,\n 12x76 slug,\n 12x76 dart.</text>
@@ -475,7 +475,7 @@
 		<text>FT 200M</text>
 	</string>
 	<string id="wpn-fort">
-		<text>Fort-12M?2</text>
+		<text>Fort-12Mk2</text>
 	</string>
 	<string id="wpn-fort_m">
 		<text>Fort-15</text>

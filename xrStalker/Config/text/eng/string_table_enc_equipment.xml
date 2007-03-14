@@ -42,7 +42,7 @@
 	<string id="Devic">
 		<text>Instruments and devices</text>
 	</string>
-	<string id="device-pda">
+	<string id="device-PDA">
 		<text>PDA</text>
 	</string>
 	<string id="device-torch">
@@ -66,7 +66,7 @@
 	<string id="enc_equipment_devic_detect1">
 		<text>A device for detecting anomaly fields and disturbances. Notifies of their presence with a sound. Needs to be attached to the belt and turned on to operate correctly.</text>
 	</string>
-	<string id="enc_equipment_devic_device-pda1">
+	<string id="enc_equipment_devic_device-PDA1">
 		<text>Personal digital assistant - indispensable in the Zone.</text>
 	</string>
 	<string id="enc_equipment_devic_device-torch1">
@@ -136,7 +136,7 @@
 		<text>Scientific EXP-4</text>
 	</string>
 	<string id="Vodka">
-		<text>Cossack vodka</text>
+		<text>Cossacks vodka</text>
 	</string>
 	<string id="st_detector">
 		<text>Anomaly detector</text>

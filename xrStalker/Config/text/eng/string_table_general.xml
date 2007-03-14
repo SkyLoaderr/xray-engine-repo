@@ -178,7 +178,7 @@
 		<text>the NPC does not have enough money</text>
 	</string>
 	<string id="ui_st_opponent_items">
-		<text>Opponent's backpack</text>
+		<text>Backpack</text>
 	</string>
 	<string id="st_search_treasure">
 		<text>Search the stash ($$ACTION_USE$$)</text>
@@ -187,7 +187,7 @@
 		<text>Pick up item ($$ACTION_USE$$)</text>
 	</string>
 	<string id="ui_mm_check_updates">
-		<text>Check for updates</text>
+		<text>Game updates</text>
 	</string>
 	<string id="ui_mm_alternative">
 		<text>Alternative</text>
