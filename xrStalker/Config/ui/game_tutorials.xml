@@ -752,7 +752,7 @@
 	</game_over>
 
 #include "ui\ui_credits.xml"
-<!-- #include "ui\ui_movies.xml" FOR RUSSIAN ONLY-->
+#include "ui\ui_movies.xml" FOR RUSSIAN ONLY
 <!-- FOR RUSSIAN ONLY-->
 
 	<intro_logo>
