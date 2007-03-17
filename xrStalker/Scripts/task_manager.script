@@ -458,7 +458,7 @@ function CRandomTask:task_fail(p1, p2)
 
 		--' Проверяем что жив, выдавший квест.
 		local parent = alife():story_object(story_by_parent[sel_task.parent])
-		if parent == nil or not parent:alive() then
+		if parent == nil or (parent.alive ~= nil and not parent:alive()) then
 			self.task_info[self.active_task_by_type[p1]].status = "failed"
 			self.task_info[self.active_task_by_type[p1]].last_task_time = game.get_game_time()
 			return true		
