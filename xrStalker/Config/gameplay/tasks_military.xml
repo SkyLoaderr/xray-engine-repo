@@ -92,16 +92,16 @@
 	</game_task>
 	
 	<game_task id="mil_mad_job" prio="295">
-		<title>mil_take_flash</title>
+		<title>mil_mad_job</title>
 		<objective>
-			<text>mil_take_flash</text>
+			<text>mil_mad_job</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 			<infoportion_complete>mil_max_job_complete</infoportion_complete>
 			<function_fail>mil_tasks.max_job_failed</function_fail>
 			<article>mil_mad_flash_job</article>
 		</objective>
 		<objective>
-			<text>mil_take_flash</text>
+			<text>mil_mad_job</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
             <map_location_type hint="mil_crazy_hint">blue_location</map_location_type>
             <object_story_id>Mil_Crazy</object_story_id>
