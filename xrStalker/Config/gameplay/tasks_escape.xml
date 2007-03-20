@@ -146,6 +146,8 @@
 		</objective>
 		<objective>
 			<text>meet_with_doctor_2</text>
+			<map_location_type hint="meet_with_doctor_2">green_location</map_location_type>
+			<object_story_id>agr_doctor_spot</object_story_id>			
 		</objective>
 	</game_task>
 	
