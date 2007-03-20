@@ -91,7 +91,7 @@
 		</objective>
 	</game_task>
 	
-	<game_task id="mil_mad_job">
+	<game_task id="mil_mad_job" prio="295">
 		<title>mil_take_flash</title>
 		<objective>
 			<text>mil_take_flash</text>
@@ -119,7 +119,7 @@
 		</objective>
 	</game_task>
 	
-	<game_task id="mil_lukash_job" prio="295">
+	<game_task id="mil_lukash_job" prio="300">
 		<title>mil_lukash_job</title>
 		<objective>
 			<text>mil_kill_dolg</text>
@@ -160,7 +160,7 @@
 		</objective>
 	</game_task>
 	
-	<game_task id="mil_courier_job" prio="280">
+	<game_task id="mil_courier_job" prio="295">
 		<title>mil_courier_job</title>
 		<objective>
 			<icon>ui_iconsTotal_mil_courier_job</icon>
@@ -220,7 +220,7 @@
 		</objective>
 	</game_task>
 	
-	<game_task id="mil_blockpost_job" prio="275">
+	<game_task id="mil_blockpost_job" prio="290">
 		<title>mil_blockpost_help</title>
 		<objective>
 			<text>mil_blockpost_help</text>
@@ -296,7 +296,7 @@
 	</game_task>
 
 	
-	<game_task id = "mil_hunters_task" prio="275">
+	<game_task id = "mil_hunters_task" prio="300">
 			<title>mil_hunters_task</title>
 		<objective>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
@@ -324,7 +324,7 @@
 		</objective>
 	</game_task>
 	
-	<game_task id = "mil_go_to_miser" prio="275">
+	<game_task id = "mil_go_to_miser" prio="299">
 		<title>mil_go_to_miser_task_main</title>
 		<objective>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
@@ -342,7 +342,7 @@
 		</objective>
 	</game_task>
 	
-	<game_task id = "mil_kill_controller" prio="275">
+	<game_task id = "mil_kill_controller" prio="300">
 		<title>mil_kill_controller_main</title>
 		<objective>
 			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
