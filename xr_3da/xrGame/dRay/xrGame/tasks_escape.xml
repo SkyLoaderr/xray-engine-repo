@@ -42,6 +42,7 @@
 			<text>esc_help_wounded_from_raid_0</text>
 			<icon>ui_iconsTotal_esc_help_wounded_from_raid</icon>
 			<function_complete>escape_tasks.task_fox_complete</function_complete>
+			<infoportion_set_complete>garbage_meetstalker_start</infoportion_set_complete>			
 			<article>esc_fox_help</article>
 		</objective>
 		<objective>
