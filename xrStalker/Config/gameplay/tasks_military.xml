@@ -198,7 +198,7 @@
 			<object_story_id>Mil_Courier</object_story_id>
 			<infoportion_complete>mil_courier_dead</infoportion_complete>
 			<infoportion_fail>mil_courier_khutor_leave</infoportion_fail>
-            <map_location_hidden>1</map_location_hidden>
+            
 		</objective>
 		<objective>
 			<text>mil_courier_phase4</text>
