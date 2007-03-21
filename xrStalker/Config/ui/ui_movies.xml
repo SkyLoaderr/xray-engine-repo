@@ -37,7 +37,7 @@ FOR RUSSIAN ONLY !!!
 		</item>
 		
 		<item type="image">
-			<length_sec>9</length_sec>
+			<length_sec>13</length_sec>
 			<pause_state>on</pause_state>
 			<main_wnd>
 				<auto_static start_time="0" length_sec="4"  x="0" y="0" width="1024" height="768" stretch="1" light_anim="asus_logo_01" light_anim_cyclic="0" la_alpha="1" la_texture="1">
@@ -47,6 +47,10 @@ FOR RUSSIAN ONLY !!!
 				<auto_static start_time="4" length_sec="4"  x="0" y="0" width="1024" height="768" stretch="1" light_anim="asus_logo_01" light_anim_cyclic="0" la_alpha="1" la_texture="1">
 					<window_name>w2</window_name>
 					<texture>ui_asus_02</texture>
+				</auto_static>
+				<auto_static start_time="8" length_sec="4"  x="0" y="0" width="1024" height="768" stretch="1" light_anim="asus_logo_01" light_anim_cyclic="0" la_alpha="1" la_texture="1">
+					<window_name>w3</window_name>
+					<texture>ui\ui_nvidia_intro</texture>
 				</auto_static>
 			</main_wnd>
 		</item>
@@ -331,6 +335,7 @@ FOR RUSSIAN ONLY !!!
 		<item type="video">
 			<sound>characters_voice\scenario\video\final_peace</sound>
 			<pause_state>on</pause_state>
+			<can_be_stopped>off</can_be_stopped>
 			<function_on_stop>xr_effects.game_credits</function_on_stop>
 			<video_wnd x="0" y="0" width="1024" height="768" stretch="1">
 				<texture x="0" y="1" width="512" height="286">intro\final_peace</texture>
