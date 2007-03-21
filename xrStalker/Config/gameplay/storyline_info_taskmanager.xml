@@ -286,8 +286,8 @@
         <text>freedom_find_item_3_descr</text>
 </article>
 ;---------ecolog--------
-<article id="ecolog_find_item_2_descr" name="find_item" article_type="task">
-        <text>ecolog_find_item_2_descr</text>
+<article id="ecolog_find_item_1_descr" name="find_item" article_type="task">
+        <text>ecolog_find_item_1_descr</text>
 </article>
 
 ;---------Monster Part--------------
