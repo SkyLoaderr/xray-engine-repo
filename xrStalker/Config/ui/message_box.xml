@@ -562,7 +562,7 @@
 		</button_no>
 	</msg_box_patch_download_success>
 	
-	<msg_box_connect_to_master_server type="info" x="200" y="250" width="510" height="206">
+	<msg_box_connect_to_master_server type="ok" x="200" y="250" width="510" height="206">
 		<texture>ui_frame_error</texture>
 		
 		<picture x="35" y="65" width="77" height="77">
@@ -572,5 +572,9 @@
 		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
 			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_connecting_to_masterserver</text>
 		</message_text>		
+		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140" >ui_mm_cancel</text>
+			<texture>ui_button_ordinary</texture>
+		</button_ok>
 	</msg_box_connect_to_master_server>
 </window>
