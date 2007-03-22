@@ -248,6 +248,23 @@
 		</button_no>
 	</message_box_confirm_load_save>
 	
+	<message_box_invalid_saved_game type="ok" x="200" y="250" width="510" height="206">
+		<texture>ui_frame_error</texture>
+		
+		<picture x="35" y="65" width="77" height="77">
+			<texture>ui_frame_error_sign_alarm</texture>
+		</picture>
+		
+		<message_text x="170" y="40" width="310" height="60" complex_mode="1">
+			<text x="0" y="0" r="216" g="186" b="140" font="letterica18">ui_st_invalid_saved_game</text>
+		</message_text>
+		
+		<button_ok x="370" y="154" width="117" height="29" check_mode="0">
+			<text x="0" y="0" font="letterica16"  r="216" g="186" b="140">ui_st_btn_ok</text>
+			<texture>ui_button_ordinary</texture>
+		</button_ok>
+	</message_box_invalid_saved_game>
+	
 	<message_box_invalid_host type="ok" x="200" y="250" width="510" height="206">
 		<texture>ui_frame_error</texture>
 		
