@@ -30,6 +30,11 @@ function main_menu:InitControls()
 	
 	self.message_box = CUIMessageBoxEx()
 	self:Register(self.message_box, "msg_box")	
+	
+	local _ver = xml:InitStatic		("static_version",self)
+	local mm						= _G.main_menu.get_main_menu()
+	_ver:SetText					("ver. " .. mm:GetGSVer())
+	
 end
 
 function main_menu:Show(f)
