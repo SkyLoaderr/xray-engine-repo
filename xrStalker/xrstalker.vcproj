@@ -5369,6 +5369,9 @@
 				</Filter>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\config\mp\trained_model.ltx">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
