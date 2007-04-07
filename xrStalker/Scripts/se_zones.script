@@ -3,7 +3,7 @@ local not_spawn_levels = {
 }
 
 function is_single_player_game	()
-	if (alife == nil) then
+	if (_G.alife == nil) then
 		return	(true)
 	end
 	
@@ -11,7 +11,7 @@ function is_single_player_game	()
 		return	(true)
 	end
 	
-	if (IsGameTypeSingle == nil) then
+	if (_G.IsGameTypeSingle == nil) then
 		return	(true)
 	end
 
