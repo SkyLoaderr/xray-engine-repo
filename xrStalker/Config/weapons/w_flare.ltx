@@ -1,0 +1,50 @@
+[device_flare]:identity_immunities
+
+;GroupControlSection			= spawn_group
+$spawn          			= "weapons\flare"
+
+cform           	        = skeleton
+class           	        = WP_FLARE
+
+
+slot 				 		= 1
+animation_slot				= 1
+
+cost						= 300
+inv_name					= wpn-pb
+inv_name_short				= wpn-pb
+inv_weight					= .97
+;description				= enc_flare
+	
+inv_grid_width				= 2
+inv_grid_height				= 1
+inv_grid_x					= 15
+inv_grid_y					= 6
+
+
+hud              	        = device_flara_hud
+
+;normal           	        = 0, 1, 0
+;position         	        = 0, 0, 0
+;orientation      	        = 0, 0, 0
+
+visual           			= weapons\wpn_flare_hud
+
+ph_mass			 				= 1
+
+
+[device_flare_hud]
+attach_place_idx			= 1
+
+visual                  	= weapons\wpn_flare_hud
+position					= 0,0,0
+orientation					= 0,0,0
+zoom_rotate					= 0,0
+zoom_offset					= 0,0,0
+
+fire_point               	= 0,0,0
+fire_bone                	= wpn_body
+
+anm_show					= anim_flare_show
+anm_hide					= anim_flare_hide
+anm_idle					= anim_flare_idle
