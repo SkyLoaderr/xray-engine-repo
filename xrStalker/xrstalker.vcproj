@@ -3120,6 +3120,9 @@
 					RelativePath=".\Config\weapons\w_f1.ltx">
 				</File>
 				<File
+					RelativePath=".\config\weapons\w_flara.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\weapons\w_fn2000.ltx">
 				</File>
 				<File
