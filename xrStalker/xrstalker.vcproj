@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="8.00"
 	Name="xrStalker"
-	ProjectGUID="{90F938A1-176A-4379-A3D1-DD516E8A6DC1}"
+	ProjectGUID="{137FD32F-2EE3-46C2-AC64-27FA3818F10A}"
 	SccProjectName="&quot;$/xrStalker&quot;, JSYAAAAA"
 	SccLocalPath="."
 	SccProvider="MSSCCI:Microsoft Visual SourceSafe"
