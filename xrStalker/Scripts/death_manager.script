@@ -174,7 +174,6 @@ function keep_item(npc, item)
         return
     end
     npc:mark_item_dropped(item)
-    alife():release(alife():object(item:id()), true)
 end
 
 --' Функция спавнит необходимое число предметов
