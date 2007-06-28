@@ -173,7 +173,7 @@ function keep_item(npc, item)
 		item:set_condition((math.random(15)+75)/100)
         return
     end
-    npc:mark_item_dropped(item)
+    alife():release(alife():object(item:id()), true)
 end
 
 --' Функция спавнит необходимое число предметов
